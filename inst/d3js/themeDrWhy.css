@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css?family=Fira+Sans:400,600');
+
+text {
+    fill: #371ea3;
+}
+
+.bigTitle {
+    font-weight: 600;
+    font-size: 18px;
+    text-align: left;
+}
+
+.smallTitle{
+    font-weight: 600;
+    font-size: 13px;
+    text-align: left;
+}
+
+.axisTitle{
+    font-weight: 600;
+    font-size: 13px;
+    text-align: center;
+}
+
+.axisLabel{
+    font-weight:400;
+    font-size: 11px;
+}
+
+.axisLabel .domain{
+    stroke: #371ea3;
+}
+
+.legendTitle{
+    font-weight: 400;
+    font-size: 13px;
+    text-align: left;
+}
+
+.interceptLine{
+    stroke: #371ea3;
+	stroke-width: 1px;
+	stroke-opacity: 1;
+	stroke-linecap: "butt";
+}
+
+.dotLine{
+  		fill: none;
+  		stroke: #371ea3;
+  		stroke-width: 0.7px;
+}
+
+.grid .tick line{
+    stroke: #f0f0f4;
+    stroke-width: 1px
+}
+
+.d3-tip {
+    line-height: 1.1;
+    padding: 6px;
+    background: #00000080;
+    color: #fff;
+    border-radius: 0px;
+    font-size: 14px;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+    box-sizing: border-box;
+    display: inline;
+    font-size: 10px;
+    width: 100%;
+    line-height: 1;
+    color: rgba(0, 0, 0, 0.8);
+    content: "\25BC";
+    position: absolute;
+    text-align: center;
+}
+
+/* Style northward tooltips specifically */
+.d3-tip.n:after {
+    margin: -2px 0 0 0;
+    top: 100%;
+    left: 0;
+}
