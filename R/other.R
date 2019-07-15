@@ -11,7 +11,11 @@ prepareBreakDown <- function(x, baseline = NA, max_features = 10, digits = 3, ro
   variables <- setdiff(unique(as.character(new_x[,'variable_name'])), c("prediction","intercept","other"))
 
   if (any(is.na(min_max))) {
-    min_max <- range(new_x[,'cummulative'])
+    if (is.na(baseline)) {
+      min_max <- range(new_x[,'cummulative'])
+    } else {
+      min_max <- range(new_x[,'cummulative'], baseline)
+    }
   }
 
   # count margins
@@ -22,7 +26,7 @@ prepareBreakDown <- function(x, baseline = NA, max_features = 10, digits = 3, ro
   ret <- NULL
   ret$x <- new_x
   ret$m <- m
-  ret$labelList <- label_list
+  ret$label_list <- label_list
   ret$variables <- variables
   ret$x_min_max <- min_max
 
@@ -111,7 +115,8 @@ prepareCeterisParibus <- function(x, variables = NULL) {
   y_min_max[1] <- y_min_max[1] - y_min_max_margin
   y_min_max[2] <- y_min_max[2] + y_min_max_margin
 
-  all_profiles_list <- split(all_profiles, all_profiles$`_vname_`)
+  all_profiles_list <- split(all_profiles, all_profiles$`_vname_`)[variables]
+
   new_x <- x_min_max_list <- list()
 
   # line plot or bar plot?
@@ -125,8 +130,8 @@ prepareCeterisParibus <- function(x, variables = NULL) {
       temp$xhat <- as.numeric(temp$xhat)
       temp$yhat <- as.numeric(temp$yhat)
 
-      new_x[[i]] <- temp[order(temp$xhat),]
-      x_min_max_list[[i]] <- list(min(temp$xhat), max(temp$xhat))
+      new_x[[name]] <- temp[order(temp$xhat),]
+      x_min_max_list[[name]] <- list(min(temp$xhat), max(temp$xhat))
 
     } else {
       if (dim(attr(x, "observations"))[1] > 1) stop("Please pick one observation.")
@@ -136,7 +141,7 @@ prepareCeterisParibus <- function(x, variables = NULL) {
       colnames(temp) <- c("xhat", "yhat", "vname")
       temp$yhat <- as.numeric(temp$yhat)
 
-      new_x[[i]] <- temp
+      new_x[[name]] <- temp
     }
   }
 
@@ -145,5 +150,7 @@ prepareCeterisParibus <- function(x, variables = NULL) {
   ret$x <- new_x
   ret$y_min_max <- y_min_max
   ret$x_min_max_list <- x_min_max_list
+  ret$is_numeric <- is_numeric
+  ret$variables <- variables
   ret
 }

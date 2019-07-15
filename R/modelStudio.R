@@ -19,8 +19,19 @@
 #'
 #' @examples
 #' library("dime")
+#' library("DALEX")
 #'
+#' titanic <- na.omit(titanic)
+#' set.seed(1313)
+#' titanic_small <- titanic[sample(1:nrow(titanic), 500), c(1,2,3,6,7,9)]
+#' model_titanic_glm <- glm(survived == "yes" ~ gender + age + fare + class + sibsp,
+#'                          data = titanic_small, family = "binomial")
+#' explain_titanic_glm <- explain(model_titanic_glm,
+#'                                data = titanic_small[,-9],
+#'                                y = titanic_small$survived == "yes",
+#'                                label = "glm")
 #'
+#' modelStudio(explain_titanic_glm, new_observation = titanic_small[1,-6])
 #'
 #' @export
 #' @rdname modelStudio
@@ -61,11 +72,14 @@ modelStudio.default <- function(x,
   ceterisParibus <- ingredients::ceteris_paribus(x, data, predict_function, new_observation, label=label)
 
   bdData <- prepareBreakDown(breakDown, ...)
-  cpData <- prepareCeterisParibus(ceterisParibus, variables = bdData$variables, ...)
+  cpData <- prepareCeterisParibus(ceterisParibus, variables = bdData$variables)
 
-  options <- list()
+  options <- list(size = 2, alpha = 1, bar_width = 16,
+                  cp_title = "Ceteris Paribus Profiles", bd_title = "Break Down",
+                  model_name = label,
+                  show_rugs = TRUE)
 
-  temp <- jsonline::toJSON(list(bdData, cpData))
+  temp <- jsonlite::toJSON(list(bdData, cpData))
 
   r2d3::r2d3(
     data = temp,
