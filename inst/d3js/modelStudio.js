@@ -1,12 +1,15 @@
-// load all data
+/// load all data
 var bdData = data[0],
-    cpData = data[1];
+    cpData = data[1],
+    fiData = data[2];
 
-var cpPlotCount = bdData.variables.length, bdBarCount = bdData.m[0];
+var cpPlotCount = bdData.variables.length,
+    bdBarCount = bdData.m[0],
+    fiBarCount = bdData.m[0] - 1;
 
-// load options
+/// load options
 var size = options.size, alpha = options.alpha, barWidth = options.bar_width,
-    cpTitle = options.cp_title, bdTitle = options.bd_title,
+    cpTitle = options.cp_title, bdTitle = options.bd_title, fiTitle = options.fi_title,
     modelName = options.model_name,
     showRugs = options.show_rugs;
 
@@ -19,11 +22,12 @@ var margin = {top: 100, right: 20, bottom: 70, left: maxLength, inner: 40},
     plotTop = margin.top, plotLeft = margin.left,
     plotHeight = 600, plotWidth = 900;
 
+/// set plot specific measures and colors
 var bdPlotHeight = bdBarCount*barWidth + (bdBarCount+1)*barWidth/2,
     bdPlotWidth = 420;
 
 if (bdPlotHeight<280) {
-  barWidth = 280/(3*bdBarCount/2 + 1/2);
+  bdBarWidth = 280/(3*bdBarCount/2 + 1/2);
   bdPlotHeight = 280;
 }
 
@@ -40,15 +44,33 @@ var cpColors = getColors(3, "point"),
     lineColor = cpColors[1],
     greyColor = cpColors[2];
 
+var fiPlotHeight = fiBarCount*barWidth + (fiBarCount+1)*barWidth/2,
+    fiPlotWidth = 420;
 
-// plot
+if (fiPlotHeight<280) {
+  fiBarWidth = 280/(3*fiBarCount/2 + 1/2);
+  fiPlotHeight= 280;
+}
+
+var fiColors = getColors(1, "bar"),
+    barColor = fiColors[0];
+///
+
+/// plot
 var BD = svg.append("g");
 breakDown();
 plotLeft = 60;
 
 var CP = svg.append("g").attr("transform", "translate(" +
-                              (420 + margin.left + margin.right) + ",0)");
+                              (bdPlotWidth + margin.left + margin.right) + ",0)");
 ceterisParibus();
+
+plotLeft = maxLength;
+var FI = svg.append("g").attr("transform", "translate(0,"+
+                              (bdPlotHeight + margin.top + margin.bottom) + ")");
+featureImportance();
+///
+
 
 function breakDown() {
 
@@ -135,7 +157,7 @@ function breakDown() {
 
   // make dotted line from intercept to prediction
   var dotLineData = [{"x": x(intercept), "y": y("intercept")},
-                     {"x": x(intercept), "y": y("prediction") + barWidth}];
+                     {"x": x(intercept), "y": y("prediction") + bdBarWidth}];
 
   var lineFunction = d3.line()
                          .x(function(d) { return d.x; })
@@ -192,7 +214,7 @@ function breakDown() {
           }
         })
         .attr("text-anchor", d => d.sign == "X" && d.contribution < 0 ? "end" : null)
-        .attr("y", d => y(d.variable) + barWidth/2)
+        .attr("y", d => y(d.variable) + bdBarWidth/2)
         .attr("dy", "0.5em")
         .attr("class", "axisLabel")
         .text(d => {
@@ -216,7 +238,7 @@ function breakDown() {
         .attr("x1", d => d.contribution < 0 ? x(d.barStart) : x(d.barSupport))
         .attr("y1", d => y(d.variable))
         .attr("x2", d => d.contribution < 0 ? x(d.barStart) : x(d.barSupport))
-        .attr("y2", d => d.variable == "prediction" ? y(d.variable) : y(d.variable) + barWidth*2.5);
+        .attr("y2", d => d.variable == "prediction" ? y(d.variable) : y(d.variable) + bdBarWidth*2.5);
 }
 
 function ceterisParibus() {
@@ -242,7 +264,138 @@ function ceterisParibus() {
   }
 }
 
+function featureImportance() {
+
+  var bData = fiData.x;
+  var xMinMax = fiData.x_min_max;
+
+  var x = d3.scaleLinear()
+            .range([plotLeft, plotLeft + fiPlotWidth])
+            .domain([xMinMax[0], xMinMax[1]]);
+
+  FI.append("text")
+    .attr("transform",
+          "translate(" + (plotLeft + fiPlotWidth + margin.right)/2 + " ," +
+                         (plotTop + fiPlotHeight + 45) + ")")
+    .attr("class", "axisTitle")
+    .text("Drop-out loss");
+
+  var xAxis = d3.axisBottom(x)
+              .ticks(5)
+              .tickSize(0);
+
+  xAxis = FI.append("g")
+            .attr("class", "axisLabel")
+            .attr("transform", "translate(0," + (plotTop + fiPlotHeight) + ")")
+            .call(xAxis)
+            .call(g => g.select(".domain").remove());
+
+  var y = d3.scaleBand()
+            .rangeRound([plotTop + fiPlotHeight, plotTop])
+            .padding(0.33)
+            .domain(bData.map(function (d) {
+                 return d.variable;
+            }));
+
+  var xGrid = FI.append("g")
+                .attr("class", "grid")
+                .attr("transform", "translate(0," + (plotTop + fiPlotHeight) + ")")
+                .call(d3.axisBottom(x)
+                        .ticks(10)
+                        .tickSize(-fiPlotHeight)
+                        .tickFormat("")
+                ).call(g => g.select(".domain").remove());
+
+  // effort to make grid endings clean
+  let str = xGrid.select('.tick:first-child').attr('transform');
+  var yGridStart = str.substring(str.indexOf("(")+1,str.indexOf(","));
+  str = xGrid.select('.tick:last-child').attr('transform');
+  var yGridEnd = str.substring(str.indexOf("(")+1,str.indexOf(","));
+
+  var yGrid = FI.append("g")
+                .attr("class", "grid")
+                .attr("transform", "translate(" + yGridStart + ",0)")
+                .call(d3.axisLeft(y)
+                        .tickSize(-(yGridEnd-yGridStart))
+                        .tickFormat("")
+                ).call(g => g.select(".domain").remove());
+
+  var yAxis = d3.axisLeft(y)
+                .tickSize(0);
+
+  yAxis = FI.append("g")
+      .attr("class", "axisLabel")
+      .attr("transform","translate(" + (yGridStart-10) + ",0)")
+      .call(yAxis)
+      .call(g => g.select(".domain").remove());
+
+  FI.append("text")
+    .attr("x", yGridStart)
+    .attr("y", plotTop - 60)
+    .attr("class", "bigTitle")
+    .text(fiTitle);
+
+  FI.append("text")
+      .attr("x", yGridStart)
+      .attr("y", plotTop - 15)
+      .attr("class", "smallTitle")
+      .text(modelName);
+
+  // tooltip
+  var tool_tip = d3.tip()
+        .attr("class", "tooltip")
+        .offset([-8, 0])
+        .html(d => fiStaticTooltipHtml(modelName,d));
+  svg.call(tool_tip);
+
+  // bars
+  var bars = FI.selectAll()
+               .data(bData)
+               .enter()
+               .append("g");
+
+  // find full model dropout_loss value
+  var fullModel = bData[0].full_model;
+
+  bars.append("rect")
+      .attr("class", modelName.replace(/\s/g,''))
+      .attr("fill", barColor)
+      .attr("y", d => y(d.variable))
+      .attr("height", y.bandwidth())
+      .attr("x", function (d) {
+        // start ploting the bar left to full model line
+        if (x(d.dropout_loss) < x(fullModel)) {
+          return x(d.dropout_loss);
+        } else {
+          return x(fullModel);
+        }
+      })
+      .attr("width", d => Math.abs(x(d.dropout_loss) - x(fullModel)))
+      .on('mouseover', tool_tip.show)
+      .on('mouseout', tool_tip.hide);
+
+  // make line next to bars
+  var minimumY = Number.MAX_VALUE;
+  var maximumY = Number.MIN_VALUE;
+  bars.selectAll(".".concat(modelName.replace(/\s/g,''))).each(function() {
+    if(+this.getAttribute('y') < minimumY) {
+      minimumY = +this.getAttribute('y');
+    }
+    if(+this.getAttribute('y') > maximumY) {
+      maximumY = +this.getAttribute('y');
+    }
+  });
+
+  FI.append("line")
+    .attr("class", "interceptLine")
+    .attr("x1", x(fullModel))
+    .attr("y1", minimumY)
+    .attr("x2", x(fullModel))
+    .attr("y2", maximumY + y.bandwidth());
+}
+
 function updateCP(clicked) {
+  plotLeft = 60;
 
   if (clicked === "-1" || clicked === (bdBarCount-2) +"") { return;}
 
@@ -600,3 +753,19 @@ function cpChangedTooltipHtml(d, addData) {
   temp += "</center>";
   return temp;
 }
+
+function fiStaticTooltipHtml(modelName, d){
+    let sign;
+    if (d.dropout_loss > d.full_model) sign = "+"; else sign = "";
+    var temp ="Model: " + modelName
+      + "</br>" +
+      "Model loss after feature " + d.variable
+      + "</br>" +
+      " is permuted: " +  Math.round(d.dropout_loss * 1000)/1000
+      + "</br>" +
+      "Drop-out loss change: "  + sign + Math.round((d.dropout_loss - d.full_model) * 1000)/1000 ;
+    return temp;
+}
+
+svg.selectAll("text")
+  .style('font-family', 'Fira Sans, sans-serif');

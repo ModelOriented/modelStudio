@@ -1,4 +1,5 @@
-prepareBreakDown <- function(x, baseline = NA, max_features = 10, digits = 3, rounding_function = round, margin = 0.2, min_max = NA){
+prepareBreakDown <- function(x, baseline = NA, max_features = 10, digits = 3,
+                             rounding_function = round, margin = 0.2, min_max = NA) {
   ### This function returns object needed to plot BreakDown in D3 ###
 
   m <- ifelse(nrow(x) - 2 <= max_features, nrow(x), max_features + 3)
@@ -33,7 +34,8 @@ prepareBreakDown <- function(x, baseline = NA, max_features = 10, digits = 3, ro
   ret
 }
 
-prepareBreakDownDF <- function(x, baseline = NA, max_features = 10, digits = 3, rounding_function = round) {
+prepareBreakDownDF <- function(x, baseline = NA, max_features = 10, digits = 3,
+                               rounding_function = round) {
   ### This function returns data as DF needed to plot BreakDown in D3 ###
 
   # fix df
@@ -152,5 +154,43 @@ prepareCeterisParibus <- function(x, variables = NULL) {
   ret$x_min_max_list <- x_min_max_list
   ret$is_numeric <- is_numeric
   ret$variables <- variables
+  ret
+}
+
+prepareFeatureImportance <- function(x, max_features = 10, margin = 0.2) {
+
+  m <- dim(x)[1] - 2
+
+  xmin <- min(x$dropout_loss)
+  xmax <- max(x[x$variable!="_baseline_",]$dropout_loss)
+
+  ticksMargin <- abs(xmin-xmax)*margin;
+
+  bestFits <- x[x$variable == "_full_model_", ]
+  x <- merge(x, bestFits[,c("label", "dropout_loss")], by = "label")
+
+  # remove rows that starts with _
+  x <- x[!(substr(x$variable,1,1) == "_"),]
+
+  perm <- aggregate(x$dropout_loss.x, by = list(Category=x$variable), FUN = mean)
+
+
+  if (!is.null(max_features) && max_features < m) {
+    m <- max_features
+    x <- x[tail(order(x$dropout_loss.x), max_features), ]
+  }
+
+  # sorting bars in groups
+  perm <- as.character(perm$Category[order(perm$x)])
+  x$variable <- factor(as.character(x$variable), levels = perm)
+  x <- x[order(x$variable),]
+
+  colnames(x) <- c("label","variable","dropout_loss", "full_model")
+  labelList <- unique(as.character(x$variable))
+
+  ret <- NULL
+  ret$x <- x[,2:4]
+  ret$x_min_max <- c(xmin-ticksMargin, xmax+ticksMargin)
+
   ret
 }

@@ -6,9 +6,9 @@
 #'
 #' @param x a model to be explained, or an explainer created with function `DALEX::explain()`.
 #' @param new_observation a new observation with columns that correspond to variables used in the model.
-#' @param y ????
 #' @param max_features maximal number of features to be included in the BreakDown plot. Default value is 10.
 #' @param data validation dataset, will be extracted from `x` if it is an explainer.
+#' @param y true labels for `data`, will be extracted from `x` if it's an explainer.
 #' @param predict_function predict function, will be extracted from `x` if it's an explainer.
 #' @param label name of the model. By default it is extracted from the 'class' attribute of the model.
 #' @param ... other parameters.
@@ -41,15 +41,14 @@ modelStudio <- function(x, ...)
 #' @export
 #' @rdname modelStudio
 modelStudio.explainer <- function(x, new_observation,
-                                  y = NULL,
                                   max_features = 10,
-                                 ...) {
+                                  ...) {
 
   modelStudio.default(x = x$model,
                       new_observation = new_observation,
-                      y = y,
                       max_features = max_features,
                       data = x$data,
+                      y = x$y,
                       predict_function = x$predict_function,
                       label = x$label,
                       ...)
@@ -59,9 +58,9 @@ modelStudio.explainer <- function(x, new_observation,
 #' @rdname modelStudio
 modelStudio.default <- function(x,
                                 new_observation,
-                                y = NULL,
                                 max_features = 10,
                                 data,
+                                y,
                                 predict_function = predict,
                                 label = NULL,
                                 ...) {
@@ -70,16 +69,19 @@ modelStudio.default <- function(x,
 
   breakDown <- iBreakDown::local_attributions(x, data, predict_function, new_observation, label=label)
   ceterisParibus <- ingredients::ceteris_paribus(x, data, predict_function, new_observation, label=label)
+  featureImportance <- ingredients::feature_importance(x, data, y, predict_function, ...)
 
   bdData <- prepareBreakDown(breakDown, ...)
   cpData <- prepareCeterisParibus(ceterisParibus, variables = bdData$variables)
+  fiData <- prepareFeatureImportance(featureImportance, ...)
 
   options <- list(size = 2, alpha = 1, bar_width = 16,
                   cp_title = "Ceteris Paribus Profiles", bd_title = "Break Down",
+                  fi_title = "Feature Importance",
                   model_name = label,
                   show_rugs = TRUE)
 
-  temp <- jsonlite::toJSON(list(bdData, cpData))
+  temp <- jsonlite::toJSON(list(bdData, cpData, fiData))
 
   r2d3::r2d3(
     data = temp,
