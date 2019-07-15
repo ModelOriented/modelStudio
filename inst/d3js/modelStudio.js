@@ -59,7 +59,7 @@ var fiColors = getColors(1, "bar"),
 /// plot
 var BD = svg.append("g");
 breakDown();
-plotLeft = 60;
+plotLeft = 80;
 
 var CP = svg.append("g").attr("transform", "translate(" +
                               (bdPlotWidth + margin.left + margin.right) + ",0)");
@@ -107,17 +107,11 @@ function breakDown() {
                 .tickFormat("")
         ).call(g => g.select(".domain").remove());
 
-  // effort to make grid endings clean
-  let str = xGrid.select('.tick:first-child').attr('transform');
-  let yGridStart = str.substring(str.indexOf("(")+1,str.indexOf(","));
-  str = xGrid.select('.tick:last-child').attr('transform');
-  let yGridEnd = str.substring(str.indexOf("(")+1,str.indexOf(","));
-
   var yGrid = BD.append("g")
          .attr("class", "grid")
-         .attr("transform", "translate(" + yGridStart + ",0)")
+         .attr("transform", "translate(" + plotLeft + ",0)")
          .call(d3.axisLeft(y)
-                .tickSize(-(yGridEnd-yGridStart))
+                .tickSize(-bdPlotWidth)
                 .tickFormat("")
         ).call(g => g.select(".domain").remove());
 
@@ -126,20 +120,20 @@ function breakDown() {
 
   yAxis = BD.append("g")
         .attr("class", "axisLabel")
-        .attr("transform","translate(" + (yGridStart-10) + ",0)")
+        .attr("transform","translate(" + (plotLeft-10) + ",0)")
         .call(yAxis)
         .call(g => g.select(".domain").remove());
 
   yAxis.select(".tick:last-child").select("text").attr('font-weight', 600);
 
   BD.append("text")
-        .attr("x", yGridStart)
+        .attr("x", plotLeft)
         .attr("y", plotTop - 15)
         .attr("class", "smallTitle")
         .text(modelName);
 
   BD.append("text")
-        .attr("x", yGridStart)
+        .attr("x", plotLeft)
         .attr("y", plotTop - 40)
         .attr("class", "bigTitle")
         .text(bdTitle);
@@ -306,17 +300,11 @@ function featureImportance() {
                         .tickFormat("")
                 ).call(g => g.select(".domain").remove());
 
-  // effort to make grid endings clean
-  let str = xGrid.select('.tick:first-child').attr('transform');
-  var yGridStart = str.substring(str.indexOf("(")+1,str.indexOf(","));
-  str = xGrid.select('.tick:last-child').attr('transform');
-  var yGridEnd = str.substring(str.indexOf("(")+1,str.indexOf(","));
-
   var yGrid = FI.append("g")
                 .attr("class", "grid")
-                .attr("transform", "translate(" + yGridStart + ",0)")
+                .attr("transform", "translate(" + plotLeft + ",0)")
                 .call(d3.axisLeft(y)
-                        .tickSize(-(yGridEnd-yGridStart))
+                        .tickSize(-fiPlotWidth)
                         .tickFormat("")
                 ).call(g => g.select(".domain").remove());
 
@@ -325,18 +313,18 @@ function featureImportance() {
 
   yAxis = FI.append("g")
       .attr("class", "axisLabel")
-      .attr("transform","translate(" + (yGridStart-10) + ",0)")
+      .attr("transform","translate(" + (plotLeft-10) + ",0)")
       .call(yAxis)
       .call(g => g.select(".domain").remove());
 
   FI.append("text")
-    .attr("x", yGridStart)
+    .attr("x", plotLeft)
     .attr("y", plotTop - 60)
     .attr("class", "bigTitle")
     .text(fiTitle);
 
   FI.append("text")
-      .attr("x", yGridStart)
+      .attr("x", plotLeft)
       .attr("y", plotTop - 15)
       .attr("class", "smallTitle")
       .text(modelName);
@@ -395,7 +383,7 @@ function featureImportance() {
 }
 
 function updateCP(clicked) {
-  plotLeft = 60;
+  plotLeft = 80;
 
   if (clicked === "-1" || clicked === (bdBarCount-2) +"") { return;}
 
@@ -417,6 +405,8 @@ function updateCP(clicked) {
     cpCategoricalPlot(variableName, profData[variableName],
                       yMinMax, obsData);
   }
+  svg.selectAll("text")
+      .style('font-family', 'Fira Sans, sans-serif');
 }
 
 function cpNumericalPlot(variableName, lData, mData, yMinMax, pData) {
@@ -582,7 +572,7 @@ function cpNumericalPlot(variableName, lData, mData, yMinMax, pData) {
   CP.append("text")
         .attr("class", "axisTitle")
         .attr("transform", "rotate(-90)")
-        .attr("y", 15)
+        .attr("y", plotLeft-40)
         .attr("x", -(plotTop + cpPlotHeight/2))
         .attr("text-anchor", "middle")
         .text("prediction");

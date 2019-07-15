@@ -27,7 +27,7 @@
 #' model_titanic_glm <- glm(survived == "yes" ~ gender + age + fare + class + sibsp,
 #'                          data = titanic_small, family = "binomial")
 #' explain_titanic_glm <- explain(model_titanic_glm,
-#'                                data = titanic_small[,-9],
+#'                                data = titanic_small[,-6],
 #'                                y = titanic_small$survived == "yes",
 #'                                label = "glm")
 #'
