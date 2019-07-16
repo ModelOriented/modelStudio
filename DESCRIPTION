@@ -4,7 +4,7 @@ Version: 0.0.1
 Authors@R: 
     c(person("Hubert", "Baniecki", role = c("aut", "cre"), email = "hbaniecki@gmail.com"),
            person("Przemyslaw", "Biecek", role = c("aut", "ths")))
-Description: This package 
+Description: TBD. 
 Depends: R (>= 3.0.0)
 License: GPL
 Encoding: UTF-8

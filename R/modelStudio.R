@@ -4,9 +4,9 @@
 #' The main goal of this function is to connect two local model explainers: Ceteris Paribus and Break Down.
 #' It also shows global explainers for your model such as Partial Dependency and Feature Importance.
 #'
-#' @param x a model to be explained, or an explainer created with function `DALEX::explain()`.
+#' @param x an explainer created with function `DALEX::explain()` or a model to be explained.
 #' @param new_observation a new observation with columns that correspond to variables used in the model.
-#' @param max_features maximal number of features to be included in the BreakDown plot. Default value is 10.
+#' @param max_features maximal number of features to be included in BreakDown and FeatureImportance plot.
 #' @param data validation dataset, will be extracted from `x` if it is an explainer.
 #' @param y true labels for `data`, will be extracted from `x` if it's an explainer.
 #' @param predict_function predict function, will be extracted from `x` if it's an explainer.
@@ -14,6 +14,9 @@
 #' @param ... other parameters.
 #'
 #' @return an object of the `r2d3` class.
+#'
+#' @importFrom utils head tail
+#' @importFrom stats aggregate predict
 #'
 #' @references ingredients \url{https://modeloriented.github.io/ingredients/} iBreakDown \url{https://modeloriented.github.io/iBreakDown/}
 #'
@@ -70,10 +73,12 @@ modelStudio.default <- function(x,
   breakDown <- iBreakDown::local_attributions(x, data, predict_function, new_observation, label=label)
   ceterisParibus <- ingredients::ceteris_paribus(x, data, predict_function, new_observation, label=label)
   featureImportance <- ingredients::feature_importance(x, data, y, predict_function, ...)
+  partialDependency <- NULL
 
-  bdData <- prepareBreakDown(breakDown, ...)
+  bdData <- prepareBreakDown(breakDown, max_features, ...)
   cpData <- prepareCeterisParibus(ceterisParibus, variables = bdData$variables)
-  fiData <- prepareFeatureImportance(featureImportance, ...)
+  fiData <- prepareFeatureImportance(featureImportance, max_features, ...)
+  pdData <- preparePartialDependency(NA)
 
   options <- list(size = 2, alpha = 1, bar_width = 16,
                   cp_title = "Ceteris Paribus Profiles", bd_title = "Break Down",
@@ -81,7 +86,7 @@ modelStudio.default <- function(x,
                   model_name = label,
                   show_rugs = TRUE)
 
-  temp <- jsonlite::toJSON(list(bdData, cpData, fiData))
+  temp <- jsonlite::toJSON(list(bdData, cpData, fiData, pdData))
 
   r2d3::r2d3(
     data = temp,

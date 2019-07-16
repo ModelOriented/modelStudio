@@ -8,25 +8,24 @@
 \usage{
 modelStudio(x, ...)
 
-\method{modelStudio}{explainer}(x, new_observation, y = NULL,
-  max_features = 10, ...)
-
-\method{modelStudio}{default}(x, new_observation, y = NULL,
-  max_features = 10, data, predict_function = predict, label = NULL,
+\method{modelStudio}{explainer}(x, new_observation, max_features = 10,
   ...)
+
+\method{modelStudio}{default}(x, new_observation, max_features = 10,
+  data, y, predict_function = predict, label = NULL, ...)
 }
 \arguments{
-\item{x}{a model to be explained, or an explainer created with function `DALEX::explain()`.}
+\item{x}{an explainer created with function `DALEX::explain()` or a model to be explained.}
 
 \item{...}{other parameters.}
 
 \item{new_observation}{a new observation with columns that correspond to variables used in the model.}
 
-\item{y}{????}
-
-\item{max_features}{maximal number of features to be included in the BreakDown plot. Default value is 10.}
+\item{max_features}{maximal number of features to be included in BreakDown and FeatureImportance plot.}
 
 \item{data}{validation dataset, will be extracted from `x` if it is an explainer.}
+
+\item{y}{true labels for `data`, will be extracted from `x` if it's an explainer.}
 
 \item{predict_function}{predict function, will be extracted from `x` if it's an explainer.}
 
@@ -41,8 +40,19 @@ It also shows global explainers for your model such as Partial Dependency and Fe
 }
 \examples{
 library("dime")
+library("DALEX")
 
+titanic <- na.omit(titanic)
+set.seed(1313)
+titanic_small <- titanic[sample(1:nrow(titanic), 500), c(1,2,3,6,7,9)]
+model_titanic_glm <- glm(survived == "yes" ~ gender + age + fare + class + sibsp,
+                         data = titanic_small, family = "binomial")
+explain_titanic_glm <- explain(model_titanic_glm,
+                               data = titanic_small[,-6],
+                               y = titanic_small$survived == "yes",
+                               label = "glm")
 
+modelStudio(explain_titanic_glm, new_observation = titanic_small[1,-6])
 
 }
 \references{

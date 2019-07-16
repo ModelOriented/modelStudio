@@ -1,10 +1,11 @@
-prepareBreakDown <- function(x, baseline = NA, max_features = 10, digits = 3,
+prepareBreakDown <- function(x, max_features = 10, baseline = NA, digits = 3,
                              rounding_function = round, margin = 0.2, min_max = NA) {
   ### This function returns object needed to plot BreakDown in D3 ###
 
   m <- ifelse(nrow(x) - 2 <= max_features, nrow(x), max_features + 3)
+  other_factors_flag <- ifelse(nrow(x) - 2 <= max_features, FALSE, TRUE)
 
-  new_x <- prepareBreakDownDF(x, baseline, max_features, digits, rounding_function)
+  new_x <- prepareBreakDownDF(x, max_features, baseline, digits, rounding_function)
 
   # later count longest label width in d3
   label_list <- as.character(new_x[,'variable'])
@@ -30,11 +31,12 @@ prepareBreakDown <- function(x, baseline = NA, max_features = 10, digits = 3,
   ret$label_list <- label_list
   ret$variables <- variables
   ret$x_min_max <- min_max
+  ret$otherFactorsFlag <- other_factors_flag
 
   ret
 }
 
-prepareBreakDownDF <- function(x, baseline = NA, max_features = 10, digits = 3,
+prepareBreakDownDF <- function(x, max_features = 10, baseline = NA, digits = 3,
                                rounding_function = round) {
   ### This function returns data as DF needed to plot BreakDown in D3 ###
 
@@ -193,4 +195,9 @@ prepareFeatureImportance <- function(x, max_features = 10, margin = 0.2) {
   ret$x_min_max <- c(xmin-ticksMargin, xmax+ticksMargin)
 
   ret
+}
+
+preparePartialDependency <- function(x) {
+  ### todo
+  return();
 }

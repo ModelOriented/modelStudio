@@ -69,6 +69,12 @@ plotLeft = maxLength;
 var FI = svg.append("g").attr("transform", "translate(0,"+
                               (bdPlotHeight + margin.top + margin.bottom) + ")");
 featureImportance();
+plotLeft = 80;
+
+var PD = svg.append("g").attr("transform", "translate(" +
+                              (bdPlotWidth + margin.left + margin.right) + "," +
+                              (bdPlotHeight + margin.top + margin.bottom) + ")");
+partialDependency();
 ///
 
 
@@ -180,10 +186,12 @@ function breakDown() {
               return defaultColor;
           }
         })
+        .attr("fill-opacity",
+        d => x(d.barSupport)-x(d.barStart) < 1 ? 0 : 1) //invisible bar for clicking purpose
         .attr("y", d => y(d.variable) )
         .attr("height", y.bandwidth() )
         .attr("x", d => x(d.barStart))
-        .attr("width", d => x(d.barSupport) - x(d.barStart))
+        .attr("width", d => x(d.barSupport)-x(d.barStart) < 1 ? 5 : x(d.barSupport) - x(d.barStart))
         .on('mouseover', tool_tip.show)
         .on('mouseout', tool_tip.hide)
         .attr("id", (d,i) => i-1)
@@ -319,7 +327,7 @@ function featureImportance() {
 
   FI.append("text")
     .attr("x", plotLeft)
-    .attr("y", plotTop - 60)
+    .attr("y", plotTop - 40)
     .attr("class", "bigTitle")
     .text(fiTitle);
 
@@ -382,10 +390,15 @@ function featureImportance() {
     .attr("y2", maximumY + y.bandwidth());
 }
 
+function partialDependency() {
+  //TODO
+}
+
 function updateCP(clicked) {
   plotLeft = 80;
 
-  if (clicked === "-1" || clicked === (bdBarCount-2) +"") { return;}
+  if (clicked === "-1" || clicked === `${bdBarCount-2}` ||
+  (bdData.otherFactorsFlag[0] === true && clicked === `${bdBarCount-3}`)){ return;}
 
   var profData = cpData.x;
   var xMinMax = cpData.x_min_max_list;

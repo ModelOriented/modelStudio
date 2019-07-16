@@ -1,2 +1,12 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^arepo.*$
+^misc.*$
+^.travis.yml$
+^cheatsheet$
+^binder.*$
+^images.*$
+^jupyter-notebooks.*$
+^docs.*$
+^.*README.*$
+^_pkgdown\.yml$
