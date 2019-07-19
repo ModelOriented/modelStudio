@@ -1,15 +1,18 @@
 /// load all data
 var bdData = data[0],
     cpData = data[1],
-    fiData = data[2];
+    fiData = data[2],
+    pdData = data[3];
 
 var cpPlotCount = bdData.variables.length,
     bdBarCount = bdData.m[0],
-    fiBarCount = bdData.m[0] - 1;
+    fiBarCount = bdData.m[0] - 1,
+    pdPlotCount = bdData.variables.length;
 
 /// load options
 var size = options.size, alpha = options.alpha, barWidth = options.bar_width,
-    cpTitle = options.cp_title, bdTitle = options.bd_title, fiTitle = options.fi_title,
+    cpTitle = options.cp_title, bdTitle = options.bd_title,
+    fiTitle = options.fi_title, pdTitle = options.pd_title,
     modelName = options.model_name,
     showRugs = options.show_rugs;
 
@@ -54,9 +57,11 @@ if (fiPlotHeight<280) {
 
 var fiColors = getColors(1, "bar"),
     barColor = fiColors[0];
-///
 
-/// plot
+var pdPlotHeight = cpPlotHeight,
+    pdPlotWidth = cpPlotWidth;
+
+/// initialize plots
 var BD = svg.append("g");
 breakDown();
 plotLeft = 80;
@@ -77,6 +82,7 @@ var PD = svg.append("g").attr("transform", "translate(" +
 partialDependency();
 ///
 
+/// general plot functions
 
 function breakDown() {
 
@@ -100,9 +106,7 @@ function breakDown() {
   var y = d3.scaleBand()
         .rangeRound([plotTop, plotTop + bdPlotHeight])
         .padding(0.33)
-        .domain(bData.map(function (d) {
-             return d.variable;
-        }));
+        .domain(bData.map(d => d.variable));
 
   var xGrid = BD.append("g")
          .attr("class", "grid")
@@ -148,7 +152,7 @@ function breakDown() {
   var tool_tip = d3.tip()
         .attr("class", "tooltip")
         .offset([-8, 0])
-        .html(function(d) { return bdTooltipHtml(d); });
+        .html(d => bdTooltipHtml(d));
 
   BD.call(tool_tip);
 
@@ -160,8 +164,9 @@ function breakDown() {
                      {"x": x(intercept), "y": y("prediction") + bdBarWidth}];
 
   var lineFunction = d3.line()
-                         .x(function(d) { return d.x; })
-                         .y(function(d) { return d.y; });
+                       .x(d => d.x)
+                       .y(d => d.y);
+
   BD.append("path")
         .data([dotLineData])
         .attr("class", "dotLine")
@@ -198,6 +203,7 @@ function breakDown() {
         .on("click", function(){
           clicked = this.id;
           updateCP(this.id);
+          updatePD(this.id);
         });
 
   // add labels to bars
@@ -258,11 +264,9 @@ function ceterisParibus() {
 
   //lines or bars?
   if (isNumeric[start]) {
-    cpNumericalPlot(variableName, profData[variableName], xMinMax[variableName],
-                    yMinMax, obsData, start+1);
+    cpNumericalPlot(variableName, profData[variableName], xMinMax[variableName], yMinMax, obsData);
   } else {
-    cpCategoricalPlot(variableName, profData[variableName],
-                      yMinMax, obsData, start+1);
+    cpCategoricalPlot(variableName, profData[variableName], yMinMax, obsData);
   }
 }
 
@@ -341,7 +345,7 @@ function featureImportance() {
   var tool_tip = d3.tip()
         .attr("class", "tooltip")
         .offset([-8, 0])
-        .html(d => fiStaticTooltipHtml(modelName,d));
+        .html(d => fiStaticTooltipHtml(d, modelName));
   svg.call(tool_tip);
 
   // bars
@@ -391,8 +395,30 @@ function featureImportance() {
 }
 
 function partialDependency() {
-  //TODO
+
+  var profData = pdData.x;
+  var xMinMax = pdData.x_min_max_list;
+  var yMinMax = pdData.y_min_max;
+  var yMean = pdData.y_mean;
+  var isNumeric = pdData.is_numeric;
+  var variables = pdData.variables;
+
+  var start = 1;
+
+  let variableName = variables[start];
+
+  //lines or bars?
+  if (isNumeric[start]) {
+    pdNumericalPlot(variableName, profData[variableName], xMinMax[variableName],
+                    yMinMax, yMean);
+  } else {
+    pdCategoricalPlot(variableName, profData[variableName],
+                      yMinMax, yMean);
+  }
+
 }
+
+/// update plot functions
 
 function updateCP(clicked) {
   plotLeft = 80;
@@ -421,6 +447,36 @@ function updateCP(clicked) {
   svg.selectAll("text")
       .style('font-family', 'Fira Sans, sans-serif');
 }
+
+function updatePD(clicked) {
+  plotLeft = 80;
+
+  if (clicked === "-1" || clicked === `${bdBarCount-2}` ||
+  (bdData.otherFactorsFlag[0] === true && clicked === `${bdBarCount-3}`)){ return;}
+
+  var profData = pdData.x;
+  var xMinMax = pdData.x_min_max_list;
+  var yMinMax = pdData.y_min_max;
+  var yMean = pdData.y_mean;
+  var isNumeric = pdData.is_numeric;
+  var variables = pdData.variables;
+
+  let variableName = variables[clicked];
+  PD.selectAll("*").remove();
+
+  //lines or bars?
+  if (isNumeric[clicked]) {
+    pdNumericalPlot(variableName, profData[variableName], xMinMax[variableName],
+                    yMinMax, yMean);
+  } else {
+    pdCategoricalPlot(variableName, profData[variableName],
+                      yMinMax, yMean);
+  }
+  svg.selectAll("text")
+      .style('font-family', 'Fira Sans, sans-serif');
+}
+
+/// small plot functions
 
 function cpNumericalPlot(variableName, lData, mData, yMinMax, pData) {
 
@@ -717,6 +773,255 @@ function cpCategoricalPlot(variableName, bData, yMinMax, lData) {
         .text("prediction");
 }
 
+function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
+
+  var x = d3.scaleLinear()
+            .range([plotLeft + 10, plotLeft + pdPlotWidth - 10])
+            .domain([mData[0], mData[1]]);
+
+  var y = d3.scaleLinear()
+            .range([plotTop + pdPlotHeight, plotTop])
+            .domain([yMinMax[0], yMinMax[1]]);
+
+  var line = d3.line()
+               .x(function(d) { return x(d.xhat); })
+               .y(function(d) { return y(d.yhat); })
+               .curve(d3.curveMonotoneX);
+
+  PD.append("text")
+      .attr("class", "bigTitle")
+      .attr("x", plotLeft)
+      .attr("y", plotTop - 40)
+      .text(pdTitle);
+
+  PD.append("text")
+      .attr("class","smallTitle")
+      .attr("x", plotLeft)
+      .attr("y", plotTop - 15)
+      .text(variableName);
+
+  // find 5 nice ticks with max and min - do better than d3
+  var tickValues = getTickValues(x.domain());
+
+  var xAxis = d3.axisBottom(x)
+                .tickValues(tickValues)
+                .tickSizeInner(0)
+                .tickPadding(15);
+
+  xAxis = PD.append("g")
+            .attr("class", "axisLabel")
+            .attr("transform", "translate(0,"+ (plotTop + pdPlotHeight) + ")")
+            .call(xAxis);
+
+  var yGrid = PD.append("g")
+                .attr("class", "grid")
+                .attr("transform", "translate(" + plotLeft + ",0)")
+                .call(d3.axisLeft(y)
+                        .ticks(10)
+                        .tickSize(-plotWidth)
+                        .tickFormat("")
+                ).call(g => g.select(".domain").remove());
+
+  var yAxis = d3.axisLeft(y)
+                .ticks(5)
+                .tickSize(0);
+
+  yAxis = PD.append("g")
+            .attr("class", "axisLabel")
+            .attr("transform","translate(" + plotLeft + ",0)")
+            .call(yAxis)
+            .call(g => g.select(".domain").remove());
+
+  // make tooltip
+  var tool_tip = d3.tip()
+                   .attr("class", "tooltip")
+                   .offset([-8, 0])
+                   .html(function(d) {
+                      return pdStaticTooltipHtml(d, variableName, yMean);
+                   });
+  PD.call(tool_tip);
+
+  // function to find nearest point on the line
+  var bisectXhat = d3.bisector(d => d.xhat).right;
+
+  // tooltip appear with info nearest to mouseover
+  function appear(data){
+    var x0 = x.invert(d3.mouse(d3.event.currentTarget)[0]),
+        i = bisectXhat(data, x0),
+        d0 = data[i - 1],
+        d1 = data[i],
+        d = x0 - d0.xhat > d1.xhat - x0 ? d1 : d0;
+
+    tool_tip.show(d);
+  }
+
+  // add lines
+  PD.append("path")
+    .data([lData])
+    .attr("class", "line " + variableName)
+    .attr("d", line)
+    .style("fill", "none")
+    .style("stroke", lineColor)
+    .style("opacity", alpha)
+    .style("stroke-width", size)
+    .on('mouseover', function(d){
+
+      d3.select(this)
+        .style("stroke", pointColor)
+        .style("stroke-width", size*1.5);
+
+      // make line and points appear on top
+      this.parentNode.appendChild(this);
+
+      // show changed tooltip
+      appear(d);
+    })
+    .on('mouseout', function(d){
+
+      d3.select(this)
+        .style("stroke", lineColor)
+        .style("stroke-width", size);
+
+      // hide changed tooltip
+      tool_tip.hide(d);
+    });
+
+  PD.append("text")
+    .attr("class", "axisTitle")
+    .attr("transform", "rotate(-90)")
+    .attr("y", plotLeft-40)
+    .attr("x", -(plotTop + pdPlotHeight/2))
+    .attr("text-anchor", "middle")
+    .text("average prediction");
+}
+
+function pdCategoricalPlot(variableName, bData, yMinMax, yMean) {
+
+  var x = d3.scaleLinear()
+        .range([plotLeft,  plotLeft + pdPlotWidth])
+        .domain([yMinMax[0], yMinMax[1]]);
+
+  var xAxis = d3.axisBottom(x)
+                .ticks(5)
+                .tickSize(0);
+
+  xAxis = PD.append("g")
+            .attr("class", "axisLabel")
+            .attr("transform", "translate(0," + (plotTop + pdPlotHeight) + ")")
+            .call(xAxis)
+            .call(g => g.select(".domain").remove());
+
+  var y = d3.scaleBand()
+            .rangeRound([plotTop + pdPlotHeight, plotTop])
+            .padding(0.33)
+            .domain(bData.map(function (d) {
+                 return d.xhat;
+            }));
+
+  var xGrid = PD.append("g")
+                .attr("class", "grid")
+                .attr("transform", "translate(0," + (plotTop + pdPlotHeight) + ")")
+                .call(d3.axisBottom(x)
+                        .ticks(10)
+                        .tickSize(-pdPlotHeight)
+                        .tickFormat("")
+                ).call(g => g.select(".domain").remove());
+
+  var yGrid = PD.append("g")
+                .attr("class", "grid")
+                .attr("transform", "translate(" + plotLeft + ",0)")
+                .call(d3.axisLeft(y)
+                        .tickSize(-pdPlotWidth)
+                        .tickFormat("")
+                ).call(g => g.select(".domain").remove());
+
+  var yAxis = d3.axisLeft(y)
+                .tickSize(0);
+
+  yAxis = PD.append("g")
+            .attr("class", "axisLabel")
+            .attr("transform","translate(" + (plotLeft-8) + ",0)")
+            .call(yAxis)
+            .call(g => g.select(".domain").remove());
+
+  PD.append("text")
+    .attr("x", plotLeft)
+    .attr("y", plotTop - 15)
+    .attr("class", "smallTitle")
+    .text(variableName);
+
+  PD.append("text")
+    .attr("x", plotLeft)
+    .attr("y", plotTop - 60)
+    .attr("class", "bigTitle")
+    .text(pdTitle);
+
+  var bars = PD.selectAll()
+               .data(bData)
+               .enter()
+               .append("g");
+
+  var fullModel = yMean;
+
+  // make tooltip
+  var tool_tip = d3.tip()
+        .attr("class", "tooltip")
+        .offset([-8, 0])
+        .html(function(d) { return pdStaticTooltipHtml(d, variableName, yMean); });
+  PD.call(tool_tip);
+
+  // add bars
+  bars.append("rect")
+      .attr("class", variableName)
+      .attr("fill", lineColor)
+      .attr("y", function (d) {
+          return y(d.xhat);
+      })
+      .attr("height", y.bandwidth())
+      .attr("x", function (d) {
+        // start ploting the bar left to full model line
+        if (x(d.yhat) < x(fullModel)) {
+          return x(d.yhat);
+        } else {
+          return x(fullModel);
+        }
+      })
+      .attr("width", function (d) {
+          return  Math.abs(x(d.yhat) - x(fullModel));
+      })
+      .on('mouseover', tool_tip.show)
+      .on('mouseout', tool_tip.hide);
+
+  // add intercept line
+  var minimumY = Number.MAX_VALUE;
+  var maximumY = Number.MIN_VALUE;
+  bars.selectAll(".".concat(variableName)).each(function() {
+      if(+this.getAttribute('y') < minimumY) {
+        minimumY = +this.getAttribute('y');
+      }
+      if(+this.getAttribute('y') > maximumY) {
+        maximumY = +this.getAttribute('y');
+      }
+    });
+
+  PD.append("line")
+    .attr("class", "interceptLine")
+    .attr("x1", x(fullModel))
+    .attr("y1", minimumY)
+    .attr("x2", x(fullModel))
+    .attr("y2", maximumY + y.bandwidth());
+
+  PD.append("text")
+    .attr("transform",
+          "translate(" + (plotLeft + pdPlotWidth + margin.right)/2 + "," +
+                         (plotTop + pdPlotHeight + 45) + ")")
+    .attr("class", "axisTitle")
+    .attr("text-anchor", "middle")
+    .text("average prediction");
+}
+
+/// tooltip functions
+
 function bdTooltipHtml(d, prediction) {
   var temp = "<center>";
   temp += d.tooltipText;
@@ -758,7 +1063,7 @@ function cpChangedTooltipHtml(d, addData) {
   return temp;
 }
 
-function fiStaticTooltipHtml(modelName, d){
+function fiStaticTooltipHtml(d, modelName) {
     let sign;
     if (d.dropout_loss > d.full_model) sign = "+"; else sign = "";
     var temp ="Model: " + modelName
@@ -771,5 +1076,31 @@ function fiStaticTooltipHtml(modelName, d){
     return temp;
 }
 
+function pdStaticTooltipHtml(d, variableName, yMean) {
+  // function formats tooltip text
+  var temp = "";
+  for (var [k, v] of Object.entries(d)) {
+    switch(k){
+      case "xhat":
+        temp += "<center>" +  variableName  + ": " + v + "</br>";
+        break;
+      case "yhat":
+        temp += "<center>" +  "average prediction"  + ": " + v + "</br>";
+        break;
+      case "vname":
+        break;
+      default:
+        temp += "<center>" +  k  + ": " + v + "</br>";
+        break;
+    }
+  }
+
+  temp += "</br><center>" +
+          "mean observation prediction:" +
+          "</br>" + yMean + "</br>";
+  return temp;
+}
+
+/// change text font
 svg.selectAll("text")
   .style('font-family', 'Fira Sans, sans-serif');

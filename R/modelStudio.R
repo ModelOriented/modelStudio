@@ -7,6 +7,7 @@
 #' @param x an explainer created with function `DALEX::explain()` or a model to be explained.
 #' @param new_observation a new observation with columns that correspond to variables used in the model.
 #' @param max_features maximal number of features to be included in BreakDown and FeatureImportance plot.
+#' @param N number of observations used for calculation of partial dependency profiles. By default 500.
 #' @param data validation dataset, will be extracted from `x` if it is an explainer.
 #' @param y true labels for `data`, will be extracted from `x` if it's an explainer.
 #' @param predict_function predict function, will be extracted from `x` if it's an explainer.
@@ -34,7 +35,7 @@
 #'                                y = titanic_small$survived == "yes",
 #'                                label = "glm")
 #'
-#' modelStudio(explain_titanic_glm, new_observation = titanic_small[1,-6])
+#' modelStudio(explain_titanic_glm, new_observation = titanic_small[9,-6], N = 200)
 #'
 #' @export
 #' @rdname modelStudio
@@ -43,13 +44,16 @@ modelStudio <- function(x, ...)
 
 #' @export
 #' @rdname modelStudio
-modelStudio.explainer <- function(x, new_observation,
+modelStudio.explainer <- function(x,
+                                  new_observation,
                                   max_features = 10,
+                                  N = 500,
                                   ...) {
 
   modelStudio.default(x = x$model,
                       new_observation = new_observation,
                       max_features = max_features,
+                      N = N,
                       data = x$data,
                       y = x$y,
                       predict_function = x$predict_function,
@@ -62,6 +66,7 @@ modelStudio.explainer <- function(x, new_observation,
 modelStudio.default <- function(x,
                                 new_observation,
                                 max_features = 10,
+                                N = 500,
                                 data,
                                 y,
                                 predict_function = predict,
@@ -73,8 +78,8 @@ modelStudio.default <- function(x,
   breakDown <- iBreakDown::local_attributions(x, data, predict_function, new_observation, label=label)
   ceterisParibus <- ingredients::ceteris_paribus(x, data, predict_function, new_observation, label=label)
   featureImportance <- ingredients::feature_importance(x, data, y, predict_function, ...)
-  partialDependencyN <- ingredients::partial_dependency(x, data, predict_function, only_numerical = TRUE)
-  partialDependencyC <- ingredients::partial_dependency(x, data, predict_function, only_numerical = FALSE)
+  partialDependencyN <- ingredients::partial_dependency(x, data, predict_function, only_numerical = TRUE, N = N)
+  partialDependencyC <- ingredients::partial_dependency(x, data, predict_function, only_numerical = FALSE, N = N)
 
   bdData <- prepareBreakDown(breakDown, max_features, ...)
   cpData <- prepareCeterisParibus(ceterisParibus, variables = bdData$variables)
@@ -88,7 +93,7 @@ modelStudio.default <- function(x,
                   show_rugs = TRUE)
 
   temp <- jsonlite::toJSON(list(bdData, cpData, fiData, pdData))
-  browser()
+
   r2d3::r2d3(
     data = temp,
     script = system.file("d3js/modelStudio.js", package = "dime"),

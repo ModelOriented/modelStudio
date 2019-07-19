@@ -9,10 +9,10 @@
 modelStudio(x, ...)
 
 \method{modelStudio}{explainer}(x, new_observation, max_features = 10,
-  ...)
+  N = 500, ...)
 
 \method{modelStudio}{default}(x, new_observation, max_features = 10,
-  data, y, predict_function = predict, label = NULL, ...)
+  N = 500, data, y, predict_function = predict, label = NULL, ...)
 }
 \arguments{
 \item{x}{an explainer created with function `DALEX::explain()` or a model to be explained.}
@@ -22,6 +22,8 @@ modelStudio(x, ...)
 \item{new_observation}{a new observation with columns that correspond to variables used in the model.}
 
 \item{max_features}{maximal number of features to be included in BreakDown and FeatureImportance plot.}
+
+\item{N}{number of observations used for calculation of partial dependency profiles. By default 500.}
 
 \item{data}{validation dataset, will be extracted from `x` if it is an explainer.}
 
@@ -52,7 +54,7 @@ explain_titanic_glm <- explain(model_titanic_glm,
                                y = titanic_small$survived == "yes",
                                label = "glm")
 
-modelStudio(explain_titanic_glm, new_observation = titanic_small[1,-6])
+modelStudio(explain_titanic_glm, new_observation = titanic_small[9,-6], N = 200)
 
 }
 \references{
