@@ -97,6 +97,7 @@ modelStudio.default <- function(x,
     ),
     css = system.file("d3js/themeDrWhy.css", package = "dime"),
     options = options,
-    d3_version = "4"
+    d3_version = "4",
+    viewer = "external"
   )
 }

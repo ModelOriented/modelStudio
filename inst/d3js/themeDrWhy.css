@@ -55,6 +55,23 @@ text {
     stroke-width: 1px
 }
 
+.legendTitle{
+    font-weight: 400;
+    font-size: 13px;
+    text-align: left;
+}
+
+.legendLabel{
+    font-weight: 400;
+    font-size: 11px;
+    text-align: left;
+}
+
+.legendBox{
+    fill: #ceced9;
+    opacity: 0.5;
+}
+
 .d3-tip {
     line-height: 1.1;
     padding: 6px;
@@ -65,7 +82,6 @@ text {
     font-family: 'Roboto Condensed', sans-serif;
 }
 
-/* Creates a small triangle extender for the tooltip */
 .d3-tip:after {
     box-sizing: border-box;
     display: inline;
@@ -78,7 +94,6 @@ text {
     text-align: center;
 }
 
-/* Style northward tooltips specifically */
 .d3-tip.n:after {
     margin: -2px 0 0 0;
     top: 100%;

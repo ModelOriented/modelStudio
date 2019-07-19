@@ -713,6 +713,7 @@ function cpCategoricalPlot(variableName, bData, yMinMax, lData) {
               "translate(" + (plotLeft + cpPlotWidth + margin.right)/2 + " ," +
                              (plotTop + cpPlotHeight + 45) + ")")
         .attr("class", "axisTitle")
+        .attr("text-anchor", "middle")
         .text("prediction");
 }
 
