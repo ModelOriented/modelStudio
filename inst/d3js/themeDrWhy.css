@@ -45,9 +45,9 @@ text {
 }
 
 .dotLine{
-  		fill: none;
-  		stroke: #371ea3;
-  		stroke-width: 0.7px;
+  	fill: none;
+  	stroke: #371ea3;
+  	stroke-width: 0.7px;
 }
 
 .grid .tick line{
@@ -70,6 +70,18 @@ text {
 .legendBox{
     fill: #ceced9;
     opacity: 0.5;
+}
+
+.mainTitle {
+    font-size: 25px;
+    font-weight: 400;
+}
+
+.mainLine {
+    stroke: #371ea3;
+    stroke-width: 1.5px;
+    stroke-opacity: 1;
+    stroke-linecap: butt;
 }
 
 .d3-tip {

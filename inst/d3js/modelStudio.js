@@ -19,19 +19,18 @@ var size = options.size, alpha = options.alpha, barWidth = options.bar_width,
 // calculate BD left margin
 var maxLength = calculateTextWidth(bdData.label_list)+15;
 
-var margin = {top: 100, right: 20, bottom: 70, left: maxLength, inner: 40},
+var margin = {top: 120, right: 20, bottom: 70, left: maxLength, inner: 40},
     w = width - margin.left - margin.right,
     h = height - margin.top - margin.bottom,
-    plotTop = margin.top, plotLeft = margin.left,
-    plotHeight = 600, plotWidth = 900;
+    plotTop = margin.top, plotLeft = margin.left;
 
 /// set plot specific measures and colors
 var bdPlotHeight = bdBarCount*barWidth + (bdBarCount+1)*barWidth/2,
     bdPlotWidth = 420;
 
 if (bdPlotHeight<280) {
-  bdBarWidth = 280/(3*bdBarCount/2 + 1/2);
   bdPlotHeight = 280;
+  bdBarWidth = 280/(3*bdBarCount/2 + 1/2);
 }
 
 var bdColors = getColors(3, "breakDown"),
@@ -51,8 +50,8 @@ var fiPlotHeight = fiBarCount*barWidth + (fiBarCount+1)*barWidth/2,
     fiPlotWidth = 420;
 
 if (fiPlotHeight<280) {
-  fiBarWidth = 280/(3*fiBarCount/2 + 1/2);
   fiPlotHeight= 280;
+  fiBarWidth = 280/(3*fiBarCount/2 + 1/2);
 }
 
 var fiColors = getColors(1, "bar"),
@@ -60,6 +59,12 @@ var fiColors = getColors(1, "bar"),
 
 var pdPlotHeight = cpPlotHeight,
     pdPlotWidth = cpPlotWidth;
+
+/// calculate plot dimmensions
+var plotHeight = margin.top + cpPlotHeight + margin.bottom +
+                 margin.top + pdPlotHeight + margin.bottom,
+    plotWidth = margin.left + cpPlotWidth + margin.right +
+                80 + pdPlotWidth + margin.right;
 
 /// initialize plots
 var BD = svg.append("g");
@@ -818,7 +823,7 @@ function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
                 .attr("transform", "translate(" + plotLeft + ",0)")
                 .call(d3.axisLeft(y)
                         .ticks(10)
-                        .tickSize(-plotWidth)
+                        .tickSize(-pdPlotWidth)
                         .tickFormat("")
                 ).call(g => g.select(".domain").remove());
 
@@ -1066,13 +1071,13 @@ function cpChangedTooltipHtml(d, addData) {
 function fiStaticTooltipHtml(d, modelName) {
     let sign;
     if (d.dropout_loss > d.full_model) sign = "+"; else sign = "";
-    var temp ="Model: " + modelName
-      + "</br>" +
-      "Model loss after feature " + d.variable
-      + "</br>" +
+    var temp = "<center>" + "model: " + modelName
+      + "</br>" + "<center>" +
+       "model loss after feature " + d.variable
+      + "</br>" + "<center>" +
       " is permuted: " +  Math.round(d.dropout_loss * 1000)/1000
-      + "</br>" +
-      "Drop-out loss change: "  + sign + Math.round((d.dropout_loss - d.full_model) * 1000)/1000 ;
+      + "</br>" + "<center>" +
+      "drop-out loss change: "  + sign + Math.round((d.dropout_loss - d.full_model) * 1000)/1000 ;
     return temp;
 }
 
@@ -1100,6 +1105,26 @@ function pdStaticTooltipHtml(d, variableName, yMean) {
           "</br>" + yMean + "</br>";
   return temp;
 }
+
+/// add non plot related stuff
+
+function decorateStudio(){
+
+  svg.append("text")
+     .attr("class", "mainTitle")
+     .attr("x", 15)
+     .attr("y", 30)
+     .text("Interactive Model Studio");
+
+  svg.append("line")
+     .attr("class", "mainLine")
+     .attr("x1", 10)
+     .attr("x2", plotWidth-10)
+     .attr("y1", margin.top/3)
+     .attr("y2", margin.top/3);
+}
+
+decorateStudio()
 
 /// change text font
 svg.selectAll("text")
