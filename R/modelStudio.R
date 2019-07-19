@@ -94,6 +94,8 @@ modelStudio.default <- function(x,
 
   temp <- jsonlite::toJSON(list(bdData, cpData, fiData, pdData))
 
+  sizingPolicy <- r2d3::sizingPolicy(padding = 10, browser.fill = TRUE)
+
   r2d3::r2d3(
     data = temp,
     script = system.file("d3js/modelStudio.js", package = "dime"),
@@ -104,6 +106,7 @@ modelStudio.default <- function(x,
     css = system.file("d3js/themeDrWhy.css", package = "dime"),
     options = options,
     d3_version = "4",
-    viewer = "external"
+    viewer = "external",
+    sizing = sizingPolicy
   )
 }

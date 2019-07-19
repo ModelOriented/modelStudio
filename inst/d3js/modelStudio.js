@@ -1129,11 +1129,3 @@ decorateStudio()
 /// change text font
 svg.selectAll("text")
   .style('font-family', 'Fira Sans, sans-serif');
-
-/// fix r2d3 padding
-d3.select("#htmlwidget_container")
-  .style("top","10px")
-  .style("left","10px")
-  .style("right","10px")
-  .style("bottom","10px");
-
