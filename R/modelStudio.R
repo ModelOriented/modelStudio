@@ -73,21 +73,22 @@ modelStudio.default <- function(x,
   breakDown <- iBreakDown::local_attributions(x, data, predict_function, new_observation, label=label)
   ceterisParibus <- ingredients::ceteris_paribus(x, data, predict_function, new_observation, label=label)
   featureImportance <- ingredients::feature_importance(x, data, y, predict_function, ...)
-  partialDependency <- NULL
+  partialDependencyN <- ingredients::partial_dependency(x, data, predict_function, only_numerical = TRUE)
+  partialDependencyC <- ingredients::partial_dependency(x, data, predict_function, only_numerical = FALSE)
 
   bdData <- prepareBreakDown(breakDown, max_features, ...)
   cpData <- prepareCeterisParibus(ceterisParibus, variables = bdData$variables)
   fiData <- prepareFeatureImportance(featureImportance, max_features, ...)
-  pdData <- preparePartialDependency(NA)
+  pdData <- preparePartialDependency(partialDependencyN, partialDependencyC, variables = bdData$variables)
 
   options <- list(size = 2, alpha = 1, bar_width = 16,
                   cp_title = "Ceteris Paribus Profiles", bd_title = "Break Down",
-                  fi_title = "Feature Importance",
+                  fi_title = "Feature Importance", pd_title = "Partial Dependency",
                   model_name = label,
                   show_rugs = TRUE)
 
   temp <- jsonlite::toJSON(list(bdData, cpData, fiData, pdData))
-
+  browser()
   r2d3::r2d3(
     data = temp,
     script = system.file("d3js/modelStudio.js", package = "dime"),

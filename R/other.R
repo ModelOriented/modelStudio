@@ -138,7 +138,7 @@ prepareCeterisParibus <- function(x, variables = NULL) {
       x_min_max_list[[name]] <- list(min(temp$xhat), max(temp$xhat))
 
     } else {
-      if (dim(attr(x, "observations"))[1] > 1) stop("Please pick one observation.")
+      if (dim(attr(temp, "observations"))[1] > 1) stop("Please pick one observation.")
 
       name <- as.character(head(temp$`_vname_`,1))
       temp <- temp[, c(name, "_yhat_", "_vname_")]
@@ -160,6 +160,7 @@ prepareCeterisParibus <- function(x, variables = NULL) {
 }
 
 prepareFeatureImportance <- function(x, max_features = 10, margin = 0.2) {
+  ### This function returns object needed to plot FeatureImportance in D3 ###
 
   m <- dim(x)[1] - 2
 
@@ -197,7 +198,68 @@ prepareFeatureImportance <- function(x, max_features = 10, margin = 0.2) {
   ret
 }
 
-preparePartialDependency <- function(x) {
-  ### todo
-  return();
+preparePartialDependency <- function(x, y, variables = NULL) {
+  ### This function returns object needed to plot PartialDependency in D3 ###
+
+  # which variable is numeric?
+  num <- as.character(unique(x$`_vname_`))
+  cat <- as.character(unique(y$`_vname_`))
+  is_numeric <- c(rep(TRUE, length(num)), rep(FALSE, length(cat)))
+  names(is_numeric) <- c(num, cat)
+  is_numeric <- is_numeric[variables]
+
+  # prepare aggregated profiles data
+  aggregated_profiles <- rbind(x,y)
+
+  aggregated_profiles <- aggregated_profiles[aggregated_profiles$`_vname_` %in% variables, ]
+  aggregated_profiles$`_vname_` <- droplevels(aggregated_profiles$`_vname_`)
+  rownames(aggregated_profiles) <- NULL
+
+  y_min_max <- range(aggregated_profiles$`_yhat_`)
+
+  # count margins
+  y_min_max_margin <- abs(y_min_max[2]-y_min_max[1])*0.1
+  y_min_max[1] <- y_min_max[1] - y_min_max_margin
+  y_min_max[2] <- y_min_max[2] + y_min_max_margin
+
+  aggregated_profiles_list <- split(aggregated_profiles, aggregated_profiles$`_vname_`)[variables]
+
+  new_x <- x_min_max_list <- list()
+  y_mean <- NULL
+
+  # line plot or bar plot?
+  for (i in 1:length(is_numeric)) {
+    temp <- aggregated_profiles_list[[i]]
+    if (is_numeric[i]) {
+
+      name <- as.character(head(temp$`_vname_`,1))
+      temp <- temp[, c('_x_', "_yhat_", "_vname_", "_label_")]
+      colnames(temp) <- c("xhat", "yhat", "vname", "label")
+      temp$xhat <- as.numeric(temp$xhat)
+      temp$yhat <- as.numeric(temp$yhat)
+
+      new_x[[name]] <- temp[order(temp$xhat),]
+      x_min_max_list[[name]] <- list(min(temp$xhat), max(temp$xhat))
+
+    } else {
+
+      name <- as.character(head(temp$`_vname_`,1))
+      temp <- temp[, c("_x_", "_yhat_", "_vname_", "_label_")]
+      colnames(temp) <- c("xhat", "yhat", "vname", "label")
+      temp$yhat <- as.numeric(temp$yhat)
+
+      new_x[[name]] <- temp
+    }
+  }
+
+  y_mean <- round(attr(y, "mean_prediction"),3)
+
+  ret <- NULL
+  ret$y_mean <- y_mean
+  ret$x <- new_x
+  ret$y_min_max <- y_min_max
+  ret$x_min_max_list <- x_min_max_list
+  ret$is_numeric <- is_numeric
+  ret$variables <- variables
+  ret
 }
