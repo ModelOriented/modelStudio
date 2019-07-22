@@ -54,7 +54,7 @@ explain_titanic_glm <- explain(model_titanic_glm,
                                y = titanic_small$survived == "yes",
                                label = "glm")
 
-modelStudio(explain_titanic_glm, new_observation = titanic_small[9,-6], N = 200)
+modelStudio(explain_titanic_glm, new_observation = titanic_small[1:10,-6], N = 50)
 
 }
 \references{

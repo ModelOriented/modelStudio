@@ -16,7 +16,7 @@
 #'
 #' @return an object of the `r2d3` class.
 #'
-#' @importFrom utils head tail
+#' @importFrom utils head tail setTxtProgressBar txtProgressBar
 #' @importFrom stats aggregate predict
 #'
 #' @references ingredients \url{https://modeloriented.github.io/ingredients/} iBreakDown \url{https://modeloriented.github.io/iBreakDown/}
@@ -35,7 +35,7 @@
 #'                                y = titanic_small$survived == "yes",
 #'                                label = "glm")
 #'
-#' modelStudio(explain_titanic_glm, new_observation = titanic_small[9,-6], N = 200)
+#' modelStudio(explain_titanic_glm, new_observation = titanic_small[1:10,-6], N = 50)
 #'
 #' @export
 #' @rdname modelStudio
@@ -75,14 +75,14 @@ modelStudio.default <- function(x,
 
   obsCount <- dim(new_observation)[1]
 
-  if(obsCount > 10) stop("more than 10 observations")
+  if(obsCount > 10) stop("There are more than 10 observations.")
 
   if(is.null(label)) label <- class(x)[1]
 
   obsData <- new_observation
   obsList <- list()
 
-  pb <- txtProgressBar(1, obsCount, style=3)
+  pb <- txtProgressBar(0, obsCount, style=3)
 
   for(i in 1:obsCount){
     setTxtProgressBar(pb, i)
