@@ -90,6 +90,9 @@ function generatePlots(margin, tData){
   partialDependency();
   ///
 
+  svg.selectAll("text")
+   .style('font-family', 'Fira Sans, sans-serif');
+
   /// general plot functions
 
   function breakDown() {
