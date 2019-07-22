@@ -65,24 +65,24 @@ function generatePlots(margin, tData){
   breakDown();
 
   var CP = svg.append("g")
-              .attr("id", "CP")
               .attr("class","plot")
+              .attr("id", "CP")
               .style("visibility", "hidden");
               /*.attr("transform", "translate(" +
                                 (bdPlotWidth + margin.left + margin.right) + ",0)");*/
   ceterisParibus();
 
   var FI = svg.append("g")
-              .attr("id","FI")
               .attr("class","plot")
+              .attr("id","FI")
               .style("visibility", "hidden");
               /*.attr("transform", "translate(0,"+
                                 (bdPlotHeight + margin.top + margin.bottom) + ")");*/
   featureImportance();
 
   var PD = svg.append("g")
-              .attr("id","PD")
               .attr("class","plot")
+              .attr("id","PD")
               .style("visibility", "hidden");
               /*.attr("transform", "translate(" +
                                 (bdPlotWidth + margin.left + margin.right) + "," +
@@ -91,7 +91,7 @@ function generatePlots(margin, tData){
   ///
 
   svg.selectAll("text")
-   .style('font-family', 'Fira Sans, sans-serif');
+   .style('font-family', 'Arial');
 
   /// general plot functions
 
@@ -166,7 +166,7 @@ function generatePlots(margin, tData){
     var tool_tip = d3.tip()
           .attr("class", "tooltip")
           .offset([-8, 0])
-          .html(d => bdTooltipHtml(d));
+          .html(d => d.type === "desc" ? d.text : bdTooltipHtml(d));
 
     BD.call(tool_tip);
 
@@ -260,6 +260,20 @@ function generatePlots(margin, tData){
           .attr("y1", d => y(d.variable))
           .attr("x2", d => d.contribution < 0 ? x(d.barStart) : x(d.barSupport))
           .attr("y2", d => d.variable == "prediction" ? y(d.variable) : y(d.variable) + bdBarWidth*2.5);
+
+    var description = [{type:"desc", "text":"Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit,</br> sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</br> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</br> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</br> Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."}];
+
+    var describe = BD.selectAll()
+                     .data(description)
+                     .enter()
+                     .append("rect")
+                     .attr("x", plotLeft + bdPlotWidth-20)
+                     .attr("y", plotTop-20)
+                     .attr("width", 20)
+                     .attr("height", 20)
+                     .style("fill", "grey")
+                     .on('mouseover', tool_tip.show)
+                     .on('mouseout', tool_tip.hide);
   }
 
   function ceterisParibus() {
@@ -464,7 +478,7 @@ function generatePlots(margin, tData){
                         yMinMax, obsData);
     }
     svg.selectAll("text")
-        .style('font-family', 'Fira Sans, sans-serif');
+        .style('font-family', 'Arial');
   }
 
   function updatePD(clicked) {
@@ -491,7 +505,7 @@ function generatePlots(margin, tData){
                         yMinMax, yMean);
     }
     svg.selectAll("text")
-        .style('font-family', 'Fira Sans, sans-serif');
+        .style('font-family', 'Arial');
   }
 
   /// small plot functions

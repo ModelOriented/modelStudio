@@ -42,7 +42,7 @@ function decorateStudio() {
                   .append("g")
                   .attr("class", "legend")
                   .attr("transform", function(d, i) {
-                    let temp = getTextWidth(d, 13, "Fira Sans, sans-serif");
+                    let temp = getTextWidth(d, 13, "Arial");
                     tempW = tempW + temp + 20;
                     return "translate(" + (studioWidth - tempW) +
                         "," + (margin.top - 25) + ")";
@@ -154,8 +154,8 @@ function reloadAll() {
         x = parseFloat(d3.select(object).attr("x")),
         y = parseFloat(d3.select(object).attr("y"));
 
-    let tempButton = svg.append("g")
-                        .attr("id","tempButton"+object.id);
+    let tempButton = STARTG.append("g")
+                           .attr("id","tempButton"+object.id);
 
     tempButton.append("rect")
               .attr("width", plotWidth-margin.big)
@@ -175,8 +175,8 @@ function reloadAll() {
                 buttonClicked = false;
               });
 
-    let tempText = svg.append("g")
-                      .attr("id","tempText"+object.id);
+    let tempText = STARTG.append("g")
+                         .attr("id","tempText"+object.id);
 
     tempText.selectAll()
             .data(plotNavigation)
@@ -188,7 +188,7 @@ function reloadAll() {
             .attr("y", (d,i) => y + plotHeight/2 + 25*i - (plotNavigation.length/2)*25)
             .attr("text-anchor", "middle")
             .text(d => d.text)
-            .style('font-family', 'Fira Sans, sans-serif')
+            .style('font-family', 'Arial')
             .on("mouseover", function() { d3.select(this).style("cursor", "pointer");})
             .on("mouseout", function() { d3.select(this).style("cursor", "auto");})
             .on("click", function() {
@@ -213,6 +213,6 @@ function reloadAll() {
   }
 
   svg.selectAll("text")
-   .style('font-family', 'Fira Sans, sans-serif');
+   .style('font-family', 'Arial');
 }
 
