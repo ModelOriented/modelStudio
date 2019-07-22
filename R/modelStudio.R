@@ -101,7 +101,8 @@ modelStudio.default <- function(x,
     script = system.file("d3js/modelStudio.js", package = "dime"),
     dependencies = list(
       system.file("d3js/colorsDrWhy.js", package = "dime"),
-      system.file("d3js/tooltipD3.js", package = "dime")
+      system.file("d3js/tooltipD3.js", package = "dime"),
+      system.file("d3js/generatePlots.js", package = "dime")
     ),
     css = system.file("d3js/themeDrWhy.css", package = "dime"),
     options = options,

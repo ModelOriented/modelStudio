@@ -84,6 +84,11 @@ text {
     stroke-linecap: butt;
 }
 
+.chosePlotButton {
+    fill: #ceced9;
+    opacity: 0.5;
+}
+
 .d3-tip {
     line-height: 1.1;
     padding: 6px;
