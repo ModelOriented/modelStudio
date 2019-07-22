@@ -73,18 +73,37 @@ modelStudio.default <- function(x,
                                 label = NULL,
                                 ...) {
 
+  obsCount <- dim(new_observation)[1]
+
+  if(obsCount > 10) stop("more than 10 observations")
+
   if(is.null(label)) label <- class(x)[1]
 
-  breakDown <- iBreakDown::local_attributions(x, data, predict_function, new_observation, label=label)
-  ceterisParibus <- ingredients::ceteris_paribus(x, data, predict_function, new_observation, label=label)
-  featureImportance <- ingredients::feature_importance(x, data, y, predict_function, ...)
-  partialDependencyN <- ingredients::partial_dependency(x, data, predict_function, only_numerical = TRUE, N = N)
-  partialDependencyC <- ingredients::partial_dependency(x, data, predict_function, only_numerical = FALSE, N = N)
+  obsData <- new_observation
+  obsList <- list()
 
-  bdData <- prepareBreakDown(breakDown, max_features, ...)
-  cpData <- prepareCeterisParibus(ceterisParibus, variables = bdData$variables)
-  fiData <- prepareFeatureImportance(featureImportance, max_features, ...)
-  pdData <- preparePartialDependency(partialDependencyN, partialDependencyC, variables = bdData$variables)
+  pb <- txtProgressBar(1, obsCount, style=3)
+
+  for(i in 1:obsCount){
+    setTxtProgressBar(pb, i)
+
+    new_observation <- obsData[i,]
+
+    breakDown <- iBreakDown::local_attributions(x, data, predict_function, new_observation, label=label)
+    ceterisParibus <- ingredients::ceteris_paribus(x, data, predict_function, new_observation, label=label)
+    featureImportance <- ingredients::feature_importance(x, data, y, predict_function, ...)
+    partialDependencyN <- ingredients::partial_dependency(x, data, predict_function, only_numerical = TRUE, N = N)
+    partialDependencyC <- ingredients::partial_dependency(x, data, predict_function, only_numerical = FALSE, N = N)
+
+    bdData <- prepareBreakDown(breakDown, max_features, ...)
+    cpData <- prepareCeterisParibus(ceterisParibus, variables = bdData$variables)
+    fiData <- prepareFeatureImportance(featureImportance, max_features, ...)
+    pdData <- preparePartialDependency(partialDependencyN, partialDependencyC, variables = bdData$variables)
+
+    obsList[[i]] <- list(bdData, cpData, fiData, pdData)
+  }
+
+  names(obsList) <- rownames(obsData)
 
   options <- list(size = 2, alpha = 1, bar_width = 16,
                   cp_title = "Ceteris Paribus Profiles", bd_title = "Break Down",
@@ -92,7 +111,7 @@ modelStudio.default <- function(x,
                   model_name = label,
                   show_rugs = TRUE)
 
-  temp <- jsonlite::toJSON(list(bdData, cpData, fiData, pdData))
+  temp <- jsonlite::toJSON(obsList)
 
   sizingPolicy <- r2d3::sizingPolicy(padding = 10, browser.fill = TRUE)
 

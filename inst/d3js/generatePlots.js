@@ -1,11 +1,11 @@
-function generatePlots(){
+function generatePlots(margin, tData){
   // this function generates modelStudio plots
 
   /// load all data
-  var bdData = data[0],
-      cpData = data[1],
-      fiData = data[2],
-      pdData = data[3];
+  var bdData = tData[0],
+      cpData = tData[1],
+      fiData = tData[2],
+      pdData = tData[3];
 
   var cpPlotCount = bdData.variables.length,
       bdBarCount = bdData.m[0],
@@ -19,14 +19,7 @@ function generatePlots(){
       modelName = options.model_name,
       showRugs = options.show_rugs;
 
-  // calculate BD left margin
-  /*var maxLength = calculateTextWidth(bdData.label_list)+15;*/
-  // HACK: now y axis labels wrap to 100px - margin.left = 105px
-
-  var margin = {top: 50, right: 20, bottom: 70, left: 105, inner: 40, small: 5, big: 10},
-      w = width - margin.left - margin.right,
-      h = height - margin.top - margin.bottom,
-      plotTop = margin.top, plotLeft = margin.left;
+  var plotTop = margin.top, plotLeft = margin.left;
 
   /// set plot specific measures and colors
   var bdPlotHeight = bdBarCount*barWidth + (bdBarCount+1)*barWidth/2,
@@ -64,20 +57,16 @@ function generatePlots(){
   var pdPlotHeight = cpPlotHeight,
       pdPlotWidth = cpPlotWidth;
 
-  /// calculate plot dimmensions
-  var plotHeight = margin.top + cpPlotHeight + margin.bottom +
-                   margin.top + pdPlotHeight + margin.bottom,
-      plotWidth = margin.left + cpPlotWidth + margin.right +
-                  margin.left + pdPlotWidth + margin.right;
-
   /// initialize plots
   var BD = svg.append("g")
+              .attr("class","plot")
               .attr("id", "BD")
               .style("visibility", "hidden");
   breakDown();
 
   var CP = svg.append("g")
               .attr("id", "CP")
+              .attr("class","plot")
               .style("visibility", "hidden");
               /*.attr("transform", "translate(" +
                                 (bdPlotWidth + margin.left + margin.right) + ",0)");*/
@@ -85,6 +74,7 @@ function generatePlots(){
 
   var FI = svg.append("g")
               .attr("id","FI")
+              .attr("class","plot")
               .style("visibility", "hidden");
               /*.attr("transform", "translate(0,"+
                                 (bdPlotHeight + margin.top + margin.bottom) + ")");*/
@@ -92,6 +82,7 @@ function generatePlots(){
 
   var PD = svg.append("g")
               .attr("id","PD")
+              .attr("class","plot")
               .style("visibility", "hidden");
               /*.attr("transform", "translate(" +
                                 (bdPlotWidth + margin.left + margin.right) + "," +
@@ -221,16 +212,15 @@ function generatePlots(){
           .on('mouseout', tool_tip.hide)
           .attr("id", (d,i) => i-1)
           .on("click", function(){
-            clicked = this.id;
             updateCP(this.id);
             updatePD(this.id);
           });
 
     // add labels to bars
     var contributionLabel = BD.selectAll()
-          .data(bData)
-          .enter()
-          .append("g");
+                              .data(bData)
+                              .enter()
+                              .append("g");
 
     contributionLabel.append("text")
           .attr("x", d => {
@@ -304,7 +294,7 @@ function generatePlots(){
             "translate(" + (plotLeft + fiPlotWidth + margin.right)/2 + " ," +
                            (plotTop + fiPlotHeight + 45) + ")")
       .attr("class", "axisTitle")
-      .text("Drop-out loss");
+      .text("drop-out loss");
 
     var xAxis = d3.axisBottom(x)
                 .ticks(5)
@@ -394,7 +384,12 @@ function generatePlots(){
         })
         .attr("width", d => Math.abs(x(d.dropout_loss) - x(fullModel)))
         .on('mouseover', tool_tip.show)
-        .on('mouseout', tool_tip.hide);
+        .on('mouseout', tool_tip.hide)
+        .attr("id", (d,i) => i-1)
+        .on("click", function(){
+          updateCP(this.id);
+          updatePD(this.id);
+        });
 
     // make line next to bars
     var minimumY = Number.MAX_VALUE;
@@ -574,11 +569,11 @@ function generatePlots(){
     var bisectXhat = d3.bisector(d => d.xhat).right;
 
     // tooltip appear with info nearest to mouseover
-    function appear(data){
+    function appear(hover){
       var x0 = x.invert(d3.mouse(d3.event.currentTarget)[0]),
-          i = bisectXhat(data, x0),
-          d0 = data[i - 1],
-          d1 = data[i],
+          i = bisectXhat(hover, x0),
+          d0 = hover[i - 1],
+          d1 = hover[i],
           d = x0 - d0.xhat > d1.xhat - x0 ? d1 : d0;
       let temp = pData.find(el => el["observation.id"] === d.id);
       tool_tip.show(d, temp);
@@ -867,11 +862,11 @@ function generatePlots(){
     var bisectXhat = d3.bisector(d => d.xhat).right;
 
     // tooltip appear with info nearest to mouseover
-    function appear(data){
+    function appear(hover){
       var x0 = x.invert(d3.mouse(d3.event.currentTarget)[0]),
-          i = bisectXhat(data, x0),
-          d0 = data[i - 1],
-          d1 = data[i],
+          i = bisectXhat(hover, x0),
+          d0 = hover[i - 1],
+          d1 = hover[i],
           d = x0 - d0.xhat > d1.xhat - x0 ? d1 : d0;
 
       tool_tip.show(d);
@@ -974,7 +969,7 @@ function generatePlots(){
 
     PD.append("text")
       .attr("x", plotLeft)
-      .attr("y", plotTop - 60)
+      .attr("y", plotTop - 40)
       .attr("class", "bigTitle")
       .text(pdTitle);
 
@@ -1122,6 +1117,4 @@ function generatePlots(){
             "</br>" + yMean + "</br>";
     return temp;
   }
-
-  return([plotWidth, plotHeight, margin])
 }
