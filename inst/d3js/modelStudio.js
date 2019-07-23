@@ -183,7 +183,7 @@ function reloadStudio() {
 
                 // when clicking outside of text remove it
                 svg.select("#tempText"+object.id).remove();
-                // show button again
+                // show button and `+` again
                 svg.selectAll("#"+object.id).style("visibility", "visible");
                 // remove this rect
                 svg.select("#tempButton"+object.id).remove();

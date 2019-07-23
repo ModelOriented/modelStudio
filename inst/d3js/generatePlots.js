@@ -462,6 +462,7 @@ function generatePlots(tData){
     (bdData.otherFactorsFlag[0] === true && clicked === `${bdBarCount-3}`)){ return;}
 
     svg.select("#CP").selectAll("*").remove();
+    d3.select("body").select("#tooltipCP").remove();
 
     var profData = cpData.x;
     var xMinMax = cpData.x_min_max_list;
@@ -492,6 +493,7 @@ function generatePlots(tData){
     (bdData.otherFactorsFlag[0] === true && clicked === `${bdBarCount-3}`)){ return;}
 
     svg.select("#PD").selectAll("*").remove();
+    d3.select("body").select("#tooltipPD").remove();
 
     var profData = pdData.x;
     var xMinMax = pdData.x_min_max_list;
@@ -580,6 +582,7 @@ function generatePlots(tData){
     // make tooltip
     var tool_tip = d3.tip()
                      .attr("class", "tooltip")
+                     .attr("id", "tooltipCP")
                      .offset([-8, 0])
                      .html(function(d, addData) {
                         if(addData !== undefined){
@@ -759,6 +762,7 @@ function generatePlots(tData){
     // make tooltip
     var tool_tip = d3.tip()
                      .attr("class", "tooltip")
+                     .attr("id", "tooltipCP")
                      .offset([-8, 0])
                      .html(d => cpChangedTooltipHtml(d, lData[0]));
     CP.call(tool_tip);
@@ -865,6 +869,7 @@ function generatePlots(tData){
     // make tooltip
     var tool_tip = d3.tip()
                      .attr("class", "tooltip")
+                     .attr("id", "tooltipPD")
                      .offset([-8, 0])
                      .html(d => pdStaticTooltipHtml(d, variableName, yMean));
     PD.call(tool_tip);
@@ -992,6 +997,7 @@ function generatePlots(tData){
     // make tooltip
     var tool_tip = d3.tip()
           .attr("class", "tooltip")
+          .attr("id", "tooltipPD")
           .offset([-8, 0])
           .html(d => pdStaticTooltipHtml(d, variableName, yMean));
     PD.call(tool_tip);
