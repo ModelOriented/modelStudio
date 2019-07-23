@@ -6,12 +6,13 @@
 #'
 #' @param x an explainer created with function `DALEX::explain()` or a model to be explained.
 #' @param new_observation a new observation with columns that correspond to variables used in the model.
+#' @param facet_dim dimensions of the grid. Default is 2x2.
 #' @param max_features maximal number of features to be included in BreakDown and FeatureImportance plot.
-#' @param N number of observations used for calculation of partial dependency profiles. By default 500.
-#' @param data validation dataset, will be extracted from `x` if it is an explainer.
+#' @param N number of observations used for calculation of partial dependency profiles. Default is 500.
+#' @param data validation dataset, will be extracted from `x` if it's an explainer.
 #' @param y true labels for `data`, will be extracted from `x` if it's an explainer.
 #' @param predict_function predict function, will be extracted from `x` if it's an explainer.
-#' @param label name of the model. By default it is extracted from the 'class' attribute of the model.
+#' @param label a name of the model, will be extracted from `x` if it's an explainer.
 #' @param ... other parameters.
 #'
 #' @return an object of the `r2d3` class.
@@ -35,7 +36,9 @@
 #'                                y = titanic_small$survived == "yes",
 #'                                label = "glm")
 #'
-#' modelStudio(explain_titanic_glm, new_observation = titanic_small[1:10,-6], N = 50)
+#' modelStudio(explain_titanic_glm, new_observation = titanic_small[11,-6], N = 50)
+#' modelStudio(explain_titanic_glm, new_observation = titanic_small[1:10,-6])
+#'
 #'
 #' @export
 #' @rdname modelStudio
@@ -46,12 +49,14 @@ modelStudio <- function(x, ...)
 #' @rdname modelStudio
 modelStudio.explainer <- function(x,
                                   new_observation,
+                                  facet_dim = c(2,2),
                                   max_features = 10,
                                   N = 500,
                                   ...) {
 
   modelStudio.default(x = x$model,
                       new_observation = new_observation,
+                      facet_dim = facet_dim,
                       max_features = max_features,
                       N = N,
                       data = x$data,
@@ -65,6 +70,7 @@ modelStudio.explainer <- function(x,
 #' @rdname modelStudio
 modelStudio.default <- function(x,
                                 new_observation,
+                                facet_dim = c(2,2),
                                 max_features = 10,
                                 N = 500,
                                 data,
@@ -109,7 +115,7 @@ modelStudio.default <- function(x,
                   cp_title = "Ceteris Paribus Profiles", bd_title = "Break Down",
                   fi_title = "Feature Importance", pd_title = "Partial Dependency",
                   model_name = label,
-                  show_rugs = TRUE)
+                  show_rugs = TRUE, facet_dim = facet_dim)
 
   temp <- jsonlite::toJSON(obsList)
 

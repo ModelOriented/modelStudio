@@ -3,15 +3,26 @@
 // calculate BD left margin
 /*var maxLength = calculateTextWidth(data[0].label_list)+15;*/
 // HACK: now y axis labels wrap to 100px - margin.left = 105px
+var dim = options.facet_dim;
+
 var margin = {top: 50, right: 20, bottom: 70, left: 105, inner: 40, small: 5, big: 10};
 
 var plotWidth = 420 + margin.left + margin.right,
     plotHeight = 280 + margin.top + margin.bottom;
 
-var studioWidth = 2*plotWidth,
-    studioHeight = 2*plotHeight + margin.top;
+var studioWidth = dim[1]*plotWidth,
+    studioHeight = dim[0]*plotHeight + margin.top;
 
 var observationIds = Object.keys(data);
+
+var chosePlotData = [];
+
+/// TODO: change this double loop
+for (let i=0; i<dim[0]; i++) {
+  for (let j=0; j<dim[1]; j++) {
+    chosePlotData.push({x:0+j*plotWidth, y:margin.top+i*plotHeight});
+  }
+}
 
 ////                     \\\\
 decorateStudio();
@@ -68,6 +79,7 @@ function decorateStudio() {
 }
 
 function reloadAll() {
+
   svg.selectAll(".plot").remove();
   svg.select(".STARTG").remove();
 
@@ -77,11 +89,6 @@ function reloadAll() {
   /// change text font
   var STARTG = svg.append("g")
                   .attr("class", "STARTG");
-
-  var chosePlotData = [{x: 0, y: margin.top},
-                       {x: plotWidth, y: margin.top},
-                       {x: 0, y: margin.top + plotHeight},
-                       {x: plotWidth, y: margin.top + plotHeight}];
 
   var chosePlotButton = STARTG.selectAll()
                               .data(chosePlotData)
@@ -93,21 +100,6 @@ function reloadAll() {
                               .attr("height", plotHeight)
                               .attr("x", d => d.x)
                               .attr("y", d => d.y);
-
-  STARTG.append("line")
-        .attr("class", "mainLine")
-        .attr("x1", plotWidth)
-        .attr("x2", plotWidth)
-        .attr("y1", margin.top)
-        .attr("y2", margin.top + 2*plotHeight);
-
-  STARTG.append("line")
-        .attr("class", "mainLine")
-        .attr("x1", 0)
-        .attr("x2", studioWidth)
-        .attr("y1", margin.top + plotHeight)
-        .attr("y2", margin.top + plotHeight);
-
   STARTG.selectAll()
         .data(chosePlotData)
         .enter()
@@ -118,7 +110,6 @@ function reloadAll() {
         .attr("x2", d => d.x + plotWidth/2)
         .attr("y1", d => d.y + plotHeight/2 - margin.big)
         .attr("y2", d => d.y + plotHeight/2 + margin.big);
-
 
   STARTG.selectAll()
         .data(chosePlotData)
@@ -158,6 +149,7 @@ function reloadAll() {
                            .attr("id","tempButton"+object.id);
 
     tempButton.append("rect")
+              .attr("class", "whiteButton")
               .attr("width", plotWidth-margin.big)
               .attr("height", plotHeight-margin.big)
               .attr("x", x+margin.small)
@@ -213,6 +205,6 @@ function reloadAll() {
   }
 
   svg.selectAll("text")
-   .style('font-family', 'Arial');
+     .style('font-family', 'Arial');
 }
 
