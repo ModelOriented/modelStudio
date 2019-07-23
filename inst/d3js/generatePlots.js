@@ -1,5 +1,5 @@
-function generatePlots(margin, tData){
-  // this function generates modelStudio plots
+function generatePlots(tData){
+  /// this function generates modelStudio plots
 
   /// load all data
   var bdData = tData[0],
@@ -9,25 +9,18 @@ function generatePlots(margin, tData){
 
   var cpPlotCount = bdData.variables.length,
       bdBarCount = bdData.m[0],
-      fiBarCount = bdData.m[0] - 1,
+      fiBarCount = bdData.m[0]-1,
       pdPlotCount = bdData.variables.length;
-
-  /// load options
-  var size = options.size, alpha = options.alpha, barWidth = options.bar_width,
-      cpTitle = options.cp_title, bdTitle = options.bd_title,
-      fiTitle = options.fi_title, pdTitle = options.pd_title,
-      modelName = options.model_name,
-      showRugs = options.show_rugs;
 
   var plotTop = margin.top, plotLeft = margin.left;
 
   /// set plot specific measures and colors
   var bdPlotHeight = bdBarCount*barWidth + (bdBarCount+1)*barWidth/2,
-      bdPlotWidth = 420;
+      bdPlotWidth = w;
 
-  if (bdPlotHeight<280) {
-    bdPlotHeight = 280;
-    bdBarWidth = 280/(3*bdBarCount/2 + 1/2);
+  if (bdPlotHeight<h) {
+    bdPlotHeight = h;
+    bdBarWidth = h/(3*bdBarCount/2 + 1/2);
   }
 
   var bdColors = getColors(3, "breakDown"),
@@ -35,8 +28,8 @@ function generatePlots(margin, tData){
       negativeColor = bdColors[1],
       defaultColor = bdColors[2];
 
-  var cpPlotHeight = 280,
-      cpPlotWidth = 420;
+  var cpPlotHeight = h,
+      cpPlotWidth = w;
 
   var cpColors = getColors(3, "point"),
       pointColor = cpColors[0],
@@ -44,11 +37,11 @@ function generatePlots(margin, tData){
       greyColor = cpColors[2];
 
   var fiPlotHeight = fiBarCount*barWidth + (fiBarCount+1)*barWidth/2,
-      fiPlotWidth = 420;
+      fiPlotWidth = w;
 
-  if (fiPlotHeight<280) {
-    fiPlotHeight= 280;
-    fiBarWidth = 280/(3*fiBarCount/2 + 1/2);
+  if (fiPlotHeight<h) {
+    fiPlotHeight = h;
+    fiBarWidth = h/(3*fiBarCount/2 + 1/2);
   }
 
   var fiColors = getColors(1, "bar"),
@@ -57,93 +50,106 @@ function generatePlots(margin, tData){
   var pdPlotHeight = cpPlotHeight,
       pdPlotWidth = cpPlotWidth;
 
-  /// initialize plots
-  var BD = svg.append("g")
-              .attr("class","plot")
-              .attr("id", "BD")
-              .style("visibility", "hidden");
+  /// initialize plots, select them if already there
+  var BD, CP, FI, PD;
+
+  if (svg.select("#BD").empty()) {
+    BD = svg.append("g")
+                .attr("class","plot")
+                .attr("id", "BD")
+                .style("visibility", "hidden");
+  } else {
+    BD = svg.select("#BD");
+  }
   breakDown();
 
-  var CP = svg.append("g")
-              .attr("class","plot")
-              .attr("id", "CP")
-              .style("visibility", "hidden");
-              /*.attr("transform", "translate(" +
-                                (bdPlotWidth + margin.left + margin.right) + ",0)");*/
+  if (svg.select("#CP").empty()) {
+    CP = svg.append("g")
+            .attr("class","plot")
+            .attr("id", "CP")
+            .style("visibility", "hidden");
+  } else {
+    CP = svg.select("#CP");
+  }
   ceterisParibus();
 
-  var FI = svg.append("g")
-              .attr("class","plot")
-              .attr("id","FI")
-              .style("visibility", "hidden");
-              /*.attr("transform", "translate(0,"+
-                                (bdPlotHeight + margin.top + margin.bottom) + ")");*/
+  if (svg.select("#FI").empty()) {
+    FI = svg.append("g")
+            .attr("class","plot")
+            .attr("id","FI")
+            .style("visibility", "hidden");
+  } else {
+    FI = svg.select("#FI");
+  }
   featureImportance();
 
-  var PD = svg.append("g")
-              .attr("class","plot")
-              .attr("id","PD")
-              .style("visibility", "hidden");
-              /*.attr("transform", "translate(" +
-                                (bdPlotWidth + margin.left + margin.right) + "," +
-                                (bdPlotHeight + margin.top + margin.bottom) + ")");*/
+  if (svg.select("#PD").empty()) {
+    PD = svg.append("g")
+            .attr("class","plot")
+            .attr("id","PD")
+            .style("visibility", "hidden");
+  } else {
+    PD = svg.select("#PD");
+  }
   partialDependency();
   ///
 
   svg.selectAll("text")
-   .style('font-family', 'Arial');
+     .style('font-family', 'Arial');
 
   /// general plot functions
 
   function breakDown() {
 
+    svg.select("#BD").selectAll("*").remove();
+
     var bData = bdData.x;
     var xMinMax = bdData.x_min_max;
 
     var x = d3.scaleLinear()
-          .range([plotLeft,  plotLeft + bdPlotWidth])
-          .domain([xMinMax[0], xMinMax[1]]);
+              .range([plotLeft,  plotLeft + bdPlotWidth])
+              .domain([xMinMax[0], xMinMax[1]]);
 
     var xAxis = d3.axisBottom(x)
-                .ticks(5)
-                .tickSize(0);
+                  .ticks(5)
+                  .tickSize(0);
 
     xAxis = BD.append("g")
-            .attr("class", "axisLabel")
-            .attr("transform", "translate(0," + (plotTop + bdPlotHeight) + ")")
-            .call(xAxis)
-            .call(g => g.select(".domain").remove());
+              .attr("class", "axisLabel")
+              .attr("transform", "translate(0," + (plotTop + bdPlotHeight) + ")")
+              .call(xAxis)
+              .call(g => g.select(".domain").remove());
 
     var y = d3.scaleBand()
-          .rangeRound([plotTop, plotTop + bdPlotHeight])
-          .padding(0.33)
-          .domain(bData.map(d => d.variable));
+              .rangeRound([plotTop, plotTop + bdPlotHeight])
+              .padding(0.33)
+              .domain(bData.map(d => d.variable));
 
     var xGrid = BD.append("g")
-           .attr("class", "grid")
-           .attr("transform", "translate(0," + (plotTop + bdPlotHeight) + ")")
-           .call(d3.axisBottom(x)
-                  .ticks(10)
-                  .tickSize(-bdPlotHeight)
-                  .tickFormat("")
-          ).call(g => g.select(".domain").remove());
+                  .attr("class", "grid")
+                  .attr("transform", "translate(0," + (plotTop + bdPlotHeight) + ")")
+                  .call(d3.axisBottom(x)
+                          .ticks(10)
+                          .tickSize(-bdPlotHeight)
+                          .tickFormat("")
+                  ).call(g => g.select(".domain").remove());
 
     var yGrid = BD.append("g")
-           .attr("class", "grid")
-           .attr("transform", "translate(" + plotLeft + ",0)")
-           .call(d3.axisLeft(y)
-                  .tickSize(-bdPlotWidth)
-                  .tickFormat("")
-          ).call(g => g.select(".domain").remove());
+                  .attr("class", "grid")
+                  .attr("transform", "translate(" + plotLeft + ",0)")
+                  .call(d3.axisLeft(y)
+                          .tickSize(-bdPlotWidth)
+                          .tickFormat("")
+                  ).call(g => g.select(".domain").remove());
 
     var yAxis = d3.axisLeft(y)
-          .tickSize(0);
+                  .tickSize(0);
 
     yAxis = BD.append("g")
-          .attr("class", "axisLabel")
-          .attr("transform","translate(" + (plotLeft-10) + ",0)")
-          .call(yAxis)
-          .call(g => g.select(".domain").remove());
+              .attr("class", "axisLabel")
+              .attr("transform","translate(" + (plotLeft-10) + ",0)")
+              .call(yAxis)
+              .call(g => g.select(".domain").remove());
 
     yAxis.select(".tick:last-child").select("text").attr('font-weight', 600);
 
@@ -151,22 +157,22 @@ function generatePlots(margin, tData){
     yAxis.selectAll("text").call(wrapText, margin.left-15);
 
     BD.append("text")
-          .attr("x", plotLeft)
-          .attr("y", plotTop - 15)
-          .attr("class", "smallTitle")
-          .text(modelName);
+      .attr("x", plotLeft)
+      .attr("y", plotTop - 15)
+      .attr("class", "smallTitle")
+      .text(modelName);
 
     BD.append("text")
-          .attr("x", plotLeft)
-          .attr("y", plotTop - 40)
-          .attr("class", "bigTitle")
-          .text(bdTitle);
+      .attr("x", plotLeft)
+      .attr("y", plotTop - 40)
+      .attr("class", "bigTitle")
+      .text(bdTitle);
 
     // add tooltip
     var tool_tip = d3.tip()
-          .attr("class", "tooltip")
-          .offset([-8, 0])
-          .html(d => d.type === "desc" ? d.text : bdTooltipHtml(d));
+                     .attr("class", "tooltip")
+                     .offset([-8, 0])
+                     .html(d => d.type === "desc" ? d.text : bdTooltipHtml(d));
 
     BD.call(tool_tip);
 
@@ -182,84 +188,84 @@ function generatePlots(margin, tData){
                          .y(d => d.y);
 
     BD.append("path")
-          .data([dotLineData])
-          .attr("class", "dotLine")
-          .attr("d", lineFunction)
-          .style("stroke-dasharray", ("1, 2"));
+      .data([dotLineData])
+      .attr("class", "dotLine")
+      .attr("d", lineFunction)
+      .style("stroke-dasharray", ("1, 2"));
 
     // add bars
     var bars = BD.selectAll()
-          .data(bData)
-          .enter()
-          .append("g");
+                 .data(bData)
+                 .enter()
+                 .append("g");
 
     bars.append("rect")
-          .attr("class", modelName.replace(/\s/g,''))
-          .attr("fill",function(d){
-            switch(d.sign){
-              case "-1":
-                return negativeColor;
-              case "1":
-                return positiveColor;
-              default:
-                return defaultColor;
-            }
-          })
-          .attr("fill-opacity",
-          d => x(d.barSupport)-x(d.barStart) < 1 ? 0 : 1) //invisible bar for clicking purpose
-          .attr("y", d => y(d.variable) )
-          .attr("height", y.bandwidth() )
-          .attr("x", d => x(d.barStart))
-          .attr("width", d => x(d.barSupport)-x(d.barStart) < 1 ? 5 : x(d.barSupport) - x(d.barStart))
-          .on('mouseover', tool_tip.show)
-          .on('mouseout', tool_tip.hide)
-          .attr("id", (d,i) => i-1)
-          .on("click", function(){
-            updateCP(this.id);
-            updatePD(this.id);
-          });
+        .attr("class", modelName.replace(/\s/g,''))
+        .attr("fill",function(d){
+          switch(d.sign){
+            case "-1":
+              return negativeColor;
+            case "1":
+              return positiveColor;
+            default:
+              return defaultColor;
+          }
+        })
+        .attr("fill-opacity",
+        d => x(d.barSupport)-x(d.barStart) < 1 ? 0 : 1) //invisible bar for clicking purpose
+        .attr("y", d => y(d.variable) )
+        .attr("height", y.bandwidth() )
+        .attr("x", d => x(d.barStart))
+        .attr("width", d => x(d.barSupport)-x(d.barStart) < 1 ? 5 : x(d.barSupport) - x(d.barStart))
+        .on('mouseover', tool_tip.show)
+        .on('mouseout', tool_tip.hide)
+        .attr("id", (d,i) => i-1)
+        .on("click", function(){
+          updateCP(this.id);
+          updatePD(this.id);
+        });
 
     // add labels to bars
-    var contributionLabel = BD.selectAll()
-                              .data(bData)
-                              .enter()
-                              .append("g");
+    var ctbLabel = BD.selectAll()
+                     .data(bData)
+                     .enter()
+                     .append("g");
 
-    contributionLabel.append("text")
-          .attr("x", d => {
-            switch(d.sign){
-              case "X":
-                return d.contribution < 0 ? x(d.barStart) - 5 : x(d.barSupport) + 5;
-              default:
-                return x(d.barSupport) + 5;
-            }
-          })
-          .attr("text-anchor", d => d.sign == "X" && d.contribution < 0 ? "end" : null)
-          .attr("y", d => y(d.variable) + bdBarWidth/2)
-          .attr("dy", "0.5em")
-          .attr("class", "axisLabel")
-          .text(d => {
-            switch(d.variable){
-              case "intercept":
-              case "prediction":
-                return d.cummulative;
-              default:
-                return d.sign === "-1" ? d.contribution : "+"+d.contribution;
-            }
-          });
+    ctbLabel.append("text")
+            .attr("x", d => {
+              switch(d.sign){
+                case "X":
+                  return d.contribution < 0 ? x(d.barStart) - 5 : x(d.barSupport) + 5;
+                default:
+                  return x(d.barSupport) + 5;
+              }
+            })
+            .attr("text-anchor", d => d.sign == "X" && d.contribution < 0 ? "end" : null)
+            .attr("y", d => y(d.variable) + bdBarWidth/2)
+            .attr("dy", "0.5em")
+            .attr("class", "axisLabel")
+            .text(d => {
+              switch(d.variable){
+                case "intercept":
+                case "prediction":
+                  return d.cummulative;
+                default:
+                  return d.sign === "-1" ? d.contribution : "+"+d.contribution;
+              }
+            });
 
     // add lines to bars
     var lines = BD.selectAll()
-          .data(bData)
-          .enter()
-          .append("g");
+                  .data(bData)
+                  .enter()
+                  .append("g");
 
     lines.append("line")
-          .attr("class", "interceptLine")
-          .attr("x1", d => d.contribution < 0 ? x(d.barStart) : x(d.barSupport))
-          .attr("y1", d => y(d.variable))
-          .attr("x2", d => d.contribution < 0 ? x(d.barStart) : x(d.barSupport))
-          .attr("y2", d => d.variable == "prediction" ? y(d.variable) : y(d.variable) + bdBarWidth*2.5);
+         .attr("class", "interceptLine")
+         .attr("x1", d => d.contribution < 0 ? x(d.barStart) : x(d.barSupport))
+         .attr("y1", d => y(d.variable))
+         .attr("x2", d => d.contribution < 0 ? x(d.barStart) : x(d.barSupport))
+         .attr("y2", d => d.variable == "prediction" ? y(d.variable) : y(d.variable) + bdBarWidth*2.5);
 
     var description = [{type:"desc", "text":"Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit,</br> sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</br> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</br> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</br> Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."}];
 
@@ -278,6 +284,8 @@ function generatePlots(margin, tData){
 
   function ceterisParibus() {
 
+    svg.select("#CP").selectAll("*").remove();
+
     var profData = cpData.x;
     var xMinMax = cpData.x_min_max_list;
     var yMinMax = cpData.y_min_max;
@@ -289,7 +297,7 @@ function generatePlots(margin, tData){
 
     let variableName = variables[start];
 
-    //lines or bars?
+    // lines or bars?
     if (isNumeric[start]) {
       cpNumericalPlot(variableName, profData[variableName], xMinMax[variableName], yMinMax, obsData);
     } else {
@@ -298,6 +306,8 @@ function generatePlots(margin, tData){
   }
 
   function featureImportance() {
+
+    svg.select("#FI").selectAll("*").remove();
 
     var bData = fiData.x;
     var xMinMax = fiData.x_min_max;
@@ -314,8 +324,8 @@ function generatePlots(margin, tData){
       .text("drop-out loss");
 
     var xAxis = d3.axisBottom(x)
-                .ticks(5)
-                .tickSize(0);
+                  .ticks(5)
+                  .tickSize(0);
 
     xAxis = FI.append("g")
               .attr("class", "axisLabel")
@@ -326,9 +336,7 @@ function generatePlots(margin, tData){
     var y = d3.scaleBand()
               .rangeRound([plotTop + fiPlotHeight, plotTop])
               .padding(0.33)
-              .domain(bData.map(function (d) {
-                   return d.variable;
-              }));
+              .domain(bData.map(d => d.variable));
 
     var xGrid = FI.append("g")
                   .attr("class", "grid")
@@ -351,10 +359,10 @@ function generatePlots(margin, tData){
                   .tickSize(0);
 
     yAxis = FI.append("g")
-        .attr("class", "axisLabel")
-        .attr("transform","translate(" + (plotLeft-10) + ",0)")
-        .call(yAxis)
-        .call(g => g.select(".domain").remove());
+              .attr("class", "axisLabel")
+              .attr("transform","translate(" + (plotLeft-10) + ",0)")
+              .call(yAxis)
+              .call(g => g.select(".domain").remove());
 
     yAxis.selectAll("text").call(wrapText, margin.left-15);
 
@@ -365,17 +373,17 @@ function generatePlots(margin, tData){
       .text(fiTitle);
 
     FI.append("text")
-        .attr("x", plotLeft)
-        .attr("y", plotTop - 15)
-        .attr("class", "smallTitle")
-        .text(modelName);
+      .attr("x", plotLeft)
+      .attr("y", plotTop - 15)
+      .attr("class", "smallTitle")
+      .text(modelName);
 
     // tooltip
     var tool_tip = d3.tip()
-          .attr("class", "tooltip")
-          .offset([-8, 0])
-          .html(d => fiStaticTooltipHtml(d, modelName));
-    svg.call(tool_tip);
+                     .attr("class", "tooltip")
+                     .offset([-8, 0])
+                     .html(d => fiStaticTooltipHtml(d, modelName));
+    FI.call(tool_tip);
 
     // bars
     var bars = FI.selectAll()
@@ -391,14 +399,7 @@ function generatePlots(margin, tData){
         .attr("fill", barColor)
         .attr("y", d => y(d.variable))
         .attr("height", y.bandwidth())
-        .attr("x", function (d) {
-          // start ploting the bar left to full model line
-          if (x(d.dropout_loss) < x(fullModel)) {
-            return x(d.dropout_loss);
-          } else {
-            return x(fullModel);
-          }
-        })
+        .attr("x", d => x(d.dropout_loss) < x(fullModel) ? x(d.dropout_loss) : x(fullModel))
         .attr("width", d => Math.abs(x(d.dropout_loss) - x(fullModel)))
         .on('mouseover', tool_tip.show)
         .on('mouseout', tool_tip.hide)
@@ -430,6 +431,8 @@ function generatePlots(margin, tData){
 
   function partialDependency() {
 
+    svg.select("#PD").selectAll("*").remove();
+
     var profData = pdData.x;
     var xMinMax = pdData.x_min_max_list;
     var yMinMax = pdData.y_min_max;
@@ -449,7 +452,6 @@ function generatePlots(margin, tData){
       pdCategoricalPlot(variableName, profData[variableName],
                         yMinMax, yMean);
     }
-
   }
 
   /// update plot functions
@@ -459,6 +461,8 @@ function generatePlots(margin, tData){
     if (clicked === "-1" || clicked === `${bdBarCount-2}` ||
     (bdData.otherFactorsFlag[0] === true && clicked === `${bdBarCount-3}`)){ return;}
 
+    svg.select("#CP").selectAll("*").remove();
+
     var profData = cpData.x;
     var xMinMax = cpData.x_min_max_list;
     var yMinMax = cpData.y_min_max;
@@ -467,9 +471,8 @@ function generatePlots(margin, tData){
     var variables = cpData.variables;
 
     let variableName = variables[clicked];
-    CP.selectAll("*").remove();
 
-    //lines or bars?
+    // lines or bars?
     if (isNumeric[clicked]) {
       cpNumericalPlot(variableName, profData[variableName], xMinMax[variableName],
                       yMinMax, obsData);
@@ -477,14 +480,18 @@ function generatePlots(margin, tData){
       cpCategoricalPlot(variableName, profData[variableName],
                         yMinMax, obsData);
     }
+
+    // safeguard font-family update
     svg.selectAll("text")
-        .style('font-family', 'Arial');
+       .style('font-family', 'Arial');
   }
 
   function updatePD(clicked) {
 
     if (clicked === "-1" || clicked === `${bdBarCount-2}` ||
     (bdData.otherFactorsFlag[0] === true && clicked === `${bdBarCount-3}`)){ return;}
+
+    svg.select("#PD").selectAll("*").remove();
 
     var profData = pdData.x;
     var xMinMax = pdData.x_min_max_list;
@@ -494,9 +501,8 @@ function generatePlots(margin, tData){
     var variables = pdData.variables;
 
     let variableName = variables[clicked];
-    PD.selectAll("*").remove();
 
-    //lines or bars?
+    // lines or bars?
     if (isNumeric[clicked]) {
       pdNumericalPlot(variableName, profData[variableName], xMinMax[variableName],
                       yMinMax, yMean);
@@ -504,8 +510,10 @@ function generatePlots(margin, tData){
       pdCategoricalPlot(variableName, profData[variableName],
                         yMinMax, yMean);
     }
+
+    // safeguard font-family update
     svg.selectAll("text")
-        .style('font-family', 'Arial');
+       .style('font-family', 'Arial');
   }
 
   /// small plot functions
@@ -521,66 +529,66 @@ function generatePlots(margin, tData){
               .domain([yMinMax[0], yMinMax[1]]);
 
     var line = d3.line()
-                 .x(function(d) { return x(d.xhat); })
-                 .y(function(d) { return y(d.yhat); })
+                 .x(d => x(d.xhat))
+                 .y(d => y(d.yhat))
                  .curve(d3.curveMonotoneX);
 
     CP.append("text")
-        .attr("class", "bigTitle")
-        .attr("x", plotLeft)
-        .attr("y", plotTop - 40)
-        .text(cpTitle);
+      .attr("class", "bigTitle")
+      .attr("x", plotLeft)
+      .attr("y", plotTop - 40)
+      .text(cpTitle);
 
     CP.append("text")
-        .attr("class","smallTitle")
-        .attr("x", plotLeft)
-        .attr("y", plotTop - 15)
-        .text(variableName + " = " + pData[0][variableName]);
+      .attr("class","smallTitle")
+      .attr("x", plotLeft)
+      .attr("y", plotTop - 15)
+      .text(variableName + " = " + pData[0][variableName]);
 
     // find 5 nice ticks with max and min - do better than d3
     var tickValues = getTickValues(x.domain());
 
     var xAxis = d3.axisBottom(x)
-                .tickValues(tickValues)
-                .tickSizeInner(0)
-                .tickPadding(15);
+                  .tickValues(tickValues)
+                  .tickSizeInner(0)
+                  .tickPadding(15);
 
     xAxis = CP.append("g")
-                .attr("class", "axisLabel")
-                .attr("transform", "translate(0,"+ (plotTop + cpPlotHeight) + ")")
-                .call(xAxis);
+              .attr("class", "axisLabel")
+              .attr("transform", "translate(0,"+ (plotTop + cpPlotHeight) + ")")
+              .call(xAxis);
 
     var yGrid = CP.append("g")
-               .attr("class", "grid")
-               .attr("transform", "translate(" + plotLeft + ",0)")
-               .call(d3.axisLeft(y)
-                      .ticks(10)
-                      .tickSize(-cpPlotWidth)
-                      .tickFormat("")
-              ).call(g => g.select(".domain").remove());
+                  .attr("class", "grid")
+                  .attr("transform", "translate(" + plotLeft + ",0)")
+                  .call(d3.axisLeft(y)
+                          .ticks(10)
+                          .tickSize(-cpPlotWidth)
+                          .tickFormat("")
+                  ).call(g => g.select(".domain").remove());
 
     var yAxis = d3.axisLeft(y)
-            .ticks(5)
-            .tickSize(0);
+                  .ticks(5)
+                  .tickSize(0);
 
     yAxis = CP.append("g")
-            .attr("class", "axisLabel")
-            .attr("transform","translate(" + plotLeft + ",0)")
-            .call(yAxis)
-            .call(g => g.select(".domain").remove());
+              .attr("class", "axisLabel")
+              .attr("transform","translate(" + plotLeft + ",0)")
+              .call(yAxis)
+              .call(g => g.select(".domain").remove());
 
     // make tooltip
     var tool_tip = d3.tip()
-              .attr("class", "tooltip")
-              .offset([-8, 0])
-              .html(function(d, addData) {
-                if(addData !== undefined){
-                  return cpChangedTooltipHtml(d, addData);
-                } else {
-                  return cpStaticTooltipHtml(d);
-                }
-              });
-    svg.call(tool_tip);
+                     .attr("class", "tooltip")
+                     .offset([-8, 0])
+                     .html(function(d, addData) {
+                        if(addData !== undefined){
+                          return cpChangedTooltipHtml(d, addData);
+                        } else {
+                          return cpStaticTooltipHtml(d);
+                        }
+                     });
+    CP.call(tool_tip);
 
     // function to find nearest point on the line
     var bisectXhat = d3.bisector(d => d.xhat).right;
@@ -607,6 +615,7 @@ function generatePlots(margin, tData){
       .style("stroke-width", size)
       .on('mouseover', function(d){
 
+        // make mouseover line more visible
         d3.select(this)
           .style("stroke", pointColor)
           .style("stroke-width", size*1.5);
@@ -632,28 +641,28 @@ function generatePlots(margin, tData){
 
     // add points
     CP.selectAll()
-          .data(pData)
-          .enter()
-          .append("circle")
-          .attr("class", "point")
-          .attr("id", d => d["observation.id"])
-          .attr("cx", d => x(d[variableName]))
-          .attr("cy", d => y(d.yhat))
-          .attr("r", 3)
-          .style("stroke-width", 15)
-          .style("stroke", "red")
-          .style("stroke-opacity", 0)
-          .style("fill", pointColor)
-          .on('mouseover', function(d) {
-            tool_tip.show(d);
-        		d3.select(this)
-        			.attr("r", 6);
-        	})
-          .on('mouseout', function(d) {
-            tool_tip.hide(d);
-        		d3.select(this)
-        			.attr("r", 3);
-        	});
+      .data(pData)
+      .enter()
+      .append("circle")
+      .attr("class", "point")
+      .attr("id", d => d["observation.id"])
+      .attr("cx", d => x(d[variableName]))
+      .attr("cy", d => y(d.yhat))
+      .attr("r", 3)
+      .style("stroke-width", 15)
+      .style("stroke", "red")
+      .style("stroke-opacity", 0)
+      .style("fill", pointColor)
+      .on('mouseover', function(d) {
+        tool_tip.show(d);
+    		d3.select(this)
+    			.attr("r", 6);
+    	})
+      .on('mouseout', function(d) {
+        tool_tip.hide(d);
+    		d3.select(this)
+    			.attr("r", 3);
+    	});
 
     if (showRugs === true) {
       // add rugs
@@ -671,112 +680,99 @@ function generatePlots(margin, tData){
     }
 
     CP.append("text")
-          .attr("class", "axisTitle")
-          .attr("transform", "rotate(-90)")
-          .attr("y", plotLeft-40)
-          .attr("x", -(plotTop + cpPlotHeight/2))
-          .attr("text-anchor", "middle")
-          .text("prediction");
+      .attr("class", "axisTitle")
+      .attr("transform", "rotate(-90)")
+      .attr("y", plotLeft-40)
+      .attr("x", -(plotTop + cpPlotHeight/2))
+      .attr("text-anchor", "middle")
+      .text("prediction");
   }
 
   function cpCategoricalPlot(variableName, bData, yMinMax, lData) {
 
     var x = d3.scaleLinear()
-          .range([plotLeft,  plotLeft + cpPlotWidth])
-          .domain([yMinMax[0], yMinMax[1]]);
+              .range([plotLeft,  plotLeft + cpPlotWidth])
+              .domain([yMinMax[0], yMinMax[1]]);
 
     var xAxis = d3.axisBottom(x)
                   .ticks(5)
                   .tickSize(0);
 
     xAxis = CP.append("g")
-            .attr("class", "axisLabel")
-            .attr("transform", "translate(0," + (plotTop + cpPlotHeight) + ")")
-            .call(xAxis)
-            .call(g => g.select(".domain").remove());
+              .attr("class", "axisLabel")
+              .attr("transform", "translate(0," + (plotTop + cpPlotHeight) + ")")
+              .call(xAxis)
+              .call(g => g.select(".domain").remove());
 
     var y = d3.scaleBand()
-          .rangeRound([plotTop + cpPlotHeight, plotTop])
-          .padding(0.33)
-          .domain(bData.map(function (d) {
-               return d.xhat;
-          }));
+              .rangeRound([plotTop + cpPlotHeight, plotTop])
+              .padding(0.33)
+              .domain(bData.map(d => d.xhat));
 
     var xGrid = CP.append("g")
-           .attr("class", "grid")
-           .attr("transform", "translate(0," + (plotTop + cpPlotHeight) + ")")
-           .call(d3.axisBottom(x)
-                  .ticks(10)
-                  .tickSize(-cpPlotHeight)
-                  .tickFormat("")
-          ).call(g => g.select(".domain").remove());
+                  .attr("class", "grid")
+                  .attr("transform", "translate(0," + (plotTop + cpPlotHeight) + ")")
+                  .call(d3.axisBottom(x)
+                          .ticks(10)
+                          .tickSize(-cpPlotHeight)
+                          .tickFormat("")
+                  ).call(g => g.select(".domain").remove());
 
     var yGrid = CP.append("g")
-           .attr("class", "grid")
-           .attr("transform", "translate(" + plotLeft + ",0)")
-           .call(d3.axisLeft(y)
-                  .tickSize(-cpPlotWidth)
-                  .tickFormat("")
-          ).call(g => g.select(".domain").remove());
+                  .attr("class", "grid")
+                  .attr("transform", "translate(" + plotLeft + ",0)")
+                  .call(d3.axisLeft(y)
+                          .tickSize(-cpPlotWidth)
+                          .tickFormat("")
+                  ).call(g => g.select(".domain").remove());
 
     var yAxis = d3.axisLeft(y)
-          .tickSize(0);
+                  .tickSize(0);
 
     yAxis = CP.append("g")
-          .attr("class", "axisLabel")
-          .attr("transform","translate(" + (plotLeft-8) + ",0)")
-          .call(yAxis)
-          .call(g => g.select(".domain").remove());
+              .attr("class", "axisLabel")
+              .attr("transform","translate(" + (plotLeft-8) + ",0)")
+              .call(yAxis)
+              .call(g => g.select(".domain").remove());
 
     yAxis.selectAll("text").call(wrapText, margin.left-15);
 
     CP.append("text")
-          .attr("x", plotLeft)
-          .attr("y", plotTop - 15)
-          .attr("class", "smallTitle")
-          .text(variableName + " = " + lData[0][variableName]);
+      .attr("x", plotLeft)
+      .attr("y", plotTop - 15)
+      .attr("class", "smallTitle")
+      .text(variableName + " = " + lData[0][variableName]);
 
     CP.append("text")
-          .attr("x", plotLeft)
-          .attr("y", plotTop - 40)
-          .attr("class", "bigTitle")
-          .text(cpTitle);
+      .attr("x", plotLeft)
+      .attr("y", plotTop - 40)
+      .attr("class", "bigTitle")
+      .text(cpTitle);
 
     var bars = CP.selectAll()
-          .data(bData)
-          .enter()
-          .append("g");
+                 .data(bData)
+                 .enter()
+                 .append("g");
 
     var fullModel = lData[0].yhat;
 
     // make tooltip
     var tool_tip = d3.tip()
-          .attr("class", "tooltip")
-          .offset([-8, 0])
-          .html(function(d) { return cpChangedTooltipHtml(d, lData[0]); });
-    svg.call(tool_tip);
+                     .attr("class", "tooltip")
+                     .offset([-8, 0])
+                     .html(d => cpChangedTooltipHtml(d, lData[0]));
+    CP.call(tool_tip);
 
     // add bars
     bars.append("rect")
-          .attr("class", variableName)
-          .attr("fill", lineColor)
-          .attr("y", function (d) {
-              return y(d.xhat);
-          })
-          .attr("height", y.bandwidth())
-          .attr("x", function (d) {
-            // start ploting the bar left to full model line
-            if (x(d.yhat) < x(fullModel)) {
-              return x(d.yhat);
-            } else {
-              return x(fullModel);
-            }
-          })
-          .attr("width", function (d) {
-              return  Math.abs(x(d.yhat) - x(fullModel));
-          })
-          .on('mouseover', tool_tip.show)
-          .on('mouseout', tool_tip.hide);
+        .attr("class", variableName)
+        .attr("fill", lineColor)
+        .attr("y", d => y(d.xhat))
+        .attr("height", y.bandwidth())
+        .attr("x", d => x(d.yhat) < x(fullModel) ? x(d.yhat) : x(fullModel))
+        .attr("width", d => Math.abs(x(d.yhat) - x(fullModel)))
+        .on('mouseover', tool_tip.show)
+        .on('mouseout', tool_tip.hide);
 
     // add intercept line
     var minimumY = Number.MAX_VALUE;
@@ -792,19 +788,19 @@ function generatePlots(margin, tData){
       });
 
     CP.append("line")
-          .attr("class", "interceptLine")
-          .attr("x1", x(fullModel))
-          .attr("y1", minimumY)
-          .attr("x2", x(fullModel))
-          .attr("y2", maximumY + y.bandwidth());
+      .attr("class", "interceptLine")
+      .attr("x1", x(fullModel))
+      .attr("y1", minimumY)
+      .attr("x2", x(fullModel))
+      .attr("y2", maximumY + y.bandwidth());
 
     CP.append("text")
-          .attr("transform",
-                "translate(" + (plotLeft + cpPlotWidth + margin.right)/2 + " ," +
-                               (plotTop + cpPlotHeight + 45) + ")")
-          .attr("class", "axisTitle")
-          .attr("text-anchor", "middle")
-          .text("prediction");
+      .attr("transform",
+            "translate(" + (plotLeft + cpPlotWidth + margin.right)/2 + " ," +
+                           (plotTop + cpPlotHeight + 45) + ")")
+      .attr("class", "axisTitle")
+      .attr("text-anchor", "middle")
+      .text("prediction");
   }
 
   function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
@@ -818,21 +814,21 @@ function generatePlots(margin, tData){
               .domain([yMinMax[0], yMinMax[1]]);
 
     var line = d3.line()
-                 .x(function(d) { return x(d.xhat); })
-                 .y(function(d) { return y(d.yhat); })
+                 .x(d => x(d.xhat))
+                 .y(d => y(d.yhat))
                  .curve(d3.curveMonotoneX);
 
     PD.append("text")
-        .attr("class", "bigTitle")
-        .attr("x", plotLeft)
-        .attr("y", plotTop - 40)
-        .text(pdTitle);
+      .attr("class", "bigTitle")
+      .attr("x", plotLeft)
+      .attr("y", plotTop - 40)
+      .text(pdTitle);
 
     PD.append("text")
-        .attr("class","smallTitle")
-        .attr("x", plotLeft)
-        .attr("y", plotTop - 15)
-        .text(variableName);
+      .attr("class","smallTitle")
+      .attr("x", plotLeft)
+      .attr("y", plotTop - 15)
+      .text(variableName);
 
     // find 5 nice ticks with max and min - do better than d3
     var tickValues = getTickValues(x.domain());
@@ -870,9 +866,7 @@ function generatePlots(margin, tData){
     var tool_tip = d3.tip()
                      .attr("class", "tooltip")
                      .offset([-8, 0])
-                     .html(function(d) {
-                        return pdStaticTooltipHtml(d, variableName, yMean);
-                     });
+                     .html(d => pdStaticTooltipHtml(d, variableName, yMean));
     PD.call(tool_tip);
 
     // function to find nearest point on the line
@@ -932,8 +926,8 @@ function generatePlots(margin, tData){
   function pdCategoricalPlot(variableName, bData, yMinMax, yMean) {
 
     var x = d3.scaleLinear()
-          .range([plotLeft,  plotLeft + pdPlotWidth])
-          .domain([yMinMax[0], yMinMax[1]]);
+              .range([plotLeft,  plotLeft + pdPlotWidth])
+              .domain([yMinMax[0], yMinMax[1]]);
 
     var xAxis = d3.axisBottom(x)
                   .ticks(5)
@@ -948,9 +942,7 @@ function generatePlots(margin, tData){
     var y = d3.scaleBand()
               .rangeRound([plotTop + pdPlotHeight, plotTop])
               .padding(0.33)
-              .domain(bData.map(function (d) {
-                   return d.xhat;
-              }));
+              .domain(bData.map(d => d.xhat));
 
     var xGrid = PD.append("g")
                   .attr("class", "grid")
@@ -1001,28 +993,17 @@ function generatePlots(margin, tData){
     var tool_tip = d3.tip()
           .attr("class", "tooltip")
           .offset([-8, 0])
-          .html(function(d) { return pdStaticTooltipHtml(d, variableName, yMean); });
+          .html(d => pdStaticTooltipHtml(d, variableName, yMean));
     PD.call(tool_tip);
 
     // add bars
     bars.append("rect")
         .attr("class", variableName)
         .attr("fill", lineColor)
-        .attr("y", function (d) {
-            return y(d.xhat);
-        })
+        .attr("y", d => y(d.xhat))
         .attr("height", y.bandwidth())
-        .attr("x", function (d) {
-          // start ploting the bar left to full model line
-          if (x(d.yhat) < x(fullModel)) {
-            return x(d.yhat);
-          } else {
-            return x(fullModel);
-          }
-        })
-        .attr("width", function (d) {
-            return  Math.abs(x(d.yhat) - x(fullModel));
-        })
+        .attr("x", d => x(d.yhat) < x(fullModel) ? x(d.yhat) : x(fullModel))
+        .attr("width", d => Math.abs(x(d.yhat) - x(fullModel)))
         .on('mouseover', tool_tip.show)
         .on('mouseout', tool_tip.hide);
 
@@ -1071,7 +1052,7 @@ function generatePlots(margin, tData){
         k = "prediction";
         temp += "<center>" +  k + ": " + v + "</br>";
         temp += "</br>";
-      } else{
+      } else {
         temp += "<center>" +  k + ": " + v + "</br>";
       }
     }
@@ -1106,7 +1087,7 @@ function generatePlots(margin, tData){
         + "</br>" + "<center>" +
         " is permuted: " +  Math.round(d.dropout_loss * 1000)/1000
         + "</br>" + "<center>" +
-        "drop-out loss change: "  + sign + Math.round((d.dropout_loss - d.full_model) * 1000)/1000 ;
+        "drop-out loss change: "  + sign + Math.round((d.dropout_loss-d.full_model)*1000)/1000;
       return temp;
   }
 

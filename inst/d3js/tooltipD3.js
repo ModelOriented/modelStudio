@@ -21,7 +21,7 @@ d3.tip = function() {
       node      = initNode(),
       svg       = null,
       point     = null,
-      target    = null
+      target    = null;
 
   function tip(vis) {
     svg = getSVGNode(vis)

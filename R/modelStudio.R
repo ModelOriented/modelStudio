@@ -29,15 +29,19 @@
 #' titanic <- na.omit(titanic)
 #' set.seed(1313)
 #' titanic_small <- titanic[sample(1:nrow(titanic), 500), c(1,2,3,6,7,9)]
+#'
 #' model_titanic_glm <- glm(survived == "yes" ~ gender + age + fare + class + sibsp,
 #'                          data = titanic_small, family = "binomial")
+#'
 #' explain_titanic_glm <- explain(model_titanic_glm,
 #'                                data = titanic_small[,-6],
 #'                                y = titanic_small$survived == "yes",
 #'                                label = "glm")
 #'
-#' modelStudio(explain_titanic_glm, new_observation = titanic_small[11,-6], N = 50)
-#' modelStudio(explain_titanic_glm, new_observation = titanic_small[1:10,-6])
+#' new_observation <- titanic_small[1:10,-6]
+#'
+#' modelStudio(explain_titanic_glm, new_observation[1,])
+#' modelStudio(explain_titanic_glm, new_observation, N = 50)
 #'
 #'
 #' @export

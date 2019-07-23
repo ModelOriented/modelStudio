@@ -8,11 +8,12 @@
 \usage{
 modelStudio(x, ...)
 
-\method{modelStudio}{explainer}(x, new_observation, max_features = 10,
-  N = 500, ...)
+\method{modelStudio}{explainer}(x, new_observation, facet_dim = c(2, 2),
+  max_features = 10, N = 500, ...)
 
-\method{modelStudio}{default}(x, new_observation, max_features = 10,
-  N = 500, data, y, predict_function = predict, label = NULL, ...)
+\method{modelStudio}{default}(x, new_observation, facet_dim = c(2, 2),
+  max_features = 10, N = 500, data, y, predict_function = predict,
+  label = NULL, ...)
 }
 \arguments{
 \item{x}{an explainer created with function `DALEX::explain()` or a model to be explained.}
@@ -21,17 +22,19 @@ modelStudio(x, ...)
 
 \item{new_observation}{a new observation with columns that correspond to variables used in the model.}
 
+\item{facet_dim}{dimensions of the grid. Default is 2x2.}
+
 \item{max_features}{maximal number of features to be included in BreakDown and FeatureImportance plot.}
 
-\item{N}{number of observations used for calculation of partial dependency profiles. By default 500.}
+\item{N}{number of observations used for calculation of partial dependency profiles. Default is 500.}
 
-\item{data}{validation dataset, will be extracted from `x` if it is an explainer.}
+\item{data}{validation dataset, will be extracted from `x` if it's an explainer.}
 
 \item{y}{true labels for `data`, will be extracted from `x` if it's an explainer.}
 
 \item{predict_function}{predict function, will be extracted from `x` if it's an explainer.}
 
-\item{label}{name of the model. By default it is extracted from the 'class' attribute of the model.}
+\item{label}{a name of the model, will be extracted from `x` if it's an explainer.}
 }
 \value{
 an object of the `r2d3` class.
@@ -47,14 +50,20 @@ library("DALEX")
 titanic <- na.omit(titanic)
 set.seed(1313)
 titanic_small <- titanic[sample(1:nrow(titanic), 500), c(1,2,3,6,7,9)]
+
 model_titanic_glm <- glm(survived == "yes" ~ gender + age + fare + class + sibsp,
                          data = titanic_small, family = "binomial")
+
 explain_titanic_glm <- explain(model_titanic_glm,
                                data = titanic_small[,-6],
                                y = titanic_small$survived == "yes",
                                label = "glm")
 
-modelStudio(explain_titanic_glm, new_observation = titanic_small[1:10,-6], N = 50)
+new_observation <- titanic_small[1:10,-6]
+
+modelStudio(explain_titanic_glm, new_observation[1,])
+modelStudio(explain_titanic_glm, new_observation, N = 50)
+
 
 }
 \references{

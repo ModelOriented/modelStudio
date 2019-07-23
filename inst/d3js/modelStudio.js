@@ -1,11 +1,17 @@
 //// set all dimmensions \\\\
 
-// calculate BD left margin
-/*var maxLength = calculateTextWidth(data[0].label_list)+15;*/
-// HACK: now y axis labels wrap to 100px - margin.left = 105px
-var dim = options.facet_dim;
+// load options
+var size = options.size, alpha = options.alpha, barWidth = options.bar_width,
+    cpTitle = options.cp_title, bdTitle = options.bd_title,
+    fiTitle = options.fi_title, pdTitle = options.pd_title,
+    modelName = options.model_name,
+    showRugs = options.show_rugs,
+    dim = options.facet_dim;
 
+// set dimensions (TODO: pass as options)
 var margin = {top: 50, right: 20, bottom: 70, left: 105, inner: 40, small: 5, big: 10};
+
+var w = 420, h = 280;
 
 var plotWidth = 420 + margin.left + margin.right,
     plotHeight = 280 + margin.top + margin.bottom;
@@ -13,24 +19,33 @@ var plotWidth = 420 + margin.left + margin.right,
 var studioWidth = dim[1]*plotWidth,
     studioHeight = dim[0]*plotHeight + margin.top;
 
+// for observation choice
 var observationIds = Object.keys(data);
 
-var chosePlotData = [];
+var notVisiblePlots = [{text:"Break Down",id:"BD"},{text:"Ceteris Paribus",id:"CP"},
+                      {text:"Feature Importance",id:"FI"},{text:"Partial Dependency",id:"PD"}];
 
-/// TODO: change this double loop
+var visiblePlots = [];
+
+// generate facet x,y coordinates
+/// FIXME: change this double loop
+var buttonData = [];
 for (let i=0; i<dim[0]; i++) {
   for (let j=0; j<dim[1]; j++) {
-    chosePlotData.push({x:0+j*plotWidth, y:margin.top+i*plotHeight});
+    buttonData.push({x:0+j*plotWidth, y:margin.top+i*plotHeight});
   }
 }
 
 ////                     \\\\
-decorateStudio();
+initializeStudio();
 ////                     \\\\
 
-function decorateStudio() {
-  /// add non plot related stuff
-  var DEC = svg.append("g");
+function initializeStudio() {
+  /// this function initializes modelStudio (used only once, at start)
+  /// uses reloadStudio+generatePlot (using 1st observation data)
+
+  var DEC = svg.append("g")
+               .attr("class", "DEC");
 
   DEC.append("text")
      .attr("class", "mainTitle")
@@ -53,6 +68,7 @@ function decorateStudio() {
                   .append("g")
                   .attr("class", "legend")
                   .attr("transform", function(d, i) {
+
                     let temp = getTextWidth(d, 13, "Arial");
                     tempW = tempW + temp + 20;
                     return "translate(" + (studioWidth - tempW) +
@@ -62,36 +78,40 @@ function decorateStudio() {
   legend.append("text")
         .attr("dy", ".6em")
         .attr("class", "smallTitle")
-        .text(function(d) { return d;})
+        .text(d => d)
         .attr("x", 14)
         .on("mouseover", function() { d3.select(this).style("cursor", "pointer");})
         .on("mouseout", function() { d3.select(this).style("cursor", "auto");})
         .on("click", function(d){
-          // delete plots if there were any
-          reloadAll();
-          // chose new data
-          var tData = data[d];
-          // plot new
-          generatePlots(margin, tData);
+
+          // delete old tooltips, when changing observation
+          d3.select("body").selectAll(".tooltip").remove();
+          // chose clicked data
+          let tData = data[d];
+          // update all plots with new data (with existing ones on their places)
+          generatePlots(tData);
         });
 
-  svg.select("g.legend").select("text").dispatch("click");
+  // reload studio = delete everything and set up buttons
+  reloadStudio();
+  // chose new data, initialize with 1st observation
+  let tData = data[observationIds[0]];
+  // plot new data
+  generatePlots(tData);
 }
 
-function reloadAll() {
+function reloadStudio() {
+  /// reload modelStudio = delete plots and set up buttons (without initializeStudio)
 
   svg.selectAll(".plot").remove();
-  svg.select(".STARTG").remove();
+  svg.selectAll(".STARTG").remove();
 
-  var plotNavigation = [{text:"Break Down",id:"BD"},{text:"Ceteris Paribus",id:"CP"},
-                      {text:"Feature Importance",id:"FI"},{text:"Partial Dependency",id:"PD"}];
-
-  /// change text font
+  // change text font
   var STARTG = svg.append("g")
                   .attr("class", "STARTG");
 
   var chosePlotButton = STARTG.selectAll()
-                              .data(chosePlotData)
+                              .data(buttonData)
                               .enter()
                               .append("rect")
                               .attr("class", "chosePlotButton")
@@ -100,8 +120,10 @@ function reloadAll() {
                               .attr("height", plotHeight)
                               .attr("x", d => d.x)
                               .attr("y", d => d.y);
+
+  // add `+` to buttons
   STARTG.selectAll()
-        .data(chosePlotData)
+        .data(buttonData)
         .enter()
         .append("line")
         .attr("class", "mainLine")
@@ -112,7 +134,7 @@ function reloadAll() {
         .attr("y2", d => d.y + plotHeight/2 + margin.big);
 
   STARTG.selectAll()
-        .data(chosePlotData)
+        .data(buttonData)
         .enter()
         .append("line")
         .attr("class", "mainLine")
@@ -125,21 +147,23 @@ function reloadAll() {
   chosePlotButton.on('mouseover', function() { d3.select(this).style("opacity", 1);})
                  .on('mouseout', function() { d3.select(this).style("opacity", 0.5);})
                  .on("click", function(){
-                   // check if some button is already clicked
+
+                   // check if any button is already clicked
                    if (!buttonClicked) {
                     chosePlot(this);
                     buttonClicked = true;
                    }
                  });
 
-  // at start click first element
+  // initialize flag, is any button clicked?
   var buttonClicked = false;
-  chosePlotButton.select(".chosePlotButton").dispatch("click");
 
   function chosePlot(object) {
 
+    // hide grey button with `+`
     svg.selectAll("#"+object.id).style("visibility", "hidden");
 
+    // make background white button for off click purpose
     let plotWidth = parseFloat(d3.select(object).attr("width")),
         plotHeight = parseFloat(d3.select(object).attr("height")),
         x = parseFloat(d3.select(object).attr("x")),
@@ -171,13 +195,13 @@ function reloadAll() {
                          .attr("id","tempText"+object.id);
 
     tempText.selectAll()
-            .data(plotNavigation)
+            .data(notVisiblePlots)
             .enter()
             .append("text")
             .attr("class", "bigTitle")
             .attr("id", d => d.id)
             .attr("x", x + plotWidth/2)
-            .attr("y", (d,i) => y + plotHeight/2 + 25*i - (plotNavigation.length/2)*25)
+            .attr("y", (d,i) => y + plotHeight/2 + 25*i - (notVisiblePlots.length/2)*25)
             .attr("text-anchor", "middle")
             .text(d => d.text)
             .style('font-family', 'Arial')
@@ -186,25 +210,28 @@ function reloadAll() {
             .on("click", function() {
 
               // when clicking outside of button remove it
-                svg.select("#tempButton"+object.id).remove();
+              svg.select("#tempButton"+object.id).remove();
               // delete text buttons
               svg.select("#tempText"+object.id).remove();
-              // delete this plot option from text array
-              plotNavigation = plotNavigation.filter(el => el.id !== this.id);
+              // add this plot  to visible
+              visiblePlots.push({text: this.text, id: this.id});
+              // delete this plot from not visible
+              notVisiblePlots = notVisiblePlots.filter(el => el.id !== this.id);
               // let the user click other buttons now
               buttonClicked = false;
 
               // delete all not needed items
-              if (plotNavigation.length === 0) STARTG.remove();
+              if (notVisiblePlots.length === 0) STARTG.remove();
 
               // show plot
               svg.select("#"+this.id)
                  .attr("transform","translate(" + (x) + "," + (y + margin.big) + ")")
-                 .style("visibility", "visible"); // margin.big added because translate 0 is -10
+                 .style("visibility", "visible");
+                 // margin.big added because translate 0 is -10
             });
   }
 
+  // safeguard font-family update
   svg.selectAll("text")
      .style('font-family', 'Arial');
 }
-
