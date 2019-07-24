@@ -6,10 +6,8 @@ function generatePlots(tData){
       cpData = tData[1];
   // fiData and pdData comes from modelStudio.js file
 
-  var cpPlotCount = variableNames.length,
-      bdBarCount = bdData.m[0],
-      fiBarCount = bdData.m[0]-1,
-      pdPlotCount = variableNames.length;
+  var bdBarCount = bdData.m[0],
+      fiBarCount = bdData.m[0]-1;
 
   var plotTop = margin.top, plotLeft = margin.left;
 
@@ -49,8 +47,11 @@ function generatePlots(tData){
   var pdPlotHeight = cpPlotHeight,
       pdPlotWidth = cpPlotWidth;
 
+  var adPlotHeight = cpPlotHeight,
+      adPlotWidth = cpPlotWidth;
+
   /// initialize plots, select them if already there
-  var BD, CP, FI, PD;
+  var BD, CP, FI, PD, AD;
 
   if (svg.select("#BD").empty()) {
     BD = svg.append("g")
@@ -91,6 +92,16 @@ function generatePlots(tData){
     PD = svg.select("#PD");
   }
   partialDependency();
+
+  if (svg.select("#AD").empty()) {
+    AD = svg.append("g")
+            .attr("class","plot")
+            .attr("id","AD")
+            .style("visibility", "hidden");
+  } else {
+    AD = svg.select("#AD");
+  }
+  accumulatedDependency();
   ///
 
   svg.selectAll("text")
@@ -231,6 +242,7 @@ function generatePlots(tData){
           GLOBAL_CLICKED_VARIABLE_NAME = this.id;
           updateCP(this.id);
           updatePD(this.id);
+          updateAD(this.id);
         });
 
     // add labels to bars
@@ -436,6 +448,7 @@ function generatePlots(tData){
           GLOBAL_CLICKED_VARIABLE_NAME = this.id;
           updateCP(this.id);
           updatePD(this.id);
+          updateAD(this.id);
         });
 
     // make line next to bars
@@ -503,13 +516,48 @@ function generatePlots(tData){
 
     let variableName = GLOBAL_CLICKED_VARIABLE_NAME;
 
-    //lines or bars?
+    // lines or bars?
     if (isNumeric[variableName][0]) {
       pdNumericalPlot(variableName, profData[variableName], xMinMax[variableName],
                       yMinMax, yMean);
     } else {
       pdCategoricalPlot(variableName, profData[variableName],
                         yMinMax, yMean);
+    }
+  }
+
+  function accumulatedDependency() {
+
+    svg.select("#AD").selectAll("*").remove();
+
+    var profData = adData.x;
+    var xMinMax = adData.x_min_max_list;
+    var yMinMax = adData.y_min_max;
+    var yMean = adData.y_mean;
+    var isNumeric = adData.is_numeric;
+
+    let variableName = GLOBAL_CLICKED_VARIABLE_NAME;
+
+    // safeguard
+    if (isNumeric[variableName] === undefined) {
+
+      // TODO: categorical not implemented in ingredients yet
+      svg.select("#AD")
+         .append("text")
+         .text("TBD: ale plot for discrete values")
+         .attr("class","smallTitle")
+         .attr("x",50)
+         .attr("y",50)
+         .style('font-family', 'Arial');
+      return;
+    }
+
+    // lines or bars?
+    if (isNumeric[variableName][0]) {
+      adNumericalPlot(variableName, profData[variableName], xMinMax[variableName],
+                      yMinMax, yMean);
+    } else {
+      // categorical not implemented in ingredients yet
     }
   }
 
@@ -564,6 +612,47 @@ function generatePlots(tData){
     } else {
       pdCategoricalPlot(variableName, profData[variableName],
                         yMinMax, yMean);
+    }
+
+    // safeguard font-family update
+    svg.selectAll("text")
+       .style('font-family', 'Arial');
+  }
+
+  function updateAD(variableName) {
+
+    if (variableName == "prediction" || variableName == "intercept" ||
+        variableName == "other") { return;}
+
+    svg.select("#AD").selectAll("*").remove();
+    d3.select("body").select("#tooltipAD").remove();
+
+    var profData = adData.x;
+    var xMinMax = adData.x_min_max_list;
+    var yMinMax = adData.y_min_max;
+    var yMean = adData.y_mean;
+    var isNumeric = adData.is_numeric;
+
+    // safeguard
+    if (isNumeric[variableName] === undefined) {
+
+      // TODO: categorical not implemented in ingredients yet
+      svg.select("#AD")
+         .append("text")
+         .text("TBD: ale plot for discrete values")
+         .attr("class","smallTitle")
+         .attr("x",50)
+         .attr("y",50)
+         .style('font-family', 'Arial');
+      return;
+    }
+
+    // lines or bars?
+    if (isNumeric[variableName][0]) {
+      adNumericalPlot(variableName, profData[variableName], xMinMax[variableName],
+                      yMinMax, yMean);
+    } else {
+      // categorical not implemented in ingredients yet
     }
 
     // safeguard font-family update
@@ -1224,6 +1313,318 @@ function generatePlots(tData){
     var description = PD.append("g")
                         .attr("transform", "translate(" +
                               (plotLeft + pdPlotWidth - tempWH) +
+                              "," + (plotTop - tempWH - 5) + ")");
+
+    description.selectAll()
+               .data(desctemp)
+               .enter()
+               .append("rect")
+               .attr("class", "descriptionBox")
+               .attr("width", tempWH)
+               .attr("height", tempWH)
+               .on('mouseover', tooltip.show)
+               .on('mouseout', tooltip.hide);
+
+    description.selectAll()
+               .data(desctemp)
+               .enter()
+               .append("text")
+               .attr("class", "descriptionLabel")
+               .attr("dy", "1.1em")
+               .attr("x", 5)
+               .text("D")
+               .on('mouseover', function(d) {
+                 tooltip.show(d);
+                 d3.select(this).style("cursor", "default");
+               })
+               .on('mouseout', tooltip.hide);
+  }
+
+  function adNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
+
+    var x = d3.scaleLinear()
+              .range([plotLeft + 10, plotLeft + adPlotWidth - 10])
+              .domain([mData[0], mData[1]]);
+
+    AD.append("text")
+      .attr("transform",
+            "translate(" + (plotLeft + adPlotWidth + margin.right)/2 + " ," +
+                           (plotTop + adPlotHeight + 45) + ")")
+      .attr("class", "axisTitle")
+      .attr("text-anchor", "middle")
+      .text(variableName);
+
+    var y = d3.scaleLinear()
+              .range([plotTop + adPlotHeight, plotTop])
+              .domain([yMinMax[0], yMinMax[1]]);
+
+    var line = d3.line()
+                 .x(d => x(d.xhat))
+                 .y(d => y(d.yhat))
+                 .curve(d3.curveMonotoneX);
+
+    AD.append("text")
+      .attr("class", "bigTitle")
+      .attr("x", plotLeft)
+      .attr("y", plotTop - 40)
+      .text(adTitle);
+
+    AD.append("text")
+      .attr("class","smallTitle")
+      .attr("x", plotLeft)
+      .attr("y", plotTop - 15)
+      .text(modelName); // variableName
+
+    // find 5 nice ticks with max and min - do better than d3
+    var tickValues = getTickValues(x.domain());
+
+    var xAxis = d3.axisBottom(x)
+                  .tickValues(tickValues)
+                  .tickSizeInner(0)
+                  .tickPadding(15);
+
+    xAxis = AD.append("g")
+              .attr("class", "axisLabel")
+              .attr("transform", "translate(0,"+ (plotTop + adPlotHeight) + ")")
+              .call(xAxis);
+
+    var yGrid = AD.append("g")
+                  .attr("class", "grid")
+                  .attr("transform", "translate(" + plotLeft + ",0)")
+                  .call(d3.axisLeft(y)
+                          .ticks(10)
+                          .tickSize(-adPlotWidth)
+                          .tickFormat("")
+                  ).call(g => g.select(".domain").remove());
+
+    var yAxis = d3.axisLeft(y)
+                  .ticks(5)
+                  .tickSize(0);
+
+    yAxis = AD.append("g")
+              .attr("class", "axisLabel")
+              .attr("transform","translate(" + plotLeft + ",0)")
+              .call(yAxis)
+              .call(g => g.select(".domain").remove());
+
+    // make tooltip
+    var tooltip = d3.tip()
+                    .attr("class", "tooltip")
+                    .attr("id", "tooltipPD")
+                    .offset([-8, 0])
+                    .html(d => d.type === "desc" ?
+                     descTooltipHtml(d) : adStaticTooltipHtml(d, variableName, yMean));
+    AD.call(tooltip);
+
+    // function to find nearest point on the line
+    var bisectXhat = d3.bisector(d => d.xhat).right;
+
+    // show tooltip with info nearest to mouseover
+    function showTooltip(hover){
+      var x0 = x.invert(d3.mouse(d3.event.currentTarget)[0]),
+          i = bisectXhat(hover, x0),
+          d0 = hover[i - 1],
+          d1 = hover[i],
+          d = x0 - d0.xhat > d1.xhat - x0 ? d1 : d0;
+
+      tooltip.show(d);
+    }
+
+    // add lines
+    AD.append("path")
+      .data([lData])
+      .attr("class", "line " + variableName)
+      .attr("d", line)
+      .style("fill", "none")
+      .style("stroke", lineColor)
+      .style("opacity", alpha)
+      .style("stroke-width", size)
+      .on('mouseover', function(d){
+
+        // make mouseover line more visible
+        d3.select(this)
+          .style("stroke", pointColor)
+          .style("stroke-width", size*1.5);
+
+        // make line appear on top
+        this.parentNode.appendChild(this);
+
+        // show changed tooltip
+        showTooltip(d);
+      })
+      .on('mouseout', function(d){
+
+        d3.select(this)
+          .style("stroke", lineColor)
+          .style("stroke-width", size);
+
+        // hide changed tooltip
+        tooltip.hide(d);
+      });
+
+    AD.append("text")
+      .attr("class", "axisTitle")
+      .attr("transform", "rotate(-90)")
+      .attr("y", plotLeft-40)
+      .attr("x", -(plotTop + adPlotHeight/2))
+      .attr("text-anchor", "middle")
+      .text("accumulated prediction");
+
+    let desctemp = [{type:"desc", "text":"Description:"}];
+
+    let tempWH = 20;
+
+    var description = AD.append("g")
+                        .attr("transform", "translate(" +
+                              (plotLeft + adPlotWidth - tempWH) +
+                              "," + (plotTop - tempWH - 5) + ")");
+
+    description.selectAll()
+               .data(desctemp)
+               .enter()
+               .append("rect")
+               .attr("class", "descriptionBox")
+               .attr("width", tempWH)
+               .attr("height", tempWH)
+               .on('mouseover', tooltip.show)
+               .on('mouseout', tooltip.hide);
+
+    description.selectAll()
+               .data(desctemp)
+               .enter()
+               .append("text")
+               .attr("class", "descriptionLabel")
+               .attr("dy", "1.1em")
+               .attr("x", 5)
+               .text("D")
+               .on('mouseover', function(d) {
+                 tooltip.show(d);
+                 d3.select(this).style("cursor", "default");
+               })
+               .on('mouseout', tooltip.hide);
+  }
+
+  function adCategoricalPlot(variableName, bData, yMinMax, yMean) {
+
+    var x = d3.scaleLinear()
+              .range([plotLeft,  plotLeft + adPlotWidth])
+              .domain([yMinMax[0], yMinMax[1]]);
+
+    var xAxis = d3.axisBottom(x)
+                  .ticks(5)
+                  .tickSize(0);
+
+    xAxis = AD.append("g")
+              .attr("class", "axisLabel")
+              .attr("transform", "translate(0," + (plotTop + adPlotHeight) + ")")
+              .call(xAxis)
+              .call(g => g.select(".domain").remove());
+
+    var y = d3.scaleBand()
+              .rangeRound([plotTop + adPlotHeight, plotTop])
+              .padding(0.33)
+              .domain(bData.map(d => d.xhat));
+
+    var xGrid = AD.append("g")
+                  .attr("class", "grid")
+                  .attr("transform", "translate(0," + (plotTop + adPlotHeight) + ")")
+                  .call(d3.axisBottom(x)
+                          .ticks(10)
+                          .tickSize(-adPlotHeight)
+                          .tickFormat("")
+                  ).call(g => g.select(".domain").remove());
+
+    var yGrid = AD.append("g")
+                  .attr("class", "grid")
+                  .attr("transform", "translate(" + plotLeft + ",0)")
+                  .call(d3.axisLeft(y)
+                          .tickSize(-adPlotWidth)
+                          .tickFormat("")
+                  ).call(g => g.select(".domain").remove());
+
+    var yAxis = d3.axisLeft(y)
+                  .tickSize(0);
+
+    yAxis = AD.append("g")
+              .attr("class", "axisLabel")
+              .attr("transform","translate(" + (plotLeft-8) + ",0)")
+              .call(yAxis)
+              .call(g => g.select(".domain").remove());
+
+    AD.append("text")
+      .attr("x", plotLeft)
+      .attr("y", plotTop - 15)
+      .attr("class", "smallTitle")
+      .text(modelName); // variableName
+
+    AD.append("text")
+      .attr("x", plotLeft)
+      .attr("y", plotTop - 40)
+      .attr("class", "bigTitle")
+      .text(adTitle);
+
+    var bars = AD.selectAll()
+                 .data(bData)
+                 .enter()
+                 .append("g");
+
+    var fullModel = yMean;
+
+    // make tooltip
+    var tooltip = d3.tip()
+                    .attr("class", "tooltip")
+                    .attr("id", "tooltipAD")
+                    .offset([-8, 0])
+                    .html(d => d.type === "desc" ?
+                     descTooltipHtml(d) : adStaticTooltipHtml(d, variableName, yMean));
+    AD.call(tooltip);
+
+    // add bars
+    bars.append("rect")
+        .attr("class", variableName)
+        .attr("fill", lineColor)
+        .attr("y", d => y(d.xhat))
+        .attr("height", y.bandwidth())
+        .attr("x", d => x(d.yhat) < x(fullModel) ? x(d.yhat) : x(fullModel))
+        .attr("width", d => Math.abs(x(d.yhat) - x(fullModel)))
+        .on('mouseover', tooltip.show)
+        .on('mouseout', tooltip.hide);
+
+    // add intercept line
+    var minimumY = Number.MAX_VALUE;
+    var maximumY = Number.MIN_VALUE;
+
+    bars.selectAll(".".concat(variableName)).each(function() {
+        if (+this.getAttribute('y') < minimumY) {
+          minimumY = +this.getAttribute('y');
+        }
+        if (+this.getAttribute('y') > maximumY) {
+          maximumY = +this.getAttribute('y');
+        }
+      });
+
+    AD.append("line")
+      .attr("class", "interceptLine")
+      .attr("x1", x(fullModel))
+      .attr("y1", minimumY)
+      .attr("x2", x(fullModel))
+      .attr("y2", maximumY + y.bandwidth());
+
+    AD.append("text")
+      .attr("transform",
+            "translate(" + (plotLeft + adPlotWidth + margin.right)/2 + "," +
+                           (plotTop + adPlotHeight + 45) + ")")
+      .attr("class", "axisTitle")
+      .attr("text-anchor", "middle")
+      .text("accumulated prediction");
+
+    let desctemp = [{type:"desc", "text":"Description:"}];
+
+    let tempWH = 20;
+
+    var description = AD.append("g")
+                        .attr("transform", "translate(" +
+                              (plotLeft + adPlotWidth - tempWH) +
                               "," + (plotTop - tempWH - 5) + ")");
 
     description.selectAll()

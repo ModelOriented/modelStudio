@@ -79,6 +79,31 @@ function pdStaticTooltipHtml(d, variableName, yMean) {
   return temp;
 }
 
+function adStaticTooltipHtml(d, variableName, yMean) {
+  // function formats tooltip text
+  var temp = "";
+  for (var [k, v] of Object.entries(d)) {
+    switch(k){
+      case "xhat":
+        temp += "<center>" +  variableName  + ": " + v + "</br>";
+        break;
+      case "yhat":
+        temp += "<center>" +  "accumulated prediction"  + ": " + v + "</br>";
+        break;
+      case "vname":
+        break;
+      default:
+        temp += "<center>" +  k  + ": " + v + "</br>";
+        break;
+    }
+  }
+
+  temp += "</br><center>" +
+          "mean observation prediction:" +
+          "</br>" + yMean + "</br>";
+  return temp;
+}
+
 function descTooltipHtml(d) {
   var temp = "<center>";
   temp += d.text;

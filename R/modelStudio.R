@@ -103,9 +103,12 @@ modelStudio.default <- function(x,
   fi <- ingredients::feature_importance(x, data, y, predict_function, ...)
   pd_n <- ingredients::partial_dependency(x, data, predict_function, only_numerical = TRUE, N = N)
   pd_c <- ingredients::partial_dependency(x, data, predict_function, only_numerical = FALSE, N = N)
+  ad_n <- ingredients::accumulated_dependency(x, data, predict_function, only_numerical = TRUE, N = N)
+  ad_c <- NULL
 
   fi_data <- prepareFeatureImportance(fi, max_features, ...)
   pd_data <- preparePartialDependency(pd_n, pd_c, variables = variable_names)
+  ad_data <- prepareAccumulatedDependency(ad_n, ad_c, variables = variable_names)
 
   ## count once per observation
   for(i in 1:obs_count){
@@ -127,10 +130,11 @@ modelStudio.default <- function(x,
   options <- list(size = 2, alpha = 1, bar_width = 16,
                   cp_title = "Ceteris Paribus", bd_title = "Break Down",
                   fi_title = "Feature Importance", pd_title = "Partial Dependency",
+                  ad_title = "Accumulated Dependency",
                   model_name = label, variable_names = variable_names,
                   show_rugs = TRUE, facet_dim = facet_dim)
 
-  temp <- jsonlite::toJSON(list(obs_list, fi_data, pd_data))
+  temp <- jsonlite::toJSON(list(obs_list, fi_data, pd_data, ad_data))
 
   sizing_policy <- r2d3::sizingPolicy(padding = 10, browser.fill = TRUE)
 
