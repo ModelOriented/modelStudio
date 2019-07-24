@@ -9,7 +9,8 @@ var size = options.size, alpha = options.alpha, barWidth = options.bar_width,
     dim = options.facet_dim;
 
 // set dimensions (TODO: pass as options)
-var margin = {top: 50, right: 20, bottom: 70, left: 105, inner: 40, small: 5, big: 10};
+var margin = {top: 50, right: 20, bottom: 70, left: 105, inner: 40,
+              small: 5, big: 10};
 
 var w = 420, h = 280;
 
@@ -22,8 +23,10 @@ var studioWidth = dim[1]*plotWidth,
 // for observation choice
 var observationIds = Object.keys(data);
 
-var notVisiblePlots = [{text:"Break Down",id:"BD"},{text:"Ceteris Paribus",id:"CP"},
-                      {text:"Feature Importance",id:"FI"},{text:"Partial Dependency",id:"PD"}];
+var notVisiblePlots = [{text:"Break Down [Local]",id:"BD"},
+                       {text:"Ceteris Paribus [Local]",id:"CP"},
+                       {text:"Feature Importance [Global]",id:"FI"},
+                       {text:"Partial Dependency [Global]",id:"PD"}];
 
 var visiblePlots = [];
 
@@ -63,7 +66,8 @@ function initializeStudio() {
   var buttonClicked = false;
 
   // add select observation input
-  d3.select(".r2d3.html-widget.html-widget-static-bound").style("position","absolute");
+  d3.select(".r2d3.html-widget.html-widget-static-bound")
+    .style("position","absolute");
 
   let tempW = calculateTextWidth(observationIds)*1.6 + 18;
 
@@ -71,8 +75,8 @@ function initializeStudio() {
                    .append("div")
                    .style("position", "absolute")
                    .style("display", "inline-grid")
-                   .style("left", (studioWidth - 10 - tempW)+"px")
-                   .style("top", -studioHeight + 150);
+                   .style("left", (studioWidth - margin.big - tempW)+"px")
+                   .style("top", -studioHeight + 180);
 
   var input = inputDiv.append("select")
                       .attr("id","input")
@@ -109,7 +113,7 @@ function initializeStudio() {
 }
 
 function reloadStudio() {
-  /// reload modelStudio = delete plots and set up buttons (without initializeStudio)
+  ///  delete plots and set up buttons (without initializeStudio)
 
   svg.selectAll(".plot").remove();
   svg.selectAll(".STARTG").remove();

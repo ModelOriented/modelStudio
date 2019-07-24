@@ -177,12 +177,12 @@ function generatePlots(tData){
       .text(bdTitle);
 
     // add tooltip
-    var tool_tip = d3.tip()
-                     .attr("class", "tooltip")
-                     .offset([-8, 0])
-                     .html(d => d.type === "desc" ? d.text : bdTooltipHtml(d));
+    var tooltip = d3.tip()
+                    .attr("class", "tooltip")
+                    .offset([-8, 0])
+                    .html(d => d.type === "desc" ? descTooltipHtml(d) : bdTooltipHtml(d));
 
-    BD.call(tool_tip);
+    BD.call(tooltip);
 
     // find boundaries
     let intercept = bData[0].contribution > 0 ? bData[0].barStart : bData[0].barSupport;
@@ -225,8 +225,8 @@ function generatePlots(tData){
         .attr("height", y.bandwidth() )
         .attr("x", d => x(d.barStart))
         .attr("width", d => x(d.barSupport)-x(d.barStart) < 1 ? 5 : x(d.barSupport) - x(d.barStart))
-        .on('mouseover', tool_tip.show)
-        .on('mouseout', tool_tip.hide)
+        .on('mouseover', tooltip.show)
+        .on('mouseout', tooltip.hide)
         .attr("id", (d,i) => i-1)
         .on("click", function(){
           updateCP(this.id);
@@ -275,19 +275,38 @@ function generatePlots(tData){
          .attr("x2", d => d.contribution < 0 ? x(d.barStart) : x(d.barSupport))
          .attr("y2", d => d.variable == "prediction" ? y(d.variable) : y(d.variable) + bdBarWidth*2.5);
 
-    var description = [{type:"desc", "text":"Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit,</br> sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</br> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</br> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</br> Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."}];
+    let desctemp = [{type:"desc", "text":"Description:"}];
 
-    var describe = BD.selectAll()
-                     .data(description)
-                     .enter()
-                     .append("rect")
-                     .attr("x", plotLeft + bdPlotWidth-20)
-                     .attr("y", plotTop-20)
-                     .attr("width", 20)
-                     .attr("height", 20)
-                     .style("fill", "grey")
-                     .on('mouseover', tool_tip.show)
-                     .on('mouseout', tool_tip.hide);
+    let tempWH = 20;
+
+    var description = BD.append("g")
+                        .attr("transform", "translate(" +
+                              (plotLeft + bdPlotWidth - tempWH) +
+                              "," + (plotTop - tempWH) + ")");
+
+    description.selectAll()
+               .data(desctemp)
+               .enter()
+               .append("rect")
+               .attr("class", "descriptionBox")
+               .attr("width", tempWH)
+               .attr("height", tempWH)
+               .on('mouseover', tooltip.show)
+               .on('mouseout', tooltip.hide);
+
+    description.selectAll()
+               .data(desctemp)
+               .enter()
+               .append("text")
+               .attr("class", "descriptionLabel")
+               .attr("dy", "1.1em")
+               .attr("x", 5)
+               .text("D")
+               .on('mouseover', function(d) {
+                 tooltip.show(d);
+                 d3.select(this).style("cursor", "default");
+               })
+               .on('mouseout', tooltip.hide);
   }
 
   function ceterisParibus() {
@@ -307,9 +326,11 @@ function generatePlots(tData){
 
     // lines or bars?
     if (isNumeric[start]) {
-      cpNumericalPlot(variableName, profData[variableName], xMinMax[variableName], yMinMax, obsData);
+      cpNumericalPlot(variableName, profData[variableName], xMinMax[variableName],
+                      yMinMax, obsData);
     } else {
-      cpCategoricalPlot(variableName, profData[variableName], yMinMax, obsData);
+      cpCategoricalPlot(variableName, profData[variableName],
+                        yMinMax, obsData);
     }
   }
 
@@ -388,11 +409,12 @@ function generatePlots(tData){
       .text(modelName);
 
     // tooltip
-    var tool_tip = d3.tip()
-                     .attr("class", "tooltip")
-                     .offset([-8, 0])
-                     .html(d => fiStaticTooltipHtml(d, modelName));
-    FI.call(tool_tip);
+    var tooltip = d3.tip()
+                    .attr("class", "tooltip")
+                    .offset([-8, 0])
+                    .html(d => d.type === "desc" ?
+                     descTooltipHtml(d) : fiStaticTooltipHtml(d, modelName));
+    FI.call(tooltip);
 
     // bars
     var bars = FI.selectAll()
@@ -410,8 +432,8 @@ function generatePlots(tData){
         .attr("height", y.bandwidth())
         .attr("x", d => x(d.dropout_loss) < x(fullModel) ? x(d.dropout_loss) : x(fullModel))
         .attr("width", d => Math.abs(x(d.dropout_loss) - x(fullModel)))
-        .on('mouseover', tool_tip.show)
-        .on('mouseout', tool_tip.hide)
+        .on('mouseover', tooltip.show)
+        .on('mouseout', tooltip.hide)
         .attr("id", (d,i) => i-1)
         .on("click", function(){
           updateCP(this.id);
@@ -422,10 +444,10 @@ function generatePlots(tData){
     var minimumY = Number.MAX_VALUE;
     var maximumY = Number.MIN_VALUE;
     bars.selectAll(".".concat(modelName.replace(/\s/g,''))).each(function() {
-      if(+this.getAttribute('y') < minimumY) {
+      if (+this.getAttribute('y') < minimumY) {
         minimumY = +this.getAttribute('y');
       }
-      if(+this.getAttribute('y') > maximumY) {
+      if (+this.getAttribute('y') > maximumY) {
         maximumY = +this.getAttribute('y');
       }
     });
@@ -436,6 +458,39 @@ function generatePlots(tData){
       .attr("y1", minimumY)
       .attr("x2", x(fullModel))
       .attr("y2", maximumY + y.bandwidth());
+
+    let desctemp = [{type:"desc", "text":"Description:"}];
+
+    let tempWH = 20;
+
+    var description = FI.append("g")
+                        .attr("transform", "translate(" +
+                              (plotLeft + fiPlotWidth - tempWH) +
+                              "," + (plotTop - tempWH) + ")");
+
+    description.selectAll()
+               .data(desctemp)
+               .enter()
+               .append("rect")
+               .attr("class", "descriptionBox")
+               .attr("width", tempWH)
+               .attr("height", tempWH)
+               .on('mouseover', tooltip.show)
+               .on('mouseout', tooltip.hide);
+
+    description.selectAll()
+               .data(desctemp)
+               .enter()
+               .append("text")
+               .attr("class", "descriptionLabel")
+               .attr("dy", "1.1em")
+               .attr("x", 5)
+               .text("D")
+               .on('mouseover', function(d) {
+                 tooltip.show(d);
+                 d3.select(this).style("cursor", "default");
+               })
+               .on('mouseout', tooltip.hide);
   }
 
   function partialDependency() {
@@ -468,7 +523,7 @@ function generatePlots(tData){
   function updateCP(clicked) {
 
     if (clicked === "-1" || clicked === `${bdBarCount-2}` ||
-    (bdData.otherFactorsFlag[0] === true && clicked === `${bdBarCount-3}`)){ return;}
+    (bdData.otherFactorsFlag[0] === true && clicked === `${bdBarCount-3}`)) { return;}
 
     svg.select("#CP").selectAll("*").remove();
     d3.select("body").select("#tooltipCP").remove();
@@ -499,7 +554,7 @@ function generatePlots(tData){
   function updatePD(clicked) {
 
     if (clicked === "-1" || clicked === `${bdBarCount-2}` ||
-    (bdData.otherFactorsFlag[0] === true && clicked === `${bdBarCount-3}`)){ return;}
+    (bdData.otherFactorsFlag[0] === true && clicked === `${bdBarCount-3}`)) { return;}
 
     svg.select("#PD").selectAll("*").remove();
     d3.select("body").select("#tooltipPD").remove();
@@ -597,31 +652,34 @@ function generatePlots(tData){
               .call(g => g.select(".domain").remove());
 
     // make tooltip
-    var tool_tip = d3.tip()
-                     .attr("class", "tooltip")
-                     .attr("id", "tooltipCP")
-                     .offset([-8, 0])
-                     .html((d, addData) => {
-                        if(addData !== undefined){
-                          return cpChangedTooltipHtml(d, addData);
-                        } else {
+    var tooltip = d3.tip()
+                    .attr("class", "tooltip")
+                    .attr("id", "tooltipCP")
+                    .offset([-8, 0])
+                    .html((d, addData) => {
+
+                      if (d.type === "desc") {
+                        return descTooltipHtml(d)
+                      } else if (addData !== undefined) {
+                        return cpChangedTooltipHtml(d, addData);
+                      } else {
                           return cpStaticTooltipHtml(d);
-                        }
+                      }
                      });
-    CP.call(tool_tip);
+    CP.call(tooltip);
 
     // function to find nearest point on the line
     var bisectXhat = d3.bisector(d => d.xhat).right;
 
-    // tooltip appear with info nearest to mouseover
-    function appear(hover){
+    // show tooltip with info nearest to mouseover
+    function showTooltip(hover){
       var x0 = x.invert(d3.mouse(d3.event.currentTarget)[0]),
           i = bisectXhat(hover, x0),
           d0 = hover[i - 1],
           d1 = hover[i],
           d = x0 - d0.xhat > d1.xhat - x0 ? d1 : d0;
       let temp = pData.find(el => el["observation.id"] === d.id);
-      tool_tip.show(d, temp);
+      tooltip.show(d, temp);
     }
 
     // add lines
@@ -647,7 +705,7 @@ function generatePlots(tData){
                     });
 
         // show changed tooltip
-        appear(d);
+        showTooltip(d);
       })
       .on('mouseout', function(d){
 
@@ -656,7 +714,7 @@ function generatePlots(tData){
           .style("stroke-width", size);
 
         // hide changed tooltip
-        tool_tip.hide(d);
+        tooltip.hide(d);
       });
 
     // add points
@@ -674,17 +732,18 @@ function generatePlots(tData){
       .style("stroke-opacity", 0)
       .style("fill", pointColor)
       .on('mouseover', function(d) {
-        tool_tip.show(d);
+        tooltip.show(d);
     		d3.select(this)
     			.attr("r", 6);
     	})
       .on('mouseout', function(d) {
-        tool_tip.hide(d);
+        tooltip.hide(d);
     		d3.select(this)
     			.attr("r", 3);
     	});
 
     if (showRugs === true) {
+
       // add rugs
       CP.selectAll()
         .data(pData)
@@ -706,6 +765,39 @@ function generatePlots(tData){
       .attr("x", -(plotTop + cpPlotHeight/2))
       .attr("text-anchor", "middle")
       .text("prediction");
+
+    let desctemp = [{type:"desc", "text":"Description:"}];
+
+    let tempWH = 20;
+
+    var description = CP.append("g")
+                        .attr("transform", "translate(" +
+                              (plotLeft + cpPlotWidth - tempWH) +
+                              "," + (plotTop - tempWH) + ")");
+
+    description.selectAll()
+               .data(desctemp)
+               .enter()
+               .append("rect")
+               .attr("class", "descriptionBox")
+               .attr("width", tempWH)
+               .attr("height", tempWH)
+               .on('mouseover', tooltip.show)
+               .on('mouseout', tooltip.hide);
+
+    description.selectAll()
+               .data(desctemp)
+               .enter()
+               .append("text")
+               .attr("class", "descriptionLabel")
+               .attr("dy", "1.1em")
+               .attr("x", 5)
+               .text("D")
+               .on('mouseover', function(d) {
+                 tooltip.show(d);
+                 d3.select(this).style("cursor", "default");
+               })
+               .on('mouseout', tooltip.hide);
   }
 
   function cpCategoricalPlot(variableName, bData, yMinMax, lData) {
@@ -777,12 +869,13 @@ function generatePlots(tData){
     var fullModel = lData[0].yhat;
 
     // make tooltip
-    var tool_tip = d3.tip()
-                     .attr("class", "tooltip")
-                     .attr("id", "tooltipCP")
-                     .offset([-8, 0])
-                     .html(d => cpChangedTooltipHtml(d, lData[0]));
-    CP.call(tool_tip);
+    var tooltip = d3.tip()
+                    .attr("class", "tooltip")
+                    .attr("id", "tooltipCP")
+                    .offset([-8, 0])
+                    .html(d => d.type === "desc" ?
+                     descTooltipHtml(d) : cpChangedTooltipHtml(d, lData[0]));
+    CP.call(tooltip);
 
     // add bars
     bars.append("rect")
@@ -792,18 +885,18 @@ function generatePlots(tData){
         .attr("height", y.bandwidth())
         .attr("x", d => x(d.yhat) < x(fullModel) ? x(d.yhat) : x(fullModel))
         .attr("width", d => Math.abs(x(d.yhat) - x(fullModel)))
-        .on('mouseover', tool_tip.show)
-        .on('mouseout', tool_tip.hide);
+        .on('mouseover', tooltip.show)
+        .on('mouseout', tooltip.hide);
 
     // add intercept line
     var minimumY = Number.MAX_VALUE;
     var maximumY = Number.MIN_VALUE;
 
     bars.selectAll(".".concat(variableName)).each(function() {
-        if(+this.getAttribute('y') < minimumY) {
+        if (+this.getAttribute('y') < minimumY) {
           minimumY = +this.getAttribute('y');
         }
-        if(+this.getAttribute('y') > maximumY) {
+        if (+this.getAttribute('y') > maximumY) {
           maximumY = +this.getAttribute('y');
         }
       });
@@ -822,6 +915,39 @@ function generatePlots(tData){
       .attr("class", "axisTitle")
       .attr("text-anchor", "middle")
       .text("prediction");
+
+    let desctemp = [{type:"desc", "text":"Description:"}];
+
+    let tempWH = 20;
+
+    var description = CP.append("g")
+                        .attr("transform", "translate(" +
+                              (plotLeft + cpPlotWidth - tempWH) +
+                              "," + (plotTop - tempWH) + ")");
+
+    description.selectAll()
+               .data(desctemp)
+               .enter()
+               .append("rect")
+               .attr("class", "descriptionBox")
+               .attr("width", tempWH)
+               .attr("height", tempWH)
+               .on('mouseover', tooltip.show)
+               .on('mouseout', tooltip.hide);
+
+    description.selectAll()
+               .data(desctemp)
+               .enter()
+               .append("text")
+               .attr("class", "descriptionLabel")
+               .attr("dy", "1.1em")
+               .attr("x", 5)
+               .text("D")
+               .on('mouseover', function(d) {
+                 tooltip.show(d);
+                 d3.select(this).style("cursor", "default");
+               })
+               .on('mouseout', tooltip.hide);
   }
 
   function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
@@ -892,25 +1018,26 @@ function generatePlots(tData){
               .call(g => g.select(".domain").remove());
 
     // make tooltip
-    var tool_tip = d3.tip()
-                     .attr("class", "tooltip")
-                     .attr("id", "tooltipPD")
-                     .offset([-8, 0])
-                     .html(d => pdStaticTooltipHtml(d, variableName, yMean));
-    PD.call(tool_tip);
+    var tooltip = d3.tip()
+                    .attr("class", "tooltip")
+                    .attr("id", "tooltipPD")
+                    .offset([-8, 0])
+                    .html(d => d.type === "desc" ?
+                     descTooltipHtml(d) : pdStaticTooltipHtml(d, variableName, yMean));
+    PD.call(tooltip);
 
     // function to find nearest point on the line
     var bisectXhat = d3.bisector(d => d.xhat).right;
 
-    // tooltip appear with info nearest to mouseover
-    function appear(hover){
+    // show tooltip with info nearest to mouseover
+    function showTooltip(hover){
       var x0 = x.invert(d3.mouse(d3.event.currentTarget)[0]),
           i = bisectXhat(hover, x0),
           d0 = hover[i - 1],
           d1 = hover[i],
           d = x0 - d0.xhat > d1.xhat - x0 ? d1 : d0;
 
-      tool_tip.show(d);
+      tooltip.show(d);
     }
 
     // add lines
@@ -924,15 +1051,16 @@ function generatePlots(tData){
       .style("stroke-width", size)
       .on('mouseover', function(d){
 
+        // make mouseover line more visible
         d3.select(this)
           .style("stroke", pointColor)
           .style("stroke-width", size*1.5);
 
-        // make line and points appear on top
+        // make line appear on top
         this.parentNode.appendChild(this);
 
         // show changed tooltip
-        appear(d);
+        showTooltip(d);
       })
       .on('mouseout', function(d){
 
@@ -941,7 +1069,7 @@ function generatePlots(tData){
           .style("stroke-width", size);
 
         // hide changed tooltip
-        tool_tip.hide(d);
+        tooltip.hide(d);
       });
 
     PD.append("text")
@@ -951,6 +1079,39 @@ function generatePlots(tData){
       .attr("x", -(plotTop + pdPlotHeight/2))
       .attr("text-anchor", "middle")
       .text("average prediction");
+
+    let desctemp = [{type:"desc", "text":"Description:"}];
+
+    let tempWH = 20;
+
+    var description = PD.append("g")
+                        .attr("transform", "translate(" +
+                              (plotLeft + pdPlotWidth - tempWH) +
+                              "," + (plotTop - tempWH) + ")");
+
+    description.selectAll()
+               .data(desctemp)
+               .enter()
+               .append("rect")
+               .attr("class", "descriptionBox")
+               .attr("width", tempWH)
+               .attr("height", tempWH)
+               .on('mouseover', tooltip.show)
+               .on('mouseout', tooltip.hide);
+
+    description.selectAll()
+               .data(desctemp)
+               .enter()
+               .append("text")
+               .attr("class", "descriptionLabel")
+               .attr("dy", "1.1em")
+               .attr("x", 5)
+               .text("D")
+               .on('mouseover', function(d) {
+                 tooltip.show(d);
+                 d3.select(this).style("cursor", "default");
+               })
+               .on('mouseout', tooltip.hide);
   }
 
   function pdCategoricalPlot(variableName, bData, yMinMax, yMean) {
@@ -1020,12 +1181,13 @@ function generatePlots(tData){
     var fullModel = yMean;
 
     // make tooltip
-    var tool_tip = d3.tip()
-                     .attr("class", "tooltip")
-                     .attr("id", "tooltipPD")
-                     .offset([-8, 0])
-                     .html(d => pdStaticTooltipHtml(d, variableName, yMean));
-    PD.call(tool_tip);
+    var tooltip = d3.tip()
+                    .attr("class", "tooltip")
+                    .attr("id", "tooltipPD")
+                    .offset([-8, 0])
+                    .html(d => d.type === "desc" ?
+                     descTooltipHtml(d) : pdStaticTooltipHtml(d, variableName, yMean));
+    PD.call(tooltip);
 
     // add bars
     bars.append("rect")
@@ -1035,17 +1197,18 @@ function generatePlots(tData){
         .attr("height", y.bandwidth())
         .attr("x", d => x(d.yhat) < x(fullModel) ? x(d.yhat) : x(fullModel))
         .attr("width", d => Math.abs(x(d.yhat) - x(fullModel)))
-        .on('mouseover', tool_tip.show)
-        .on('mouseout', tool_tip.hide);
+        .on('mouseover', tooltip.show)
+        .on('mouseout', tooltip.hide);
 
     // add intercept line
     var minimumY = Number.MAX_VALUE;
     var maximumY = Number.MIN_VALUE;
+
     bars.selectAll(".".concat(variableName)).each(function() {
-        if(+this.getAttribute('y') < minimumY) {
+        if (+this.getAttribute('y') < minimumY) {
           minimumY = +this.getAttribute('y');
         }
-        if(+this.getAttribute('y') > maximumY) {
+        if (+this.getAttribute('y') > maximumY) {
           maximumY = +this.getAttribute('y');
         }
       });
@@ -1064,6 +1227,39 @@ function generatePlots(tData){
       .attr("class", "axisTitle")
       .attr("text-anchor", "middle")
       .text("average prediction");
+
+    let desctemp = [{type:"desc", "text":"Description:"}];
+
+    let tempWH = 20;
+
+    var description = PD.append("g")
+                        .attr("transform", "translate(" +
+                              (plotLeft + pdPlotWidth - tempWH) +
+                              "," + (plotTop - tempWH) + ")");
+
+    description.selectAll()
+               .data(desctemp)
+               .enter()
+               .append("rect")
+               .attr("class", "descriptionBox")
+               .attr("width", tempWH)
+               .attr("height", tempWH)
+               .on('mouseover', tooltip.show)
+               .on('mouseout', tooltip.hide);
+
+    description.selectAll()
+               .data(desctemp)
+               .enter()
+               .append("text")
+               .attr("class", "descriptionLabel")
+               .attr("dy", "1.1em")
+               .attr("x", 5)
+               .text("D")
+               .on('mouseover', function(d) {
+                 tooltip.show(d);
+                 d3.select(this).style("cursor", "default");
+               })
+               .on('mouseout', tooltip.hide);
   }
 
   /// tooltip functions
@@ -1117,8 +1313,8 @@ function generatePlots(tData){
          "model loss after feature " + d.variable
         + "</br>" + "<center>" +
         " is permuted: " +  Math.round(d.dropout_loss * 1000)/1000
-        + "</br>" + "<center>" +
-        "drop-out loss change: "  + sign + Math.round((d.dropout_loss-d.full_model)*1000)/1000;
+        + "</br>" + "<center>" + "drop-out loss change: " +
+        sign + Math.round((d.dropout_loss-d.full_model)*1000)/1000;
       return temp;
   }
 
@@ -1144,6 +1340,13 @@ function generatePlots(tData){
     temp += "</br><center>" +
             "mean observation prediction:" +
             "</br>" + yMean + "</br>";
+    return temp;
+  }
+
+  function descTooltipHtml(d) {
+    var temp = "<center>";
+    temp += d.text;
+    temp += "</center>";
     return temp;
   }
 }

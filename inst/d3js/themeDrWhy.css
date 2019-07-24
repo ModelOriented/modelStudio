@@ -96,6 +96,18 @@ text {
     stroke:#371ea3;
     stroke-width:2;
 }
+
+.descriptionBox {
+    fill: #ceced9;
+    opacity: 0.5;
+}
+
+.descriptionLabel {
+    fill: #371ea3;
+    font-weight: 900;
+    font-size: 14px;
+}
+
 .d3-tip {
     line-height: 1.1;
     padding: 6px;
