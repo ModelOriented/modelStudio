@@ -60,37 +60,45 @@ function initializeStudio() {
      .attr("y1", margin.top - margin.big)
      .attr("y2", margin.top - margin.big);
 
-  let tempW = 10;
+  var buttonClicked = false;
 
-  var legend = DEC.selectAll(".legend")
-                  .data(observationIds)
-                  .enter()
-                  .append("g")
-                  .attr("class", "legend")
-                  .attr("transform", function(d, i) {
+  // add select observation input
+  d3.select(".r2d3.html-widget.html-widget-static-bound").style("position","absolute");
 
-                    let temp = getTextWidth(d, 13, "Arial");
-                    tempW = tempW + temp + 20;
-                    return "translate(" + (studioWidth - tempW) +
-                        "," + (margin.top - 25) + ")";
-                  });
+  let tempW = calculateTextWidth(observationIds)*1.6 + 18;
 
-  legend.append("text")
-        .attr("dy", ".6em")
-        .attr("class", "smallTitle")
-        .text(d => d)
-        .attr("x", 14)
-        .on("mouseover", function() { d3.select(this).style("cursor", "pointer");})
-        .on("mouseout", function() { d3.select(this).style("cursor", "auto");})
-        .on("click", function(d){
+  var inputDiv = d3.select("#htmlwidget_container")
+                   .append("div")
+                   .style("position", "absolute")
+                   .style("display", "inline-grid")
+                   .style("left", (studioWidth - 10 - tempW)+"px")
+                   .style("top", -studioHeight + 150);
 
-          // delete old tooltips, when changing observation
-          d3.select("body").selectAll(".tooltip").remove();
-          // chose clicked data
-          let tData = data[d];
-          // update all plots with new data (with existing ones on their places)
-          generatePlots(tData);
-        });
+  var input = inputDiv.append("select")
+                      .attr("id","input")
+                      .style("font-size", "15px")
+                      .style("font-weight", 600)
+                      .style("color", "#371ea3");
+
+  input.selectAll()
+       .data(observationIds)
+       .enter()
+       .append("option")
+       .attr("value", d => d)
+       .text(d => d)
+       .style("font-size", "15px")
+       .style("font-weight", 600)
+       .style("color", "#371ea3");
+
+  input.on("change", function() {
+
+         // delete old tooltips, when changing observation
+         d3.select("body").selectAll(".tooltip").remove();
+         // chose clicked data
+         let tData = data[this.value];
+         // update all plots with new data (with existing ones on their places)
+         generatePlots(tData);
+       });
 
   // reload studio = delete everything and set up buttons
   reloadStudio();

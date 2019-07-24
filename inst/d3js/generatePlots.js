@@ -110,6 +110,14 @@ function generatePlots(tData){
               .range([plotLeft,  plotLeft + bdPlotWidth])
               .domain([xMinMax[0], xMinMax[1]]);
 
+    BD.append("text")
+      .attr("transform",
+            "translate(" + (plotLeft + bdPlotWidth + margin.right)/2 + " ," +
+                           (plotTop + bdPlotHeight + 45) + ")")
+      .attr("class", "axisTitle")
+      .attr("text-anchor", "middle")
+      .text("contribution");
+
     var xAxis = d3.axisBottom(x)
                   .ticks(5)
                   .tickSize(0);
@@ -293,7 +301,7 @@ function generatePlots(tData){
     var isNumeric = cpData.is_numeric;
     var variables = cpData.variables;
 
-    var start = 1;
+    var start = 0;
 
     let variableName = variables[start];
 
@@ -321,6 +329,7 @@ function generatePlots(tData){
             "translate(" + (plotLeft + fiPlotWidth + margin.right)/2 + " ," +
                            (plotTop + fiPlotHeight + 45) + ")")
       .attr("class", "axisTitle")
+      .attr("text-anchor", "middle")
       .text("drop-out loss");
 
     var xAxis = d3.axisBottom(x)
@@ -440,7 +449,7 @@ function generatePlots(tData){
     var isNumeric = pdData.is_numeric;
     var variables = pdData.variables;
 
-    var start = 1;
+    var start = 0;
 
     let variableName = variables[start];
 
@@ -526,6 +535,14 @@ function generatePlots(tData){
               .range([plotLeft + 10, plotLeft + cpPlotWidth - 10])
               .domain([mData[0], mData[1]]);
 
+    CP.append("text")
+      .attr("transform",
+            "translate(" + (plotLeft + cpPlotWidth + margin.right)/2 + " ," +
+                           (plotTop + cpPlotHeight + 45) + ")")
+      .attr("class", "axisTitle")
+      .attr("text-anchor", "middle")
+      .text(variableName + " = " + pData[0][variableName]);
+
     var y = d3.scaleLinear()
               .range([plotTop + cpPlotHeight, plotTop])
               .domain([yMinMax[0], yMinMax[1]]);
@@ -545,7 +562,7 @@ function generatePlots(tData){
       .attr("class","smallTitle")
       .attr("x", plotLeft)
       .attr("y", plotTop - 15)
-      .text(variableName + " = " + pData[0][variableName]);
+      .text(modelName); //variableName + " = " + pData[0][variableName]
 
     // find 5 nice ticks with max and min - do better than d3
     var tickValues = getTickValues(x.domain());
@@ -584,7 +601,7 @@ function generatePlots(tData){
                      .attr("class", "tooltip")
                      .attr("id", "tooltipCP")
                      .offset([-8, 0])
-                     .html(function(d, addData) {
+                     .html((d, addData) => {
                         if(addData !== undefined){
                           return cpChangedTooltipHtml(d, addData);
                         } else {
@@ -744,7 +761,7 @@ function generatePlots(tData){
       .attr("x", plotLeft)
       .attr("y", plotTop - 15)
       .attr("class", "smallTitle")
-      .text(variableName + " = " + lData[0][variableName]);
+      .text(modelName); //variableName + " = " + lData[0][variableName]
 
     CP.append("text")
       .attr("x", plotLeft)
@@ -813,6 +830,14 @@ function generatePlots(tData){
               .range([plotLeft + 10, plotLeft + pdPlotWidth - 10])
               .domain([mData[0], mData[1]]);
 
+    PD.append("text")
+      .attr("transform",
+            "translate(" + (plotLeft + pdPlotWidth + margin.right)/2 + " ," +
+                           (plotTop + pdPlotHeight + 45) + ")")
+      .attr("class", "axisTitle")
+      .attr("text-anchor", "middle")
+      .text(variableName);
+
     var y = d3.scaleLinear()
               .range([plotTop + pdPlotHeight, plotTop])
               .domain([yMinMax[0], yMinMax[1]]);
@@ -832,7 +857,7 @@ function generatePlots(tData){
       .attr("class","smallTitle")
       .attr("x", plotLeft)
       .attr("y", plotTop - 15)
-      .text(variableName);
+      .text(modelName); // variableName
 
     // find 5 nice ticks with max and min - do better than d3
     var tickValues = getTickValues(x.domain());
@@ -979,7 +1004,7 @@ function generatePlots(tData){
       .attr("x", plotLeft)
       .attr("y", plotTop - 15)
       .attr("class", "smallTitle")
-      .text(variableName);
+      .text(modelName); // variableName
 
     PD.append("text")
       .attr("x", plotLeft)
@@ -996,10 +1021,10 @@ function generatePlots(tData){
 
     // make tooltip
     var tool_tip = d3.tip()
-          .attr("class", "tooltip")
-          .attr("id", "tooltipPD")
-          .offset([-8, 0])
-          .html(d => pdStaticTooltipHtml(d, variableName, yMean));
+                     .attr("class", "tooltip")
+                     .attr("id", "tooltipPD")
+                     .offset([-8, 0])
+                     .html(d => pdStaticTooltipHtml(d, variableName, yMean));
     PD.call(tool_tip);
 
     // add bars
