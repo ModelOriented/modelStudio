@@ -287,7 +287,7 @@ function generatePlots(tData){
          .attr("x2", d => d.contribution < 0 ? x(d.barStart) : x(d.barSupport))
          .attr("y2", d => d.variable == "prediction" ? y(d.variable) : y(d.variable) + bdBarWidth*2.5);
 
-    let desctemp = [{type:"desc", "text":"Description:"}];
+    let desctemp = [{type:"desc", "text":"Description: TBD"}];
 
     let tempWH = 20;
 
@@ -470,7 +470,7 @@ function generatePlots(tData){
       .attr("x2", x(fullModel))
       .attr("y2", maximumY + y.bandwidth());
 
-    let desctemp = [{type:"desc", "text":"Description:"}];
+    let desctemp = [{type:"desc", "text":"Description: TBD"}];
 
     let tempWH = 20;
 
@@ -844,7 +844,7 @@ function generatePlots(tData){
       .attr("text-anchor", "middle")
       .text("prediction");
 
-    let desctemp = [{type:"desc", "text":"Description:"}];
+    let desctemp = [{type:"desc", "text":"Description: TBD"}];
 
     let tempWH = 20;
 
@@ -994,7 +994,7 @@ function generatePlots(tData){
       .attr("text-anchor", "middle")
       .text("prediction");
 
-    let desctemp = [{type:"desc", "text":"Description:"}];
+    let desctemp = [{type:"desc", "text":"Description: TBD"}];
 
     let tempWH = 20;
 
@@ -1158,7 +1158,7 @@ function generatePlots(tData){
       .attr("text-anchor", "middle")
       .text("average prediction");
 
-    let desctemp = [{type:"desc", "text":"Description:"}];
+    let desctemp = [{type:"desc", "text":"Description: TBD"}];
 
     let tempWH = 20;
 
@@ -1306,7 +1306,7 @@ function generatePlots(tData){
       .attr("text-anchor", "middle")
       .text("average prediction");
 
-    let desctemp = [{type:"desc", "text":"Description:"}];
+    let desctemp = [{type:"desc", "text":"Description: TBD"}];
 
     let tempWH = 20;
 
@@ -1470,7 +1470,7 @@ function generatePlots(tData){
       .attr("text-anchor", "middle")
       .text("accumulated prediction");
 
-    let desctemp = [{type:"desc", "text":"Description:"}];
+    let desctemp = [{type:"desc", "text":"Description: TBD"}];
 
     let tempWH = 20;
 
@@ -1618,7 +1618,7 @@ function generatePlots(tData){
       .attr("text-anchor", "middle")
       .text("accumulated prediction");
 
-    let desctemp = [{type:"desc", "text":"Description:"}];
+    let desctemp = [{type:"desc", "text":"Description: TBD"}];
 
     let tempWH = 20;
 
