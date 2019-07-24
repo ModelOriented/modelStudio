@@ -3,14 +3,10 @@ prepareBreakDown <- function(x, max_features = 10, baseline = NA, digits = 3,
   ### This function returns object needed to plot BreakDown in D3 ###
 
   m <- ifelse(nrow(x) - 2 <= max_features, nrow(x), max_features + 3)
-  other_factors_flag <- ifelse(nrow(x) - 2 <= max_features, FALSE, TRUE)
 
   new_x <- prepareBreakDownDF(x, max_features, baseline, digits, rounding_function)
 
-  # later count longest label width in d3
-  label_list <- as.character(new_x[,'variable'])
-
-  variables <- setdiff(unique(as.character(new_x[,'variable_name'])), c("prediction","intercept","other"))
+  #variables <- setdiff(unique(as.character(new_x[,'variable_name'])), c("prediction","intercept","other"))
 
   if (any(is.na(min_max))) {
     if (is.na(baseline)) {
@@ -28,10 +24,8 @@ prepareBreakDown <- function(x, max_features = 10, baseline = NA, digits = 3,
   ret <- NULL
   ret$x <- new_x
   ret$m <- m
-  ret$label_list <- label_list
-  ret$variables <- variables
+  #ret$variables <- variables
   ret$x_min_max <- min_max
-  ret$otherFactorsFlag <- other_factors_flag
 
   ret
 }
@@ -98,6 +92,7 @@ prepareCeterisParibus <- function(x, variables = NULL) {
 
   # which variable is numeric?
   is_numeric <- sapply(x[, variables, drop = FALSE], is.numeric)
+  names(is_numeric) <- variables
 
   # prepare clean observations data for tooltips
   all_observations <- attr(x, "observations")
@@ -154,8 +149,8 @@ prepareCeterisParibus <- function(x, variables = NULL) {
   ret$x <- new_x
   ret$y_min_max <- y_min_max
   ret$x_min_max_list <- x_min_max_list
-  ret$is_numeric <- is_numeric
-  ret$variables <- variables
+  ret$is_numeric <- as.list(is_numeric)
+
   ret
 }
 
@@ -167,10 +162,10 @@ prepareFeatureImportance <- function(x, max_features = 10, margin = 0.2) {
   xmin <- min(x$dropout_loss)
   xmax <- max(x[x$variable!="_baseline_",]$dropout_loss)
 
-  ticksMargin <- abs(xmin-xmax)*margin;
+  ticks_margin <- abs(xmin-xmax)*margin;
 
-  bestFits <- x[x$variable == "_full_model_", ]
-  x <- merge(x, bestFits[,c("label", "dropout_loss")], by = "label")
+  best_fits <- x[x$variable == "_full_model_", ]
+  x <- merge(x, best_fits[,c("label", "dropout_loss")], by = "label")
 
   # remove rows that starts with _
   x <- x[!(substr(x$variable,1,1) == "_"),]
@@ -189,11 +184,10 @@ prepareFeatureImportance <- function(x, max_features = 10, margin = 0.2) {
   x <- x[order(x$variable),]
 
   colnames(x) <- c("label","variable","dropout_loss", "full_model")
-  labelList <- unique(as.character(x$variable))
 
   ret <- NULL
   ret$x <- x[,2:4]
-  ret$x_min_max <- c(xmin-ticksMargin, xmax+ticksMargin)
+  ret$x_min_max <- c(xmin - ticks_margin, xmax + ticks_margin)
 
   ret
 }
@@ -207,6 +201,7 @@ preparePartialDependency <- function(x, y, variables = NULL) {
   is_numeric <- c(rep(TRUE, length(num)), rep(FALSE, length(cat)))
   names(is_numeric) <- c(num, cat)
   is_numeric <- is_numeric[variables]
+  names(is_numeric) <- variables
 
   # prepare aggregated profiles data
   aggregated_profiles <- rbind(x,y)
@@ -259,7 +254,7 @@ preparePartialDependency <- function(x, y, variables = NULL) {
   ret$x <- new_x
   ret$y_min_max <- y_min_max
   ret$x_min_max_list <- x_min_max_list
-  ret$is_numeric <- is_numeric
-  ret$variables <- variables
+  ret$is_numeric <- as.list(is_numeric)
+
   ret
 }

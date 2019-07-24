@@ -3,14 +3,13 @@ function generatePlots(tData){
 
   /// load all data
   var bdData = tData[0],
-      cpData = tData[1],
-      fiData = tData[2],
-      pdData = tData[3];
+      cpData = tData[1];
+  // fiData and pdData comes from modelStudio.js file
 
-  var cpPlotCount = bdData.variables.length,
+  var cpPlotCount = variableNames.length,
       bdBarCount = bdData.m[0],
       fiBarCount = bdData.m[0]-1,
-      pdPlotCount = bdData.variables.length;
+      pdPlotCount = variableNames.length;
 
   var plotTop = margin.top, plotLeft = margin.left;
 
@@ -227,8 +226,9 @@ function generatePlots(tData){
         .attr("width", d => x(d.barSupport)-x(d.barStart) < 1 ? 5 : x(d.barSupport) - x(d.barStart))
         .on('mouseover', tooltip.show)
         .on('mouseout', tooltip.hide)
-        .attr("id", (d,i) => i-1)
+        .attr("id", (d) => d.variable_name)
         .on("click", function(){
+          GLOBAL_CLICKED_VARIABLE_NAME = this.id;
           updateCP(this.id);
           updatePD(this.id);
         });
@@ -282,7 +282,7 @@ function generatePlots(tData){
     var description = BD.append("g")
                         .attr("transform", "translate(" +
                               (plotLeft + bdPlotWidth - tempWH) +
-                              "," + (plotTop - tempWH) + ")");
+                              "," + (plotTop - tempWH - 5) + ")");
 
     description.selectAll()
                .data(desctemp)
@@ -318,14 +318,11 @@ function generatePlots(tData){
     var yMinMax = cpData.y_min_max;
     var obsData = cpData.observation;
     var isNumeric = cpData.is_numeric;
-    var variables = cpData.variables;
 
-    var start = 0;
-
-    let variableName = variables[start];
+    let variableName = GLOBAL_CLICKED_VARIABLE_NAME;
 
     // lines or bars?
-    if (isNumeric[start]) {
+    if (isNumeric[variableName][0]) {
       cpNumericalPlot(variableName, profData[variableName], xMinMax[variableName],
                       yMinMax, obsData);
     } else {
@@ -434,8 +431,9 @@ function generatePlots(tData){
         .attr("width", d => Math.abs(x(d.dropout_loss) - x(fullModel)))
         .on('mouseover', tooltip.show)
         .on('mouseout', tooltip.hide)
-        .attr("id", (d,i) => i-1)
+        .attr("id", (d) => d.variable)
         .on("click", function(){
+          GLOBAL_CLICKED_VARIABLE_NAME = this.id;
           updateCP(this.id);
           updatePD(this.id);
         });
@@ -466,7 +464,7 @@ function generatePlots(tData){
     var description = FI.append("g")
                         .attr("transform", "translate(" +
                               (plotLeft + fiPlotWidth - tempWH) +
-                              "," + (plotTop - tempWH) + ")");
+                              "," + (plotTop - tempWH - 5) + ")");
 
     description.selectAll()
                .data(desctemp)
@@ -502,14 +500,11 @@ function generatePlots(tData){
     var yMinMax = pdData.y_min_max;
     var yMean = pdData.y_mean;
     var isNumeric = pdData.is_numeric;
-    var variables = pdData.variables;
 
-    var start = 0;
-
-    let variableName = variables[start];
+    let variableName = GLOBAL_CLICKED_VARIABLE_NAME;
 
     //lines or bars?
-    if (isNumeric[start]) {
+    if (isNumeric[variableName][0]) {
       pdNumericalPlot(variableName, profData[variableName], xMinMax[variableName],
                       yMinMax, yMean);
     } else {
@@ -520,10 +515,10 @@ function generatePlots(tData){
 
   /// update plot functions
 
-  function updateCP(clicked) {
+  function updateCP(variableName) {
 
-    if (clicked === "-1" || clicked === `${bdBarCount-2}` ||
-    (bdData.otherFactorsFlag[0] === true && clicked === `${bdBarCount-3}`)) { return;}
+    if (variableName == "prediction" || variableName == "intercept" ||
+        variableName == "other") { return;}
 
     svg.select("#CP").selectAll("*").remove();
     d3.select("body").select("#tooltipCP").remove();
@@ -533,12 +528,9 @@ function generatePlots(tData){
     var yMinMax = cpData.y_min_max;
     var obsData = cpData.observation;
     var isNumeric = cpData.is_numeric;
-    var variables = cpData.variables;
-
-    let variableName = variables[clicked];
 
     // lines or bars?
-    if (isNumeric[clicked]) {
+    if (isNumeric[variableName][0]) {
       cpNumericalPlot(variableName, profData[variableName], xMinMax[variableName],
                       yMinMax, obsData);
     } else {
@@ -551,10 +543,10 @@ function generatePlots(tData){
        .style('font-family', 'Arial');
   }
 
-  function updatePD(clicked) {
+  function updatePD(variableName) {
 
-    if (clicked === "-1" || clicked === `${bdBarCount-2}` ||
-    (bdData.otherFactorsFlag[0] === true && clicked === `${bdBarCount-3}`)) { return;}
+    if (variableName == "prediction" || variableName == "intercept" ||
+        variableName == "other") { return;}
 
     svg.select("#PD").selectAll("*").remove();
     d3.select("body").select("#tooltipPD").remove();
@@ -564,12 +556,9 @@ function generatePlots(tData){
     var yMinMax = pdData.y_min_max;
     var yMean = pdData.y_mean;
     var isNumeric = pdData.is_numeric;
-    var variables = pdData.variables;
-
-    let variableName = variables[clicked];
 
     // lines or bars?
-    if (isNumeric[clicked]) {
+    if (isNumeric[variableName][0]) {
       pdNumericalPlot(variableName, profData[variableName], xMinMax[variableName],
                       yMinMax, yMean);
     } else {
@@ -773,7 +762,7 @@ function generatePlots(tData){
     var description = CP.append("g")
                         .attr("transform", "translate(" +
                               (plotLeft + cpPlotWidth - tempWH) +
-                              "," + (plotTop - tempWH) + ")");
+                              "," + (plotTop - tempWH - 5) + ")");
 
     description.selectAll()
                .data(desctemp)
@@ -923,7 +912,7 @@ function generatePlots(tData){
     var description = CP.append("g")
                         .attr("transform", "translate(" +
                               (plotLeft + cpPlotWidth - tempWH) +
-                              "," + (plotTop - tempWH) + ")");
+                              "," + (plotTop - tempWH - 5) + ")");
 
     description.selectAll()
                .data(desctemp)
@@ -1087,7 +1076,7 @@ function generatePlots(tData){
     var description = PD.append("g")
                         .attr("transform", "translate(" +
                               (plotLeft + pdPlotWidth - tempWH) +
-                              "," + (plotTop - tempWH) + ")");
+                              "," + (plotTop - tempWH - 5) + ")");
 
     description.selectAll()
                .data(desctemp)
@@ -1235,7 +1224,7 @@ function generatePlots(tData){
     var description = PD.append("g")
                         .attr("transform", "translate(" +
                               (plotLeft + pdPlotWidth - tempWH) +
-                              "," + (plotTop - tempWH) + ")");
+                              "," + (plotTop - tempWH - 5) + ")");
 
     description.selectAll()
                .data(desctemp)

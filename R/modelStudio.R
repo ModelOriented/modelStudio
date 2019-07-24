@@ -83,47 +83,56 @@ modelStudio.default <- function(x,
                                 label = NULL,
                                 ...) {
 
-  obsCount <- dim(new_observation)[1]
+  ## safeguard
+  new_observation <- as.data.frame(new_observation)
+  data <- as.data.frame(data)
 
-  if(obsCount > 10) stop("There are more than 10 observations.")
+  obs_count <- dim(new_observation)[1]
+
+  if(obs_count > 10) stop("There are more than 10 observations.")
 
   if(is.null(label)) label <- class(x)[1]
 
-  obsData <- new_observation
-  obsList <- list()
+  variable_names <- colnames(new_observation)
+  obs_data <- new_observation
+  obs_list <- list()
 
-  pb <- txtProgressBar(0, obsCount, style=3)
+  pb <- txtProgressBar(0, obs_count, style=3)
 
-  for(i in 1:obsCount){
+  ## count only once
+  fi <- ingredients::feature_importance(x, data, y, predict_function, ...)
+  pd_n <- ingredients::partial_dependency(x, data, predict_function, only_numerical = TRUE, N = N)
+  pd_c <- ingredients::partial_dependency(x, data, predict_function, only_numerical = FALSE, N = N)
+
+  fi_data <- prepareFeatureImportance(fi, max_features, ...)
+  pd_data <- preparePartialDependency(pd_n, pd_c, variables = variable_names)
+
+  ## count once per observation
+  for(i in 1:obs_count){
     setTxtProgressBar(pb, i)
 
-    new_observation <- obsData[i,]
+    new_observation <- obs_data[i,]
 
-    breakDown <- iBreakDown::local_attributions(x, data, predict_function, new_observation, label=label)
-    ceterisParibus <- ingredients::ceteris_paribus(x, data, predict_function, new_observation, label=label)
-    featureImportance <- ingredients::feature_importance(x, data, y, predict_function, ...)
-    partialDependencyN <- ingredients::partial_dependency(x, data, predict_function, only_numerical = TRUE, N = N)
-    partialDependencyC <- ingredients::partial_dependency(x, data, predict_function, only_numerical = FALSE, N = N)
+    bd <- iBreakDown::local_attributions(x, data, predict_function, new_observation, label=label)
+    cp <- ingredients::ceteris_paribus(x, data, predict_function, new_observation, label=label)
 
-    bdData <- prepareBreakDown(breakDown, max_features, ...)
-    cpData <- prepareCeterisParibus(ceterisParibus, variables = bdData$variables)
-    fiData <- prepareFeatureImportance(featureImportance, max_features, ...)
-    pdData <- preparePartialDependency(partialDependencyN, partialDependencyC, variables = bdData$variables)
+    bd_data <- prepareBreakDown(bd, max_features, ...)
+    cp_data <- prepareCeterisParibus(cp, variables = variable_names)
 
-    obsList[[i]] <- list(bdData, cpData, fiData, pdData)
+    obs_list[[i]] <- list(bd_data, cp_data)
   }
 
-  names(obsList) <- rownames(obsData)
+  names(obs_list) <- rownames(obs_data)
 
   options <- list(size = 2, alpha = 1, bar_width = 16,
-                  cp_title = "Ceteris Paribus Profiles", bd_title = "Break Down",
+                  cp_title = "Ceteris Paribus", bd_title = "Break Down",
                   fi_title = "Feature Importance", pd_title = "Partial Dependency",
-                  model_name = label,
+                  model_name = label, variable_names = variable_names,
                   show_rugs = TRUE, facet_dim = facet_dim)
 
-  temp <- jsonlite::toJSON(obsList)
+  temp <- jsonlite::toJSON(list(obs_list, fi_data, pd_data))
 
-  sizingPolicy <- r2d3::sizingPolicy(padding = 10, browser.fill = TRUE)
+  sizing_policy <- r2d3::sizingPolicy(padding = 10, browser.fill = TRUE)
 
   r2d3::r2d3(
     data = temp,
@@ -138,6 +147,6 @@ modelStudio.default <- function(x,
     options = options,
     d3_version = "4",
     viewer = "external",
-    sizing = sizingPolicy
+    sizing = sizing_policy
   )
 }

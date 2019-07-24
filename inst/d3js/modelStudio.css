@@ -51,7 +51,9 @@ text {
 }
 
 .grid .tick line{
-    stroke: #f0f0f4;
+    /*stroke: #f0f0f4;*/
+    stroke: #ceced9;
+    opacity: 0.5;
     stroke-width: 1px
 }
 

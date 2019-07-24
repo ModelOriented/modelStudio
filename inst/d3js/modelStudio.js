@@ -1,12 +1,15 @@
 //// set all dimmensions \\\\
-
+// load all data
+var obsData = data[0], fiData = data[1], pdData = data[2];
 // load options
 var size = options.size, alpha = options.alpha, barWidth = options.bar_width,
     cpTitle = options.cp_title, bdTitle = options.bd_title,
     fiTitle = options.fi_title, pdTitle = options.pd_title,
-    modelName = options.model_name,
+    modelName = options.model_name, variableNames = options.variable_names,
     showRugs = options.show_rugs,
     dim = options.facet_dim;
+
+var GLOBAL_CLICKED_VARIABLE_NAME = variableNames[0];
 
 // set dimensions (TODO: pass as options)
 var margin = {top: 50, right: 20, bottom: 70, left: 105, inner: 40,
@@ -21,7 +24,7 @@ var studioWidth = dim[1]*plotWidth,
     studioHeight = dim[0]*plotHeight + margin.top;
 
 // for observation choice
-var observationIds = Object.keys(data);
+var observationIds = Object.keys(obsData);
 
 var notVisiblePlots = [{text:"Break Down [Local]",id:"BD"},
                        {text:"Ceteris Paribus [Local]",id:"CP"},
@@ -99,7 +102,7 @@ function initializeStudio() {
          // delete old tooltips, when changing observation
          d3.select("body").selectAll(".tooltip").remove();
          // chose clicked data
-         let tData = data[this.value];
+         let tData = obsData[this.value];
          // update all plots with new data (with existing ones on their places)
          generatePlots(tData);
        });
@@ -107,7 +110,7 @@ function initializeStudio() {
   // reload studio = delete everything and set up buttons
   reloadStudio();
   // chose new data, initialize with 1st observation
-  let tData = data[observationIds[0]];
+  let tData = obsData[observationIds[0]];
   // plot new data
   generatePlots(tData);
 }
