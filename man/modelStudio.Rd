@@ -40,8 +40,7 @@ modelStudio(x, ...)
 an object of the `r2d3` class.
 }
 \description{
-The main goal of this function is to connect two local model explainers: Ceteris Paribus and Break Down.
-It also shows global explainers for your model such as Partial Dependency and Feature Importance.
+TBD.
 }
 \examples{
 library("dime")
