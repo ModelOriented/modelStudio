@@ -1,7 +1,7 @@
 #' @title Generate interactive studio for your model
 #'
 #' @description
-#' TBD.
+#' TODO.
 #'
 #' @param x an explainer created with function `DALEX::explain()` or a model to be explained.
 #' @param new_observation a new observation with columns that correspond to variables used in the model.
