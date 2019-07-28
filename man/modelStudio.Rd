@@ -4,7 +4,7 @@
 \alias{modelStudio}
 \alias{modelStudio.explainer}
 \alias{modelStudio.default}
-\title{Generate interactive studio for your model}
+\title{Generates interactive studio to explore your predictive model}
 \usage{
 modelStudio(x, ...)
 
@@ -40,7 +40,9 @@ modelStudio(x, ...)
 an object of the `r2d3` class.
 }
 \description{
-TBD.
+This tool uses your model, data and new observations, to provide local
+and global explanations. It generates plots and descriptions in the form
+of HTML site, that supports animations and interactivity made with D3.js.
 }
 \examples{
 library("dime")
@@ -66,5 +68,5 @@ modelStudio(explain_titanic_glm, new_observation, N = 50)
 
 }
 \references{
-ingredients \url{https://modeloriented.github.io/ingredients/} iBreakDown \url{https://modeloriented.github.io/iBreakDown/}
+*ingredients* \url{https://modeloriented.github.io/ingredients/} *iBreakDown* \url{https://modeloriented.github.io/iBreakDown/}
 }
