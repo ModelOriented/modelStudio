@@ -122,7 +122,7 @@ function generatePlots(tData){
 
     BD.append("text")
       .attr("transform",
-            "translate(" + (plotLeft + bdPlotWidth + margin.right)/2 + " ," +
+            "translate(" + (plotLeft + bdPlotWidth/2) + " ," +
                            (plotTop + bdPlotHeight + 45) + ")")
       .attr("class", "axisTitle")
       .attr("text-anchor", "middle")
@@ -356,7 +356,7 @@ function generatePlots(tData){
 
     FI.append("text")
       .attr("transform",
-            "translate(" + (plotLeft + fiPlotWidth + margin.right)/2 + " ," +
+            "translate(" + (plotLeft + fiPlotWidth/2) + " ," +
                            (plotTop + fiPlotHeight + 45) + ")")
       .attr("class", "axisTitle")
       .attr("text-anchor", "middle")
@@ -538,26 +538,13 @@ function generatePlots(tData){
 
     let variableName = GLOBAL_CLICKED_VARIABLE_NAME;
 
-    // safeguard
-    if (isNumeric[variableName] === undefined) {
-
-      // TODO: categorical not implemented in ingredients yet
-      svg.select("#AD")
-         .append("text")
-         .text("TBD: ale plot for discrete values")
-         .attr("class","smallTitle")
-         .attr("x",50)
-         .attr("y",50)
-         .style('font-family', 'Arial');
-      return;
-    }
-
     // lines or bars?
     if (isNumeric[variableName][0]) {
       adNumericalPlot(variableName, profData[variableName], xMinMax[variableName],
                       yMinMax, yMean);
     } else {
-      // categorical not implemented in ingredients yet
+      adCategoricalPlot(variableName, profData[variableName],
+                        yMinMax, yMean);
     }
   }
 
@@ -633,26 +620,13 @@ function generatePlots(tData){
     var yMean = adData.y_mean;
     var isNumeric = adData.is_numeric;
 
-    // safeguard
-    if (isNumeric[variableName] === undefined) {
-
-      // TODO: categorical not implemented in ingredients yet
-      svg.select("#AD")
-         .append("text")
-         .text("TBD: ale plot for discrete values")
-         .attr("class","smallTitle")
-         .attr("x",50)
-         .attr("y",50)
-         .style('font-family', 'Arial');
-      return;
-    }
-
     // lines or bars?
     if (isNumeric[variableName][0]) {
       adNumericalPlot(variableName, profData[variableName], xMinMax[variableName],
                       yMinMax, yMean);
     } else {
-      // categorical not implemented in ingredients yet
+      adCategoricalPlot(variableName, profData[variableName],
+                        yMinMax, yMean);
     }
 
     // safeguard font-family update
@@ -670,7 +644,7 @@ function generatePlots(tData){
 
     CP.append("text")
       .attr("transform",
-            "translate(" + (plotLeft + cpPlotWidth + margin.right)/2 + " ," +
+            "translate(" + (plotLeft + cpPlotWidth/2) + " ," +
                            (plotTop + cpPlotHeight + 45) + ")")
       .attr("class", "axisTitle")
       .attr("text-anchor", "middle")
@@ -988,7 +962,7 @@ function generatePlots(tData){
 
     CP.append("text")
       .attr("transform",
-            "translate(" + (plotLeft + cpPlotWidth + margin.right)/2 + " ," +
+            "translate(" + (plotLeft + cpPlotWidth/2) + " ," +
                            (plotTop + cpPlotHeight + 45) + ")")
       .attr("class", "axisTitle")
       .attr("text-anchor", "middle")
@@ -1036,7 +1010,7 @@ function generatePlots(tData){
 
     PD.append("text")
       .attr("transform",
-            "translate(" + (plotLeft + pdPlotWidth + margin.right)/2 + " ," +
+            "translate(" + (plotLeft + pdPlotWidth/2) + " ," +
                            (plotTop + pdPlotHeight + 45) + ")")
       .attr("class", "axisTitle")
       .attr("text-anchor", "middle")
@@ -1300,7 +1274,7 @@ function generatePlots(tData){
 
     PD.append("text")
       .attr("transform",
-            "translate(" + (plotLeft + pdPlotWidth + margin.right)/2 + "," +
+            "translate(" + (plotLeft + pdPlotWidth/2) + "," +
                            (plotTop + pdPlotHeight + 45) + ")")
       .attr("class", "axisTitle")
       .attr("text-anchor", "middle")
@@ -1348,7 +1322,7 @@ function generatePlots(tData){
 
     AD.append("text")
       .attr("transform",
-            "translate(" + (plotLeft + adPlotWidth + margin.right)/2 + " ," +
+            "translate(" + (plotLeft + adPlotWidth/2) + " ," +
                            (plotTop + adPlotHeight + 45) + ")")
       .attr("class", "axisTitle")
       .attr("text-anchor", "middle")
@@ -1568,7 +1542,7 @@ function generatePlots(tData){
                  .enter()
                  .append("g");
 
-    var fullModel = yMean;
+    var fullModel = 0; //yMean;
 
     // make tooltip
     var tooltip = d3.tip()
@@ -1612,7 +1586,7 @@ function generatePlots(tData){
 
     AD.append("text")
       .attr("transform",
-            "translate(" + (plotLeft + adPlotWidth + margin.right)/2 + "," +
+            "translate(" + (plotLeft + adPlotWidth/2) + "," +
                            (plotTop + adPlotHeight + 45) + ")")
       .attr("class", "axisTitle")
       .attr("text-anchor", "middle")

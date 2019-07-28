@@ -35,6 +35,8 @@ var notVisiblePlots = [{text:"Break Down [Local]",id:"BD"},
 
 var visiblePlots = [];
 
+var plotCountTreshold = d3.min(notVisiblePlots.length,(dim[0]*dim[1]));
+
 // generate facet x,y coordinates
 /// FIXME: change this double loop
 var buttonData = [];
@@ -238,7 +240,7 @@ function reloadStudio() {
               buttonClicked = false;
 
               // delete all not needed items
-              if (notVisiblePlots.length === 0) STARTG.remove();
+              if (visiblePlots.length === plotCountTreshold) STARTG.remove(); //
 
               // show plot
               svg.select("#"+this.id)

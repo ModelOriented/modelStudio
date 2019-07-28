@@ -1,4 +1,4 @@
-#' @title Generate interactive studio for your model
+#' @title Generate interactive studio to explain your model
 #'
 #' @description
 #' TODO.
@@ -103,7 +103,7 @@ modelStudio.default <- function(x,
   pd_n <- ingredients::partial_dependency(x, data, predict_function, only_numerical = TRUE, N = N)
   pd_c <- ingredients::partial_dependency(x, data, predict_function, only_numerical = FALSE, N = N)
   ad_n <- ingredients::accumulated_dependency(x, data, predict_function, only_numerical = TRUE, N = N)
-  ad_c <- NULL
+  ad_c <- ingredients::accumulated_dependency(x, data, predict_function, only_numerical = FALSE, N = N)
 
   fi_data <- prepareFeatureImportance(fi, max_features, ...)
   pd_data <- preparePartialDependency(pd_n, pd_c, variables = variable_names)
