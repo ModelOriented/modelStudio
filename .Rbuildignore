@@ -10,3 +10,4 @@
 ^docs.*$
 ^.*README.*$
 ^_pkgdown\.yml$
+^.*NEWS.*$

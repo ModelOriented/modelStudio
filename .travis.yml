@@ -6,13 +6,14 @@ r:
   - release
   - devel
 
-Remotes: github::ModelOriented/ingredients
-
 notifications:
   email: false
 
 r_packages:
   - covr
+
+r_github_packages:
+  ModelOriented/ingredients
 
 after_success:
 - Rscript -e 'library(covr); codecov()'
