@@ -1,7 +1,9 @@
-#' @title Generate interactive studio to explain your model
+#' @title Generates interactive studio to explore your predictive model
 #'
 #' @description
-#' TODO.
+#' This tool uses your model, data and new observations, to provide local
+#' and global explanations. It generates plots and descriptions in the form
+#' of HTML site, that supports animations and interactivity made with D3.js.
 #'
 #' @param x an explainer created with function `DALEX::explain()` or a model to be explained.
 #' @param new_observation a new observation with columns that correspond to variables used in the model.
@@ -19,7 +21,7 @@
 #' @importFrom utils head tail setTxtProgressBar txtProgressBar
 #' @importFrom stats aggregate predict
 #'
-#' @references ingredients \url{https://modeloriented.github.io/ingredients/} iBreakDown \url{https://modeloriented.github.io/iBreakDown/}
+#' @references *ingredients* \url{https://modeloriented.github.io/ingredients/} *iBreakDown* \url{https://modeloriented.github.io/iBreakDown/}
 #'
 #' @examples
 #' library("dime")

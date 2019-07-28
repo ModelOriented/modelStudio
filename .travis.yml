@@ -6,6 +6,8 @@ r:
   - release
   - devel
 
+Remotes: github::ModelOriented/ingredients
+
 notifications:
   email: false
 

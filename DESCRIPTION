@@ -4,8 +4,12 @@ Version: 0.0.1
 Authors@R: 
     c(person("Hubert", "Baniecki", role = c("aut", "cre"), email = "hbaniecki@gmail.com"),
            person("Przemyslaw", "Biecek", role = c("aut", "ths")))
-Description: TBD. 
-Depends: R (>= 3.0.0)
+Description: Automate explaining machine learning predictive models. This package 
+    provides a simple tool, that generates advanced interactive and animated
+    explanations in the form of HTML site. It is a fast and condensed way to get
+    all the answers, without much effort. Break down your model and look into its
+    ingredients with only a few lines of code.
+Depends: R (>= 3.5.0)
 License: GPL
 Encoding: UTF-8
 LazyData: true
