@@ -62,8 +62,7 @@ explain_titanic_glm <- explain(model_titanic_glm,
 
 new_observation <- titanic_small[1:10,-6]
 
-modelStudio(explain_titanic_glm, new_observation[1,])
-modelStudio(explain_titanic_glm, new_observation, N = 50)
+modelStudio(explain_titanic_glm, new_observation[1:2,], N = 50)
 
 
 }

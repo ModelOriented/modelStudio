@@ -87,6 +87,76 @@ prepareBreakDownDF <- function(x, max_features = 10, baseline = NA, digits = 3,
   x
 }
 
+prepareShapleyValues <- function(x, max_features = 10, baseline = NA, digits = 3,
+                                 rounding_function = round, margin = 0.2, min_max = NA) {
+  ### This function returns object needed to plot Shap in D3 ###
+
+  x <- x[x$B == 0,]
+  if (is.na(baseline)) baseline <- attr(x, "intercept")[[1]]
+  prediction <- attr(x, "prediction")[[1]]
+
+  m <- ifelse(nrow(x) - 2 <= max_features, nrow(x), max_features + 3)
+
+  new_x <- prepareShapleyValuesDF(x, max_features, baseline, prediction, digits, rounding_function)
+
+  if (any(is.na(min_max))) {
+    min_max <- range(new_x[,"barStart"], new_x[,"barSupport"])
+  }
+
+  # count margins
+  min_max_margin <- abs(min_max[2]-min_max[1])*margin
+  min_max[1] <- min_max[1] - min_max_margin
+  min_max[2] <- min_max[2] + min_max_margin
+
+  ret <- NULL
+  ret$x <- new_x
+  ret$m <- m
+  ret$x_min_max <- min_max
+
+  ret
+}
+
+prepareShapleyValuesDF <- function(x, max_features = 10, baseline = NA, prediction,
+                                   digits = 3, rounding_function = round) {
+  ### This function returns data as DF needed to plot ShapleyValues in D3 ###
+
+  x <- as.data.frame(x)
+  rownames(x) <- NULL
+
+  # fix df
+  x[,'variable'] <- as.character(x[,'variable'])
+  x[,'variable_name'] <- as.character(x[,'variable_name'])
+
+  if (nrow(x) > max_features) {
+    last_row <- max_features + 1
+    new_x <- x[1:last_row,]
+    new_x[last_row,'variable'] <- "+ all other factors"
+    new_x[last_row,'contribution'] <- sum(x[last_row:nrow(x),'contribution'])
+    new_x[last_row,'sign'] <- ifelse(new_x[last_row,'contribution'] > 0,1,-1)
+
+    x <- new_x
+  }
+
+  x[,"sign"] <- ifelse(x[,"contribution"] > 0,1,ifelse(x[,"contribution"] < 0,-1,0))
+
+  # use for bars
+  x[,'barStart'] <- ifelse(x[,'sign'] == "1", baseline, baseline + x[,'contribution'])
+  x[,'barSupport'] <- ifelse(x[,'sign'] == "1", baseline + x[,'contribution'], baseline)
+
+  # use for text label and tooltip
+  x[,'contribution'] <- rounding_function(x['contribution'], digits)
+
+  x[,"sign"] <- as.character(x[,"sign"])
+
+  x[,'tooltipText'] <- ifelse(x[,'sign'] == "X", paste0("Average response: ", baseline,
+                                                        "<br>", "Prediction: ", prediction),
+                              paste0(substr(x[,'variable'], 1, 25),
+                                     "<br>", ifelse(x[,'contribution'] > 0, "increases", "decreases"),
+                                     " average response <br>by ", abs(x[,'contribution'])))
+
+  x
+}
+
 prepareCeterisParibus <- function(x, variables = NULL) {
   ### This function returns object needed to plot CeterisParibus in D3 ###
 

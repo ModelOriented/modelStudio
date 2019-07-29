@@ -3,11 +3,13 @@ function generatePlots(tData){
 
   /// load all data
   var bdData = tData[0],
-      cpData = tData[1];
+      cpData = tData[1],
+      svData = tData[2];
   // fiData and pdData comes from modelStudio.js file
 
   var bdBarCount = bdData.m[0],
-      fiBarCount = bdData.m[0]-1;
+      fiBarCount = bdData.m[0]-1,
+      svBarCount = svData.m[0];
 
   var plotTop = margin.top, plotLeft = margin.left;
 
@@ -50,8 +52,16 @@ function generatePlots(tData){
   var adPlotHeight = cpPlotHeight,
       adPlotWidth = cpPlotWidth;
 
+  var svPlotHeight = svBarCount*barWidth + (svBarCount+1)*barWidth/2,
+      svPlotWidth = w;
+
+  if (svPlotHeight<h) {
+    svPlotHeight = h;
+    svBarWidth = h/(3*svBarCount/2 + 1/2);
+  }
+
   /// initialize plots, select them if already there
-  var BD, CP, FI, PD, AD;
+  var BD, CP, FI, PD, AD, SV;
 
   if (svg.select("#BD").empty()) {
     BD = svg.append("g")
@@ -102,6 +112,16 @@ function generatePlots(tData){
     AD = svg.select("#AD");
   }
   accumulatedDependency();
+
+  if (svg.select("#SV").empty()) {
+    SV = svg.append("g")
+            .attr("class","plot")
+            .attr("id","SV")
+            .style("visibility", "hidden");
+  } else {
+    SV = svg.select("#SV");
+  }
+  shapleyValues();
   ///
 
   svg.selectAll("text")
@@ -219,6 +239,7 @@ function generatePlots(tData){
 
     bars.append("rect")
         .attr("class", modelName.replace(/\s/g,''))
+        .attr("id", (d) => d.variable_name)
         .attr("fill",function(d){
           switch(d.sign){
             case "-1":
@@ -231,19 +252,22 @@ function generatePlots(tData){
         })
         .attr("fill-opacity",
         d => x(d.barSupport)-x(d.barStart) < 1 ? 0 : 1) //invisible bar for clicking purpose
-        .attr("y", d => y(d.variable) )
-        .attr("height", y.bandwidth() )
-        .attr("x", d => x(d.barStart))
-        .attr("width", d => x(d.barSupport)-x(d.barStart) < 1 ? 5 : x(d.barSupport) - x(d.barStart))
+        .attr("y", d => y(d.variable))
+        .attr("height", y.bandwidth())
+        .attr("x", d => d.contribution > 0 ? x(d.barStart) : x(d.barSupport))
         .on('mouseover', tooltip.show)
         .on('mouseout', tooltip.hide)
-        .attr("id", (d) => d.variable_name)
         .on("click", function(){
           GLOBAL_CLICKED_VARIABLE_NAME = this.id;
           updateCP(this.id);
           updatePD(this.id);
           updateAD(this.id);
-        });
+        })
+        .transition()
+        .duration(time)
+        .delay((d,i) => i * time)
+        .attr("x", d => x(d.barStart))
+        .attr("width", d => x(d.barSupport)-x(d.barStart) < 1 ? 5 : x(d.barSupport) - x(d.barStart));
 
     // add labels to bars
     var ctbLabel = BD.selectAll()
@@ -252,6 +276,7 @@ function generatePlots(tData){
                      .append("g");
 
     ctbLabel.append("text")
+            .attr("class", "axisLabel")
             .attr("x", d => {
               switch(d.sign){
                 case "X":
@@ -260,10 +285,12 @@ function generatePlots(tData){
                   return x(d.barSupport) + 5;
               }
             })
-            .attr("text-anchor", d => d.sign == "X" && d.contribution < 0 ? "end" : null)
             .attr("y", d => y(d.variable) + bdBarWidth/2)
-            .attr("dy", "0.5em")
-            .attr("class", "axisLabel")
+            .attr("dy", "0.4em")
+            .attr("text-anchor", d => d.sign == "X" && d.contribution < 0 ? "end" : null)
+            .transition()
+            .duration(time)
+            .delay((d,i) => (i+1) * time)
             .text(d => {
               switch(d.variable){
                 case "intercept":
@@ -285,7 +312,12 @@ function generatePlots(tData){
          .attr("x1", d => d.contribution < 0 ? x(d.barStart) : x(d.barSupport))
          .attr("y1", d => y(d.variable))
          .attr("x2", d => d.contribution < 0 ? x(d.barStart) : x(d.barSupport))
-         .attr("y2", d => d.variable == "prediction" ? y(d.variable) : y(d.variable) + bdBarWidth*2.5);
+         .attr("y2", d => y(d.variable))
+         .transition()
+         .duration(time)
+         .delay((d,i) => (i+1) * time)
+         .attr("y2", d =>
+         d.variable == "prediction" ? y(d.variable) : y(d.variable) + bdBarWidth*2.5);
 
     let desctemp = [{type:"desc", "text":"Description: TBD"}];
 
@@ -294,6 +326,196 @@ function generatePlots(tData){
     var description = BD.append("g")
                         .attr("transform", "translate(" +
                               (plotLeft + bdPlotWidth - tempWH) +
+                              "," + (plotTop - tempWH - 5) + ")");
+
+    description.selectAll()
+               .data(desctemp)
+               .enter()
+               .append("rect")
+               .attr("class", "descriptionBox")
+               .attr("width", tempWH)
+               .attr("height", tempWH)
+               .on('mouseover', tooltip.show)
+               .on('mouseout', tooltip.hide);
+
+    description.selectAll()
+               .data(desctemp)
+               .enter()
+               .append("text")
+               .attr("class", "descriptionLabel")
+               .attr("dy", "1.1em")
+               .attr("x", 5)
+               .text("D")
+               .on('mouseover', function(d) {
+                 tooltip.show(d);
+                 d3.select(this).style("cursor", "default");
+               })
+               .on('mouseout', tooltip.hide);
+  }
+
+  function shapleyValues() {
+
+    svg.select("#SV").selectAll("*").remove();
+
+    var bData = svData.x;
+    var xMinMax = svData.x_min_max;
+
+    var x = d3.scaleLinear()
+              .range([plotLeft,  plotLeft + svPlotWidth])
+              .domain([xMinMax[0], xMinMax[1]]);
+
+    SV.append("text")
+      .attr("transform",
+            "translate(" + (plotLeft + svPlotWidth/2) + " ," +
+                           (plotTop + svPlotHeight + 45) + ")")
+      .attr("class", "axisTitle")
+      .attr("text-anchor", "middle")
+      .text("contribution");
+
+    var xAxis = d3.axisBottom(x)
+                  .ticks(5)
+                  .tickSize(0);
+
+    xAxis = SV.append("g")
+              .attr("class", "axisLabel")
+              .attr("transform", "translate(0," + (plotTop + svPlotHeight) + ")")
+              .call(xAxis)
+              .call(g => g.select(".domain").remove());
+
+    var y = d3.scaleBand()
+              .rangeRound([plotTop, plotTop + svPlotHeight])
+              .padding(0.33)
+              .domain(bData.map(d => d.variable));
+
+    var xGrid = SV.append("g")
+                  .attr("class", "grid")
+                  .attr("transform", "translate(0," + (plotTop + svPlotHeight) + ")")
+                  .call(d3.axisBottom(x)
+                          .ticks(10)
+                          .tickSize(-svPlotHeight)
+                          .tickFormat("")
+                  ).call(g => g.select(".domain").remove());
+
+    var yGrid = SV.append("g")
+                  .attr("class", "grid")
+                  .attr("transform", "translate(" + plotLeft + ",0)")
+                  .call(d3.axisLeft(y)
+                          .tickSize(-svPlotWidth)
+                          .tickFormat("")
+                  ).call(g => g.select(".domain").remove());
+
+    var yAxis = d3.axisLeft(y)
+                  .tickSize(0);
+
+    yAxis = SV.append("g")
+              .attr("class", "axisLabel")
+              .attr("transform","translate(" + (plotLeft-10) + ",0)")
+              .call(yAxis)
+              .call(g => g.select(".domain").remove());
+
+    // wrap y label text
+    yAxis.selectAll("text").call(wrapText, margin.left-15);
+
+    SV.append("text")
+      .attr("x", plotLeft)
+      .attr("y", plotTop - 15)
+      .attr("class", "smallTitle")
+      .text(modelName);
+
+    SV.append("text")
+      .attr("x", plotLeft)
+      .attr("y", plotTop - 40)
+      .attr("class", "bigTitle")
+      .text(svTitle);
+
+    // add tooltip
+    var tooltip = d3.tip()
+                    .attr("class", "tooltip")
+                    .offset([-8, 0])
+                    .html(d => d.type === "desc" ? descTooltipHtml(d) : bdTooltipHtml(d));
+
+    SV.call(tooltip);
+
+    // add bars
+    var bars = SV.selectAll()
+                 .data(bData)
+                 .enter()
+                 .append("g");
+
+    bars.append("rect")
+        .attr("class", modelName.replace(/\s/g,''))
+        .attr("id", (d) => d.variable_name)
+        .attr("fill",function(d){
+          switch(d.sign){
+            case "-1":
+              return negativeColor;
+            case "1":
+              return positiveColor;
+            default:
+              return defaultColor;
+          }
+        })
+        .attr("fill-opacity",
+        d => x(d.barSupport)-x(d.barStart) < 1 ? 0 : 1) //invisible bar for clicking purpose
+        .attr("x", d => d.contribution > 0 ? x(d.barStart) : x(d.barSupport))
+        .attr("y", d => y(d.variable))
+        .attr("height", y.bandwidth())
+        .on('mouseover', tooltip.show)
+        .on('mouseout', tooltip.hide)
+        .on("click", function(){
+          GLOBAL_CLICKED_VARIABLE_NAME = this.id;
+          updateCP(this.id);
+          updatePD(this.id);
+          updateAD(this.id);
+        })
+        .transition()
+        .duration(time)
+        .delay((d,i) => i * time)
+        .attr("x", d => x(d.barStart))
+        .attr("width", d => x(d.barSupport)-x(d.barStart) < 1 ? 5 : x(d.barSupport) - x(d.barStart));
+
+    // add labels to bars
+    var ctbLabel = SV.selectAll()
+                     .data(bData)
+                     .enter()
+                     .append("g");
+
+    ctbLabel.append("text")
+            .attr("class", "axisLabel")
+            .attr("x", d => d.contribution < 0 ? x(d.barStart) - 5 : x(d.barSupport) + 5)
+            .attr("y", d => y(d.variable) + svBarWidth/2)
+            .attr("dy", "0.4em")
+            .attr("text-anchor", d => d.sign == "-1" ? "end" : "start")
+            .transition()
+            .duration(time)
+            .delay((d,i) => (i+1) * time)
+            .text(d => d.sign === "-1" ? d.contribution : "+"+d.contribution);
+
+    // add lines to bars
+    var lines = SV.selectAll()
+                  .data(bData)
+                  .enter()
+                  .append("g");
+
+    lines.append("line")
+          .attr("class", "interceptLine")
+          .attr("x1", d => d.contribution < 0 ? x(d.barSupport) : x(d.barStart))
+          .attr("y1", d => y(d.variable))
+          .attr("x2", d => d.contribution < 0 ? x(d.barSupport) : x(d.barStart))
+          .attr("y2", d => y(d.variable))
+          .transition()
+          .duration(time)
+          .delay((d,i) => (i+1) * time)
+          .attr("y2", (d,i) =>
+          i == svBarCount-1 ? y(d.variable) + svBarWidth : y(d.variable) + svBarWidth*2.5);
+
+    let desctemp = [{type:"desc", "text":"Description: TBD"}];
+
+    let tempWH = 20;
+
+    var description = SV.append("g")
+                        .attr("transform", "translate(" +
+                              (plotLeft + svPlotWidth - tempWH) +
                               "," + (plotTop - tempWH - 5) + ")");
 
     description.selectAll()
