@@ -1,12 +1,15 @@
 //// set all dimmensions \\\\
 // load all data
-var obsData = data[0], fiData = data[1], pdData = data[2], adData = data[3];
+var obsData = data[0],
+    fiData = data[1], pdData = data[2],
+    adData = data[3], fdData = data[4];
 // load options
 var time = options.time,
     size = options.size, alpha = options.alpha, barWidth = options.bar_width,
-    cpTitle = options.cp_title, bdTitle = options.bd_title,
-    fiTitle = options.fi_title, pdTitle = options.pd_title,
-    adTitle = options.ad_title, svTitle = options.sv_title,
+    bdTitle = options.bd_title, svTitle = options.sv_Title,
+    cpTitle = options.cp_title, fiTitle = options.fi_title,
+    pdTitle = options.pd_title, adTitle = options.ad_title,
+    fdTitle = options.fd_title,
     modelName = options.model_name, variableNames = options.variable_names,
     showRugs = options.show_rugs,
     dim = options.facet_dim;
@@ -33,7 +36,8 @@ var notVisiblePlots = [{text:"Break Down [Local]",id:"BD"},
                        {text:"Ceteris Paribus [Local]",id:"CP"},
                        {text:"Feature Importance [Global]",id:"FI"},
                        {text:"Partial Dependency [Global]",id:"PD"},
-                       {text:"Accumulated Dependency [Global]",id:"AD"}];
+                       {text:"Accumulated Dependency [Global]",id:"AD"},
+                       {text:"Feature Density",id:"FD"}];
 
 var visiblePlots = [];
 

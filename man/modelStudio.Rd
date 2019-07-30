@@ -16,7 +16,7 @@ modelStudio(x, ...)
   predict_function = predict, label = NULL, ...)
 }
 \arguments{
-\item{x}{an explainer created with function `DALEX::explain()` or a model to be explained.}
+\item{x}{an explainer created with function \code{DALEX::explain()} or a model to be explained.}
 
 \item{...}{other parameters.}
 
@@ -30,16 +30,16 @@ modelStudio(x, ...)
 
 \item{B}{number of random paths used for calculation of shapley values. Default is 25.}
 
-\item{data}{validation dataset, will be extracted from `x` if it's an explainer.}
+\item{data}{validation dataset, will be extracted from \code{x} if it's an explainer.}
 
-\item{y}{true labels for `data`, will be extracted from `x` if it's an explainer.}
+\item{y}{true labels for \code{data}, will be extracted from \code{x} if it's an explainer.}
 
-\item{predict_function}{predict function, will be extracted from `x` if it's an explainer.}
+\item{predict_function}{predict function, will be extracted from \code{x} if it's an explainer.}
 
-\item{label}{a name of the model, will be extracted from `x` if it's an explainer.}
+\item{label}{a name of the model, will be extracted from \code{x} if it's an explainer.}
 }
 \value{
-an object of the `r2d3` class.
+an object of the \code{r2d3} class.
 }
 \description{
 This tool uses your model, data and new observations, to provide local
@@ -71,5 +71,6 @@ modelStudio(explain_titanic_glm, new_observation[1:2,], N = 50, facet_dim = c(2,
 }))
 }
 \references{
-*ingredients* \url{https://modeloriented.github.io/ingredients/} *iBreakDown* \url{https://modeloriented.github.io/iBreakDown/}
+\bold{ingredients} \url{https://modeloriented.github.io/ingredients/}
+\bold{iBreakDown} \url{https://modeloriented.github.io/iBreakDown/}
 }

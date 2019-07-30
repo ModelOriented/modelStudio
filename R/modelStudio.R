@@ -5,24 +5,25 @@
 #' and global explanations. It generates plots and descriptions in the form
 #' of HTML site, that supports animations and interactivity made with D3.js.
 #'
-#' @param x an explainer created with function `DALEX::explain()` or a model to be explained.
+#' @param x an explainer created with function \code{DALEX::explain()} or a model to be explained.
 #' @param new_observation a new observation with columns that correspond to variables used in the model.
 #' @param facet_dim dimensions of the grid. Default is 2x2.
 #' @param max_features maximal number of features to be included in BreakDown and FeatureImportance plot.
 #' @param N number of observations used for calculation of partial dependency profiles. Default is 500.
 #' @param B number of random paths used for calculation of shapley values. Default is 25.
-#' @param data validation dataset, will be extracted from `x` if it's an explainer.
-#' @param y true labels for `data`, will be extracted from `x` if it's an explainer.
-#' @param predict_function predict function, will be extracted from `x` if it's an explainer.
-#' @param label a name of the model, will be extracted from `x` if it's an explainer.
+#' @param data validation dataset, will be extracted from \code{x} if it's an explainer.
+#' @param y true labels for \code{data}, will be extracted from \code{x} if it's an explainer.
+#' @param predict_function predict function, will be extracted from \code{x} if it's an explainer.
+#' @param label a name of the model, will be extracted from \code{x} if it's an explainer.
 #' @param ... other parameters.
 #'
-#' @return an object of the `r2d3` class.
+#' @return an object of the \code{r2d3} class.
 #'
 #' @importFrom utils head tail setTxtProgressBar txtProgressBar
 #' @importFrom stats aggregate predict
 #'
-#' @references *ingredients* \url{https://modeloriented.github.io/ingredients/} *iBreakDown* \url{https://modeloriented.github.io/iBreakDown/}
+#' @references \bold{ingredients} \url{https://modeloriented.github.io/ingredients/}
+#' \bold{iBreakDown} \url{https://modeloriented.github.io/iBreakDown/}
 #'
 #' @examples
 #' invisible(capture.output({
@@ -142,18 +143,19 @@ modelStudio.default <- function(x,
   fi_data <- prepareFeatureImportance(fi, max_features)
   pd_data <- preparePartialDependency(pd_n, pd_c, variables = variable_names)
   ad_data <- prepareAccumulatedDependency(ad_n, ad_c, variables = variable_names)
+  fd_data <- prepareFeatureDistribution(data, variables = variable_names)
 
   ## count once per observation
   for(i in 1:obs_count){
     new_observation <- obs_data[i,]
 
     bd <- iBreakDown::local_attributions(x, data, predict_function, new_observation, label=label)
-    cp <- ingredients::ceteris_paribus(x, data, predict_function, new_observation, label=label)
     sv <- iBreakDown::shap(x, data, predict_function, new_observation, label=label, B = B)
+    cp <- ingredients::ceteris_paribus(x, data, predict_function, new_observation, label=label)
 
     bd_data <- prepareBreakDown(bd, max_features)
-    cp_data <- prepareCeterisParibus(cp, variables = variable_names)
     sv_data <- prepareShapleyValues(sv, max_features)
+    cp_data <- prepareCeterisParibus(cp, variables = variable_names)
 
     # # sort shapley values bars on break down bars order
     # sv_data$x <- sv_data$x[match(bd_data$x$variable_name[-c(1,nrow(bd_data$x))], sv_data$x$variable_name),]
@@ -166,13 +168,14 @@ modelStudio.default <- function(x,
 
   options <- list(time = 1000,
                   size = 2, alpha = 1, bar_width = 16,
-                  cp_title = "Ceteris Paribus", bd_title = "Break Down",
-                  fi_title = "Feature Importance", pd_title = "Partial Dependency",
-                  ad_title = "Accumulated Dependency", sv_title = "Shapley Values",
+                  bd_title = "Break Down", sv_title = "Shapley Values",
+                  cp_title = "Ceteris Paribus", fi_title = "Feature Importance",
+                  pd_title = "Partial Dependency", ad_title = "Accumulated Dependency",
+                  fd_title = "Feature Distribution",
                   model_name = label, variable_names = variable_names,
                   show_rugs = TRUE, facet_dim = facet_dim)
 
-  temp <- jsonlite::toJSON(list(obs_list, fi_data, pd_data, ad_data))
+  temp <- jsonlite::toJSON(list(obs_list, fi_data, pd_data, ad_data, fd_data))
 
   sizing_policy <- r2d3::sizingPolicy(padding = 10, browser.fill = TRUE)
 

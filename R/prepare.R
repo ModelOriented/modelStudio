@@ -405,3 +405,27 @@ prepareAccumulatedDependency <- function(x, y, variables = NULL) {
 
   ret
 }
+
+prepareFeatureDistribution <- function(x, variables = NULL) {
+  ### This function returns object needed to plot FeatureDistribution in D3 ###
+
+  # which variable is numeric?
+  is_numeric <- sapply(x[, variables, drop = FALSE], is.numeric)
+  names(is_numeric) <- variables
+
+  x_min_max_list <- list()
+
+  for (i in 1:length(is_numeric)) {
+    if (is_numeric[i]) {
+      name <- names(is_numeric[i])
+      x_min_max_list[[name]] <- range(x[,name])
+    }
+  }
+
+  ret <- NULL
+  ret$x <- x[,variables]
+  ret$x_min_max_list <- x_min_max_list
+  ret$is_numeric <- as.list(is_numeric)
+
+  ret
+}

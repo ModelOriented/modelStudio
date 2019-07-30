@@ -28,6 +28,15 @@ function generatePlots(tData){
       negativeColor = bdColors[1],
       defaultColor = bdColors[2];
 
+  var svPlotHeight = svBarCount*barWidth + (svBarCount+1)*barWidth/2,
+      svPlotWidth = w,
+      svBarWidth = barWidth;
+
+  if (svPlotHeight<h || tscale) {
+    svPlotHeight = h;
+    svBarWidth = h/(3*svBarCount/2 + 1/2);
+  }
+
   var cpPlotHeight = h,
       cpPlotWidth = w;
 
@@ -54,17 +63,11 @@ function generatePlots(tData){
   var adPlotHeight = cpPlotHeight,
       adPlotWidth = cpPlotWidth;
 
-  var svPlotHeight = svBarCount*barWidth + (svBarCount+1)*barWidth/2,
-      svPlotWidth = w,
-      svBarWidth = barWidth;
-
-  if (svPlotHeight<h || tscale) {
-    svPlotHeight = h;
-    svBarWidth = h/(3*svBarCount/2 + 1/2);
-  }
+  var fdPlotHeight = cpPlotHeight,
+      fdPlotWidth = cpPlotWidth;
 
   /// initialize plots, select them if already there
-  var BD, CP, FI, PD, AD, SV;
+  var BD, SV, CP, FI, PD, AD, FD;
 
   if (svg.select("#BD").empty()) {
     BD = svg.append("g")
@@ -75,6 +78,16 @@ function generatePlots(tData){
     BD = svg.select("#BD");
   }
   breakDown();
+
+  if (svg.select("#SV").empty()) {
+    SV = svg.append("g")
+            .attr("class","plot")
+            .attr("id","SV")
+            .style("visibility", "hidden");
+  } else {
+    SV = svg.select("#SV");
+  }
+  shapleyValues();
 
   if (svg.select("#CP").empty()) {
     CP = svg.append("g")
@@ -116,15 +129,15 @@ function generatePlots(tData){
   }
   accumulatedDependency();
 
-  if (svg.select("#SV").empty()) {
-    SV = svg.append("g")
+  if (svg.select("#FD").empty()) {
+    FD = svg.append("g")
             .attr("class","plot")
-            .attr("id","SV")
+            .attr("id","FD")
             .style("visibility", "hidden");
   } else {
-    SV = svg.select("#SV");
+    FD = svg.select("#FD");
   }
-  shapleyValues();
+  featureDistribution();
   ///
 
   svg.selectAll("text")
@@ -265,6 +278,7 @@ function generatePlots(tData){
           updateCP(this.id);
           updatePD(this.id);
           updateAD(this.id);
+          updateFD(this.id);
         })
         .transition()
         .duration(time)
@@ -773,6 +787,24 @@ function generatePlots(tData){
     }
   }
 
+  function featureDistribution() {
+
+    svg.select("#FD").selectAll("*").remove();
+
+    var dData = fdData.x;
+    var xMinMax = fdData.x_min_max_list;
+    var isNumeric = fdData.is_numeric;
+
+    let variableName = GLOBAL_CLICKED_VARIABLE_NAME;
+
+    // histogram or bars?
+    if (isNumeric[variableName][0]) {
+      fdNumericalPlot(variableName, dData, xMinMax[variableName]);
+    } else {
+      fdCategoricalPlot(variableName, dData);
+    }
+  }
+
   /// update plot functions
 
   function updateCP(variableName) {
@@ -852,6 +884,30 @@ function generatePlots(tData){
     } else {
       adCategoricalPlot(variableName, profData[variableName],
                         yMinMax, yMean);
+    }
+
+    // safeguard font-family update
+    svg.selectAll("text")
+       .style('font-family', 'Arial');
+  }
+
+  function updateFD(variableName) {
+
+    if (variableName == "prediction" || variableName == "intercept" ||
+        variableName == "other") { return;}
+
+    svg.select("#FD").selectAll("*").remove();
+    d3.select("body").select("#tooltipFD").remove();
+
+    var dData = fdData.x;
+    var xMinMax = fdData.x_min_max_list;
+    var isNumeric = fdData.is_numeric;
+
+    // histogram or bars?
+    if (isNumeric[variableName][0]) {
+      fdNumericalPlot(variableName, dData, xMinMax[variableName]);
+    } else {
+      fdCategoricalPlot(variableName, dData);
     }
 
     // safeguard font-family update
@@ -1849,5 +1905,84 @@ function generatePlots(tData){
                  d3.select(this).style("cursor", "default");
                })
                .on('mouseout', tooltip.hide);
+  }
+
+  function fdNumericalPlot(variableName, dData, mData) {
+
+    var x = d3.scaleLinear()
+              .range([plotLeft + 10, plotLeft + fdPlotWidth - 10])
+              .domain([mData[0], mData[1]]);
+
+    FD.append("text")
+      .attr("transform",
+            "translate(" + (plotLeft + fdPlotWidth/2) + " ," +
+                           (plotTop + fdPlotHeight + 45) + ")")
+      .attr("class", "axisTitle")
+      .attr("text-anchor", "middle")
+      .text(variableName);
+
+    var y = d3.scaleLinear()
+          .range([plotTop + fdPlotHeight, plotTop])
+
+    FD.append("text")
+      .attr("class", "bigTitle")
+      .attr("x", plotLeft)
+      .attr("y", plotTop - 40)
+      .text(fdTitle);
+
+    FD.append("text")
+      .attr("class","smallTitle")
+      .attr("x", plotLeft)
+      .attr("y", plotTop - 15)
+      .text(modelName);
+
+    var yAxis = FD.append("g")
+                  .attr("class", "axisLabel")
+                  .attr("transform","translate(" + plotLeft + ",0)")
+
+    function updateHist(nBin) {
+
+      var histogram = d3.histogram()
+                        .value(d => d[variableName])
+                        .domain(x.domain())
+                        .thresholds(x.ticks(nBin));
+
+      var bins = histogram(dData);
+
+      y.domain([0, d3.max(bins, d => d.length)]);
+
+      var yaF = d3.axisLeft(y)
+                  .ticks(5)
+                  .tickSize(0);
+
+      yAxis.transition()
+           .duration(time)
+           .call(yaF)
+           .call(g => g.select(".domain").remove());
+
+      var bars = FD.selectAll()
+                   .data(bins)
+                   .enter()
+
+      bars.append("rect")
+          .attr("fill", lineColor)
+          .merge(bars)
+          .transition()
+          .duration(time)
+           .attr("x", d => x(d.x0))
+           .attr("y", d => y(d.length))
+           .attr("width", d => x(d.x1) - x(d.x0))
+           .attr("height", d => y(d.length))
+
+
+      bars.exit()
+          .remove()
+      }
+
+    updateHist(20)
+  }
+
+  function fdCategoricalPlot(variableName, dData) {
+
   }
 }
