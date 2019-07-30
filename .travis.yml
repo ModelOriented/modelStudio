@@ -13,8 +13,8 @@ r_packages:
   - covr
 
 r_github_packages:
-  ModelOriented/ingredients
-  ModelOriented/iBreakDown
+  - ModelOriented/ingredients
+  - ModelOriented/iBreakDown
 
 after_success:
 - Rscript -e 'library(covr); codecov()'
