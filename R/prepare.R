@@ -95,7 +95,7 @@ prepareShapleyValues <- function(x, max_features = 10, baseline = NA, digits = 3
   if (is.na(baseline)) baseline <- attr(x, "intercept")[[1]]
   prediction <- attr(x, "prediction")[[1]]
 
-  m <- ifelse(nrow(x) - 2 <= max_features, nrow(x), max_features + 3)
+  m <- ifelse(nrow(x) <= max_features, nrow(x), max_features + 1)
 
   new_x <- prepareShapleyValuesDF(x, max_features, baseline, prediction, digits, rounding_function)
 
@@ -122,6 +122,9 @@ prepareShapleyValuesDF <- function(x, max_features = 10, baseline = NA, predicti
 
   x <- as.data.frame(x)
   rownames(x) <- NULL
+
+  # sort rows on contribution for max_features
+  x <- x[order(-abs(x$contribution)),]
 
   # fix df
   x[,'variable'] <- as.character(x[,'variable'])
@@ -316,7 +319,8 @@ preparePartialDependency <- function(x, y, variables = NULL) {
     }
   }
 
-  y_mean <- round(attr(y, "mean_prediction"),3)
+  y_mean <- ifelse(is.null(x), round(attr(y, "mean_prediction"),3),
+                   round(attr(x, "mean_prediction"),3))
 
   ret <- NULL
   ret$y_mean <- y_mean
@@ -389,7 +393,8 @@ prepareAccumulatedDependency <- function(x, y, variables = NULL) {
     }
   }
 
-  y_mean <- round(attr(x, "mean_prediction"),3)
+  y_mean <- ifelse(is.null(x), round(attr(y, "mean_prediction"),3),
+                   round(attr(x, "mean_prediction"),3))
 
   ret <- NULL
   ret$y_mean <- y_mean

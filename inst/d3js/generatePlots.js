@@ -15,9 +15,10 @@ function generatePlots(tData){
 
   /// set plot specific measures and colors
   var bdPlotHeight = bdBarCount*barWidth + (bdBarCount+1)*barWidth/2,
-      bdPlotWidth = w;
+      bdPlotWidth = w,
+      bdBarWidth = barWidth;
 
-  if (bdPlotHeight<h) {
+  if (bdPlotHeight<h || tscale) {
     bdPlotHeight = h;
     bdBarWidth = h/(3*bdBarCount/2 + 1/2);
   }
@@ -36,9 +37,10 @@ function generatePlots(tData){
       greyColor = cpColors[2];
 
   var fiPlotHeight = fiBarCount*barWidth + (fiBarCount+1)*barWidth/2,
-      fiPlotWidth = w;
+      fiPlotWidth = w,
+      fiBarWidth = barWidth;
 
-  if (fiPlotHeight<h) {
+  if (fiPlotHeight<h || tscale) {
     fiPlotHeight = h;
     fiBarWidth = h/(3*fiBarCount/2 + 1/2);
   }
@@ -53,9 +55,10 @@ function generatePlots(tData){
       adPlotWidth = cpPlotWidth;
 
   var svPlotHeight = svBarCount*barWidth + (svBarCount+1)*barWidth/2,
-      svPlotWidth = w;
+      svPlotWidth = w,
+      svBarWidth = barWidth;
 
-  if (svPlotHeight<h) {
+  if (svPlotHeight<h || tscale) {
     svPlotHeight = h;
     svBarWidth = h/(3*svBarCount/2 + 1/2);
   }

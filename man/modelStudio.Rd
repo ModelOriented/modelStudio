@@ -4,16 +4,16 @@
 \alias{modelStudio}
 \alias{modelStudio.explainer}
 \alias{modelStudio.default}
-\title{Generates interactive studio to explore your predictive model}
+\title{Generates interactive studio to explain your predictive model}
 \usage{
 modelStudio(x, ...)
 
 \method{modelStudio}{explainer}(x, new_observation, facet_dim = c(2, 2),
-  max_features = 10, N = 500, ...)
+  max_features = 10, N = 500, B = 25, ...)
 
 \method{modelStudio}{default}(x, new_observation, facet_dim = c(2, 2),
-  max_features = 10, N = 500, data, y, predict_function = predict,
-  label = NULL, ...)
+  max_features = 10, N = 500, B = 25, data, y,
+  predict_function = predict, label = NULL, ...)
 }
 \arguments{
 \item{x}{an explainer created with function `DALEX::explain()` or a model to be explained.}
@@ -27,6 +27,8 @@ modelStudio(x, ...)
 \item{max_features}{maximal number of features to be included in BreakDown and FeatureImportance plot.}
 
 \item{N}{number of observations used for calculation of partial dependency profiles. Default is 500.}
+
+\item{B}{number of random paths used for calculation of shapley values. Default is 25.}
 
 \item{data}{validation dataset, will be extracted from `x` if it's an explainer.}
 
@@ -45,6 +47,8 @@ and global explanations. It generates plots and descriptions in the form
 of HTML site, that supports animations and interactivity made with D3.js.
 }
 \examples{
+invisible(capture.output({
+
 library("dime")
 library("DALEX")
 
@@ -62,9 +66,9 @@ explain_titanic_glm <- explain(model_titanic_glm,
 
 new_observation <- titanic_small[1:10,-6]
 
-modelStudio(explain_titanic_glm, new_observation[1:2,], N = 50)
+modelStudio(explain_titanic_glm, new_observation[1:2,], N = 50, facet_dim = c(2,3))
 
-
+}))
 }
 \references{
 *ingredients* \url{https://modeloriented.github.io/ingredients/} *iBreakDown* \url{https://modeloriented.github.io/iBreakDown/}

@@ -1,5 +1,5 @@
 Package: dime
-Title: Deep Interactive Model Exploration
+Title: Deep Interactive Model Explanation
 Version: 0.0.1
 Authors@R: 
     c(person("Hubert", "Baniecki", role = c("aut", "cre"), email = "hbaniecki@gmail.com"),

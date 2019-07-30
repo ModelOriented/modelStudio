@@ -1,4 +1,4 @@
-#' @title Generates interactive studio to explore your predictive model
+#' @title Generates interactive studio to explain your predictive model
 #'
 #' @description
 #' This tool uses your model, data and new observations, to provide local
@@ -10,6 +10,7 @@
 #' @param facet_dim dimensions of the grid. Default is 2x2.
 #' @param max_features maximal number of features to be included in BreakDown and FeatureImportance plot.
 #' @param N number of observations used for calculation of partial dependency profiles. Default is 500.
+#' @param B number of random paths used for calculation of shapley values. Default is 25.
 #' @param data validation dataset, will be extracted from `x` if it's an explainer.
 #' @param y true labels for `data`, will be extracted from `x` if it's an explainer.
 #' @param predict_function predict function, will be extracted from `x` if it's an explainer.
@@ -24,6 +25,8 @@
 #' @references *ingredients* \url{https://modeloriented.github.io/ingredients/} *iBreakDown* \url{https://modeloriented.github.io/iBreakDown/}
 #'
 #' @examples
+#' invisible(capture.output({
+#'
 #' library("dime")
 #' library("DALEX")
 #'
@@ -41,9 +44,9 @@
 #'
 #' new_observation <- titanic_small[1:10,-6]
 #'
-#' modelStudio(explain_titanic_glm, new_observation[1:2,], N = 50)
+#' modelStudio(explain_titanic_glm, new_observation[1:2,], N = 50, facet_dim = c(2,3))
 #'
-#'
+#' }))
 #' @export
 #' @rdname modelStudio
 modelStudio <- function(x, ...)
@@ -56,6 +59,7 @@ modelStudio.explainer <- function(x,
                                   facet_dim = c(2,2),
                                   max_features = 10,
                                   N = 500,
+                                  B = 25,
                                   ...) {
 
   modelStudio.default(x = x$model,
@@ -63,6 +67,7 @@ modelStudio.explainer <- function(x,
                       facet_dim = facet_dim,
                       max_features = max_features,
                       N = N,
+                      B = B,
                       data = x$data,
                       y = x$y,
                       predict_function = x$predict_function,
@@ -77,6 +82,7 @@ modelStudio.default <- function(x,
                                 facet_dim = c(2,2),
                                 max_features = 10,
                                 N = 500,
+                                B = 25,
                                 data,
                                 y,
                                 predict_function = predict,
@@ -86,52 +92,74 @@ modelStudio.default <- function(x,
   ## safeguard
   new_observation <- as.data.frame(new_observation)
   data <- as.data.frame(data)
+  all_numerical <- sapply(data[,, drop = FALSE], is.numeric)
 
   obs_count <- dim(new_observation)[1]
 
-  if(obs_count > 10) stop("There are more than 10 observations.")
+  if (obs_count > 10) stop("There are more than 10 observations.")
 
-  if(is.null(label)) label <- class(x)[1]
+  if (is.null(label)) label <- class(x)[1]
 
   variable_names <- colnames(new_observation)
   obs_data <- new_observation
   obs_list <- list()
 
-  pb <- txtProgressBar(0, obs_count+4, style=3)
+  pb <- txtProgressBar(0, obs_count+5, style=3)
 
   ## count only once
   fi <- ingredients::feature_importance(x, data, y, predict_function, ...)
   setTxtProgressBar(pb, 1)
-  pd_n <- ingredients::partial_dependency(x, data, predict_function, only_numerical = TRUE, N = N)
-  setTxtProgressBar(pb, 2)
-  pd_c <- ingredients::partial_dependency(x, data, predict_function, only_numerical = FALSE, N = N)
-  setTxtProgressBar(pb, 3)
-  ad_n <- ingredients::accumulated_dependency(x, data, predict_function, only_numerical = TRUE, N = N)
-  setTxtProgressBar(pb, 4)
-  ad_c <- ingredients::accumulated_dependency(x, data, predict_function, only_numerical = FALSE, N = N)
 
-  fi_data <- prepareFeatureImportance(fi, max_features, ...)
+  if (all(all_numerical==TRUE)) {
+    pd_n <- ingredients::partial_dependency(x, data, predict_function, only_numerical = TRUE, N = N)
+    setTxtProgressBar(pb, 2)
+    pd_c <- NULL
+    setTxtProgressBar(pb, 3)
+    ad_n <- ingredients::accumulated_dependency(x, data, predict_function, only_numerical = TRUE, N = N)
+    setTxtProgressBar(pb, 4)
+    ad_c <- NULL
+    setTxtProgressBar(pb, 5)
+  } else if (all(all_numerical==FALSE)) {
+    pd_n <- NULL
+    setTxtProgressBar(pb, 2)
+    pd_c <- ingredients::partial_dependency(x, data, predict_function, only_numerical = FALSE, N = N)
+    setTxtProgressBar(pb, 3)
+    ad_n <- NULL
+    setTxtProgressBar(pb, 4)
+    ad_c <- ingredients::accumulated_dependency(x, data, predict_function, only_numerical = FALSE, N = N)
+    setTxtProgressBar(pb, 5)
+  } else {
+    pd_n <- ingredients::partial_dependency(x, data, predict_function, only_numerical = TRUE, N = N)
+    setTxtProgressBar(pb, 2)
+    pd_c <- ingredients::partial_dependency(x, data, predict_function, only_numerical = FALSE, N = N)
+    setTxtProgressBar(pb, 3)
+    ad_n <- ingredients::accumulated_dependency(x, data, predict_function, only_numerical = TRUE, N = N)
+    setTxtProgressBar(pb, 4)
+    ad_c <- ingredients::accumulated_dependency(x, data, predict_function, only_numerical = FALSE, N = N)
+    setTxtProgressBar(pb, 5)
+  }
+
+  fi_data <- prepareFeatureImportance(fi, max_features)
   pd_data <- preparePartialDependency(pd_n, pd_c, variables = variable_names)
   ad_data <- prepareAccumulatedDependency(ad_n, ad_c, variables = variable_names)
 
   ## count once per observation
   for(i in 1:obs_count){
-    setTxtProgressBar(pb, i+4)
-
     new_observation <- obs_data[i,]
 
     bd <- iBreakDown::local_attributions(x, data, predict_function, new_observation, label=label)
     cp <- ingredients::ceteris_paribus(x, data, predict_function, new_observation, label=label)
-    sv <- iBreakDown::shap(x, data, predict_function, new_observation, label=label)
+    sv <- iBreakDown::shap(x, data, predict_function, new_observation, label=label, B = B)
 
-    bd_data <- prepareBreakDown(bd, max_features, ...)
+    bd_data <- prepareBreakDown(bd, max_features)
     cp_data <- prepareCeterisParibus(cp, variables = variable_names)
-    sv_data <- prepareShapleyValues(sv, max_features, ...)
+    sv_data <- prepareShapleyValues(sv, max_features)
 
-    # sort shapley values bars on break down bars order
-    sv_data$x <- sv_data$x[match(bd_data$x$variable_name[-c(1,nrow(bd_data$x))], sv_data$x$variable_name),]
+    # # sort shapley values bars on break down bars order
+    # sv_data$x <- sv_data$x[match(bd_data$x$variable_name[-c(1,nrow(bd_data$x))], sv_data$x$variable_name),]
 
     obs_list[[i]] <- list(bd_data, cp_data, sv_data)
+    setTxtProgressBar(pb, i+5)
   }
 
   names(obs_list) <- rownames(obs_data)

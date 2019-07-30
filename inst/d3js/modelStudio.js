@@ -47,6 +47,8 @@ for (let i=0; i<dim[0]; i++) {
     buttonData.push({x:0+j*plotWidth, y:margin.top+i*plotHeight});
   }
 }
+/// TODO:change scaling and this flag
+tscale = true;
 
 ////                     \\\\
 initializeStudio();
