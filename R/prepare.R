@@ -413,19 +413,23 @@ prepareFeatureDistribution <- function(x, variables = NULL) {
   is_numeric <- sapply(x[, variables, drop = FALSE], is.numeric)
   names(is_numeric) <- variables
 
-  x_min_max_list <- nbin <- list()
+  x_min_max_list <- x_max_list <- nbin <- list()
 
   for (i in 1:length(is_numeric)) {
     if (is_numeric[i]) {
       name <- names(is_numeric[i])
       x_min_max_list[[name]] <- range(x[,name])
       nbin[[name]] <- nclass.Sturges(x[,name]) ## FD, scott nbin choice
+    } else {
+      name <- names(is_numeric[i])
+      x_max_list[[name]] <-max(table(x[,name]))
     }
   }
 
   ret <- NULL
   ret$x <- x[,variables]
   ret$x_min_max_list <- x_min_max_list
+  ret$x_max_list <- x_max_list
   ret$nbin <- nbin
   ret$is_numeric <- as.list(is_numeric)
 

@@ -22,6 +22,7 @@
 #'
 #' @importFrom utils head tail setTxtProgressBar txtProgressBar
 #' @importFrom stats aggregate predict
+#' @importFrom grDevices nclass.Sturges
 #'
 #' @references \bold{ingredients} \url{https://modeloriented.github.io/ingredients/}
 #' \bold{iBreakDown} \url{https://modeloriented.github.io/iBreakDown/}
@@ -47,7 +48,7 @@
 #' new_observation <- titanic_small[1:10,-6]
 #'
 #' modelStudio(explain_titanic_glm, new_observation[1:2,],
-#'             N = 200, facet_dim = c(2,3), time = 0)
+#'             N = 150, B = 10, facet_dim = c(2,3), time = 0)
 #'
 #' }))
 #' @export
@@ -98,7 +99,6 @@ modelStudio.default <- function(x,
   ## safeguard
   new_observation <- as.data.frame(new_observation)
   data <- as.data.frame(data)
-  all_numerical <- sapply(data[,, drop = FALSE], is.numeric)
 
   obs_count <- dim(new_observation)[1]
 
@@ -110,22 +110,24 @@ modelStudio.default <- function(x,
   obs_data <- new_observation
   obs_list <- list()
 
-  ## update progress bar after all functions
+  ## later update progress bar after all explanation functions
   pb <- txtProgressBar(0, obs_count+5, style=3)
 
   ## count only once
   fi <- ingredients::feature_importance(x, data, y, predict_function, ...)
   setTxtProgressBar(pb, 1)
 
+  which_numerical <- sapply(data[,, drop = FALSE], is.numeric)
+
   ## because only_numerical throws errors if used incorectly
-  if (all(all_numerical==TRUE)) {
+  if (all(which_numerical==TRUE)) {
     pd_n <- ingredients::partial_dependency(x, data, predict_function, only_numerical = TRUE, N = N)
     setTxtProgressBar(pb, 2)
     pd_c <- NULL
     ad_n <- ingredients::accumulated_dependency(x, data, predict_function, only_numerical = TRUE, N = N)
     setTxtProgressBar(pb, 4)
     ad_c <- NULL
-  } else if (all(all_numerical==FALSE)) {
+  } else if (all(which_numerical==FALSE)) {
     pd_n <- NULL
     pd_c <- ingredients::partial_dependency(x, data, predict_function, only_numerical = FALSE, N = N)
     setTxtProgressBar(pb, 3)
@@ -155,7 +157,7 @@ modelStudio.default <- function(x,
     bd <- iBreakDown::local_attributions(x, data, predict_function, new_observation, label=label)
     sv <- iBreakDown::shap(x, data, predict_function, new_observation, label=label, B = B)
     cp <- ingredients::ceteris_paribus(x, data, predict_function, new_observation, label=label)
-    setTxtProgressBar(pb, i+5)
+    setTxtProgressBar(pb, 5+i)
 
     bd_data <- prepareBreakDown(bd, max_features)
     sv_data <- prepareShapleyValues(sv, max_features)
@@ -180,7 +182,7 @@ modelStudio.default <- function(x,
 
   sizing_policy <- r2d3::sizingPolicy(padding = 10, browser.fill = TRUE)
 
-  ret <- r2d3::r2d3(
+  r2d3::r2d3(
           data = temp,
           script = system.file("d3js/modelStudio.js", package = "dime"),
           dependencies = list(
@@ -197,6 +199,4 @@ modelStudio.default <- function(x,
           viewer = "external",
           sizing = sizing_policy
         )
-  ret$dependencies <- rev(ret$dependencies)
-  ret
 }

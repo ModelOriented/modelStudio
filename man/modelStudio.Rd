@@ -9,10 +9,10 @@
 modelStudio(x, ...)
 
 \method{modelStudio}{explainer}(x, new_observation, facet_dim = c(2, 2),
-  max_features = 10, N = 500, B = 25, ...)
+  max_features = 10, N = 500, B = 25, time = 1000, ...)
 
 \method{modelStudio}{default}(x, new_observation, facet_dim = c(2, 2),
-  max_features = 10, N = 500, B = 25, data, y,
+  max_features = 10, N = 500, B = 25, time = 1000, data, y,
   predict_function = predict, label = NULL, ...)
 }
 \arguments{
@@ -29,6 +29,8 @@ modelStudio(x, ...)
 \item{N}{number of observations used for calculation of partial dependency profiles. Default is 500.}
 
 \item{B}{number of random paths used for calculation of shapley values. Default is 25.}
+
+\item{time}{in ms. Set animation length. Default is 1000.}
 
 \item{data}{validation dataset, will be extracted from \code{x} if it's an explainer.}
 
@@ -66,7 +68,8 @@ explain_titanic_glm <- explain(model_titanic_glm,
 
 new_observation <- titanic_small[1:10,-6]
 
-modelStudio(explain_titanic_glm, new_observation[1:2,], N = 50, facet_dim = c(2,3))
+modelStudio(explain_titanic_glm, new_observation[1:2,],
+            N = 200, facet_dim = c(2,3), time = 0)
 
 }))
 }

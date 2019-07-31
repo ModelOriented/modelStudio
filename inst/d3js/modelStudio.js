@@ -116,7 +116,7 @@ function initializeStudio() {
          // chose clicked data
          let tData = obsData[this.value];
          // update all plots with new data (with existing ones on their places)
-         generatePlots(tData);
+         generatePlots(tData, time = TIME);
        });
 
   // reload studio = delete everything and set up buttons
@@ -124,7 +124,7 @@ function initializeStudio() {
   // chose new data, initialize with 1st observation
   let tData = obsData[observationIds[0]];
   // plot new data
-  generatePlots(tData);
+  generatePlots(tData, time = 0);
 }
 
 function reloadStudio() {

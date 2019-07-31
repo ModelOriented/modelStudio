@@ -1,4 +1,4 @@
-function generatePlots(tData){
+function generatePlots(tData, time){
   /// this function generates modelStudio plots
 
   /// load all data
@@ -795,6 +795,7 @@ function generatePlots(tData){
 
     var dData = fdData.x;
     var xMinMax = fdData.x_min_max_list;
+    var xMax = fdData.x_max_list;
     var nBin = fdData.nbin;
     var isNumeric = fdData.is_numeric;
 
@@ -805,7 +806,7 @@ function generatePlots(tData){
       fdNumericalPlot(variableName, dData, xMinMax[variableName],
                       nBin[variableName]);
     } else {
-      fdCategoricalPlot(variableName, dData);
+      fdCategoricalPlot(variableName, dData, xMax[variableName]);
     }
   }
 
@@ -905,6 +906,7 @@ function generatePlots(tData){
 
     var dData = fdData.x;
     var xMinMax = fdData.x_min_max_list;
+    var xMax = fdData.x_max_list;
     var nBin = fdData.nbin;
     var isNumeric = fdData.is_numeric;
 
@@ -913,7 +915,7 @@ function generatePlots(tData){
       fdNumericalPlot(variableName, dData, xMinMax[variableName],
                       nBin[variableName]);
     } else {
-      fdCategoricalPlot(variableName, dData);
+      fdCategoricalPlot(variableName, dData, xMax[variableName]);
     }
 
     // safeguard font-family update
@@ -1143,8 +1145,8 @@ function generatePlots(tData){
 
     var x = d3.scaleLinear()
               .range([plotLeft,  plotLeft + cpPlotWidth])
-              .domain([yMinMax[0], yMinMax[1]]);
-
+              .domain([yMinMax[0], yMinMax[1]]); // because it is flipped 
+ 
     var xAxis = d3.axisBottom(x)
                   .ticks(5)
                   .tickSize(0);
@@ -1457,7 +1459,7 @@ function generatePlots(tData){
 
     var x = d3.scaleLinear()
               .range([plotLeft,  plotLeft + pdPlotWidth])
-              .domain([yMinMax[0], yMinMax[1]]);
+              .domain([yMinMax[0], yMinMax[1]]); // because it is flipped 
 
     var xAxis = d3.axisBottom(x)
                   .ticks(5)
@@ -1769,7 +1771,7 @@ function generatePlots(tData){
 
     var x = d3.scaleLinear()
               .range([plotLeft,  plotLeft + adPlotWidth])
-              .domain([yMinMax[0], yMinMax[1]]);
+              .domain([yMinMax[0], yMinMax[1]]); // because it is flipped 
 
     var xAxis = d3.axisBottom(x)
                   .ticks(5)
@@ -1927,6 +1929,14 @@ function generatePlots(tData){
       .attr("text-anchor", "middle")
       .text(variableName);
 
+    FD.append("text")
+      .attr("class", "axisTitle")
+      .attr("transform", "rotate(-90)")
+      .attr("y", plotLeft-40)
+      .attr("x", -(plotTop + fdPlotHeight/2))
+      .attr("text-anchor", "middle")
+      .text("count");
+
     var y = d3.scaleLinear()
           .range([plotTop + fdPlotHeight - 5, plotTop]);
 
@@ -1964,14 +1974,14 @@ function generatePlots(tData){
                     .attr("transform", "translate(" + plotLeft + ",0)");
     
     var slider = d3.sliderBottom()
-                   .min(d3.max([+nBin-5,2]))
-                   .max(d3.max([+nBin+5,12]))
+                   .min(d3.max([+nBin-10,2]))
+                   .max(d3.max([+nBin+10,12]))
                    .width(fdPlotWidth/2 - 10)
                    .ticks(6)
                    .step(1)
                    .default(nBin)
                    .fill(lineColor)
-                   .on('onchange', val => updateHist(val));
+                   .on('drag', val => updateHist(val));
 
     var sliderg = FD.append("g").call(slider);
 
@@ -2025,7 +2035,91 @@ function generatePlots(tData){
     }
   }
 
-  function fdCategoricalPlot(variableName, dData) {
+  function fdCategoricalPlot(variableName, dData, mData) {
 
+    // equivalent of R table function
+    var tData = d3.nest()
+                  .key(d => d[variableName])
+                  .rollup(v => v.length)
+                  .entries(dData);
+              
+    var x = d3.scaleLinear()
+              .range([plotLeft,  plotLeft + fdPlotWidth])
+              .domain([0, mData]); 
+
+    var xAxis = d3.axisBottom(x)
+                  .ticks(5)
+                  .tickSize(0);
+
+    xAxis = FD.append("g")
+              .attr("class", "axisLabel")
+              .attr("transform", "translate(0," + (plotTop + fdPlotHeight) + ")")
+              .call(xAxis)
+              .call(g => g.select(".domain").remove());
+
+    var y = d3.scaleBand()
+              .rangeRound([plotTop + adPlotHeight, plotTop])
+              .padding(0.33)
+              .domain(tData.map(d => d.key));
+
+    var xGrid = FD.append("g")
+                  .attr("class", "grid")
+                  .attr("transform", "translate(0," + (plotTop + fdPlotHeight) + ")")
+                  .call(d3.axisBottom(x)
+                          .ticks(10)
+                          .tickSize(-fdPlotHeight)
+                          .tickFormat("")
+                  ).call(g => g.select(".domain").remove());
+
+    var yGrid = FD.append("g")
+                  .attr("class", "grid")
+                  .attr("transform", "translate(" + plotLeft + ",0)")
+                  .call(d3.axisLeft(y)
+                          .tickSize(-fdPlotWidth)
+                          .tickFormat("")
+                  ).call(g => g.select(".domain").remove());
+
+    var yAxis = d3.axisLeft(y)
+                  .tickSize(0);
+
+    yAxis = FD.append("g")
+              .attr("class", "axisLabel")
+              .attr("transform","translate(" + (plotLeft-8) + ",0)")
+              .call(yAxis)
+              .call(g => g.select(".domain").remove());
+
+    FD.append("text")
+      .attr("x", plotLeft)
+      .attr("y", plotTop - 15)
+      .attr("class", "smallTitle")
+      .text(modelName);
+
+    FD.append("text")
+      .attr("x", plotLeft)
+      .attr("y", plotTop - 40)
+      .attr("class", "bigTitle")
+      .text(fdTitle);
+
+    var bars = FD.selectAll()
+                 .data(tData)
+                 .enter()
+                 .append("g");
+
+    // add bars
+    bars.append("rect")
+        .attr("class", variableName)
+        .attr("fill", lineColor)
+        .attr("x", d => x(0))
+        .attr("y", d => y(d.key))
+        .attr("height", y.bandwidth())
+        .attr("width", d => x(d.value)-x(0));
+
+    FD.append("text")
+      .attr("transform",
+            "translate(" + (plotLeft + fdPlotWidth/2) + "," +
+                           (plotTop + fdPlotHeight + 45) + ")")
+      .attr("class", "axisTitle")
+      .attr("text-anchor", "middle")
+      .text("count");
   }
 }
