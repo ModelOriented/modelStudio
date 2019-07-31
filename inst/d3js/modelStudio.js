@@ -4,7 +4,7 @@ var obsData = data[0],
     fiData = data[1], pdData = data[2],
     adData = data[3], fdData = data[4];
 // load options
-var time = options.time,
+var TIME = options.time,
     size = options.size, alpha = options.alpha, barWidth = options.bar_width,
     bdTitle = options.bd_title, svTitle = options.sv_title,
     cpTitle = options.cp_title, fiTitle = options.fi_title,
@@ -14,7 +14,7 @@ var time = options.time,
     showRugs = options.show_rugs,
     dim = options.facet_dim;
 
-var GLOBAL_CLICKED_VARIABLE_NAME = variableNames[0];
+var CLICKED_VARIABLE_NAME = variableNames[0];
 
 // set dimensions (TODO: pass as options)
 var margin = {top: 50, right: 20, bottom: 70, left: 105, inner: 40,
@@ -52,7 +52,7 @@ for (let i=0; i<dim[0]; i++) {
   }
 }
 /// TODO:change scaling and this flag
-tscale = true;
+var TSCALE = true;
 
 ////                     \\\\
 initializeStudio();

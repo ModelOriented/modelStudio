@@ -122,18 +122,14 @@ modelStudio.default <- function(x,
     pd_n <- ingredients::partial_dependency(x, data, predict_function, only_numerical = TRUE, N = N)
     setTxtProgressBar(pb, 2)
     pd_c <- NULL
-    setTxtProgressBar(pb, 3)
     ad_n <- ingredients::accumulated_dependency(x, data, predict_function, only_numerical = TRUE, N = N)
     setTxtProgressBar(pb, 4)
     ad_c <- NULL
-    setTxtProgressBar(pb, 5)
   } else if (all(all_numerical==FALSE)) {
     pd_n <- NULL
-    setTxtProgressBar(pb, 2)
     pd_c <- ingredients::partial_dependency(x, data, predict_function, only_numerical = FALSE, N = N)
     setTxtProgressBar(pb, 3)
     ad_n <- NULL
-    setTxtProgressBar(pb, 4)
     ad_c <- ingredients::accumulated_dependency(x, data, predict_function, only_numerical = FALSE, N = N)
     setTxtProgressBar(pb, 5)
   } else {
@@ -159,13 +155,13 @@ modelStudio.default <- function(x,
     bd <- iBreakDown::local_attributions(x, data, predict_function, new_observation, label=label)
     sv <- iBreakDown::shap(x, data, predict_function, new_observation, label=label, B = B)
     cp <- ingredients::ceteris_paribus(x, data, predict_function, new_observation, label=label)
+    setTxtProgressBar(pb, i+5)
 
     bd_data <- prepareBreakDown(bd, max_features)
     sv_data <- prepareShapleyValues(sv, max_features)
     cp_data <- prepareCeterisParibus(cp, variables = variable_names)
 
     obs_list[[i]] <- list(bd_data, cp_data, sv_data)
-    setTxtProgressBar(pb, i+5)
   }
 
   names(obs_list) <- rownames(obs_data)

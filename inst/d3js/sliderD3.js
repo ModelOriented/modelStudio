@@ -1,4 +1,4 @@
-// https://github.com/johnwalley/d3-simple-slider v1.5.4 Copyright 2019 John Walley
+/*https://github.com/johnwalley/d3-simple-slider v1.5.4 Copyright 2019 John Walley*/
 (function (global, factory) {
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-array'), require('d3-axis'), require('d3-dispatch'), require('d3-drag'), require('d3-ease'), require('d3-scale'), require('d3-selection'), require('d3-transition')) :
 typeof define === 'function' && define.amd ? define(['exports', 'd3-array', 'd3-axis', 'd3-dispatch', 'd3-drag', 'd3-ease', 'd3-scale', 'd3-selection', 'd3-transition'], factory) :

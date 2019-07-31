@@ -18,7 +18,7 @@ function generatePlots(tData){
       bdPlotWidth = w,
       bdBarWidth = barWidth;
 
-  if (bdPlotHeight<h || tscale) {
+  if (bdPlotHeight<h || TSCALE) {
     bdPlotHeight = h;
     bdBarWidth = h/(3*bdBarCount/2 + 1/2);
   }
@@ -32,7 +32,7 @@ function generatePlots(tData){
       svPlotWidth = w,
       svBarWidth = barWidth;
 
-  if (svPlotHeight<h || tscale) {
+  if (svPlotHeight<h || TSCALE) {
     svPlotHeight = h;
     svBarWidth = h/(3*svBarCount/2 + 1/2);
   }
@@ -49,7 +49,7 @@ function generatePlots(tData){
       fiPlotWidth = w,
       fiBarWidth = barWidth;
 
-  if (fiPlotHeight<h || tscale) {
+  if (fiPlotHeight<h || TSCALE) {
     fiPlotHeight = h;
     fiBarWidth = h/(3*fiBarCount/2 + 1/2);
   }
@@ -274,7 +274,7 @@ function generatePlots(tData){
         .on('mouseover', tooltip.show)
         .on('mouseout', tooltip.hide)
         .on("click", function(){
-          GLOBAL_CLICKED_VARIABLE_NAME = this.id;
+          CLICKED_VARIABLE_NAME = this.id;
           updateCP(this.id);
           updatePD(this.id);
           updateAD(this.id);
@@ -480,7 +480,7 @@ function generatePlots(tData){
         .on('mouseover', tooltip.show)
         .on('mouseout', tooltip.hide)
         .on("click", function(){
-          GLOBAL_CLICKED_VARIABLE_NAME = this.id;
+          CLICKED_VARIABLE_NAME = this.id;
           updateCP(this.id);
           updatePD(this.id);
           updateAD(this.id);
@@ -571,7 +571,7 @@ function generatePlots(tData){
     var obsData = cpData.observation;
     var isNumeric = cpData.is_numeric;
 
-    let variableName = GLOBAL_CLICKED_VARIABLE_NAME;
+    let variableName = CLICKED_VARIABLE_NAME;
 
     // lines or bars?
     if (isNumeric[variableName][0]) {
@@ -685,7 +685,7 @@ function generatePlots(tData){
         .on('mouseout', tooltip.hide)
         .attr("id", (d) => d.variable)
         .on("click", function(){
-          GLOBAL_CLICKED_VARIABLE_NAME = this.id;
+          CLICKED_VARIABLE_NAME = this.id;
           updateCP(this.id);
           updatePD(this.id);
           updateAD(this.id);
@@ -755,7 +755,7 @@ function generatePlots(tData){
     var yMean = pdData.y_mean;
     var isNumeric = pdData.is_numeric;
 
-    let variableName = GLOBAL_CLICKED_VARIABLE_NAME;
+    let variableName = CLICKED_VARIABLE_NAME;
 
     // lines or bars?
     if (isNumeric[variableName][0]) {
@@ -777,7 +777,7 @@ function generatePlots(tData){
     var yMean = adData.y_mean;
     var isNumeric = adData.is_numeric;
 
-    let variableName = GLOBAL_CLICKED_VARIABLE_NAME;
+    let variableName = CLICKED_VARIABLE_NAME;
 
     // lines or bars?
     if (isNumeric[variableName][0]) {
@@ -798,7 +798,7 @@ function generatePlots(tData){
     var nBin = fdData.nbin;
     var isNumeric = fdData.is_numeric;
 
-    let variableName = GLOBAL_CLICKED_VARIABLE_NAME;
+    let variableName = CLICKED_VARIABLE_NAME;
 
     // histogram or bars?
     if (isNumeric[variableName][0]) {
