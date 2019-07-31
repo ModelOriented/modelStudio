@@ -11,11 +11,12 @@
 #' @param max_features maximal number of features to be included in BreakDown and FeatureImportance plot.
 #' @param N number of observations used for calculation of partial dependency profiles. Default is 500.
 #' @param B number of random paths used for calculation of shapley values. Default is 25.
+#' @param time in ms. Set animation length. Default is 1000.
+#' @param ... other parameters.
 #' @param data validation dataset, will be extracted from \code{x} if it's an explainer.
 #' @param y true labels for \code{data}, will be extracted from \code{x} if it's an explainer.
 #' @param predict_function predict function, will be extracted from \code{x} if it's an explainer.
 #' @param label a name of the model, will be extracted from \code{x} if it's an explainer.
-#' @param ... other parameters.
 #'
 #' @return an object of the \code{r2d3} class.
 #'
@@ -45,7 +46,8 @@
 #'
 #' new_observation <- titanic_small[1:10,-6]
 #'
-#' modelStudio(explain_titanic_glm, new_observation[1:2,], N = 50, facet_dim = c(2,3))
+#' modelStudio(explain_titanic_glm, new_observation[1:2,],
+#'             N = 200, facet_dim = c(2,3), time = 0)
 #'
 #' }))
 #' @export
@@ -61,6 +63,7 @@ modelStudio.explainer <- function(x,
                                   max_features = 10,
                                   N = 500,
                                   B = 25,
+                                  time = 1000,
                                   ...) {
 
   modelStudio.default(x = x$model,
@@ -69,6 +72,7 @@ modelStudio.explainer <- function(x,
                       max_features = max_features,
                       N = N,
                       B = B,
+                      time = time,
                       data = x$data,
                       y = x$y,
                       predict_function = x$predict_function,
@@ -84,6 +88,7 @@ modelStudio.default <- function(x,
                                 max_features = 10,
                                 N = 500,
                                 B = 25,
+                                time = 1000,
                                 data,
                                 y,
                                 predict_function = predict,
@@ -105,12 +110,14 @@ modelStudio.default <- function(x,
   obs_data <- new_observation
   obs_list <- list()
 
+  ## update progress bar after all functions
   pb <- txtProgressBar(0, obs_count+5, style=3)
 
   ## count only once
   fi <- ingredients::feature_importance(x, data, y, predict_function, ...)
   setTxtProgressBar(pb, 1)
 
+  ## because only_numerical throws errors if used incorectly
   if (all(all_numerical==TRUE)) {
     pd_n <- ingredients::partial_dependency(x, data, predict_function, only_numerical = TRUE, N = N)
     setTxtProgressBar(pb, 2)
@@ -157,16 +164,14 @@ modelStudio.default <- function(x,
     sv_data <- prepareShapleyValues(sv, max_features)
     cp_data <- prepareCeterisParibus(cp, variables = variable_names)
 
-    # # sort shapley values bars on break down bars order
-    # sv_data$x <- sv_data$x[match(bd_data$x$variable_name[-c(1,nrow(bd_data$x))], sv_data$x$variable_name),]
-
     obs_list[[i]] <- list(bd_data, cp_data, sv_data)
     setTxtProgressBar(pb, i+5)
   }
 
   names(obs_list) <- rownames(obs_data)
 
-  options <- list(time = 1000,
+  ## later for user to define options
+  options <- list(time = time,
                   size = 2, alpha = 1, bar_width = 16,
                   bd_title = "Break Down", sv_title = "Shapley Values",
                   cp_title = "Ceteris Paribus", fi_title = "Feature Importance",
@@ -179,19 +184,23 @@ modelStudio.default <- function(x,
 
   sizing_policy <- r2d3::sizingPolicy(padding = 10, browser.fill = TRUE)
 
-  r2d3::r2d3(
-    data = temp,
-    script = system.file("d3js/modelStudio.js", package = "dime"),
-    dependencies = list(
-      system.file("d3js/myTools.js", package = "dime"),
-      system.file("d3js/tooltipD3.js", package = "dime"),
-      system.file("d3js/generatePlots.js", package = "dime"),
-      system.file("d3js/generateTooltipHtml.js", package = "dime")
-    ),
-    css = system.file("d3js/modelStudio.css", package = "dime"),
-    options = options,
-    d3_version = "4",
-    viewer = "external",
-    sizing = sizing_policy
-  )
+  ret <- r2d3::r2d3(
+          data = temp,
+          script = system.file("d3js/modelStudio.js", package = "dime"),
+          dependencies = list(
+            "d3-jetpack",
+            system.file("d3js/myTools.js", package = "dime"),
+            system.file("d3js/tooltipD3.js", package = "dime"),
+            system.file("d3js/sliderD3.js", package = "dime"),
+            system.file("d3js/generatePlots.js", package = "dime"),
+            system.file("d3js/generateTooltipHtml.js", package = "dime")
+          ),
+          css = system.file("d3js/modelStudio.css", package = "dime"),
+          options = options,
+          d3_version = "4",
+          viewer = "external",
+          sizing = sizing_policy
+        )
+  ret$dependencies <- rev(ret$dependencies)
+  ret
 }

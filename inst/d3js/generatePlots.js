@@ -138,8 +138,8 @@ function generatePlots(tData){
     FD = svg.select("#FD");
   }
   featureDistribution();
-  ///
 
+  ///
   svg.selectAll("text")
      .style('font-family', 'Arial');
 
@@ -484,6 +484,7 @@ function generatePlots(tData){
           updateCP(this.id);
           updatePD(this.id);
           updateAD(this.id);
+          updateFD(this.id);
         })
         .transition()
         .duration(time)
@@ -688,6 +689,7 @@ function generatePlots(tData){
           updateCP(this.id);
           updatePD(this.id);
           updateAD(this.id);
+          updateFD(this.id);
         });
 
     // make line next to bars
@@ -793,13 +795,15 @@ function generatePlots(tData){
 
     var dData = fdData.x;
     var xMinMax = fdData.x_min_max_list;
+    var nBin = fdData.nbin;
     var isNumeric = fdData.is_numeric;
 
     let variableName = GLOBAL_CLICKED_VARIABLE_NAME;
 
     // histogram or bars?
     if (isNumeric[variableName][0]) {
-      fdNumericalPlot(variableName, dData, xMinMax[variableName]);
+      fdNumericalPlot(variableName, dData, xMinMax[variableName],
+                      nBin[variableName]);
     } else {
       fdCategoricalPlot(variableName, dData);
     }
@@ -901,11 +905,13 @@ function generatePlots(tData){
 
     var dData = fdData.x;
     var xMinMax = fdData.x_min_max_list;
+    var nBin = fdData.nbin;
     var isNumeric = fdData.is_numeric;
 
     // histogram or bars?
     if (isNumeric[variableName][0]) {
-      fdNumericalPlot(variableName, dData, xMinMax[variableName]);
+      fdNumericalPlot(variableName, dData, xMinMax[variableName],
+                      nBin[variableName]);
     } else {
       fdCategoricalPlot(variableName, dData);
     }
@@ -1907,7 +1913,7 @@ function generatePlots(tData){
                .on('mouseout', tooltip.hide);
   }
 
-  function fdNumericalPlot(variableName, dData, mData) {
+  function fdNumericalPlot(variableName, dData, mData, nBin) {
 
     var x = d3.scaleLinear()
               .range([plotLeft + 10, plotLeft + fdPlotWidth - 10])
@@ -1922,7 +1928,7 @@ function generatePlots(tData){
       .text(variableName);
 
     var y = d3.scaleLinear()
-          .range([plotTop + fdPlotHeight, plotTop])
+          .range([plotTop + fdPlotHeight - 5, plotTop]);
 
     FD.append("text")
       .attr("class", "bigTitle")
@@ -1936,50 +1942,87 @@ function generatePlots(tData){
       .attr("y", plotTop - 15)
       .text(modelName);
 
+    // find 5 nice ticks with max and min - do better than d3
+    var tickValues = getTickValues(x.domain());
+
+    var xAxis = d3.axisBottom(x)
+                  .tickValues(tickValues)
+                  .tickSizeInner(0)
+                  .tickPadding(15);
+
+    xAxis = FD.append("g")
+              .attr("class", "axisLabel")
+              .attr("transform", "translate(0,"+ (plotTop + fdPlotHeight) + ")")
+              .call(xAxis);
+
     var yAxis = FD.append("g")
                   .attr("class", "axisLabel")
-                  .attr("transform","translate(" + plotLeft + ",0)")
+                  .attr("transform", "translate(" + plotLeft + ",0)");
 
-    function updateHist(nBin) {
+    var yGrid = FD.append("g")
+                    .attr("class", "grid")
+                    .attr("transform", "translate(" + plotLeft + ",0)");
+    
+    var slider = d3.sliderBottom()
+                   .min(d3.max([+nBin-5,2]))
+                   .max(d3.max([+nBin+5,12]))
+                   .width(fdPlotWidth/2 - 10)
+                   .ticks(6)
+                   .step(1)
+                   .default(nBin)
+                   .fill(lineColor)
+                   .on('onchange', val => updateHist(val));
+
+    var sliderg = FD.append("g").call(slider);
+
+    sliderg.attr("transform", "translate(" + (plotLeft + fdPlotWidth/2) + "," +
+                               margin.small + ")");
+
+    updateHist(nBin);
+
+    function updateHist(nbin) {
 
       var histogram = d3.histogram()
                         .value(d => d[variableName])
                         .domain(x.domain())
-                        .thresholds(x.ticks(nBin));
+                        .thresholds(x.ticks(nbin));
 
       var bins = histogram(dData);
-
+      
       y.domain([0, d3.max(bins, d => d.length)]);
 
-      var yaF = d3.axisLeft(y)
+      let yaF = d3.axisLeft(y)
                   .ticks(5)
                   .tickSize(0);
 
-      yAxis.transition()
-           .duration(time)
-           .call(yaF)
+      yAxis.call(yaF)
            .call(g => g.select(".domain").remove());
 
-      var bars = FD.selectAll()
-                   .data(bins)
-                   .enter()
+      yGrid.call(d3.axisLeft(y)
+                   .ticks(10)
+                   .tickSize(-fdPlotWidth)
+                   .tickFormat("")
+                 ).call(g => g.select(".domain").remove());
 
-      bars.append("rect")
+      var bars = FD.selectAll("rect")
+                   .data(bins);
+
+      bars.enter()
+          .append("rect")
           .attr("fill", lineColor)
           .merge(bars)
+          .attr("x", d => x(d.x0))
+          .attr("y", d => y(0))
+          .attr("height", d => 0)
+          .attr("width", d => x(d.x1) - x(d.x0))
           .transition()
           .duration(time)
-           .attr("x", d => x(d.x0))
-           .attr("y", d => y(d.length))
-           .attr("width", d => x(d.x1) - x(d.x0))
-           .attr("height", d => y(d.length))
-
+            .attr("y", d => y(d.length))
+            .attr("height", d => y(0) - y(d.length));
 
       bars.exit()
           .remove()
-      }
-
-    updateHist(20)
+    }
   }
 
   function fdCategoricalPlot(variableName, dData) {

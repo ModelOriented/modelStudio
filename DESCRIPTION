@@ -19,9 +19,11 @@ Imports:
     iBreakDown,
     ingredients,
     r2d3,
-    jsonlite
+    jsonlite,
+    htmltools
 Suggests: 
     knitr,
     rmarkdown,
-    testthat
+    testthat,
+    htmltools
 VignetteBuilder: knitr

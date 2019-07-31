@@ -6,7 +6,7 @@ var obsData = data[0],
 // load options
 var time = options.time,
     size = options.size, alpha = options.alpha, barWidth = options.bar_width,
-    bdTitle = options.bd_title, svTitle = options.sv_Title,
+    bdTitle = options.bd_title, svTitle = options.sv_title,
     cpTitle = options.cp_title, fiTitle = options.fi_title,
     pdTitle = options.pd_title, adTitle = options.ad_title,
     fdTitle = options.fd_title,
@@ -37,7 +37,7 @@ var notVisiblePlots = [{text:"Break Down [Local]",id:"BD"},
                        {text:"Feature Importance [Global]",id:"FI"},
                        {text:"Partial Dependency [Global]",id:"PD"},
                        {text:"Accumulated Dependency [Global]",id:"AD"},
-                       {text:"Feature Density",id:"FD"}];
+                       {text:"Feature Distribution",id:"FD"}];
 
 var visiblePlots = [];
 
@@ -84,7 +84,7 @@ function initializeStudio() {
   d3.select(".r2d3.html-widget.html-widget-static-bound")
     .style("position","absolute");
 
-  let tempW = calculateTextWidth(observationIds)*1.6 + 18;
+  let tempW = calculateTextWidth(observationIds)*1.6 + 18; // 15px bold 600 (?)
 
   var inputDiv = d3.select("#htmlwidget_container")
                    .append("div")
