@@ -70,5 +70,5 @@ Make a studio for the model:
 
 ## Cheat Sheet
 
-![CheatSheet](images/basicCheatSheet.png)
+![CheatSheet](images/basicCheatSheet.bmp)
 
