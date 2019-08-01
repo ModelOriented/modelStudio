@@ -54,7 +54,7 @@ invisible(capture.output({
 library("dime")
 library("DALEX")
 
-# ex1
+# ex1 classification
 
 titanic <- na.omit(titanic)
 set.seed(1313)
@@ -71,15 +71,15 @@ explain_titanic_glm <- explain(model_titanic_glm,
 new_observations <- titanic_small[1:4,-6]
 rownames(new_observations) <- c("Lisa","James", "Thomas", "Nancy")
 
-modelStudio(explain_titanic_glm, new_observations, facet_dim = c(2,3),
-            N = 100, B = 15, time = 0)
+modelStudio(explain_titanic_glm, new_observations,
+            facet_dim = c(2,3), N = 100, B = 15, time = 0)
 
-# ex2
+# ex2 regression
 
 model_apartments <- glm(m2.price ~. ,
                         data = apartments)
 
-explain_apartments <- explain(model_apartments_glm,
+explain_apartments <- explain(model_apartments,
                               data = apartments[,-1],
                               y = apartments[,1])
 

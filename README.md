@@ -23,7 +23,7 @@ Install from GitHub:
 devtools::install_github("ModelOriented/dime")
 ```
 
-Be sure that all dependencies are up-to-date with GitHub.
+Make sure that all dependencies are up-to-date with GitHub.
 
 -------------------------------------------------------
 
