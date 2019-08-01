@@ -26,6 +26,10 @@ prepareBreakDown <- function(x, max_features = 10, baseline = NA, digits = 3,
   ret$m <- m
   #ret$variables <- variables
   ret$x_min_max <- min_max
+  ret$desc <- data.frame(type = "desc",
+                         text = gsub("\n","</br>",
+                         iBreakDown::describe(x, display_values =  TRUE,
+                                                 display_numbers = TRUE)))
 
   ret
 }
@@ -112,6 +116,11 @@ prepareShapleyValues <- function(x, max_features = 10, baseline = NA, digits = 3
   ret$x <- new_x
   ret$m <- m
   ret$x_min_max <- min_max
+  ret$desc <- data.frame(type = "desc",
+                         text = gsub("\n","</br>",
+                         iBreakDown::describe(x, display_values = TRUE,
+                                                 display_numbers = TRUE,
+                                                 display_shap = TRUE)))
 
   ret
 }

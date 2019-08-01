@@ -151,6 +151,7 @@ function generatePlots(tData, time){
 
     var bData = bdData.x;
     var xMinMax = bdData.x_min_max;
+    var desc = bdData.desc;
 
     var x = d3.scaleLinear()
               .range([plotLeft,  plotLeft + bdPlotWidth])
@@ -274,6 +275,7 @@ function generatePlots(tData, time){
         .on('mouseover', tooltip.show)
         .on('mouseout', tooltip.hide)
         .on("click", function(){
+          if (this.id == "prediction" || this.id == "intercept") { return;}
           CLICKED_VARIABLE_NAME = this.id;
           updateCP(this.id);
           updatePD(this.id);
@@ -336,8 +338,6 @@ function generatePlots(tData, time){
          .attr("y2", d =>
          d.variable == "prediction" ? y(d.variable) : y(d.variable) + bdBarWidth*2.5);
 
-    let desctemp = [{type:"desc", "text":"Description: TBD"}];
-
     let tempWH = 20;
 
     var description = BD.append("g")
@@ -346,17 +346,19 @@ function generatePlots(tData, time){
                               "," + (plotTop - tempWH - 5) + ")");
 
     description.selectAll()
-               .data(desctemp)
+               .data(desc)
                .enter()
                .append("rect")
                .attr("class", "descriptionBox")
                .attr("width", tempWH)
                .attr("height", tempWH)
+               .attr("rx", 2*margin.big)
+               .attr("ry", 2*margin.big)
                .on('mouseover', tooltip.show)
                .on('mouseout', tooltip.hide);
 
     description.selectAll()
-               .data(desctemp)
+               .data(desc)
                .enter()
                .append("text")
                .attr("class", "descriptionLabel")
@@ -376,6 +378,7 @@ function generatePlots(tData, time){
 
     var bData = svData.x;
     var xMinMax = svData.x_min_max;
+    var desc = svData.desc;
 
     var x = d3.scaleLinear()
               .range([plotLeft,  plotLeft + svPlotWidth])
@@ -480,6 +483,7 @@ function generatePlots(tData, time){
         .on('mouseover', tooltip.show)
         .on('mouseout', tooltip.hide)
         .on("click", function(){
+          if (this.id == "other") { return;}
           CLICKED_VARIABLE_NAME = this.id;
           updateCP(this.id);
           updatePD(this.id);
@@ -527,8 +531,6 @@ function generatePlots(tData, time){
           .attr("y2", (d,i) =>
           i == svBarCount-1 ? y(d.variable) + svBarWidth : y(d.variable) + svBarWidth*2.5);
 
-    let desctemp = [{type:"desc", "text":"Description: TBD"}];
-
     let tempWH = 20;
 
     var description = SV.append("g")
@@ -537,17 +539,19 @@ function generatePlots(tData, time){
                               "," + (plotTop - tempWH - 5) + ")");
 
     description.selectAll()
-               .data(desctemp)
+               .data(desc)
                .enter()
                .append("rect")
                .attr("class", "descriptionBox")
                .attr("width", tempWH)
                .attr("height", tempWH)
+               .attr("rx", 2*margin.big)
+               .attr("ry", 2*margin.big)
                .on('mouseover', tooltip.show)
                .on('mouseout', tooltip.hide);
 
     description.selectAll()
-               .data(desctemp)
+               .data(desc)
                .enter()
                .append("text")
                .attr("class", "descriptionLabel")
@@ -711,7 +715,7 @@ function generatePlots(tData, time){
       .attr("x2", x(fullModel))
       .attr("y2", maximumY + y.bandwidth());
 
-    let desctemp = [{type:"desc", "text":"Description: TBD"}];
+    let desctemp = [{type:"desc", "text":"Under development"}];
 
     let tempWH = 20;
 
@@ -727,6 +731,8 @@ function generatePlots(tData, time){
                .attr("class", "descriptionBox")
                .attr("width", tempWH)
                .attr("height", tempWH)
+               .attr("rx", 2*margin.big)
+               .attr("ry", 2*margin.big)
                .on('mouseover', tooltip.show)
                .on('mouseout', tooltip.hide);
 
@@ -736,7 +742,7 @@ function generatePlots(tData, time){
                .append("text")
                .attr("class", "descriptionLabel")
                .attr("dy", "1.1em")
-               .attr("x", 5)
+               .attr("x", margin.small)
                .text("D")
                .on('mouseover', function(d) {
                  tooltip.show(d);
@@ -814,9 +820,6 @@ function generatePlots(tData, time){
 
   function updateCP(variableName) {
 
-    if (variableName == "prediction" || variableName == "intercept" ||
-        variableName == "other") { return;}
-
     svg.select("#CP").selectAll("*").remove();
     d3.select("body").select("#tooltipCP").remove();
 
@@ -841,9 +844,6 @@ function generatePlots(tData, time){
   }
 
   function updatePD(variableName) {
-
-    if (variableName == "prediction" || variableName == "intercept" ||
-        variableName == "other") { return;}
 
     svg.select("#PD").selectAll("*").remove();
     d3.select("body").select("#tooltipPD").remove();
@@ -870,9 +870,6 @@ function generatePlots(tData, time){
 
   function updateAD(variableName) {
 
-    if (variableName == "prediction" || variableName == "intercept" ||
-        variableName == "other") { return;}
-
     svg.select("#AD").selectAll("*").remove();
     d3.select("body").select("#tooltipAD").remove();
 
@@ -897,9 +894,6 @@ function generatePlots(tData, time){
   }
 
   function updateFD(variableName) {
-
-    if (variableName == "prediction" || variableName == "intercept" ||
-        variableName == "other") { return;}
 
     svg.select("#FD").selectAll("*").remove();
     d3.select("body").select("#tooltipFD").remove();
@@ -1107,7 +1101,7 @@ function generatePlots(tData, time){
       .attr("text-anchor", "middle")
       .text("prediction");
 
-    let desctemp = [{type:"desc", "text":"Description: TBD"}];
+    let desctemp = [{type:"desc", "text":"Under development"}];
 
     let tempWH = 20;
 
@@ -1123,6 +1117,8 @@ function generatePlots(tData, time){
                .attr("class", "descriptionBox")
                .attr("width", tempWH)
                .attr("height", tempWH)
+               .attr("rx", 2*margin.big)
+               .attr("ry", 2*margin.big)
                .on('mouseover', tooltip.show)
                .on('mouseout', tooltip.hide);
 
@@ -1145,8 +1141,8 @@ function generatePlots(tData, time){
 
     var x = d3.scaleLinear()
               .range([plotLeft,  plotLeft + cpPlotWidth])
-              .domain([yMinMax[0], yMinMax[1]]); // because it is flipped 
- 
+              .domain([yMinMax[0], yMinMax[1]]); // because it is flipped
+
     var xAxis = d3.axisBottom(x)
                   .ticks(5)
                   .tickSize(0);
@@ -1257,7 +1253,7 @@ function generatePlots(tData, time){
       .attr("text-anchor", "middle")
       .text("prediction");
 
-    let desctemp = [{type:"desc", "text":"Description: TBD"}];
+    let desctemp = [{type:"desc", "text":"Under development"}];
 
     let tempWH = 20;
 
@@ -1273,6 +1269,8 @@ function generatePlots(tData, time){
                .attr("class", "descriptionBox")
                .attr("width", tempWH)
                .attr("height", tempWH)
+               .attr("rx", 2*margin.big)
+               .attr("ry", 2*margin.big)
                .on('mouseover', tooltip.show)
                .on('mouseout', tooltip.hide);
 
@@ -1421,7 +1419,7 @@ function generatePlots(tData, time){
       .attr("text-anchor", "middle")
       .text("average prediction");
 
-    let desctemp = [{type:"desc", "text":"Description: TBD"}];
+    let desctemp = [{type:"desc", "text":"Under development"}];
 
     let tempWH = 20;
 
@@ -1437,6 +1435,8 @@ function generatePlots(tData, time){
                .attr("class", "descriptionBox")
                .attr("width", tempWH)
                .attr("height", tempWH)
+               .attr("rx", 2*margin.big)
+               .attr("ry", 2*margin.big)
                .on('mouseover', tooltip.show)
                .on('mouseout', tooltip.hide);
 
@@ -1459,7 +1459,7 @@ function generatePlots(tData, time){
 
     var x = d3.scaleLinear()
               .range([plotLeft,  plotLeft + pdPlotWidth])
-              .domain([yMinMax[0], yMinMax[1]]); // because it is flipped 
+              .domain([yMinMax[0], yMinMax[1]]); // because it is flipped
 
     var xAxis = d3.axisBottom(x)
                   .ticks(5)
@@ -1569,7 +1569,7 @@ function generatePlots(tData, time){
       .attr("text-anchor", "middle")
       .text("average prediction");
 
-    let desctemp = [{type:"desc", "text":"Description: TBD"}];
+    let desctemp = [{type:"desc", "text":"Under development"}];
 
     let tempWH = 20;
 
@@ -1585,6 +1585,8 @@ function generatePlots(tData, time){
                .attr("class", "descriptionBox")
                .attr("width", tempWH)
                .attr("height", tempWH)
+               .attr("rx", 2*margin.big)
+               .attr("ry", 2*margin.big)
                .on('mouseover', tooltip.show)
                .on('mouseout', tooltip.hide);
 
@@ -1733,7 +1735,7 @@ function generatePlots(tData, time){
       .attr("text-anchor", "middle")
       .text("accumulated prediction");
 
-    let desctemp = [{type:"desc", "text":"Description: TBD"}];
+    let desctemp = [{type:"desc", "text":"Under development"}];
 
     let tempWH = 20;
 
@@ -1749,6 +1751,8 @@ function generatePlots(tData, time){
                .attr("class", "descriptionBox")
                .attr("width", tempWH)
                .attr("height", tempWH)
+               .attr("rx", 2*margin.big)
+               .attr("ry", 2*margin.big)
                .on('mouseover', tooltip.show)
                .on('mouseout', tooltip.hide);
 
@@ -1771,7 +1775,7 @@ function generatePlots(tData, time){
 
     var x = d3.scaleLinear()
               .range([plotLeft,  plotLeft + adPlotWidth])
-              .domain([yMinMax[0], yMinMax[1]]); // because it is flipped 
+              .domain([yMinMax[0], yMinMax[1]]); // because it is flipped
 
     var xAxis = d3.axisBottom(x)
                   .ticks(5)
@@ -1881,7 +1885,7 @@ function generatePlots(tData, time){
       .attr("text-anchor", "middle")
       .text("accumulated prediction");
 
-    let desctemp = [{type:"desc", "text":"Description: TBD"}];
+    let desctemp = [{type:"desc", "text":"Under development"}];
 
     let tempWH = 20;
 
@@ -1897,6 +1901,8 @@ function generatePlots(tData, time){
                .attr("class", "descriptionBox")
                .attr("width", tempWH)
                .attr("height", tempWH)
+               .attr("rx", 2*margin.big)
+               .attr("ry", 2*margin.big)
                .on('mouseover', tooltip.show)
                .on('mouseout', tooltip.hide);
 
@@ -1972,16 +1978,16 @@ function generatePlots(tData, time){
     var yGrid = FD.append("g")
                     .attr("class", "grid")
                     .attr("transform", "translate(" + plotLeft + ",0)");
-    
+
     var slider = d3.sliderBottom()
                    .min(d3.max([+nBin-10,2]))
                    .max(d3.max([+nBin+10,12]))
                    .width(fdPlotWidth/2 - 10)
-                   .ticks(6)
+                   .ticks(8)
                    .step(1)
                    .default(nBin)
                    .fill(lineColor)
-                   .on('drag', val => updateHist(val));
+                   .on('onchange', val => updateHist(val));
 
     var sliderg = FD.append("g").call(slider);
 
@@ -1998,7 +2004,7 @@ function generatePlots(tData, time){
                         .thresholds(x.ticks(nbin));
 
       var bins = histogram(dData);
-      
+
       y.domain([0, d3.max(bins, d => d.length)]);
 
       let yaF = d3.axisLeft(y)
@@ -2042,10 +2048,10 @@ function generatePlots(tData, time){
                   .key(d => d[variableName])
                   .rollup(v => v.length)
                   .entries(dData);
-              
+
     var x = d3.scaleLinear()
               .range([plotLeft,  plotLeft + fdPlotWidth])
-              .domain([0, mData]); 
+              .domain([0, mData]);
 
     var xAxis = d3.axisBottom(x)
                   .ticks(5)
@@ -2113,6 +2119,26 @@ function generatePlots(tData, time){
         .attr("y", d => y(d.key))
         .attr("height", y.bandwidth())
         .attr("width", d => x(d.value)-x(0));
+
+    // add intercept line
+    var minimumY = Number.MAX_VALUE;
+    var maximumY = Number.MIN_VALUE;
+
+    bars.selectAll(".".concat(variableName)).each(function() {
+        if (+this.getAttribute('y') < minimumY) {
+          minimumY = +this.getAttribute('y');
+        }
+        if (+this.getAttribute('y') > maximumY) {
+          maximumY = +this.getAttribute('y');
+        }
+      });
+
+    FD.append("line")
+      .attr("class", "interceptLine")
+      .attr("x1", x(0))
+      .attr("y1", minimumY)
+      .attr("x2", x(0))
+      .attr("y2", maximumY + y.bandwidth());
 
     FD.append("text")
       .attr("transform",

@@ -46,7 +46,7 @@ an object of the \code{r2d3} class.
 \description{
 This tool uses your model, data and new observations, to provide local
 and global explanations. It generates plots and descriptions in the form
-of HTML site, that supports animations and interactivity made with D3.js.
+of serverless HTML site, that supports animations and interactivity made with D3.js.
 }
 \examples{
 invisible(capture.output({
@@ -66,10 +66,11 @@ explain_titanic_glm <- explain(model_titanic_glm,
                                y = titanic_small$survived == "yes",
                                label = "glm")
 
-new_observation <- titanic_small[1:10,-6]
+new_observations <- titanic_small[1:4,-6]
+rownames(new_observations) <- c("Lisa","James", "Thomas", "Nancy")
 
-modelStudio(explain_titanic_glm, new_observation[1:2,],
-            N = 200, facet_dim = c(2,3), time = 0)
+modelStudio(explain_titanic_glm, new_observations, facet_dim = c(2,3),
+            N = 200, B = 20, time = 0)
 
 }))
 }

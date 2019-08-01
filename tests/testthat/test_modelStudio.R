@@ -14,17 +14,31 @@ explain_titanic_glm <- explain(model_titanic_glm,
                                y = titanic_small$survived == "yes",
                                label = "glm")
 
-ms1 <- modelStudio(explain_titanic_glm, new_observation = titanic_small[1,-6])
+ms1 <- modelStudio(explain_titanic_glm,
+                   new_observation = titanic_small[1,-6])
+
 ms2 <- modelStudio(model_titanic_glm,
                    max_features = 5,
                    data = titanic_small[,-6],
                    y = titanic_small$survived == "yes",
                    label = "xxx",
-                   new_observation = titanic_small[1,-6])
+                   new_observation = titanic_small[1:2,-6])
+
+ms2 <- modelStudio(model_titanic_glm,
+                   max_features = 5,
+                   facet_dim = c(2,3),
+                   N = 150,
+                   B = 10,
+                   time = 900,
+                   data = titanic_small[,-6],
+                   y = titanic_small$survived == "yes",
+                   label = "xxx",
+                   new_observation = titanic_small[1:10,-6])
 
 # tests
 
 test_that("Output format", {
   expect_is(ms1, "r2d3")
+  expect_is(ms2, "r2d3")
   expect_is(ms2, "r2d3")
 })

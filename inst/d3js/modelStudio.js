@@ -37,11 +37,11 @@ var notVisiblePlots = [{text:"Break Down [Local]",id:"BD"},
                        {text:"Feature Importance [Global]",id:"FI"},
                        {text:"Partial Dependency [Global]",id:"PD"},
                        {text:"Accumulated Dependency [Global]",id:"AD"},
-                       {text:"Feature Distribution",id:"FD"}];
+                       {text:"Feature Distribution [EDA]",id:"FD"}];
 
 var visiblePlots = [];
 
-var plotCountTreshold = d3.min(notVisiblePlots.length,(dim[0]*dim[1]));
+var plotCountTreshold = d3.min([notVisiblePlots.length,(dim[0]*dim[1])]);
 
 // generate facet x,y coordinates
 /// FIXME: change this double loop
@@ -234,27 +234,76 @@ function reloadStudio() {
             .style('font-family', 'Arial')
             .on("mouseover", function() { d3.select(this).style("cursor", "pointer");})
             .on("mouseout", function() { d3.select(this).style("cursor", "auto");})
-            .on("click", function() {
+            .on("click", function(d) {
 
               // when clicking outside of button remove it
               svg.select("#tempButton"+object.id).remove();
               // delete text buttons
               svg.select("#tempText"+object.id).remove();
-              // add this plot  to visible
-              visiblePlots.push({text: this.text, id: this.id});
+              // add this plot to visible
+              visiblePlots.push({text: d.text, id: this.id});
+
               // delete this plot from not visible
               notVisiblePlots = notVisiblePlots.filter(el => el.id !== this.id);
               // let the user click other buttons now
               buttonClicked = false;
-
-              // delete all not needed items
-              if (visiblePlots.length === plotCountTreshold) STARTG.remove(); //
 
               // show plot
               svg.select("#"+this.id)
                  .attr("transform","translate(" + (x) + "," + (y + margin.big) + ")")
                  .style("visibility", "visible");
                  // margin.big added because translate 0 is -10
+
+              var tthis = this;
+
+              // add exit button
+              svg.select("#"+this.id)
+                 .append("rect")
+                 .attr("class", "descriptionBox")
+                 .attr("id", "exitButton")
+                 .attr("width", 2*margin.big)
+                 .attr("height", 2*margin.big)
+                 .attr("x", margin.big)
+                 .attr("y",1)
+                 .attr("rx", 2*margin.big)
+                 .attr("ry", 2*margin.big);
+
+              svg.select("#"+this.id)
+                 .append("text")
+                 .attr("class", "descriptionLabel")
+                 .attr("id", "exitButton")
+                 .attr("dy", "1.1em")
+                 .attr("x", margin.big+margin.small)
+                 .attr("y", 1)
+                 .text("X")
+                 .style("font-family", "Arial");
+
+              // add events for exit button
+              svg.select("#"+this.id)
+                 .selectAll("#exitButton")
+                 .on("mouseover", function() { d3.select(this).style("cursor", "pointer");})
+                 .on("mouseout", function() { d3.select(this).style("cursor", "auto");})
+                 .on("click", function() {
+
+                    // add this plot to not visible
+                    notVisiblePlots.push({text: d.text, id: tthis.id});
+                    // delete this plot from visible
+                    visiblePlots = visiblePlots.filter(el => el.id !== tthis.id);
+                    // remove exitButton
+                    svg.select("#"+tthis.id).selectAll("#exitButton").remove();
+                    // hide plot
+                    svg.select("#"+tthis.id)
+                       .style("visibility", "hidden");
+
+                    // show grey button with `+`
+                    svg.selectAll("#"+object.id).style("visibility", "visible");
+                 })
+
+              // delete all not needed items
+              if (visiblePlots.length === plotCountTreshold) {
+                STARTG.remove();
+                svg.selectAll("#exitButton").remove();
+              }
             });
   }
 

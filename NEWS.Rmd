@@ -1,3 +1,4 @@
-# dime 0.0.1
+# dime 0.1.0
 ----------------------------------------------------------------
-* TBD
+* first stable version of the `dime` package
+* `modelStudio()` function implemented
