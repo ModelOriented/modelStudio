@@ -10,6 +10,8 @@ with only a few lines of code.
     
 [See an example](https://modeloriented.github.io/dime/demo.html)
 
+------------------------------------------------------
+
 ## Installation
 
 Install from GitHub:
@@ -17,3 +19,56 @@ Install from GitHub:
 ``` 
 devtools::install_github("ModelOriented/dime")
 ```
+
+-------------------------------------------------------
+
+## Demo
+
+This package bases on `DALEX::explain()`.
+
+```r
+ library("dime")
+ library("DALEX")
+```
+
+Create a model:
+
+```r
+ titanic <- na.omit(titanic)
+ set.seed(1313)
+ titanic_small <- titanic[sample(1:nrow(titanic), 500), c(1,2,3,6,7,9)]
+
+ model_titanic_glm <- glm(survived == "yes" ~ gender + age + fare + class + sibsp,
+                          data = titanic_small, family = "binomial")
+```
+
+Wrap it into an explainer:
+
+```r
+ explain_titanic_glm <- explain(model_titanic_glm,
+                                data = titanic_small[,-6],
+                                y = titanic_small$survived == "yes",
+                                label = "glm")
+```
+
+Pick some data points:
+
+```r
+ new_observations <- titanic_small[1:4,-6]
+ rownames(new_observations) <- c("Lisa", "James", "Thomas", "Nancy")
+```
+
+Make a studio for the model:
+
+```r
+ modelStudio(explain_titanic_glm,
+             new_observations,
+             facet_dim = c(2,2), N = 200, B = 20, time = 0)
+```
+
+------------------------------------------------------
+
+## Cheat Sheet
+
+![CheatSheet](images/basicCheatSheet.png)
+
