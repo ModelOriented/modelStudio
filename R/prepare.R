@@ -21,15 +21,22 @@ prepareBreakDown <- function(x, max_features = 10, baseline = NA, digits = 3,
   min_max[1] <- min_max[1] - min_max_margin
   min_max[2] <- min_max[2] + min_max_margin
 
+  desc <- NULL
+  # because apparently describe doesnt work for less than 4 features
+  if (nrow(x) > 5) {
+    desc <- iBreakDown::describe(x, display_values =  TRUE,
+                                 display_numbers = TRUE)
+  } else {
+    desc <- "Description for less than 4 features model not available."
+  }
+
   ret <- NULL
   ret$x <- new_x
   ret$m <- m
   #ret$variables <- variables
   ret$x_min_max <- min_max
   ret$desc <- data.frame(type = "desc",
-                         text = gsub("\n","</br>",
-                         iBreakDown::describe(x, display_values =  TRUE,
-                                                 display_numbers = TRUE)))
+                         text = gsub("\n","</br>", desc))
 
   ret
 }
@@ -112,15 +119,22 @@ prepareShapleyValues <- function(x, max_features = 10, baseline = NA, digits = 3
   min_max[1] <- min_max[1] - min_max_margin
   min_max[2] <- min_max[2] + min_max_margin
 
+  desc <- NULL
+  # because apparently describe doesnt work for less than 4 features
+  if (nrow(x) > 3) {
+    desc <- iBreakDown::describe(x, display_values = TRUE,
+                                 display_numbers = TRUE,
+                                 display_shap = TRUE)
+  } else {
+    desc <- "Description for less than 4 features model not available."
+  }
+
   ret <- NULL
   ret$x <- new_x
   ret$m <- m
   ret$x_min_max <- min_max
   ret$desc <- data.frame(type = "desc",
-                         text = gsub("\n","</br>",
-                         iBreakDown::describe(x, display_values = TRUE,
-                                                 display_numbers = TRUE,
-                                                 display_shap = TRUE)))
+                         text = gsub("\n","</br>", desc))
 
   ret
 }
@@ -175,6 +189,9 @@ prepareCeterisParibus <- function(x, variables = NULL) {
   # which variable is numeric?
   is_numeric <- sapply(x[, variables, drop = FALSE], is.numeric)
   names(is_numeric) <- variables
+
+  # safeguard
+  is_numeric <- is_numeric[!is.na(is_numeric)]
 
   # prepare clean observations data for tooltips
   all_observations <- attr(x, "observations")
@@ -283,6 +300,9 @@ preparePartialDependency <- function(x, y, variables = NULL) {
   is_numeric <- c(rep(TRUE, length(num)), rep(FALSE, length(cat)))
   names(is_numeric) <- c(num, cat)
   is_numeric <- is_numeric[variables]
+
+  # safeguard
+  is_numeric <- is_numeric[!is.na(is_numeric)]
 
   # prepare aggregated profiles data
   aggregated_profiles <- rbind(x,y)
@@ -421,6 +441,9 @@ prepareFeatureDistribution <- function(x, variables = NULL) {
   # which variable is numeric?
   is_numeric <- sapply(x[, variables, drop = FALSE], is.numeric)
   names(is_numeric) <- variables
+
+  # safeguard
+  is_numeric <- is_numeric[!is.na(is_numeric)]
 
   x_min_max_list <- x_max_list <- nbin <- list()
 

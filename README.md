@@ -1,6 +1,9 @@
 # dime: Deep Interactive Model Explanation
 ### Automate Explaining Machine Learning Predictive Models
 
+[![Build Status](https://travis-ci.org/ModelOriented/dime.svg?branch=master)](https://travis-ci.org/ModelOriented/dime)
+[![Coverage Status](https://img.shields.io/codecov/c/github/ModelOriented/dime/master.svg)](https://codecov.io/github/ModelOriented/dime?branch=master)
+
 This package generates advanced interactive and animated model explanations in the form
 of serverless HTML site. It combines R with D3.js to produce plots and descriptions
 for local and global explanations. The whole is greater than the sum of its parts,
@@ -19,6 +22,8 @@ Install from GitHub:
 ``` 
 devtools::install_github("ModelOriented/dime")
 ```
+
+Be sure that all dependencies are up-to-date with GitHub.
 
 -------------------------------------------------------
 
