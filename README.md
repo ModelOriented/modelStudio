@@ -5,7 +5,7 @@
 [![Coverage Status](https://img.shields.io/codecov/c/github/ModelOriented/dime/master.svg)](https://codecov.io/github/ModelOriented/dime?branch=master)
 
 This package generates advanced interactive and animated model explanations in the form
-of serverless HTML site. It combines R with D3.js to produce plots and descriptions
+of serverless HTML site. It combines **R** with **D3.js** to produce plots and descriptions
 for local and global explanations. The whole is greater than the sum of its parts,
 so it also supports EDA on top of that. ModelStudio is a fast and condensed way to get
 all the answers without much effort. Break down your model and look into its ingredients
@@ -14,6 +14,10 @@ with only a few lines of code.
 [See an example](https://modeloriented.github.io/dime/demo.html)
 
 ![](images/gif1.gif)
+
+The package `dime` is a part of the [DrWhy.AI](http://drwhy.ai) universe. 
+
+Find more aout the uniform grammar of model explanations in [Predictive Models: Visual Exploration, Explanation and Debugging](https://pbiecek.github.io/PM_VEE/).
 
 ------------------------------------------------------
 
