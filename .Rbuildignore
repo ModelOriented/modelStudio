@@ -10,5 +10,4 @@
 ^docs.*$
 ^.*README.*$
 ^_pkgdown\.yml$
-^NEWS\.Rmd$
 ^codecov\.yml$
