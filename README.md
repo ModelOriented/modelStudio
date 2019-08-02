@@ -10,8 +10,10 @@ for local and global explanations. The whole is greater than the sum of its part
 so it also supports EDA on top of that. ModelStudio is a fast and condensed way to get
 all the answers without much effort. Break down your model and look into its ingredients
 with only a few lines of code.  
-    
+
 [See an example](https://modeloriented.github.io/dime/demo.html)
+
+![](images/gif1.gif)
 
 ------------------------------------------------------
 
@@ -70,6 +72,8 @@ Make a studio for the model:
              new_observations,
              facet_dim = c(2,2), N = 200, B = 20, time = 0)
 ```
+
+![](images/gif2.gif)
 
 ------------------------------------------------------
 
