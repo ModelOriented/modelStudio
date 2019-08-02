@@ -61,6 +61,9 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -165,6 +168,8 @@ of serverless HTML site, that supports animations and interactivity made with D3
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='st'>"dime"</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='st'>"DALEX"</span>)
 
+<span class='co'># ex1 classification</span>
+
 <span class='no'>titanic</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/na.fail'>na.omit</a></span>(<span class='no'>titanic</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Random'>set.seed</a></span>(<span class='fl'>1313</span>)
 <span class='no'>titanic_small</span> <span class='kw'>&lt;-</span> <span class='no'>titanic</span>[<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample</a></span>(<span class='fl'>1</span>:<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>titanic</span>), <span class='fl'>500</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>6</span>,<span class='fl'>7</span>,<span class='fl'>9</span>)]
@@ -180,8 +185,21 @@ of serverless HTML site, that supports animations and interactivity made with D3
 <span class='no'>new_observations</span> <span class='kw'>&lt;-</span> <span class='no'>titanic_small</span>[<span class='fl'>1</span>:<span class='fl'>4</span>,-<span class='fl'>6</span>]
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>rownames</a></span>(<span class='no'>new_observations</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Lisa"</span>,<span class='st'>"James"</span>, <span class='st'>"Thomas"</span>, <span class='st'>"Nancy"</span>)
 
-<span class='fu'>modelStudio</span>(<span class='no'>explain_titanic_glm</span>, <span class='no'>new_observations</span>, <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>3</span>),
-            <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>200</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>time</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+<span class='fu'>modelStudio</span>(<span class='no'>explain_titanic_glm</span>, <span class='no'>new_observations</span>,
+            <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>3</span>), <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>time</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+
+<span class='co'># ex2 regression</span>
+
+<span class='no'>model_apartments</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/glm'>glm</a></span>(<span class='no'>m2.price</span> ~<span class='no'>.</span> ,
+                        <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>)
+
+<span class='no'>explain_apartments</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/DALEX/topics/explain'>explain</a></span>(<span class='no'>model_apartments</span>,
+                              <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>[,-<span class='fl'>1</span>],
+                              <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>apartments</span>[,<span class='fl'>1</span>])
+
+<span class='no'>new_apartments</span> <span class='kw'>&lt;-</span> <span class='no'>apartments</span>[<span class='fl'>1</span>:<span class='fl'>2</span>, -<span class='fl'>1</span>]
+
+<span class='fu'>modelStudio</span>(<span class='no'>explain_apartments</span>, <span class='no'>new_apartments</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>)
 
 }))</div><div class='output co'>#&gt; <span class='message'>Welcome to DALEX (version: 0.4.6).</span>
 #&gt; <span class='message'>Find examples and detailed introduction at: https://pbiecek.github.io/PM_VEE/</span>

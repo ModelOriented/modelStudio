@@ -33,6 +33,8 @@
 #' library("dime")
 #' library("DALEX")
 #'
+#' # ex1 classification
+#'
 #' titanic <- na.omit(titanic)
 #' set.seed(1313)
 #' titanic_small <- titanic[sample(1:nrow(titanic), 500), c(1,2,3,6,7,9)]
@@ -48,8 +50,21 @@
 #' new_observations <- titanic_small[1:4,-6]
 #' rownames(new_observations) <- c("Lisa","James", "Thomas", "Nancy")
 #'
-#' modelStudio(explain_titanic_glm, new_observations, facet_dim = c(2,3),
-#'             N = 200, B = 20, time = 0)
+#' modelStudio(explain_titanic_glm, new_observations,
+#'             facet_dim = c(2,3), N = 100, B = 15, time = 0)
+#'
+#' # ex2 regression
+#'
+#' model_apartments <- glm(m2.price ~. ,
+#'                         data = apartments)
+#'
+#' explain_apartments <- explain(model_apartments,
+#'                               data = apartments[,-1],
+#'                               y = apartments[,1])
+#'
+#' new_apartments <- apartments[1:2, -1]
+#'
+#' modelStudio(explain_apartments, new_apartments, N = 100)
 #'
 #' }))
 #' @export

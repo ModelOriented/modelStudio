@@ -39,6 +39,9 @@
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
+<li>
+  <a href="news/index.html">Changelog</a>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right"></ul>
 </div>
@@ -57,8 +60,10 @@
 <div id="automate-explaining-machine-learning-predictive-models" class="section level3">
 <h3 class="hasAnchor">
 <a href="#automate-explaining-machine-learning-predictive-models" class="anchor"></a>Automate Explaining Machine Learning Predictive Models</h3>
+
 <p>This package generates advanced interactive and animated model explanations in the form of serverless HTML site. It combines R with D3.js to produce plots and descriptions for local and global explanations. The whole is greater than the sum of its parts, so it also supports EDA on top of that. ModelStudio is a fast and condensed way to get all the answers without much effort. Break down your model and look into its ingredients with only a few lines of code.</p>
 <p><a href="https://modeloriented.github.io/dime/demo.html">See an example</a></p>
+<p><img src="images/gif1.gif"></p>
 <hr>
 </div>
 <div id="installation" class="section level2">
@@ -66,6 +71,7 @@
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>Install from GitHub:</p>
 <pre><code><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">devtools::install_github("ModelOriented/dime")</a></code></pre>
+<p>Make sure that all dependencies are up-to-date with GitHub.</p>
 <hr>
 </div>
 <div id="demo" class="section level2">
@@ -93,6 +99,7 @@
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"> <span class="kw"><a href="reference/modelStudio.html">modelStudio</a></span>(explain_titanic_glm,</a>
 <a class="sourceLine" id="cb6-2" title="2">             new_observations,</a>
 <a class="sourceLine" id="cb6-3" title="3">             <span class="dt">facet_dim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>,<span class="dv">2</span>), <span class="dt">N =</span> <span class="dv">200</span>, <span class="dt">B =</span> <span class="dv">20</span>, <span class="dt">time =</span> <span class="dv">0</span>)</a></code></pre></div>
+<p><img src="images/gif2.gif"></p>
 <hr>
 </div>
 <div id="cheat-sheet" class="section level2">
@@ -123,7 +130,14 @@
 </ul>
 </div>
 
-  </div>
+  <div class="dev-status">
+<h2>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://travis-ci.org/ModelOriented/dime"><img src="https://travis-ci.org/ModelOriented/dime.svg?branch=master" alt="Build Status"></a></li>
+<li><a href="https://codecov.io/github/ModelOriented/dime?branch=master"><img src="https://img.shields.io/codecov/c/github/ModelOriented/dime/master.svg" alt="Coverage Status"></a></li>
+</ul>
+</div>
+</div>
 </div>
 
 
