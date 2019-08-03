@@ -29,6 +29,9 @@ Install from GitHub:
 
 ``` 
 devtools::install_github("ModelOriented/dime")
+
+devtools::install_github("ModelOriented/ingredients")
+devtools::install_github("ModelOriented/iBreakDown")
 ```
 
 Make sure that all dependencies are up-to-date with GitHub.
