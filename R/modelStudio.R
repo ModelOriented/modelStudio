@@ -204,8 +204,8 @@ modelStudio.default <- function(x,
           dependencies = list(
             "d3-jetpack",
             system.file("d3js/myTools.js", package = "dime"),
-            system.file("d3js/tooltipD3.js", package = "dime"),
-            system.file("d3js/sliderD3.js", package = "dime"),
+            system.file("d3js/d3-tip.js", package = "dime"),
+            system.file("d3js/d3-slider.js", package = "dime"),
             system.file("d3js/generatePlots.js", package = "dime"),
             system.file("d3js/generateTooltipHtml.js", package = "dime")
           ),
