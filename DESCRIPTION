@@ -1,7 +1,7 @@
 Package: dime
-Title: Deep Interactive Model Explanation
+Title: Deep Interactive Model Explanations
 Version: 0.1.1
-Authors@R: 
+Authors@R:
     c(person("Hubert", "Baniecki", role = c("aut", "cre"), email = "hbaniecki@gmail.com"),
       person("Przemyslaw", "Biecek", role = c("aut")))
 Description: Automate explaining machine learning predictive models.
@@ -10,19 +10,19 @@ Description: Automate explaining machine learning predictive models.
   for local and global explanations. The whole is greater than the sum of its parts,
   so it also supports EDA on top of that. ModelStudio is a fast and condensed way to get
   all the answers without much effort. Break down your model and look into its ingredients
-  with only a few lines of code.  
+  with only a few lines of code.
 Depends: R (>= 3.5.0)
 License: GPL
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
-Imports: 
+Imports:
     DALEX,
     iBreakDown,
     ingredients,
     r2d3,
     jsonlite
-Suggests: 
+Suggests:
     knitr,
     rmarkdown,
     testthat,

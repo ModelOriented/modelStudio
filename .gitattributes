@@ -3,3 +3,6 @@ inst/d3js/modelStudio.js linguist-vendored=false
 inst/d3js/modelStudio.css linguist-vendored=false
 inst/d3js/myTools.js linguist-vendored=false
 inst/d3js/generateTooltipHtml.js linguist-vendored=false
+
+docs/* linguist-documentation
+man/* linguist-documentation

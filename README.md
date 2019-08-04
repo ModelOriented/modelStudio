@@ -1,4 +1,4 @@
-# dime: Deep Interactive Model Explanation
+# dime: Deep Interactive Model Explanations
 ### Automate Explaining Machine Learning Predictive Models
 
 [![Build Status](https://travis-ci.org/ModelOriented/dime.svg?branch=master)](https://travis-ci.org/ModelOriented/dime)
@@ -17,7 +17,7 @@ with only a few lines of code.
 
 ![](images/gif1.gif)
 
-The package `dime` is a part of the [DrWhy.AI](http://drwhy.ai) universe. 
+The package `dime` is a part of the [DrWhy.AI](http://drwhy.ai) universe.
 
 Find more about model explanations in [Predictive Models: Visual Exploration, Explanation and Debugging](https://pbiecek.github.io/PM_VEE/) e-book.
 
@@ -27,7 +27,7 @@ Find more about model explanations in [Predictive Models: Visual Exploration, Ex
 
 Install from GitHub:
 
-``` 
+```
 devtools::install_github("ModelOriented/dime")
 
 devtools::install_github("ModelOriented/ingredients")
@@ -89,4 +89,3 @@ Make a studio for the model:
 ## Cheat Sheet
 
 ![CheatSheet](images/basicCheatSheet.bmp)
-
