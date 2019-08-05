@@ -22,12 +22,12 @@ prepareBreakDown <- function(x, max_features = 10, baseline = NA, digits = 3,
   min_max[2] <- min_max[2] + min_max_margin
 
   desc <- NULL
-  # because apparently describe doesnt work for less than 4 features
+  # because apparently describe doesnt work for less than 3 features
   if (nrow(x) > 5) {
     desc <- iBreakDown::describe(x, display_values =  TRUE,
                                  display_numbers = TRUE)
   } else {
-    desc <- "Description for less than 4 features model not available."
+    desc <- iBreakDown::describe(x, short_description = TRUE)
   }
 
   ret <- NULL
@@ -126,7 +126,8 @@ prepareShapleyValues <- function(x, max_features = 10, baseline = NA, digits = 3
                                  display_numbers = TRUE,
                                  display_shap = TRUE)
   } else {
-    desc <- "Description for less than 4 features model not available."
+    desc <- iBreakDown::describe(x, short_description = TRUE,
+                                 display_shap = TRUE)
   }
 
   ret <- NULL
