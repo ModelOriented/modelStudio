@@ -287,6 +287,7 @@ prepareFeatureImportance <- function(x, max_features = 10, margin = 0.2) {
 
   ret <- NULL
   ret$x <- x[,2:4]
+  ret$m <- m
   ret$x_min_max <- c(xmin - ticks_margin, xmax + ticks_margin)
 
   ret
