@@ -6,6 +6,11 @@
 ///:\\\ use lambdas and ifelse where possible     ///:\\\
 ///:\\\ ----------------------------------------- ///:\\\
 
+/// prevent modelStudio from reloading onResize
+r2d3.onResize(function() {
+  return;
+});
+
 /// load all data
 var obsData = data[0],
     fiData = data[1], pdData = data[2],
@@ -227,10 +232,9 @@ function initializeStudio() {
 
   exitPlotButtons.append("text")
                  .attr("class", "descriptionLabel")
-                 .attr("dy", "1.1em")
-                 .attr("x", 4.5)
-                 .text("X")
-                 .style("font-family", "Arial");
+                 .attr("dy", "1em")
+                 .attr("x", 6)
+                 .text("X");
 
   // events
   exitPlotButtons.selectAll("*")
@@ -284,7 +288,6 @@ function initializeStudio() {
              .attr("y", (d,i) => y + plotHeight/2 + 25*i - (notVisiblePlots.length/2)*25)
              .attr("text-anchor", "middle")
              .text(d => d.text)
-             .style('font-family', 'Arial')
              .on("mouseover", function() { d3.select(this).style("cursor", "pointer");})
              .on("mouseout", function() { d3.select(this).style("cursor", "auto");})
              .on("click", function(d) {
@@ -317,8 +320,4 @@ function initializeStudio() {
                IS_BUTTON_CLICKED = false;
              });
   }
-
-  // safeguard font-family update
-  svg.selectAll("text")
-     .style('font-family', 'Arial');
 }

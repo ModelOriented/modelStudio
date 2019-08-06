@@ -200,7 +200,7 @@ modelStudio.default <- function(x,
           data = temp,
           script = system.file("d3js/modelStudio.js", package = "dime"),
           dependencies = list(
-            #"d3-jetpack",
+            system.file("d3js/hackHead.js", package = "dime"),
             system.file("d3js/myTools.js", package = "dime"),
             system.file("d3js/d3-tip.js", package = "dime"),
             system.file("d3js/d3-slider.js", package = "dime"),

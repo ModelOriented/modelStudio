@@ -1,139 +1,123 @@
 @import url('https://fonts.googleapis.com/css?family=Fira+Sans:400,600');
 
 text {
-    fill: #371ea3;
+  font-family:'Fira Sans';
+  font-style:normal;
+  fill: #371ea3;
 }
 
 .bigTitle {
-    font-weight: 600;
-    font-size: 18px;
-    text-align: left;
+  font-family:'Fira Sans';
+  font-style:normal;
+  font-weight: 700;
+  font-size: 18px;
+  text-align: left;
 }
 
-.smallTitle{
-    font-weight: 600;
-    font-size: 13px;
-    text-align: left;
+.smallTitle {
+  font-family:'Fira Sans';
+  font-style:normal;
+  font-weight: 700;
+  font-size: 13px;
+  text-align: left;
 }
 
-.axisTitle{
-    font-weight: 600;
-    font-size: 13px;
-    text-align: center;
+.axisTitle {
+  font-family:'Fira Sans';
+  font-style:normal;
+  font-weight: 700;
+  font-size: 13px;
+  text-align: center;
 }
 
-.axisLabel{
-    font-weight:400;
-    font-size: 11px;
+.axisLabel {
+  font-family:'Fira Sans';
+  font-style:normal;
+  font-weight: 500;
+  font-size: 11px;
 }
 
-.axisLabel .domain{
+.axisLabel .domain {
     stroke: #371ea3;
 }
 
-.legendTitle{
-    font-weight: 400;
-    font-size: 13px;
-    text-align: left;
+.legendTitle {
+  font-family:'Fira Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  text-align: left;
 }
 
-.interceptLine{
-    stroke: #371ea3;
+.legendLabel {
+  font-family:'Fira Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 11px;
+  text-align: left;
+}
+
+.legendBox {
+  fill: #ceced9;
+  opacity: 0.5;
+}
+
+.interceptLine {
+  stroke: #371ea3;
 	stroke-width: 1px;
 	stroke-opacity: 1;
 	stroke-linecap: "butt";
 }
 
-.dotLine{
-  	fill: none;
-  	stroke: #371ea3;
-  	stroke-width: 0.7px;
+.dotLine {
+	fill: none;
+	stroke: #371ea3;
+	stroke-width: 0.7px;
 }
 
-.grid .tick line{
-    /*stroke: #f0f0f4;*/
-    stroke: #ceced9;
-    opacity: 0.5;
-    stroke-width: 1px
-}
-
-.legendTitle{
-    font-weight: 400;
-    font-size: 13px;
-    text-align: left;
-}
-
-.legendLabel{
-    font-weight: 400;
-    font-size: 11px;
-    text-align: left;
-}
-
-.legendBox{
-    fill: #ceced9;
-    opacity: 0.5;
+.grid .tick line {
+  /*stroke: #f0f0f4;*/
+  stroke: #ceced9;
+  opacity: 0.5;
+  stroke-width: 1px
 }
 
 .mainTitle {
-    font-size: 25px;
-    font-weight: 400;
+  font-family:'Fira Sans';
+  font-style: normal;
+  font-size: 25px;
+  font-weight: 500;
 }
 
 .mainLine {
-    stroke: #371ea3;
-    stroke-width: 1.5px;
-    stroke-opacity: 1;
-    stroke-linecap: butt;
+  stroke: #371ea3;
+  stroke-width: 1.5px;
+  stroke-opacity: 1;
+  stroke-linecap: butt;
 }
 
 .enterChoiceButton {
-    fill: #ceced9;
-    opacity: 0.5;
-    stroke:#371ea3;
-    stroke-width:2;
+  fill: #ceced9;
+  opacity: 0.5;
+  stroke:#371ea3;
+  stroke-width:2;
 }
 
 .exitChoiceButton {
-    fill: #FFFFFF;
-    stroke:#371ea3;
-    stroke-width:2;
+  fill: #FFFFFF;
+  stroke:#371ea3;
+  stroke-width:2;
 }
 
 .descriptionBox {
-    fill: #ceced9;
-    opacity: 0.5;
+  fill: #ceced9;
+  opacity: 0.5;
 }
 
 .descriptionLabel {
-    fill: #371ea3;
-    font-weight: 900;
-    font-size: 14px;
-}
-
-.d3-tip {
-    line-height: 1.1;
-    padding: 6px;
-    background: #00000080;
-    color: #fff;
-    border-radius: 0px;
-    font-size: 14px;
-    font-family: 'Roboto Condensed', sans-serif;
-}
-
-.d3-tip:after {
-    box-sizing: border-box;
-    display: inline;
-    font-size: 10px;
-    width: 100%;
-    line-height: 1;
-    color: rgba(0, 0, 0, 0.8);
-    content: "\25BC";
-    position: absolute;
-    text-align: center;
-}
-
-.d3-tip.n:after {
-    margin: -2px 0 0 0;
-    top: 100%;
-    left: 0;
+  font-family:'Fira Sans';
+  font-style: normal;
+  fill: #371ea3;
+  font-weight: 700;
+  font-size: 14px;
 }

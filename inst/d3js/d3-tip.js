@@ -46,6 +46,7 @@ d3.tip = function() {
     coords = direction_callbacks[dir].apply(this)
 
     ////////////////////////////////::::::::://///////////////////////////////////////////
+    // make sure that tip is pointing right direction (not outside of svg)\\
 
     var divDim = node.getBoundingClientRect(),
         svgDim = svg.getBBox();

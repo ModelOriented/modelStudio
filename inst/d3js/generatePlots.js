@@ -187,7 +187,8 @@ function breakDown() {
 
   // add tooltip
   var tooltip = d3.tip()
-                  .attr("class", "tooltip")
+                  .attr("class", "d3-tip")
+                  .attr("id", "tooltipBD")
                   .offset([-8, 0])
                   .html(d => d.type === "desc"
                              ? descTooltipHtml(d) : bdTooltipHtml(d));
@@ -327,8 +328,8 @@ function breakDown() {
              .enter()
              .append("text")
              .attr("class", "descriptionLabel")
-             .attr("dy", "1.1em")
-             .attr("x", margin.small)
+             .attr("x", 6)
+             .attr("dy", "1.05em")
              .text("D")
              .on('mouseover', function(d) {
                tooltip.show(d);
@@ -427,7 +428,8 @@ function shapleyValues() {
 
   // add tooltip
   var tooltip = d3.tip()
-                  .attr("class", "tooltip")
+                  .attr("class", "d3-tip")
+                  .attr("id", "tooltipSV")
                   .offset([-8, 0])
                   .html(d => d.type === "desc"
                              ? descTooltipHtml(d) : bdTooltipHtml(d));
@@ -535,8 +537,8 @@ function shapleyValues() {
              .enter()
              .append("text")
              .attr("class", "descriptionLabel")
-             .attr("dy", "1.1em")
-             .attr("x", margin.small)
+             .attr("x", 6)
+             .attr("dy", "1.05em")
              .text("D")
              .on('mouseover', function(d) {
                tooltip.show(d);
@@ -653,7 +655,8 @@ function featureImportance() {
 
   // tooltip
   var tooltip = d3.tip()
-                  .attr("class", "tooltip")
+                  .attr("class", "d3-tip")
+                  .attr("id", "tooltipFI")
                   .offset([-8, 0])
                   .html(d => d.type === "desc"
                              ? descTooltipHtml(d)
@@ -733,8 +736,8 @@ function featureImportance() {
              .enter()
              .append("text")
              .attr("class", "descriptionLabel")
-             .attr("dy", "1.1em")
-             .attr("x", margin.small)
+             .attr("x", 6)
+             .attr("dy", "1.05em")
              .text("D")
              .on('mouseover', function(d) {
                tooltip.show(d);
@@ -876,7 +879,7 @@ function cpNumericalPlot(variableName, lData, mData, yMinMax, pData) {
 
   // make tooltip
   var tooltip = d3.tip()
-                  .attr("class", "tooltip")
+                  .attr("class", "d3-tip")
                   .attr("id", "tooltipCP")
                   .offset([-8, 0])
                   .html((d, addData) => {
@@ -1015,8 +1018,8 @@ function cpNumericalPlot(variableName, lData, mData, yMinMax, pData) {
              .enter()
              .append("text")
              .attr("class", "descriptionLabel")
-             .attr("dy", "1.1em")
-             .attr("x", margin.small)
+             .attr("x", 6)
+             .attr("dy", "1.05em")
              .text("D")
              .on('mouseover', function(d) {
                tooltip.show(d);
@@ -1098,7 +1101,7 @@ function cpCategoricalPlot(variableName, bData, yMinMax, lData) {
 
   // make tooltip
   var tooltip = d3.tip()
-                  .attr("class", "tooltip")
+                  .attr("class", "d3-tip")
                   .attr("id", "tooltipCP")
                   .offset([-8, 0])
                   .html(d => d.type === "desc" ?
@@ -1170,8 +1173,8 @@ function cpCategoricalPlot(variableName, bData, yMinMax, lData) {
              .enter()
              .append("text")
              .attr("class", "descriptionLabel")
-             .attr("dy", "1.1em")
-             .attr("x", margin.small)
+             .attr("x", 6)
+             .attr("dy", "1.05em")
              .text("D")
              .on('mouseover', function(d) {
                tooltip.show(d);
@@ -1252,7 +1255,7 @@ function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
 
   // make tooltip
   var tooltip = d3.tip()
-                  .attr("class", "tooltip")
+                  .attr("class", "d3-tip")
                   .attr("id", "tooltipPD")
                   .offset([-8, 0])
                   .html(d => d.type === "desc" ?
@@ -1339,8 +1342,8 @@ function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
              .enter()
              .append("text")
              .attr("class", "descriptionLabel")
-             .attr("dy", "1.1em")
-             .attr("x", margin.small)
+             .attr("x", 6)
+             .attr("dy", "1.05em")
              .text("D")
              .on('mouseover', function(d) {
                tooltip.show(d);
@@ -1420,7 +1423,7 @@ function pdCategoricalPlot(variableName, bData, yMinMax, yMean) {
 
   // make tooltip
   var tooltip = d3.tip()
-                  .attr("class", "tooltip")
+                  .attr("class", "d3-tip")
                   .attr("id", "tooltipPD")
                   .offset([-8, 0])
                   .html(d => d.type === "desc" ?
@@ -1492,8 +1495,8 @@ function pdCategoricalPlot(variableName, bData, yMinMax, yMean) {
              .enter()
              .append("text")
              .attr("class", "descriptionLabel")
-             .attr("dy", "1.1em")
-             .attr("x", margin.small)
+             .attr("x", 6)
+             .attr("dy", "1.05em")
              .text("D")
              .on('mouseover', function(d) {
                tooltip.show(d);
@@ -1574,7 +1577,7 @@ function adNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
 
   // make tooltip
   var tooltip = d3.tip()
-                  .attr("class", "tooltip")
+                  .attr("class", "d3-tip")
                   .attr("id", "tooltipPD")
                   .offset([-8, 0])
                   .html(d => d.type === "desc" ?
@@ -1661,8 +1664,8 @@ function adNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
              .enter()
              .append("text")
              .attr("class", "descriptionLabel")
-             .attr("dy", "1.1em")
-             .attr("x", margin.small)
+             .attr("x", 6)
+             .attr("dy", "1.05em")
              .text("D")
              .on('mouseover', function(d) {
                tooltip.show(d);
@@ -1742,7 +1745,7 @@ function adCategoricalPlot(variableName, bData, yMinMax, yMean) {
 
   // make tooltip
   var tooltip = d3.tip()
-                  .attr("class", "tooltip")
+                  .attr("class", "d3-tip")
                   .attr("id", "tooltipAD")
                   .offset([-8, 0])
                   .html(d => d.type === "desc" ?
@@ -1814,8 +1817,8 @@ function adCategoricalPlot(variableName, bData, yMinMax, yMean) {
              .enter()
              .append("text")
              .attr("class", "descriptionLabel")
-             .attr("dy", "1.1em")
-             .attr("x", margin.small)
+             .attr("x", 6)
+             .attr("dy", "1.05em")
              .text("D")
              .on('mouseover', function(d) {
                tooltip.show(d);
@@ -1888,7 +1891,7 @@ function fdNumericalPlot(variableName, dData, mData, nBin) {
   var slider = d3.sliderBottom()
                  .min(d3.max([+nBin-10,2]))
                  .max(d3.max([+nBin+10,12]))
-                 .width(fdPlotWidth/2 - 10)
+                 .width(fdPlotWidth/2 - 40) // fit exit button
                  .ticks(8)
                  .step(1)
                  .default(nBin)
@@ -1897,8 +1900,8 @@ function fdNumericalPlot(variableName, dData, mData, nBin) {
 
   var sliderg = FD.append("g").call(slider);
 
-  sliderg.attr("transform", "translate(" + (margin.left + fdPlotWidth/2) + "," +
-                             margin.small + ")");
+  sliderg.attr("transform", "translate(" + (margin.left + fdPlotWidth/2 - margin.small)
+                            + "," + margin.small + ")");
 
   updateHist(nBin);
 
@@ -2089,9 +2092,6 @@ function updatePlots(event, variableName, observationId, time, plotId) {
                   [event,variableName,observationId,time,plotId]);
       break;
   }
-  // safeguard font-family update
-  svg.selectAll("text")
-     .style('font-family', 'Arial');
 }
 
 function removePlots(arrPlotId) {
