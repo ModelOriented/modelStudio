@@ -19,6 +19,8 @@ var fiColors = getColors(1, "bar"),
 
 /// initialize plots, select them if already there
 var BD, SV, CP, FI, PD, AD, FD;
+
+/// later plot specific plotIds
 var mapIdPlotFunction = {};
 
 if (svg.select("#BD").empty()) {
@@ -230,7 +232,7 @@ function breakDown() {
             return defaultColor;
         }
       })
-      .attr("fill-opacity", d => x(d.barSupport) - x(d.barStart) < 1
+      .attr("fill-opacity", d => x(d.barSupport) - x(d.barStart) < 1.5
                                  ? 0 : 1) //invisible bar for clicking purpose
       .attr("y", d => y(d.variable))
       .attr("height", y.bandwidth())
@@ -248,7 +250,7 @@ function breakDown() {
       .duration(time)
       .delay((d,i) => i * time)
       .attr("x", d => x(d.barStart))
-      .attr("width", d => x(d.barSupport)-x(d.barStart) < 1
+      .attr("width", d => x(d.barSupport) - x(d.barStart) < 1.5
                           ? 5 : x(d.barSupport) - x(d.barStart));
 
   // add labels to bars
@@ -303,20 +305,18 @@ function breakDown() {
        .attr("y2", d => d.variable == "prediction"
                         ? y(d.variable) : y(d.variable) + bdBarWidth*2.5);
 
-  let tempWH = 20;
-
   var description = BD.append("g")
                       .attr("transform", "translate(" +
-                            (margin.left + bdPlotWidth - tempWH) +
-                            "," + (margin.top - tempWH - 5) + ")");
+                            (margin.left + bdPlotWidth - 4*margin.big - margin.small)
+                            + "," + (-margin.big) + ")");
 
   description.selectAll()
              .data(desc)
              .enter()
              .append("rect")
              .attr("class", "descriptionBox")
-             .attr("width", tempWH)
-             .attr("height", tempWH)
+             .attr("width", 2*margin.big)
+             .attr("height", 2*margin.big)
              .attr("rx", 2*margin.big)
              .attr("ry", 2*margin.big)
              .on('mouseover', tooltip.show)
@@ -328,7 +328,7 @@ function breakDown() {
              .append("text")
              .attr("class", "descriptionLabel")
              .attr("dy", "1.1em")
-             .attr("x", 5)
+             .attr("x", margin.small)
              .text("D")
              .on('mouseover', function(d) {
                tooltip.show(d);
@@ -453,7 +453,7 @@ function shapleyValues() {
             return defaultColor;
         }
       })
-      .attr("fill-opacity", d => x(d.barSupport) - x(d.barStart) < 1
+      .attr("fill-opacity", d => x(d.barSupport) - x(d.barStart) < 1.5
                                  ? 0 : 1) //invisible bar for clicking purpose
       .attr("x", d => d.contribution > 0 ? x(d.barStart) : x(d.barSupport))
       .attr("y", d => y(d.variable))
@@ -471,7 +471,7 @@ function shapleyValues() {
       .duration(time)
       .delay((d,i) => i * time)
       .attr("x", d => x(d.barStart))
-      .attr("width", d => x(d.barSupport)-x(d.barStart) < 1
+      .attr("width", d => x(d.barSupport) - x(d.barStart) < 1.5
                           ? 5 : x(d.barSupport) - x(d.barStart));
 
   // add labels to bars
@@ -511,20 +511,20 @@ function shapleyValues() {
                              ? y(d.variable) + svBarWidth
                              : y(d.variable) + svBarWidth*2.5);
 
-  let tempWH = 20;
+
 
   var description = SV.append("g")
                       .attr("transform", "translate(" +
-                            (margin.left + svPlotWidth - tempWH) +
-                            "," + (margin.top - tempWH - 5) + ")");
+                            (margin.left + svPlotWidth - 4*margin.big - margin.small)
+                            + "," + (-margin.big) + ")");
 
   description.selectAll()
              .data(desc)
              .enter()
              .append("rect")
              .attr("class", "descriptionBox")
-             .attr("width", tempWH)
-             .attr("height", tempWH)
+             .attr("width", 2*margin.big)
+             .attr("height", 2*margin.big)
              .attr("rx", 2*margin.big)
              .attr("ry", 2*margin.big)
              .on('mouseover', tooltip.show)
@@ -536,7 +536,7 @@ function shapleyValues() {
              .append("text")
              .attr("class", "descriptionLabel")
              .attr("dy", "1.1em")
-             .attr("x", 5)
+             .attr("x", margin.small)
              .text("D")
              .on('mouseover', function(d) {
                tooltip.show(d);
@@ -709,20 +709,20 @@ function featureImportance() {
 
   let desctemp = [{type:"desc", "text":"Under development"}];
 
-  let tempWH = 20;
+
 
   var description = FI.append("g")
                       .attr("transform", "translate(" +
-                            (margin.left + fiPlotWidth - tempWH) +
-                            "," + (margin.top - tempWH - 5) + ")");
+                            (margin.left + fiPlotWidth - 4*margin.big - margin.small)
+                            + "," + (-margin.big) + ")");
 
   description.selectAll()
              .data(desctemp)
              .enter()
              .append("rect")
              .attr("class", "descriptionBox")
-             .attr("width", tempWH)
-             .attr("height", tempWH)
+             .attr("width", 2*margin.big)
+             .attr("height", 2*margin.big)
              .attr("rx", 2*margin.big)
              .attr("ry", 2*margin.big)
              .on('mouseover', tooltip.show)
@@ -991,20 +991,20 @@ function cpNumericalPlot(variableName, lData, mData, yMinMax, pData) {
 
   let desctemp = [{type:"desc", "text":"Under development"}];
 
-  let tempWH = 20;
+
 
   var description = CP.append("g")
                       .attr("transform", "translate(" +
-                            (margin.left + cpPlotWidth - tempWH) +
-                            "," + (margin.top - tempWH - 5) + ")");
+                            (margin.left + cpPlotWidth - 4*margin.big - margin.small)
+                            + "," + (-margin.big) + ")");
 
   description.selectAll()
              .data(desctemp)
              .enter()
              .append("rect")
              .attr("class", "descriptionBox")
-             .attr("width", tempWH)
-             .attr("height", tempWH)
+             .attr("width", 2*margin.big)
+             .attr("height", 2*margin.big)
              .attr("rx", 2*margin.big)
              .attr("ry", 2*margin.big)
              .on('mouseover', tooltip.show)
@@ -1016,7 +1016,7 @@ function cpNumericalPlot(variableName, lData, mData, yMinMax, pData) {
              .append("text")
              .attr("class", "descriptionLabel")
              .attr("dy", "1.1em")
-             .attr("x", 5)
+             .attr("x", margin.small)
              .text("D")
              .on('mouseover', function(d) {
                tooltip.show(d);
@@ -1146,20 +1146,20 @@ function cpCategoricalPlot(variableName, bData, yMinMax, lData) {
 
   let desctemp = [{type:"desc", "text":"Under development"}];
 
-  let tempWH = 20;
+
 
   var description = CP.append("g")
                       .attr("transform", "translate(" +
-                            (margin.left + cpPlotWidth - tempWH) +
-                            "," + (margin.top - tempWH - 5) + ")");
+                            (margin.left + cpPlotWidth - 4*margin.big - margin.small)
+                            + "," + (-margin.big) + ")");
 
   description.selectAll()
              .data(desctemp)
              .enter()
              .append("rect")
              .attr("class", "descriptionBox")
-             .attr("width", tempWH)
-             .attr("height", tempWH)
+             .attr("width", 2*margin.big)
+             .attr("height", 2*margin.big)
              .attr("rx", 2*margin.big)
              .attr("ry", 2*margin.big)
              .on('mouseover', tooltip.show)
@@ -1171,7 +1171,7 @@ function cpCategoricalPlot(variableName, bData, yMinMax, lData) {
              .append("text")
              .attr("class", "descriptionLabel")
              .attr("dy", "1.1em")
-             .attr("x", 5)
+             .attr("x", margin.small)
              .text("D")
              .on('mouseover', function(d) {
                tooltip.show(d);
@@ -1315,20 +1315,20 @@ function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
 
   let desctemp = [{type:"desc", "text":"Under development"}];
 
-  let tempWH = 20;
+
 
   var description = PD.append("g")
                       .attr("transform", "translate(" +
-                            (margin.left + pdPlotWidth - tempWH) +
-                            "," + (margin.top - tempWH - 5) + ")");
+                            (margin.left + pdPlotWidth - 4*margin.big - margin.small)
+                            + "," + (-margin.big) + ")");
 
   description.selectAll()
              .data(desctemp)
              .enter()
              .append("rect")
              .attr("class", "descriptionBox")
-             .attr("width", tempWH)
-             .attr("height", tempWH)
+             .attr("width", 2*margin.big)
+             .attr("height", 2*margin.big)
              .attr("rx", 2*margin.big)
              .attr("ry", 2*margin.big)
              .on('mouseover', tooltip.show)
@@ -1340,7 +1340,7 @@ function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
              .append("text")
              .attr("class", "descriptionLabel")
              .attr("dy", "1.1em")
-             .attr("x", 5)
+             .attr("x", margin.small)
              .text("D")
              .on('mouseover', function(d) {
                tooltip.show(d);
@@ -1468,20 +1468,20 @@ function pdCategoricalPlot(variableName, bData, yMinMax, yMean) {
 
   let desctemp = [{type:"desc", "text":"Under development"}];
 
-  let tempWH = 20;
+
 
   var description = PD.append("g")
                       .attr("transform", "translate(" +
-                            (margin.left + pdPlotWidth - tempWH) +
-                            "," + (margin.top - tempWH - 5) + ")");
+                            (margin.left + pdPlotWidth - 4*margin.big - margin.small)
+                            + "," + (-margin.big) + ")");
 
   description.selectAll()
              .data(desctemp)
              .enter()
              .append("rect")
              .attr("class", "descriptionBox")
-             .attr("width", tempWH)
-             .attr("height", tempWH)
+             .attr("width", 2*margin.big)
+             .attr("height", 2*margin.big)
              .attr("rx", 2*margin.big)
              .attr("ry", 2*margin.big)
              .on('mouseover', tooltip.show)
@@ -1493,7 +1493,7 @@ function pdCategoricalPlot(variableName, bData, yMinMax, yMean) {
              .append("text")
              .attr("class", "descriptionLabel")
              .attr("dy", "1.1em")
-             .attr("x", 5)
+             .attr("x", margin.small)
              .text("D")
              .on('mouseover', function(d) {
                tooltip.show(d);
@@ -1637,20 +1637,20 @@ function adNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
 
   let desctemp = [{type:"desc", "text":"Under development"}];
 
-  let tempWH = 20;
+
 
   var description = AD.append("g")
                       .attr("transform", "translate(" +
-                            (margin.left + adPlotWidth - tempWH) +
-                            "," + (margin.top - tempWH - 5) + ")");
+                            (margin.left + adPlotWidth - 4*margin.big - margin.small)
+                            + "," + (-margin.big) + ")");
 
   description.selectAll()
              .data(desctemp)
              .enter()
              .append("rect")
              .attr("class", "descriptionBox")
-             .attr("width", tempWH)
-             .attr("height", tempWH)
+             .attr("width", 2*margin.big)
+             .attr("height", 2*margin.big)
              .attr("rx", 2*margin.big)
              .attr("ry", 2*margin.big)
              .on('mouseover', tooltip.show)
@@ -1662,7 +1662,7 @@ function adNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
              .append("text")
              .attr("class", "descriptionLabel")
              .attr("dy", "1.1em")
-             .attr("x", 5)
+             .attr("x", margin.small)
              .text("D")
              .on('mouseover', function(d) {
                tooltip.show(d);
@@ -1790,20 +1790,20 @@ function adCategoricalPlot(variableName, bData, yMinMax, yMean) {
 
   let desctemp = [{type:"desc", "text":"Under development"}];
 
-  let tempWH = 20;
+
 
   var description = AD.append("g")
                       .attr("transform", "translate(" +
-                            (margin.left + adPlotWidth - tempWH) +
-                            "," + (margin.top - tempWH - 5) + ")");
+                            (margin.left + adPlotWidth - 4*margin.big - margin.small)
+                            + "," + (-margin.big) + ")");
 
   description.selectAll()
              .data(desctemp)
              .enter()
              .append("rect")
              .attr("class", "descriptionBox")
-             .attr("width", tempWH)
-             .attr("height", tempWH)
+             .attr("width", 2*margin.big)
+             .attr("height", 2*margin.big)
              .attr("rx", 2*margin.big)
              .attr("ry", 2*margin.big)
              .on('mouseover', tooltip.show)
@@ -1815,7 +1815,7 @@ function adCategoricalPlot(variableName, bData, yMinMax, yMean) {
              .append("text")
              .attr("class", "descriptionLabel")
              .attr("dy", "1.1em")
-             .attr("x", 5)
+             .attr("x", margin.small)
              .text("D")
              .on('mouseover', function(d) {
                tooltip.show(d);

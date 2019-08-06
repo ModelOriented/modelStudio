@@ -118,8 +118,6 @@ modelStudio.default <- function(x,
 
   obs_count <- dim(new_observation)[1]
 
-  if (obs_count > 10) stop("There are more than 10 observations.")
-
   if (is.null(label)) label <- class(x)[1]
 
   variable_names <- colnames(new_observation)

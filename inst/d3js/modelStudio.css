@@ -86,15 +86,15 @@ text {
     stroke-linecap: butt;
 }
 
-.chosePlotButton {
+.enterChoiceButton {
     fill: #ceced9;
     opacity: 0.5;
     stroke:#371ea3;
     stroke-width:2;
 }
 
-.whiteButton {
-    fill: "white";
+.exitChoiceButton {
+    fill: #FFFFFF;
     stroke:#371ea3;
     stroke-width:2;
 }
