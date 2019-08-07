@@ -232,7 +232,7 @@ function initializeStudio() {
 
   exitPlotButtons.append("text")
                  .attr("class", "descriptionLabel")
-                 .attr("dy", "1em")
+                 .attr("dy", "1.05em")
                  .attr("x", 6)
                  .text("X");
 

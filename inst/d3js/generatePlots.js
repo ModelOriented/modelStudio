@@ -189,7 +189,6 @@ function breakDown() {
   var tooltip = d3.tip()
                   .attr("class", "d3-tip")
                   .attr("id", "tooltipBD")
-                  .offset([-8, 0])
                   .html(d => d.type === "desc"
                              ? descTooltipHtml(d) : bdTooltipHtml(d));
 
@@ -430,7 +429,6 @@ function shapleyValues() {
   var tooltip = d3.tip()
                   .attr("class", "d3-tip")
                   .attr("id", "tooltipSV")
-                  .offset([-8, 0])
                   .html(d => d.type === "desc"
                              ? descTooltipHtml(d) : bdTooltipHtml(d));
 
@@ -657,7 +655,6 @@ function featureImportance() {
   var tooltip = d3.tip()
                   .attr("class", "d3-tip")
                   .attr("id", "tooltipFI")
-                  .offset([-8, 0])
                   .html(d => d.type === "desc"
                              ? descTooltipHtml(d)
                              : fiStaticTooltipHtml(d, modelName));
@@ -881,7 +878,6 @@ function cpNumericalPlot(variableName, lData, mData, yMinMax, pData) {
   var tooltip = d3.tip()
                   .attr("class", "d3-tip")
                   .attr("id", "tooltipCP")
-                  .offset([-8, 0])
                   .html((d, addData) => {
 
                     if (d.type === "desc") {
@@ -1103,7 +1099,6 @@ function cpCategoricalPlot(variableName, bData, yMinMax, lData) {
   var tooltip = d3.tip()
                   .attr("class", "d3-tip")
                   .attr("id", "tooltipCP")
-                  .offset([-8, 0])
                   .html(d => d.type === "desc" ?
                    descTooltipHtml(d) : cpChangedTooltipHtml(d, lData[0]));
   CP.call(tooltip);
@@ -1257,7 +1252,6 @@ function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
   var tooltip = d3.tip()
                   .attr("class", "d3-tip")
                   .attr("id", "tooltipPD")
-                  .offset([-8, 0])
                   .html(d => d.type === "desc" ?
                    descTooltipHtml(d) : pdStaticTooltipHtml(d, variableName, yMean));
   PD.call(tooltip);
@@ -1425,7 +1419,6 @@ function pdCategoricalPlot(variableName, bData, yMinMax, yMean) {
   var tooltip = d3.tip()
                   .attr("class", "d3-tip")
                   .attr("id", "tooltipPD")
-                  .offset([-8, 0])
                   .html(d => d.type === "desc" ?
                    descTooltipHtml(d) : pdStaticTooltipHtml(d, variableName, yMean));
   PD.call(tooltip);
@@ -1579,7 +1572,6 @@ function adNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
   var tooltip = d3.tip()
                   .attr("class", "d3-tip")
                   .attr("id", "tooltipPD")
-                  .offset([-8, 0])
                   .html(d => d.type === "desc" ?
                    descTooltipHtml(d) : adStaticTooltipHtml(d, variableName, yMean));
   AD.call(tooltip);
@@ -1747,7 +1739,6 @@ function adCategoricalPlot(variableName, bData, yMinMax, yMean) {
   var tooltip = d3.tip()
                   .attr("class", "d3-tip")
                   .attr("id", "tooltipAD")
-                  .offset([-8, 0])
                   .html(d => d.type === "desc" ?
                    descTooltipHtml(d) : adStaticTooltipHtml(d, variableName, yMean));
   AD.call(tooltip);

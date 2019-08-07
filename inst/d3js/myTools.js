@@ -211,3 +211,11 @@ function wrapText(text, width) {
       }
   });
 }
+
+function wrapHtmlOutput(text) {
+  var output = "";
+  text.replace(/\(?[A-Z][^\.]+[\.!\?]\)?/g, function (sentence) {
+      output += (sentence + '<br>');
+  });
+  return output;
+}
