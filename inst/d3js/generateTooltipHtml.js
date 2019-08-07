@@ -1,4 +1,4 @@
-/// tooltip functions
+//:\\\ here are functions for tooltips HTML //:\\\
 
 function bdTooltipHtml(d) {
   var temp = "<center>";

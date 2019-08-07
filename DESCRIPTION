@@ -1,6 +1,6 @@
 Package: dime
 Title: Deep Interactive Model Explanations
-Version: 0.1.1
+Version: 0.1.2
 Authors@R:
     c(person("Hubert", "Baniecki", role = c("aut", "cre"), email = "hbaniecki@gmail.com"),
       person("Przemyslaw", "Biecek", role = c("aut")))
@@ -17,12 +17,13 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
 Imports:
-    DALEX,
     iBreakDown,
     ingredients,
     r2d3,
     jsonlite
 Suggests:
+    DALEX,
+    randomForest,
     knitr,
     rmarkdown,
     testthat,

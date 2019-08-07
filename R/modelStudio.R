@@ -118,8 +118,6 @@ modelStudio.default <- function(x,
 
   obs_count <- dim(new_observation)[1]
 
-  if (obs_count > 10) stop("There are more than 10 observations.")
-
   if (is.null(label)) label <- class(x)[1]
 
   variable_names <- colnames(new_observation)
@@ -202,7 +200,7 @@ modelStudio.default <- function(x,
           data = temp,
           script = system.file("d3js/modelStudio.js", package = "dime"),
           dependencies = list(
-            "d3-jetpack",
+            system.file("d3js/hackHead.js", package = "dime"),
             system.file("d3js/myTools.js", package = "dime"),
             system.file("d3js/d3-tip.js", package = "dime"),
             system.file("d3js/d3-slider.js", package = "dime"),

@@ -1,3 +1,5 @@
+//:\\\ usefull functions //:\\\
+
 function getColors(n, type){
   // get drWhy palette
 
@@ -5,7 +7,7 @@ function getColors(n, type){
   var ret = [];
 
   if (type == "bar") {
-    switch(n){
+    switch (n) {
       case 1:
         return ["#46bac2"];
       case 2:
@@ -27,7 +29,7 @@ function getColors(n, type){
         return ret;
     }
   } else if (type == "line") {
-    switch(n){
+    switch (n) {
       case 1:
         return ["#46bac2"];
       case 2:
@@ -49,12 +51,12 @@ function getColors(n, type){
         return ret;
     }
   } else if (type == "point") {
-    switch(n){
+    switch (n) {
       default:
         return ["#371ea3", "#46bac2", "#ceced9"];
     }
   } else if (type == "breakDown") {
-    switch(n){
+    switch (n) {
       default:
         return ["#8bdcbe", "#f05a71", "#371ea3"];
     }
@@ -66,7 +68,7 @@ function getTickValues(domain) {
 
   var tickValues = d3.ticks(domain[0], domain[1],5);
 
-  switch (tickValues.length){
+  switch (tickValues.length) {
     case 3:
       tickValues.unshift(domain[0]);
       tickValues.push(domain[1]);
@@ -208,4 +210,12 @@ function wrapText(text, width) {
           }
       }
   });
+}
+
+function wrapHtmlOutput(text) {
+  var output = "";
+  text.replace(/\(?[A-Z][^\.]+[\.!\?]\)?/g, function (sentence) {
+      output += (sentence + '<br>');
+  });
+  return output;
 }

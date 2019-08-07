@@ -1,4 +1,6 @@
 /* d3.tip Copyright (c) 2013 Justin Palmer Tooltips for d3.js SVG visualizations */
+/// MADE SOME CHANGES
+
 d3.functor = function functor(v) {
   return typeof v === "function" ? v : function() {
     return v;
@@ -37,34 +39,86 @@ d3.tip = function() {
         scrollTop  = document.documentElement.scrollTop || document.body.scrollTop,
         scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft
 
-    nodel.html(content)
-      .style('position', 'absolute')
-      .style('opacity', 1)
-      .style('pointer-events', 'all')
-
+    /// unclass all directions
     while(i--) nodel.classed(directions[i], false)
-    coords = direction_callbacks[dir].apply(this)
 
-    ////////////////////////////////::::::::://///////////////////////////////////////////
+    ////////////////////////////////:::::::::////////////////////////////////
+    // make sure that tip is pointing right direction (not outside of svg) \\
+    // 'n' means that tooltip will go north from pointer
+
+    var tdir = dir;
+    var tcontent = content;
 
     var divDim = node.getBoundingClientRect(),
         svgDim = svg.getBBox();
 
-    if (d3.event.pageY + divDim.height > svgDim.height) {
-      nodel.classed(dir, true).style('top', (d3.event.pageY - divDim.height - 10) + scrollTop  + 'px');
-    } else {
-      nodel.classed(dir, true).style('top', (d3.event.pageY + 10) + scrollTop  + 'px');
+    // 20 is for 2x r2d3 margin and 7 was added empiricaly
+    var sh = 20 + svgDim.height;// + 7; // this is modelSTudio plotHeight
+    var sw = 20 + svgDim.width;
+    var dh = divDim.height;
+    var dw = divDim.width;
+    var py = d3.event.pageY;
+    var px = d3.event.pageX;
+
+    // by default put tooltip 'n'
+    var ttop = py - dh - 5;
+    var tleft = px - dw/2;
+    var tdir = "n";
+    var tpdd = '6px 6px 13px 6px';
+
+    if (px - dw/2 < 10) {
+      tleft = px + 5;
+      tdir = "ne";
+      tpdd = '6px 6px 11px 11px';
+      if (py - dh/2 < 10) {
+        ttop = py - dh/2;
+        tdir = "e";
+        tpdd = '6px 6px 6px 13px';
+      } else if (py - dh < 10) {
+        ttop = py + 5;
+        tdir = "se";
+        tpdd = '11px 6px 6px 11px';
+      }
+    } else if (px + dw/2 > sw - 10) {
+      tleft = px - dw - 5;
+      ttop = py - dh - 5;
+      tdir = "nw";
+      tpdd = '6px 11px 11px 6px';
+      if (py - dh/2 < 10) {
+        ttop = py - dh/2;
+        tdir = "w"
+        tpdd = '6px 13px 6px 6px';
+      } else if (py - dh < 10) {
+        ttop = py + 5;
+        tdir = "sw";
+        tpdd = '11px 11px 6px 6px';
+      }
+      // because description is to long FIXME/TODO: more cases
+      if (tleft < 5) {
+        ttop = py + 5;
+        tleft = px - dw/2;
+        tdir = "s";
+        tpdd = '13px 6px 6px 6px';
+      }
+    } else if (py - dh < 10) {
+      ttop = py + 5;
+      tleft = px - dw/2;
+      tdir = "s";
+      tpdd = '13px 6px 6px 6px';
     }
 
-    if (d3.event.pageX + divDim.width/2 > svgDim.width) {
-      nodel.classed(dir, true).style('left', (d3.event.pageX - divDim.width - 10) + scrollLeft + 'px');
-    } else if (d3.event.pageX - divDim.width/2 < 5) {
-      nodel.classed(dir, true).style('left', (d3.event.pageX + divDim.width + 10) + scrollLeft + 'px');
-    } else {
-      nodel.classed(dir, true).style('left', (d3.event.pageX - divDim.width/2) + scrollLeft + 'px');
-    }
+    nodel.classed(tdir, true)
+          .style('top', (ttop + poffset[0] + scrollTop) + 'px')
+          .style('left', (tleft + poffset[1] + scrollLeft) + 'px')
+          .style('padding', tpdd);
 
-    ////////////////////////////////::::::::://///////////////////////////////////////////
+    nodel.html(tcontent)
+          .style('position', 'absolute')
+          .style('opacity', .8)
+          .style('pointer-events', 'all')
+
+    ////////////////////////////////::::::::://///////////////////////////////
+
     return tip
   }
 
@@ -257,8 +311,7 @@ d3.tip = function() {
       .style('pointer-events', 'none')
       .style('box-sizing', 'border-box')
       .style('line-heigh', 1.1)
-      .style('padding', '6px')
-      .style('background', "#000000c0")
+      .style('background', "#000000")
       .style('color', '#fff')
       .style('font-size', '14px')
       .style('font-family', "'Roboto Condensed', sans-serif");

@@ -233,7 +233,6 @@ prepareCeterisParibus <- function(x, variables = NULL) {
       x_min_max_list[[name]] <- list(min(temp$xhat), max(temp$xhat))
 
     } else {
-      if (dim(attr(temp, "observations"))[1] > 1) stop("Please pick one observation.")
 
       name <- as.character(head(temp$`_vname_`,1))
       temp <- temp[, c(name, "_yhat_", "_vname_")]
@@ -287,6 +286,7 @@ prepareFeatureImportance <- function(x, max_features = 10, margin = 0.2) {
 
   ret <- NULL
   ret$x <- x[,2:4]
+  ret$m <- m
   ret$x_min_max <- c(xmin - ticks_margin, xmax + ticks_margin)
 
   ret

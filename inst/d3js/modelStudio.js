@@ -1,24 +1,48 @@
-//// set all dimmensions \\\\
-// load all data
+///:\\\ --------- main modelStudio file --------- ///:\\\
+///:\\\ (for myself to remember):                 ///:\\\
+///:\\\ use CAPITAL for global variables and 'g'  ///:\\\
+///:\\\ use let where possible                    ///:\\\
+///:\\\ use class for css and id for select       ///:\\\
+///:\\\ use lambdas and ifelse where possible     ///:\\\
+///:\\\ ----------------------------------------- ///:\\\
+
+/// prevent modelStudio from reloading onResize
+r2d3.onResize(function() {
+  return;
+});
+
+/// load all data
 var obsData = data[0],
     fiData = data[1], pdData = data[2],
     adData = data[3], fdData = data[4];
-// load options
+
+/// load options
 var TIME = options.time,
     size = options.size, alpha = options.alpha, barWidth = options.bar_width,
     bdTitle = options.bd_title, svTitle = options.sv_title,
     cpTitle = options.cp_title, fiTitle = options.fi_title,
     pdTitle = options.pd_title, adTitle = options.ad_title,
     fdTitle = options.fd_title,
-    modelName = options.model_name, variableNames = options.variable_names,
+    modelName = options.model_name,
+    variableNames = options.variable_names,
     showRugs = options.show_rugs,
     dim = options.facet_dim;
 
-var CLICKED_VARIABLE_NAME = variableNames[0];
+/// for observation choice
+var observationIds = Object.keys(obsData);
 
-// set dimensions (TODO: pass as options)
-var margin = {top: 50, right: 20, bottom: 70, left: 105, inner: 40,
-              small: 5, big: 10};
+/// set global variables
+var CLICKED_VARIABLE_NAME = variableNames[0],
+    CLICKED_OBSERVATION_ID = observationIds[0],
+    IS_BUTTON_CLICKED = false;
+
+/// TODO:change scaling and this flag
+var IS_TSCALE = true;
+
+/// set dimensions
+/// TODO: pass as options
+var margin = {top: 50, right: 20, bottom: 70, left: 105,
+              inner: 40, small: 5, big: 10};
 
 var w = 420, h = 280;
 
@@ -28,63 +52,56 @@ var plotWidth = 420 + margin.left + margin.right,
 var studioWidth = dim[1]*plotWidth,
     studioHeight = dim[0]*plotHeight + margin.top;
 
-// for observation choice
-var observationIds = Object.keys(obsData);
-
-var notVisiblePlots = [{text:"Break Down [Local]",id:"BD"},
-                       {text:"Shapley Values [Local]",id:"SV"},
-                       {text:"Ceteris Paribus [Local]",id:"CP"},
-                       {text:"Feature Importance [Global]",id:"FI"},
-                       {text:"Partial Dependency [Global]",id:"PD"},
-                       {text:"Accumulated Dependency [Global]",id:"AD"},
-                       {text:"Feature Distribution [EDA]",id:"FD"}];
+/// for plot chosing
+var notVisiblePlots = [{id:"BD", text:"Break Down [Local]"},
+                       {id:"SV", text:"Shapley Values [Local]"},
+                       {id:"CP", text:"Ceteris Paribus [Local]"},
+                       {id:"FI", text:"Feature Importance [Global]"},
+                       {id:"PD", text:"Partial Dependency [Global]"},
+                       {id:"AD", text:"Accumulated Dependency [Global]"},
+                       {id:"FD", text:"Feature Distribution [EDA]"}];
 
 var visiblePlots = [];
 
-var plotCountTreshold = d3.min([notVisiblePlots.length,(dim[0]*dim[1])]);
-
-// generate facet x,y coordinates
-/// FIXME: change this double loop
-var buttonData = [];
+/// generate facet x,y coordinates with grid index
+var facetData = [], id = 0;
 for (let i=0; i<dim[0]; i++) {
   for (let j=0; j<dim[1]; j++) {
-    buttonData.push({x:0+j*plotWidth, y:margin.top+i*plotHeight});
+    facetData.push({x: 0 + j*plotWidth, y: margin.top + i*plotHeight, index: id});
+    id++;
   }
 }
-/// TODO:change scaling and this flag
-var TSCALE = true;
 
-////                     \\\\
+///:\\\
 initializeStudio();
-////                     \\\\
+///:\\\
 
 function initializeStudio() {
   /// this function initializes modelStudio (used only once, at start)
-  /// uses reloadStudio+generatePlot (using 1st observation data)
 
-  var DEC = svg.append("g")
-               .attr("class", "DEC");
+  // top decorations
+  var TOP_G = svg.append("g")
+                  .attr("class", "TOP_G");
 
-  DEC.append("text")
-     .attr("class", "mainTitle")
-     .attr("x", 15)
-     .attr("y", 30)
-     .text("Interactive Model Studio");
+  TOP_G.append("text")
+        .attr("class", "mainTitle")
+        .attr("x", 15)
+        .attr("y", 30)
+        .text("Interactive Model Studio");
 
-  DEC.append("line")
-     .attr("class", "mainLine")
-     .attr("x1", 10)
-     .attr("x2", studioWidth-10)
-     .attr("y1", margin.top - margin.big)
-     .attr("y2", margin.top - margin.big);
+  TOP_G.append("line")
+        .attr("class", "mainLine")
+        .attr("x1", 10)
+        .attr("x2", studioWidth-10)
+        .attr("y1", margin.top - margin.big)
+        .attr("y2", margin.top - margin.big);
 
-  var buttonClicked = false;
-
-  // add select observation input
+  ///:\\\ add select observation input
+  // to make input appear on top
   d3.select(".r2d3.html-widget.html-widget-static-bound")
     .style("position","absolute");
 
-  let tempW = calculateTextWidth(observationIds)*1.6 + 18; // 15px bold 600 (?)
+  let tempW = calculateTextWidth(observationIds)*1.6 + 18; // 15px bold 600
 
   var inputDiv = d3.select("#htmlwidget_container")
                    .append("div")
@@ -111,203 +128,196 @@ function initializeStudio() {
 
   input.on("change", function() {
 
-         // delete old tooltips, when changing observation
-         d3.select("body").selectAll(".tooltip").remove();
-         // chose clicked data
-         let tData = obsData[this.value];
-         // update all plots with new data (with existing ones on their places)
-         generatePlots(tData, time = TIME);
-       });
+    // update observation specific plots
+    updatePlots(event = "observationChange",
+                variableName = null,
+                observationId = this.value,
+                time = 1000,
+                plotId = null);
+  });
+  ///:\\\
 
-  // reload studio = delete everything and set up buttons
-  reloadStudio();
-  // chose new data, initialize with 1st observation
-  let tData = obsData[observationIds[0]];
-  // plot new data
-  generatePlots(tData, time = 0);
-}
+  // bottom buttons
+  var BOTTOM_G = svg.append("g")
+                    .attr("class", "BOTTOM_G");
 
-function reloadStudio() {
-  ///  delete plots and set up buttons (without initializeStudio)
-
-  svg.selectAll(".plot").remove();
-  svg.selectAll(".STARTG").remove();
-
-  // change text font
-  var STARTG = svg.append("g")
-                  .attr("class", "STARTG");
-
-  var chosePlotButton = STARTG.selectAll()
-                              .data(buttonData)
-                              .enter()
-                              .append("rect")
-                              .attr("class", "chosePlotButton")
-                              .attr("id", (d,i) => "plot"+i)
-                              .attr("width", plotWidth)
-                              .attr("height", plotHeight)
-                              .attr("x", d => d.x)
-                              .attr("y", d => d.y);
+  var enterChoiceButtons = BOTTOM_G.selectAll()
+                                   .data(facetData)
+                                   .enter()
+                                   .append("rect")
+                                   .attr("class", "enterChoiceButton")
+                                   .attr("id", (d,i) => "enterChoiceButton"+i)
+                                   .attr("width", plotWidth)
+                                   .attr("height", plotHeight)
+                                   .attr("x", d => d.x)
+                                   .attr("y", d => d.y);
 
   // add `+` to buttons
-  STARTG.selectAll()
-        .data(buttonData)
-        .enter()
-        .append("line")
-        .attr("class", "mainLine")
-        .attr("id", (d,i) => "plot"+i)
-        .attr("x1", d => d.x + plotWidth/2)
-        .attr("x2", d => d.x + plotWidth/2)
-        .attr("y1", d => d.y + plotHeight/2 - margin.big)
-        .attr("y2", d => d.y + plotHeight/2 + margin.big);
+  BOTTOM_G.selectAll()
+          .data(facetData)
+          .enter()
+          .append("line")
+          .attr("class", "mainLine")
+          .attr("id", (d,i) => "enterChoiceButton"+i)
+          .attr("x1", d => d.x + plotWidth/2)
+          .attr("x2", d => d.x + plotWidth/2)
+          .attr("y1", d => d.y + plotHeight/2 - margin.big)
+          .attr("y2", d => d.y + plotHeight/2 + margin.big);
 
-  STARTG.selectAll()
-        .data(buttonData)
-        .enter()
-        .append("line")
-        .attr("class", "mainLine")
-        .attr("id", (d,i) => "plot"+i)
-        .attr("x1", d => d.x + plotWidth/2 - margin.big)
-        .attr("x2", d => d.x + plotWidth/2 + margin.big)
-        .attr("y1", d => d.y + plotHeight/2)
-        .attr("y2", d => d.y + plotHeight/2);
+  BOTTOM_G.selectAll()
+          .data(facetData)
+          .enter()
+          .append("line")
+          .attr("class", "mainLine")
+          .attr("id", (d,i) => "enterChoiceButton"+i)
+          .attr("x1", d => d.x + plotWidth/2 - margin.big)
+          .attr("x2", d => d.x + plotWidth/2 + margin.big)
+          .attr("y1", d => d.y + plotHeight/2)
+          .attr("y2", d => d.y + plotHeight/2);
 
-  chosePlotButton.on('mouseover', function() { d3.select(this).style("opacity", 1);})
-                 .on('mouseout', function() { d3.select(this).style("opacity", 0.5);})
-                 .on("click", function(){
+  // events
+  enterChoiceButtons.on('mouseover', function() { d3.select(this).style("opacity", 1);})
+                    .on('mouseout', function() { d3.select(this).style("opacity", 0.5);})
+                    .on("click", function(d,i){
 
-                   // check if any button is already clicked
-                   if (!buttonClicked) {
-                    chosePlot(this);
-                    buttonClicked = true;
+                      // block other buttons
+                      if (!IS_BUTTON_CLICKED) {
+                        IS_BUTTON_CLICKED = true;
+                        // allow for plot choice or exit choice
+                        showChoiceButtons(this, i);
+                      }
+                    });
+
+  var exitChoiceButtons = BOTTOM_G.selectAll()
+                                  .data(facetData)
+                                  .enter()
+                                  .append("rect")
+                                  .attr("class", "exitChoiceButton")
+                                  .attr("id", (d,i) => "exitChoiceButton"+i)
+                                  .attr("width", plotWidth - margin.big)
+                                  .attr("height", plotHeight - margin.big)
+                                  .attr("x", d => d.x + margin.small)
+                                  .attr("y", d => d.y + margin.small)
+                                  .style("visibility", "hidden");
+
+  // events
+  exitChoiceButtons.on("click", function(d,i) {
+
+                     // delete chosePlotButtons
+                     svg.select("#chosePlotButton"+i).remove();
+                     // hide this button
+                     svg.select("#exitChoiceButton"+i).style("visibility", "hidden");
+                     // show enterChoiceButton
+                     svg.selectAll("#enterChoiceButton"+i).style("visibility", "visible");
+                     // let the user click other buttons
+                     IS_BUTTON_CLICKED = false;
+                   });
+
+  var exitPlotButtons = BOTTOM_G.selectAll()
+                                .data(facetData)
+                                .enter()
+                                .append("g")
+                                .attr("id", (d,i) => "exitPlotButton"+i)
+                                .attr("transform", d => "translate(" +
+                                (d.x + margin.left + w - 2*margin.big) + "," +
+                                (d.y + margin.small) + ")")
+                                .style("visibility", "hidden");
+
+  exitPlotButtons.append("rect")
+                 .attr("class", "descriptionBox")
+                 .attr("width", 2*margin.big)
+                 .attr("height", 2*margin.big)
+                 .attr("rx", 2*margin.big)
+                 .attr("ry", 2*margin.big);
+
+  exitPlotButtons.append("text")
+                 .attr("class", "descriptionLabel")
+                 .attr("dy", "1.05em")
+                 .attr("x", 6)
+                 .text("X");
+
+  // events
+  exitPlotButtons.selectAll("*")
+                 .on("mouseover", function() { d3.select(this).style("cursor", "pointer");})
+                 .on("mouseout", function() { d3.select(this).style("cursor", "auto");})
+                 .on("click", function(d) {
+
+                   let j = d.index;
+                   // available only when no enterPlotButton clicked
+                   if (!IS_BUTTON_CLICKED) {
+                     // which plot is in this place?
+                     let temp = visiblePlots.filter(el => el.index == j)[0];
+                     // add this plot to not visible
+                     notVisiblePlots.push({text: temp.text, id: temp.id});
+                     // delete this plot from visible
+                     visiblePlots = visiblePlots.filter(el => el.id !== temp.id);
+                     // hide this button
+                     svg.select("#exitPlotButton"+j).style("visibility", "hidden");
+                     // hide plot
+                     svg.select("#"+temp.id)
+                        .style("visibility", "hidden");
+                     // show enterChoiceButton
+                     svg.selectAll("#enterChoiceButton"+j).style("visibility", "visible");
                    }
                  });
 
-  // initialize flag, is any button clicked?
-  var buttonClicked = false;
+  function showChoiceButtons(object, j) {
+    /// chosePlotButtons controller
 
-  function chosePlot(object) {
+    // hide this button
+    svg.selectAll("#enterChoiceButton"+j).style("visibility", "hidden");
+    // show exitChoiceButton
+    svg.select("#exitChoiceButton"+j).style("visibility", "visible");
 
-    // hide grey button with `+`
-    svg.selectAll("#"+object.id).style("visibility", "hidden");
-
-    // make background white button for off click purpose
+    // where to place text?
     let plotWidth = parseFloat(d3.select(object).attr("width")),
         plotHeight = parseFloat(d3.select(object).attr("height")),
         x = parseFloat(d3.select(object).attr("x")),
         y = parseFloat(d3.select(object).attr("y"));
 
-    let tempButton = STARTG.append("g")
-                           .attr("id","tempButton"+object.id);
+    let chosePlotButtons = BOTTOM_G.append("g")
+                                   .attr("id","chosePlotButton"+j);
 
-    tempButton.append("rect")
-              .attr("class", "whiteButton")
-              .attr("width", plotWidth-margin.big)
-              .attr("height", plotHeight-margin.big)
-              .attr("x", x+margin.small)
-              .attr("y", y+margin.small)
-              .style("fill", "white")
-              .on("click", function() {
+    chosePlotButtons.selectAll()
+             .data(notVisiblePlots)
+             .enter()
+             .append("text")
+             .attr("class", "bigTitle")
+             .attr("id", d => d.id)
+             .attr("x", x + plotWidth/2)
+             .attr("y", (d,i) => y + plotHeight/2 + 25*i - (notVisiblePlots.length/2)*25)
+             .attr("text-anchor", "middle")
+             .text(d => d.text)
+             .on("mouseover", function() { d3.select(this).style("cursor", "pointer");})
+             .on("mouseout", function() { d3.select(this).style("cursor", "auto");})
+             .on("click", function(d) {
 
-                // when clicking outside of text remove it
-                svg.select("#tempText"+object.id).remove();
-                // show button and `+` again
-                svg.selectAll("#"+object.id).style("visibility", "visible");
-                // remove this rect
-                svg.select("#tempButton"+object.id).remove();
-                // let the user click other buttons now
-                buttonClicked = false;
-              });
+               // when clicking on text, hide exitChoiceButton
+               svg.selectAll("#exitChoiceButton"+j).style("visibility", "hidden");
+               // delete chosePlotButtons
+               svg.select("#chosePlotButton"+j).remove();
+               // add this plot to visible
+               visiblePlots.push({text: d.text, id: this.id, index: j });
+               // delete this plot from not visible
+               notVisiblePlots = notVisiblePlots.filter(el => el.id !== this.id);
 
-    let tempText = STARTG.append("g")
-                         .attr("id","tempText"+object.id);
+               updatePlots(event = "chosePlot",
+                           variableName = null,
+                           observationId = null,
+                           time = TIME,
+                           plotId = this.id);
 
-    tempText.selectAll()
-            .data(notVisiblePlots)
-            .enter()
-            .append("text")
-            .attr("class", "bigTitle")
-            .attr("id", d => d.id)
-            .attr("x", x + plotWidth/2)
-            .attr("y", (d,i) => y + plotHeight/2 + 25*i - (notVisiblePlots.length/2)*25)
-            .attr("text-anchor", "middle")
-            .text(d => d.text)
-            .style('font-family', 'Arial')
-            .on("mouseover", function() { d3.select(this).style("cursor", "pointer");})
-            .on("mouseout", function() { d3.select(this).style("cursor", "auto");})
-            .on("click", function(d) {
+               // show plot and move it to the right place
+               // margin.big added because translate 0 is -10
+               svg.select("#"+this.id)
+                  .attr("transform","translate(" + (x) + "," + (y + 1.5*margin.big) + ")")
+                  .style("visibility", "visible");
 
-              // when clicking outside of button remove it
-              svg.select("#tempButton"+object.id).remove();
-              // delete text buttons
-              svg.select("#tempText"+object.id).remove();
-              // add this plot to visible
-              visiblePlots.push({text: d.text, id: this.id});
+               // make exit button visible
+               svg.select("#exitPlotButton"+j).style("visibility", "visible");
 
-              // delete this plot from not visible
-              notVisiblePlots = notVisiblePlots.filter(el => el.id !== this.id);
-              // let the user click other buttons now
-              buttonClicked = false;
-
-              // show plot
-              svg.select("#"+this.id)
-                 .attr("transform","translate(" + (x) + "," + (y + margin.big) + ")")
-                 .style("visibility", "visible");
-                 // margin.big added because translate 0 is -10
-
-              var tthis = this;
-
-              // add exit button
-              svg.select("#"+this.id)
-                 .append("rect")
-                 .attr("class", "descriptionBox")
-                 .attr("id", "exitButton")
-                 .attr("width", 2*margin.big)
-                 .attr("height", 2*margin.big)
-                 .attr("x", margin.big)
-                 .attr("y",1)
-                 .attr("rx", 2*margin.big)
-                 .attr("ry", 2*margin.big);
-
-              svg.select("#"+this.id)
-                 .append("text")
-                 .attr("class", "descriptionLabel")
-                 .attr("id", "exitButton")
-                 .attr("dy", "1.1em")
-                 .attr("x", margin.big+margin.small)
-                 .attr("y", 1)
-                 .text("X")
-                 .style("font-family", "Arial");
-
-              // add events for exit button
-              svg.select("#"+this.id)
-                 .selectAll("#exitButton")
-                 .on("mouseover", function() { d3.select(this).style("cursor", "pointer");})
-                 .on("mouseout", function() { d3.select(this).style("cursor", "auto");})
-                 .on("click", function() {
-
-                    // add this plot to not visible
-                    notVisiblePlots.push({text: d.text, id: tthis.id});
-                    // delete this plot from visible
-                    visiblePlots = visiblePlots.filter(el => el.id !== tthis.id);
-                    // remove exitButton
-                    svg.select("#"+tthis.id).selectAll("#exitButton").remove();
-                    // hide plot
-                    svg.select("#"+tthis.id)
-                       .style("visibility", "hidden");
-
-                    // show grey button with `+`
-                    svg.selectAll("#"+object.id).style("visibility", "visible");
-                 })
-
-              // delete all not needed items
-              if (visiblePlots.length === plotCountTreshold) {
-                STARTG.remove();
-                svg.selectAll("#exitButton").remove();
-              }
-            });
+               // let the user click other buttons
+               IS_BUTTON_CLICKED = false;
+             });
   }
-
-  // safeguard font-family update
-  svg.selectAll("text")
-     .style('font-family', 'Arial');
 }
