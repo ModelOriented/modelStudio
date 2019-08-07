@@ -1,6 +1,7 @@
 # dime: Deep Interactive Model Explanations
 ### Automate Explaining Machine Learning Predictive Models
 
+[![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 [![Build Status](https://travis-ci.org/ModelOriented/dime.svg?branch=master)](https://travis-ci.org/ModelOriented/dime)
 [![Coverage Status](https://img.shields.io/codecov/c/github/ModelOriented/dime/master.svg)](https://codecov.io/github/ModelOriented/dime?branch=master)
 
