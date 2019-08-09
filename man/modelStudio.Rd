@@ -41,7 +41,7 @@ modelStudio(x, ...)
 \item{label}{a name of the model, will be extracted from \code{x} if it's an explainer.}
 }
 \value{
-an object of the \code{r2d3} class.
+an object of the \code{r2d3} class
 }
 \description{
 This tool uses your model, data and new observations, to provide local
@@ -69,10 +69,11 @@ explain_titanic_glm <- explain(model_titanic_glm,
                                label = "glm")
 
 new_observations <- titanic_small[1:4,-6]
-rownames(new_observations) <- c("Lisa","James", "Thomas", "Nancy")
+rownames(new_observations) <- c("Lucas","James", "Thomas", "Nancy")
 
 modelStudio(explain_titanic_glm, new_observations,
             facet_dim = c(2,3), N = 100, B = 15, time = 0)
+
 
 # ex2 regression
 
@@ -84,8 +85,10 @@ explain_apartments <- explain(model_apartments,
                               y = apartments[,1])
 
 new_apartments <- apartments[1:2, -1]
+rownames(new_apartments) <- c("ap1","ap2")
 
-modelStudio(explain_apartments, new_apartments, N = 100)
+modelStudio(explain_apartments, new_apartments,
+            N = 100, B = 15)
 
 }))
 }

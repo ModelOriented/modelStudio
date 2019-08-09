@@ -154,7 +154,7 @@ of serverless HTML site, that supports animations and interactivity made with D3
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>an object of the <code>r2d3</code> class.</p>
+    <p>an object of the <code>r2d3</code> class</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -183,10 +183,11 @@ of serverless HTML site, that supports animations and interactivity made with D3
                                <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"glm"</span>)
 
 <span class='no'>new_observations</span> <span class='kw'>&lt;-</span> <span class='no'>titanic_small</span>[<span class='fl'>1</span>:<span class='fl'>4</span>,-<span class='fl'>6</span>]
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>rownames</a></span>(<span class='no'>new_observations</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Lisa"</span>,<span class='st'>"James"</span>, <span class='st'>"Thomas"</span>, <span class='st'>"Nancy"</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>rownames</a></span>(<span class='no'>new_observations</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Lucas"</span>,<span class='st'>"James"</span>, <span class='st'>"Thomas"</span>, <span class='st'>"Nancy"</span>)
 
 <span class='fu'>modelStudio</span>(<span class='no'>explain_titanic_glm</span>, <span class='no'>new_observations</span>,
             <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>3</span>), <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>time</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+
 
 <span class='co'># ex2 regression</span>
 
@@ -198,8 +199,10 @@ of serverless HTML site, that supports animations and interactivity made with D3
                               <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>apartments</span>[,<span class='fl'>1</span>])
 
 <span class='no'>new_apartments</span> <span class='kw'>&lt;-</span> <span class='no'>apartments</span>[<span class='fl'>1</span>:<span class='fl'>2</span>, -<span class='fl'>1</span>]
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>rownames</a></span>(<span class='no'>new_apartments</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"ap1"</span>,<span class='st'>"ap2"</span>)
 
-<span class='fu'>modelStudio</span>(<span class='no'>explain_apartments</span>, <span class='no'>new_apartments</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>)
+<span class='fu'>modelStudio</span>(<span class='no'>explain_apartments</span>, <span class='no'>new_apartments</span>,
+            <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>15</span>)
 
 }))</div><div class='output co'>#&gt; <span class='message'>Welcome to DALEX (version: 0.4.6).</span>
 #&gt; <span class='message'>Find examples and detailed introduction at: https://pbiecek.github.io/PM_VEE/</span>
