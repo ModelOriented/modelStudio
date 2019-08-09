@@ -1,3 +1,8 @@
+# dime 0.1.3
+* remove file paths of dependencies from html file
+* add animations to line plots
+* change .js dependencies to min.js
+
 # dime 0.1.2
 * major .js code refactoring
 * add proper exit plot buttons

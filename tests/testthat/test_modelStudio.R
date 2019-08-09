@@ -43,6 +43,39 @@ ms_rf_apartments <- modelStudio(explain_rf,
                                 new_observation = apartments[1:2,-1],
                                 N = 50, B = 10, facet_dim = c(3,3),
                                 time = 50, max_features = 4)
+
+both_without_target <- modelStudio(model_titanic_glm,
+                                   new_observation = nx,
+                                   N = 10,
+                                   B = 2,
+                                   data = x,
+                                   y = y)
+
+both_full <- modelStudio(model_titanic_glm,
+                         new_observation = nz,
+                         N = 10,
+                         B = 2,
+                         data = z,
+                         y = y)
+
+obs_without_target_data_full <- modelStudio(model_titanic_glm,
+                                            new_observation = nx,
+                                            N = 10,
+                                            B = 2,
+                                            data = z,
+                                            y = y)
+
+obs_full_data_without_target <- modelStudio(model_titanic_glm,
+                                            new_observation = nz,
+                                            N = 10,
+                                            B = 2,
+                                            data = x,
+                                            y = y)
+
+ms_big <- modelStudio(explain_artifficial,
+                      new_observation = artifficial[1:2,], N = 5, B = 2,
+                      facet_dim = c(3,3))
+
 # tests
 
 test_that("explainer/model test", {
@@ -69,4 +102,15 @@ test_that("README DEMO", {
 
 test_that("randomForest apartments", {
   expect_is(ms_rf_apartments, "r2d3")
+})
+
+test_that("test various possibilities of data and new obs", {
+  expect_is(both_full, "r2d3")
+  expect_is(both_without_target, "r2d3")
+  expect_is(obs_without_target_data_full, "r2d3")
+  expect_is(obs_full_data_without_target, "r2d3")
+})
+
+test_that("more than 10 features", {
+  expect_is(ms_big, "r2d3")
 })

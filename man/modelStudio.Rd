@@ -9,10 +9,10 @@
 modelStudio(x, ...)
 
 \method{modelStudio}{explainer}(x, new_observation, facet_dim = c(2, 2),
-  max_features = 10, N = 500, B = 25, time = 1000, ...)
+  max_features = 10, N = 500, B = 25, time = 500, ...)
 
 \method{modelStudio}{default}(x, new_observation, facet_dim = c(2, 2),
-  max_features = 10, N = 500, B = 25, time = 1000, data, y,
+  max_features = 10, N = 500, B = 25, time = 500, data, y,
   predict_function = predict, label = NULL, ...)
 }
 \arguments{
@@ -41,7 +41,7 @@ modelStudio(x, ...)
 \item{label}{a name of the model, will be extracted from \code{x} if it's an explainer.}
 }
 \value{
-an object of the \code{r2d3} class.
+an object of the \code{r2d3} class
 }
 \description{
 This tool uses your model, data and new observations, to provide local
@@ -57,8 +57,7 @@ library("DALEX")
 # ex1 classification
 
 titanic <- na.omit(titanic)
-set.seed(1313)
-titanic_small <- titanic[sample(1:nrow(titanic), 500), c(1,2,3,6,7,9)]
+titanic_small <- titanic[,c(1,2,3,6,7,9)]
 
 model_titanic_glm <- glm(survived == "yes" ~ gender + age + fare + class + sibsp,
                          data = titanic_small, family = "binomial")
@@ -69,10 +68,11 @@ explain_titanic_glm <- explain(model_titanic_glm,
                                label = "glm")
 
 new_observations <- titanic_small[1:4,-6]
-rownames(new_observations) <- c("Lisa","James", "Thomas", "Nancy")
+rownames(new_observations) <- c("Lucas","James", "Thomas", "Nancy")
 
 modelStudio(explain_titanic_glm, new_observations,
-            facet_dim = c(2,3), N = 100, B = 15, time = 0)
+            N = 100, B = 15)
+
 
 # ex2 regression
 
@@ -83,11 +83,14 @@ explain_apartments <- explain(model_apartments,
                               data = apartments[,-1],
                               y = apartments[,1])
 
-new_apartments <- apartments[1:2, -1]
+new_apartments <- apartments[1:2,-1]
+rownames(new_apartments) <- c("ap1","ap2")
 
-modelStudio(explain_apartments, new_apartments, N = 100)
+modelStudio(explain_apartments, new_apartments,
+            facet_dim = c(1,2), N = 100, B = 15, time = 1000)
 
 }))
+
 }
 \references{
 \bold{ingredients} \url{https://modeloriented.github.io/ingredients/}

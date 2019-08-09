@@ -18,7 +18,7 @@
 #' @param predict_function predict function, will be extracted from \code{x} if it's an explainer.
 #' @param label a name of the model, will be extracted from \code{x} if it's an explainer.
 #'
-#' @return an object of the \code{r2d3} class.
+#' @return an object of the \code{r2d3} class
 #'
 #' @importFrom utils head tail setTxtProgressBar txtProgressBar
 #' @importFrom stats aggregate predict
@@ -36,8 +36,7 @@
 #' # ex1 classification
 #'
 #' titanic <- na.omit(titanic)
-#' set.seed(1313)
-#' titanic_small <- titanic[sample(1:nrow(titanic), 500), c(1,2,3,6,7,9)]
+#' titanic_small <- titanic[,c(1,2,3,6,7,9)]
 #'
 #' model_titanic_glm <- glm(survived == "yes" ~ gender + age + fare + class + sibsp,
 #'                          data = titanic_small, family = "binomial")
@@ -48,10 +47,11 @@
 #'                                label = "glm")
 #'
 #' new_observations <- titanic_small[1:4,-6]
-#' rownames(new_observations) <- c("Lisa","James", "Thomas", "Nancy")
+#' rownames(new_observations) <- c("Lucas","James", "Thomas", "Nancy")
 #'
 #' modelStudio(explain_titanic_glm, new_observations,
-#'             facet_dim = c(2,3), N = 100, B = 15, time = 0)
+#'             N = 100, B = 15)
+#'
 #'
 #' # ex2 regression
 #'
@@ -62,11 +62,14 @@
 #'                               data = apartments[,-1],
 #'                               y = apartments[,1])
 #'
-#' new_apartments <- apartments[1:2, -1]
+#' new_apartments <- apartments[1:2,-1]
+#' rownames(new_apartments) <- c("ap1","ap2")
 #'
-#' modelStudio(explain_apartments, new_apartments, N = 100)
+#' modelStudio(explain_apartments, new_apartments,
+#'             facet_dim = c(1,2), N = 100, B = 15, time = 1000)
 #'
 #' }))
+#'
 #' @export
 #' @rdname modelStudio
 modelStudio <- function(x, ...)
@@ -80,7 +83,7 @@ modelStudio.explainer <- function(x,
                                   max_features = 10,
                                   N = 500,
                                   B = 25,
-                                  time = 1000,
+                                  time = 500,
                                   ...) {
 
   modelStudio.default(x = x$model,
@@ -105,57 +108,71 @@ modelStudio.default <- function(x,
                                 max_features = 10,
                                 N = 500,
                                 B = 25,
-                                time = 1000,
+                                time = 500,
                                 data,
                                 y,
                                 predict_function = predict,
                                 label = NULL,
                                 ...) {
 
+  if (is.null(label)) label <- class(x)[1]
+
   ## safeguard
   new_observation <- as.data.frame(new_observation)
   data <- as.data.frame(data)
 
+  ## get proper names of features that arent target
+  is_y <- sapply(data, function(x) identical(x, y))
+  variable_names <- intersect(names(is_y == FALSE), colnames(new_observation))
+  ## get rid of target in data
+  data <- data[is_y == FALSE]
+
+
   obs_count <- dim(new_observation)[1]
-
-  if (is.null(label)) label <- class(x)[1]
-
-  variable_names <- colnames(new_observation)
   obs_data <- new_observation
   obs_list <- list()
 
   ## later update progress bar after all explanation functions
-  pb <- txtProgressBar(0, obs_count+5, style=3)
+  pb <- txtProgressBar(0, obs_count + 5, style = 3)
 
   ## count only once
-  fi <- ingredients::feature_importance(x, data, y, predict_function, ...)
+  fi <- ingredients::feature_importance(
+        x, data, y, predict_function, variables = variable_names)
   setTxtProgressBar(pb, 1)
 
   which_numerical <- sapply(data[,, drop = FALSE], is.numeric)
 
   ## because only_numerical throws errors if used incorectly
   if (all(which_numerical==TRUE)) {
-    pd_n <- ingredients::partial_dependency(x, data, predict_function, only_numerical = TRUE, N = N)
+    pd_n <- ingredients::partial_dependency(
+            x, data, predict_function, only_numerical = TRUE, N = N)
     setTxtProgressBar(pb, 2)
     pd_c <- NULL
-    ad_n <- ingredients::accumulated_dependency(x, data, predict_function, only_numerical = TRUE, N = N)
+    ad_n <- ingredients::accumulated_dependency(
+            x, data, predict_function, only_numerical = TRUE, N = N)
     setTxtProgressBar(pb, 4)
     ad_c <- NULL
   } else if (all(which_numerical==FALSE)) {
     pd_n <- NULL
-    pd_c <- ingredients::partial_dependency(x, data, predict_function, only_numerical = FALSE, N = N)
+    pd_c <- ingredients::partial_dependency(
+            x, data, predict_function, only_numerical = FALSE, N = N)
     setTxtProgressBar(pb, 3)
     ad_n <- NULL
-    ad_c <- ingredients::accumulated_dependency(x, data, predict_function, only_numerical = FALSE, N = N)
+    ad_c <- ingredients::accumulated_dependency(
+            x, data, predict_function, only_numerical = FALSE, N = N)
     setTxtProgressBar(pb, 5)
   } else {
-    pd_n <- ingredients::partial_dependency(x, data, predict_function, only_numerical = TRUE, N = N)
+    pd_n <- ingredients::partial_dependency(
+            x, data, predict_function, only_numerical = TRUE, N = N)
     setTxtProgressBar(pb, 2)
-    pd_c <- ingredients::partial_dependency(x, data, predict_function, only_numerical = FALSE, N = N)
+    pd_c <- ingredients::partial_dependency(
+            x, data, predict_function, only_numerical = FALSE, N = N)
     setTxtProgressBar(pb, 3)
-    ad_n <- ingredients::accumulated_dependency(x, data, predict_function, only_numerical = TRUE, N = N)
+    ad_n <- ingredients::accumulated_dependency(
+            x, data, predict_function, only_numerical = TRUE, N = N)
     setTxtProgressBar(pb, 4)
-    ad_c <- ingredients::accumulated_dependency(x, data, predict_function, only_numerical = FALSE, N = N)
+    ad_c <- ingredients::accumulated_dependency(
+            x, data, predict_function, only_numerical = FALSE, N = N)
     setTxtProgressBar(pb, 5)
   }
 
@@ -168,9 +185,12 @@ modelStudio.default <- function(x,
   for(i in 1:obs_count){
     new_observation <- obs_data[i,]
 
-    bd <- iBreakDown::local_attributions(x, data, predict_function, new_observation, label=label)
-    sv <- iBreakDown::shap(x, data, predict_function, new_observation, label=label, B = B)
-    cp <- ingredients::ceteris_paribus(x, data, predict_function, new_observation, label=label)
+    bd <- iBreakDown::local_attributions(
+          x, data, predict_function, new_observation, label = label)
+    sv <- iBreakDown::shap(
+          x, data, predict_function, new_observation, label = label, B = B)
+    cp <- ingredients::ceteris_paribus(
+          x, data, predict_function, new_observation, label = label)
     setTxtProgressBar(pb, 5+i)
 
     bd_data <- prepareBreakDown(bd, max_features)
@@ -185,9 +205,12 @@ modelStudio.default <- function(x,
   ## later for user to define options
   options <- list(time = time,
                   size = 2, alpha = 1, bar_width = 16,
-                  bd_title = "Break Down", sv_title = "Shapley Values",
-                  cp_title = "Ceteris Paribus", fi_title = "Feature Importance",
-                  pd_title = "Partial Dependency", ad_title = "Accumulated Dependency",
+                  bd_title = "Break Down",
+                  sv_title = "Shapley Values",
+                  cp_title = "Ceteris Paribus",
+                  fi_title = "Feature Importance",
+                  pd_title = "Partial Dependency",
+                  ad_title = "Accumulated Dependency",
                   fd_title = "Feature Distribution",
                   model_name = label, variable_names = variable_names,
                   show_rugs = TRUE, facet_dim = facet_dim)
@@ -196,21 +219,56 @@ modelStudio.default <- function(x,
 
   sizing_policy <- r2d3::sizingPolicy(padding = 10, browser.fill = TRUE)
 
-  r2d3::r2d3(
-          data = temp,
-          script = system.file("d3js/modelStudio.js", package = "dime"),
-          dependencies = list(
-            system.file("d3js/hackHead.js", package = "dime"),
-            system.file("d3js/myTools.js", package = "dime"),
-            system.file("d3js/d3-tip.js", package = "dime"),
-            system.file("d3js/d3-slider.js", package = "dime"),
-            system.file("d3js/generatePlots.js", package = "dime"),
-            system.file("d3js/generateTooltipHtml.js", package = "dime")
-          ),
-          css = system.file("d3js/modelStudio.css", package = "dime"),
-          options = options,
-          d3_version = "4",
-          viewer = "external",
-          sizing = sizing_policy
-        )
+  model_studio <- r2d3::r2d3(
+                    data = temp,
+                    script = system.file("d3js/modelStudio.js", package = "dime"),
+                    dependencies = list(
+                      system.file("d3js/hackHead.js", package = "dime"),
+                      system.file("d3js/myTools.js", package = "dime"),
+                      system.file("d3js/d3-tip.js", package = "dime"),
+                      system.file("d3js/d3-simple-slider.min.js", package = "dime"),
+                      system.file("d3js/d3-interpolate-path.min.js", package = "dime"),
+                      system.file("d3js/generatePlots.js", package = "dime"),
+                      system.file("d3js/generateTooltipHtml.js", package = "dime")
+                    ),
+                    css = system.file("d3js/modelStudio.css", package = "dime"),
+                    options = options,
+                    d3_version = "4",
+                    viewer = "external",
+                    sizing = sizing_policy
+                  )
+
+  model_studio$x$script <- remove_file_paths(model_studio$x$script, "js")
+  model_studio$x$style <- remove_file_paths(model_studio$x$style, "css")
+
+  model_studio
+}
+
+#' @noRd
+#' @title remove_file_paths
+#'
+#' @description `r2d3`` adds comments in html file with direct file paths to dependencies.
+#' This function removes them.
+#'
+#' @param text string
+#' @param type js or css to remove other paths
+
+remove_file_paths <- function(text, type = NULL) {
+
+  if (is.null(type)) stop("error in remove_file_paths")
+
+  if (type == "js") {
+    text <- gsub(system.file("d3js/modelStudio.js", package = "dime"), "", text, fixed = TRUE)
+    text <- gsub(system.file("d3js/hackHead.js", package = "dime"), "", text, fixed = TRUE)
+    text <- gsub(system.file("d3js/myTools.js", package = "dime"), "", text, fixed = TRUE)
+    text <- gsub(system.file("d3js/d3-tip.js", package = "dime"), "", text, fixed = TRUE)
+    text <- gsub(system.file("d3js/d3-simple-slider.min.js", package = "dime"), "", text, fixed = TRUE)
+    text <- gsub(system.file("d3js/d3-interpolate-path.min.js", package = "dime"), "", text, fixed = TRUE)
+    text <- gsub(system.file("d3js/generatePlots.js", package = "dime"), "", text, fixed = TRUE)
+    text <- gsub(system.file("d3js/generateTooltipHtml.js", package = "dime"), "", text, fixed = TRUE)
+  } else if (type == "css") {
+    text <- gsub(system.file("d3js/modelStudio.css", package = "dime"), "", text, fixed = TRUE)
+  }
+
+  text
 }

@@ -243,12 +243,11 @@ function breakDown() {
         updatePlots(event = "variableChange",
                     variableName = this.id,
                     observationId = null,
-                    time = TIME,
                     plotId = null);
       })
       .transition()
-      .duration(time)
-      .delay((d,i) => i * time)
+      .duration(TIME)
+      .delay((d,i) => i * TIME)
       .attr("x", d => x(d.barStart))
       .attr("width", d => x(d.barSupport) - x(d.barStart) < 1.5
                           ? 5 : x(d.barSupport) - x(d.barStart));
@@ -275,8 +274,8 @@ function breakDown() {
           .attr("text-anchor", d => d.sign == "X" && d.contribution < 0
                                ? "end" : null)
           .transition()
-          .duration(time)
-          .delay((d,i) => (i+1) * time)
+          .duration(TIME)
+          .delay((d,i) => (i+1) * TIME)
           .text(d => {
             switch(d.variable){
               case "intercept":
@@ -300,8 +299,8 @@ function breakDown() {
        .attr("x2", d => d.contribution < 0 ? x(d.barStart) : x(d.barSupport))
        .attr("y2", d => y(d.variable))
        .transition()
-       .duration(time)
-       .delay((d,i) => (i+1) * time)
+       .duration(TIME)
+       .delay((d,i) => (i+1) * TIME)
        .attr("y2", d => d.variable == "prediction"
                         ? y(d.variable) : y(d.variable) + bdBarWidth*2.5);
 
@@ -464,12 +463,11 @@ function shapleyValues() {
         updatePlots(event = "variableChange",
                     variableName = this.id,
                     observationId = null,
-                    time = TIME,
                     plotId = null);
       })
       .transition()
-      .duration(time)
-      .delay((d,i) => i * time)
+      .duration(TIME)
+      .delay((d,i) => i * TIME)
       .attr("x", d => x(d.barStart))
       .attr("width", d => x(d.barSupport) - x(d.barStart) < 1.5
                           ? 5 : x(d.barSupport) - x(d.barStart));
@@ -488,8 +486,8 @@ function shapleyValues() {
           .attr("dy", "0.4em")
           .attr("text-anchor", d => d.sign == "-1" ? "end" : "start")
           .transition()
-          .duration(time)
-          .delay((d,i) => (i+1) * time)
+          .duration(TIME)
+          .delay((d,i) => (i+1) * TIME)
           .text(d => d.sign === "-1" ? d.contribution : "+"+d.contribution);
 
   // add lines to bars
@@ -505,8 +503,8 @@ function shapleyValues() {
         .attr("x2", d => d.contribution < 0 ? x(d.barSupport) : x(d.barStart))
         .attr("y2", d => y(d.variable))
         .transition()
-        .duration(time)
-        .delay((d,i) => (i+1) * time)
+        .duration(TIME)
+        .delay((d,i) => (i+1) * TIME)
         .attr("y2", (d,i) => i == svBarCount - 1
                              ? y(d.variable) + svBarWidth
                              : y(d.variable) + svBarWidth*2.5);
@@ -672,11 +670,9 @@ function featureImportance() {
   bars.append("rect")
       .attr("class", modelName.replace(/\s/g,''))
       .attr("fill", barColor)
+      .attr("x", d => x(fullModel))
       .attr("y", d => y(d.variable))
       .attr("height", y.bandwidth())
-      .attr("x", d => x(d.dropout_loss) < x(fullModel)
-                      ? x(d.dropout_loss) : x(fullModel))
-      .attr("width", d => Math.abs(x(d.dropout_loss) - x(fullModel)))
       .on('mouseover', tooltip.show)
       .on('mouseout', tooltip.hide)
       .attr("id", (d) => d.variable)
@@ -684,9 +680,14 @@ function featureImportance() {
         updatePlots(event = "variableChange",
                     variableName = this.id,
                     observationId = null,
-                    time = TIME,
                     plotId = null);
-      });
+      })
+      .transition()
+      .duration(TIME)
+      .delay((d,i) => i * TIME)
+      .attr("x", d => x(d.dropout_loss) < x(fullModel)
+                      ? x(d.dropout_loss) : x(fullModel))
+      .attr("width", d => Math.abs(x(d.dropout_loss) - x(fullModel)));
 
   // make line next to bars
   var minimumY = Number.MAX_VALUE;
@@ -894,7 +895,7 @@ function cpNumericalPlot(variableName, lData, mData, yMinMax, pData) {
   var bisectXhat = d3.bisector(d => d.xhat).right;
 
   // show tooltip with info nearest to mouseover
-  function showTooltip(hover){
+  function showTooltip(hover) {
     var x0 = x.invert(d3.mouse(d3.event.currentTarget)[0]),
         i = bisectXhat(hover, x0),
         d0 = hover[i - 1],
@@ -904,40 +905,52 @@ function cpNumericalPlot(variableName, lData, mData, yMinMax, pData) {
     tooltip.show(d, temp);
   }
 
-  // add lines
-  CP.append("path")
-    .data([lData])
-    .attr("class", "line " + variableName)
-    .attr("d", line)
-    .style("fill", "none")
-    .style("stroke", lineColor)
-    .style("opacity", alpha)
-    .style("stroke-width", size)
-    .on('mouseover', function(d){
+  // add path
+  var p = CP.append("path")
+            .attr("class", "line " + variableName)
+            .style("fill", "none")
+            .style("stroke", lineColor)
+            .style("opacity", alpha)
+            .style("stroke-width", size)
+            .on('mouseover', function(d) {
 
-      // make mouseover line more visible
-      d3.select(this)
-        .style("stroke", pointColor)
-        .style("stroke-width", size*1.5);
+              // make mouseover line more visible
+              d3.select(this)
+                .style("stroke", pointColor)
+                .style("stroke-width", size*1.5);
 
-      // make line and points appear on top
-      this.parentNode.appendChild(this);
-      d3.select(this.parentNode).selectAll(".point").each(function() {
-                       this.parentNode.appendChild(this);
-                  });
+              // make line and points appear on top
+              this.parentNode.appendChild(this);
+              d3.select(this.parentNode).selectAll(".point").each(function() {
+                               this.parentNode.appendChild(this);
+                          });
 
-      // show changed tooltip
-      showTooltip(d);
-    })
-    .on('mouseout', function(d){
+              // show changed tooltip
+              showTooltip(d);
+            })
+            .on('mouseout', function(d) {
 
-      d3.select(this)
-        .style("stroke", lineColor)
-        .style("stroke-width", size);
+              d3.select(this)
+                .style("stroke", lineColor)
+                .style("stroke-width", size);
 
-      // hide changed tooltip
-      tooltip.hide(d);
-    });
+              // hide changed tooltip
+              tooltip.hide(d);
+            });
+
+  // animate path
+  p.data([{"xhat":0, "yhat": 0}])
+   .attr("d", line)
+   .transition()
+   .duration(TIME)
+   .attrTween("d", function() {
+     var previous = d3.select(this).attr('d');
+     var current = line(lData);
+     return d3.interpolatePath(previous, current);
+   });
+
+  // add data for tooltip
+  p.data([lData]);
 
   // add points
   CP.selectAll()
@@ -948,7 +961,7 @@ function cpNumericalPlot(variableName, lData, mData, yMinMax, pData) {
     .attr("id", d => d["observation.id"])
     .attr("cx", d => x(d[variableName]))
     .attr("cy", d => y(d.yhat))
-    .attr("r", 3)
+    .attr("r", 0)
     .style("stroke-width", 15)
     .style("stroke", "red")
     .style("stroke-opacity", 0)
@@ -962,7 +975,11 @@ function cpNumericalPlot(variableName, lData, mData, yMinMax, pData) {
       tooltip.hide(d);
   		d3.select(this)
   			.attr("r", 3);
-  	});
+  	})
+    .transition()
+    .duration(TIME)
+    .delay(TIME)
+    .attr("r", 3);
 
   if (showRugs === true) {
 
@@ -1044,7 +1061,7 @@ function cpCategoricalPlot(variableName, bData, yMinMax, lData) {
             .call(g => g.select(".domain").remove());
 
   var y = d3.scaleBand()
-            .rangeRound([margin.top + cpPlotHeight, margin.top])
+            .rangeRound([margin.top, margin.top + cpPlotHeight])
             .padding(0.33)
             .domain(bData.map(d => d.xhat));
 
@@ -1107,12 +1124,16 @@ function cpCategoricalPlot(variableName, bData, yMinMax, lData) {
   bars.append("rect")
       .attr("class", variableName)
       .attr("fill", lineColor)
+      .attr("x", d => x(fullModel))
       .attr("y", d => y(d.xhat))
       .attr("height", y.bandwidth())
-      .attr("x", d => x(d.yhat) < x(fullModel) ? x(d.yhat) : x(fullModel))
-      .attr("width", d => Math.abs(x(d.yhat) - x(fullModel)))
       .on('mouseover', tooltip.show)
-      .on('mouseout', tooltip.hide);
+      .on('mouseout', tooltip.hide)
+      .transition()
+      .duration(TIME)
+      .delay((d,i) => i * TIME)
+      .attr("x", d => x(d.yhat) < x(fullModel) ? x(d.yhat) : x(fullModel))
+      .attr("width", d => Math.abs(x(d.yhat) - x(fullModel)));
 
   // add intercept line
   var minimumY = Number.MAX_VALUE;
@@ -1271,36 +1292,48 @@ function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
   }
 
   // add lines
-  PD.append("path")
-    .data([lData])
-    .attr("class", "line " + variableName)
-    .attr("d", line)
-    .style("fill", "none")
-    .style("stroke", lineColor)
-    .style("opacity", alpha)
-    .style("stroke-width", size)
-    .on('mouseover', function(d){
+  var p = PD.append("path")
+            .attr("class", "line " + variableName)
+            .style("fill", "none")
+            .style("stroke", lineColor)
+            .style("opacity", alpha)
+            .style("stroke-width", size)
+            .on('mouseover', function(d){
 
-      // make mouseover line more visible
-      d3.select(this)
-        .style("stroke", pointColor)
-        .style("stroke-width", size*1.5);
+              // make mouseover line more visible
+              d3.select(this)
+                .style("stroke", pointColor)
+                .style("stroke-width", size*1.5);
 
-      // make line appear on top
-      this.parentNode.appendChild(this);
+              // make line appear on top
+              this.parentNode.appendChild(this);
 
-      // show changed tooltip
-      showTooltip(d);
-    })
-    .on('mouseout', function(d){
+              // show changed tooltip
+              showTooltip(d);
+            })
+            .on('mouseout', function(d){
 
-      d3.select(this)
-        .style("stroke", lineColor)
-        .style("stroke-width", size);
+              d3.select(this)
+                .style("stroke", lineColor)
+                .style("stroke-width", size);
 
-      // hide changed tooltip
-      tooltip.hide(d);
-    });
+              // hide changed tooltip
+              tooltip.hide(d);
+            });
+
+  // animate path
+  p.data([{"xhat":0, "yhat": 0}])
+   .attr("d", line)
+   .transition()
+   .duration(TIME)
+   .attrTween("d", function() {
+     var previous = d3.select(this).attr('d');
+     var current = line(lData);
+     return d3.interpolatePath(previous, current);
+   });
+
+  // add data for tooltip
+  p.data([lData]);
 
   PD.append("text")
     .attr("class", "axisTitle")
@@ -1366,7 +1399,7 @@ function pdCategoricalPlot(variableName, bData, yMinMax, yMean) {
             .call(g => g.select(".domain").remove());
 
   var y = d3.scaleBand()
-            .rangeRound([margin.top + pdPlotHeight, margin.top])
+            .rangeRound([margin.top, margin.top + pdPlotHeight])
             .padding(0.33)
             .domain(bData.map(d => d.xhat));
 
@@ -1427,12 +1460,16 @@ function pdCategoricalPlot(variableName, bData, yMinMax, yMean) {
   bars.append("rect")
       .attr("class", variableName)
       .attr("fill", lineColor)
+      .attr("x", d => x(fullModel))
       .attr("y", d => y(d.xhat))
       .attr("height", y.bandwidth())
-      .attr("x", d => x(d.yhat) < x(fullModel) ? x(d.yhat) : x(fullModel))
-      .attr("width", d => Math.abs(x(d.yhat) - x(fullModel)))
       .on('mouseover', tooltip.show)
-      .on('mouseout', tooltip.hide);
+      .on('mouseout', tooltip.hide)
+      .transition()
+      .duration(TIME)
+      .delay((d,i) => i * TIME)
+      .attr("x", d => x(d.yhat) < x(fullModel) ? x(d.yhat) : x(fullModel))
+      .attr("width", d => Math.abs(x(d.yhat) - x(fullModel)));
 
   // add intercept line
   var minimumY = Number.MAX_VALUE;
@@ -1591,36 +1628,48 @@ function adNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
   }
 
   // add lines
-  AD.append("path")
-    .data([lData])
-    .attr("class", "line " + variableName)
-    .attr("d", line)
-    .style("fill", "none")
-    .style("stroke", lineColor)
-    .style("opacity", alpha)
-    .style("stroke-width", size)
-    .on('mouseover', function(d){
+  var p = AD.append("path")
+            .attr("class", "line " + variableName)
+            .style("fill", "none")
+            .style("stroke", lineColor)
+            .style("opacity", alpha)
+            .style("stroke-width", size)
+            .on('mouseover', function(d){
 
-      // make mouseover line more visible
-      d3.select(this)
-        .style("stroke", pointColor)
-        .style("stroke-width", size*1.5);
+              // make mouseover line more visible
+              d3.select(this)
+                .style("stroke", pointColor)
+                .style("stroke-width", size*1.5);
 
-      // make line appear on top
-      this.parentNode.appendChild(this);
+              // make line appear on top
+              this.parentNode.appendChild(this);
 
-      // show changed tooltip
-      showTooltip(d);
-    })
-    .on('mouseout', function(d){
+              // show changed tooltip
+              showTooltip(d);
+            })
+            .on('mouseout', function(d){
 
-      d3.select(this)
-        .style("stroke", lineColor)
-        .style("stroke-width", size);
+              d3.select(this)
+                .style("stroke", lineColor)
+                .style("stroke-width", size);
 
-      // hide changed tooltip
-      tooltip.hide(d);
-    });
+              // hide changed tooltip
+              tooltip.hide(d);
+            });
+
+  // animate path
+  p.data([{"xhat":0, "yhat": 0}])
+   .attr("d", line)
+   .transition()
+   .duration(TIME)
+   .attrTween("d", function() {
+     var previous = d3.select(this).attr('d');
+     var current = line(lData);
+     return d3.interpolatePath(previous, current);
+   });
+
+  // add data for tooltip
+  p.data([lData]);
 
   AD.append("text")
     .attr("class", "axisTitle")
@@ -1686,7 +1735,7 @@ function adCategoricalPlot(variableName, bData, yMinMax, yMean) {
             .call(g => g.select(".domain").remove());
 
   var y = d3.scaleBand()
-            .rangeRound([margin.top + adPlotHeight, margin.top])
+            .rangeRound([margin.top, margin.top + adPlotHeight])
             .padding(0.33)
             .domain(bData.map(d => d.xhat));
 
@@ -1747,12 +1796,16 @@ function adCategoricalPlot(variableName, bData, yMinMax, yMean) {
   bars.append("rect")
       .attr("class", variableName)
       .attr("fill", lineColor)
+      .attr("x", d => x(fullModel))
       .attr("y", d => y(d.xhat))
       .attr("height", y.bandwidth())
-      .attr("x", d => x(d.yhat) < x(fullModel) ? x(d.yhat) : x(fullModel))
-      .attr("width", d => Math.abs(x(d.yhat) - x(fullModel)))
       .on('mouseover', tooltip.show)
-      .on('mouseout', tooltip.hide);
+      .on('mouseout', tooltip.hide)
+      .transition()
+      .duration(TIME)
+      .delay((d,i) => i * TIME)
+      .attr("x", d => x(d.yhat) < x(fullModel) ? x(d.yhat) : x(fullModel))
+      .attr("width", d => Math.abs(x(d.yhat) - x(fullModel)));;
 
   // add intercept line
   var minimumY = Number.MAX_VALUE;
@@ -1932,7 +1985,7 @@ function fdNumericalPlot(variableName, dData, mData, nBin) {
         .attr("height", d => 0)
         .attr("width", d => x(d.x1) - x(d.x0))
         .transition()
-        .duration(time)
+        .duration(TIME)
           .attr("y", d => y(d.length))
           .attr("height", d => y(0) - y(d.length));
 
@@ -1953,7 +2006,7 @@ function fdCategoricalPlot(variableName, dData, mData) {
                     .entries(dData);
 
   var x = d3.scaleLinear()
-            .range([margin.left,  margin.left + fdPlotWidth])
+            .range([margin.left, margin.left + fdPlotWidth])
             .domain([0, mData]);
 
   var xAxis = d3.axisBottom(x)
@@ -1967,7 +2020,7 @@ function fdCategoricalPlot(variableName, dData, mData) {
             .call(g => g.select(".domain").remove());
 
   var y = d3.scaleBand()
-            .rangeRound([margin.top + fdPlotHeight, margin.top])
+            .rangeRound([margin.top, margin.top + fdPlotHeight])
             .padding(0.33)
             .domain(tableData.map(d => d.key));
 
@@ -2021,6 +2074,9 @@ function fdCategoricalPlot(variableName, dData, mData) {
       .attr("x", d => x(0))
       .attr("y", d => y(d.key))
       .attr("height", y.bandwidth())
+      .transition()
+      .duration(TIME)
+      .delay((d,i) => i * TIME)
       .attr("width", d => x(d.value)-x(0));
 
   // add intercept line
@@ -2054,7 +2110,7 @@ function fdCategoricalPlot(variableName, dData, mData) {
 
 /// event plot functions
 
-function updatePlots(event, variableName, observationId, time, plotId) {
+function updatePlots(event, variableName, observationId, plotId) {
   /// main plot controller, not used arguments are passed as null
 
   switch (event) {
@@ -2080,7 +2136,7 @@ function updatePlots(event, variableName, observationId, time, plotId) {
 
     default:
       console.log("Unknown event in updatePlots " +
-                  [event,variableName,observationId,time,plotId]);
+                  [event,variableName,observationId,plotId]);
       break;
   }
 }
