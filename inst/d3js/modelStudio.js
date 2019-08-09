@@ -132,7 +132,6 @@ function initializeStudio() {
     updatePlots(event = "observationChange",
                 variableName = null,
                 observationId = this.value,
-                time = 1000,
                 plotId = null);
   });
   ///:\\\
@@ -304,7 +303,6 @@ function initializeStudio() {
                updatePlots(event = "chosePlot",
                            variableName = null,
                            observationId = null,
-                           time = TIME,
                            plotId = this.id);
 
                // show plot and move it to the right place

@@ -51,7 +51,7 @@
 #' rownames(new_observations) <- c("Lucas","James", "Thomas", "Nancy")
 #'
 #' modelStudio(explain_titanic_glm, new_observations,
-#'             facet_dim = c(2,3), N = 100, B = 15, time = 0)
+#'             N = 100, B = 15)
 #'
 #'
 #' # ex2 regression
@@ -67,7 +67,7 @@
 #' rownames(new_apartments) <- c("ap1","ap2")
 #'
 #' modelStudio(explain_apartments, new_apartments,
-#'             N = 100, B = 15)
+#'             facet_dim = c(1,2), N = 100, B = 15, time = 1000)
 #'
 #' }))
 #' @export
@@ -108,7 +108,7 @@ modelStudio.default <- function(x,
                                 max_features = 10,
                                 N = 500,
                                 B = 25,
-                                time = 1000,
+                                time = 500,
                                 data,
                                 y,
                                 predict_function = predict,
@@ -226,7 +226,8 @@ modelStudio.default <- function(x,
                       system.file("d3js/hackHead.js", package = "dime"),
                       system.file("d3js/myTools.js", package = "dime"),
                       system.file("d3js/d3-tip.js", package = "dime"),
-                      system.file("d3js/d3-slider.js", package = "dime"),
+                      system.file("d3js/d3-simple-slider.min.js", package = "dime"),
+                      system.file("d3js/d3-interpolate-path.min.js", package = "dime"),
                       system.file("d3js/generatePlots.js", package = "dime"),
                       system.file("d3js/generateTooltipHtml.js", package = "dime")
                     ),
@@ -261,7 +262,9 @@ remove_file_paths <- function(text, type = NULL) {
     text <- gsub(system.file("d3js/hackHead.js", package = "dime"), "", text, fixed = TRUE)
     text <- gsub(system.file("d3js/myTools.js", package = "dime"), "", text, fixed = TRUE)
     text <- gsub(system.file("d3js/d3-tip.js", package = "dime"), "", text, fixed = TRUE)
-    text <- gsub(system.file("d3js/d3-slider.js", package = "dime"), "", text, fixed = TRUE)
+    text <- gsub(system.file("d3js/d3-simple-slider.min.js", package = "dime"), "", text, fixed = TRUE)
+    text <- gsub(system.file("d3js/d3-interpolate-path.min.js", package = "dime"), "", text, fixed = TRUE)
+    text <- gsub(system.file("d3js/generatePlots.js", package = "dime"), "", text, fixed = TRUE)
     text <- gsub(system.file("d3js/generateTooltipHtml.js", package = "dime"), "", text, fixed = TRUE)
   } else if (type == "css") {
     text <- gsub(system.file("d3js/modelStudio.css", package = "dime"), "", text, fixed = TRUE)
