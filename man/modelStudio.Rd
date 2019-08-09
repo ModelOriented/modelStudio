@@ -57,8 +57,7 @@ library("DALEX")
 # ex1 classification
 
 titanic <- na.omit(titanic)
-set.seed(1313)
-titanic_small <- titanic[sample(1:nrow(titanic), 500), c(1,2,3,6,7,9)]
+titanic_small <- titanic[,c(1,2,3,6,7,9)]
 
 model_titanic_glm <- glm(survived == "yes" ~ gender + age + fare + class + sibsp,
                          data = titanic_small, family = "binomial")
@@ -84,13 +83,14 @@ explain_apartments <- explain(model_apartments,
                               data = apartments[,-1],
                               y = apartments[,1])
 
-new_apartments <- apartments[1:2, -1]
+new_apartments <- apartments[1:2,-1]
 rownames(new_apartments) <- c("ap1","ap2")
 
 modelStudio(explain_apartments, new_apartments,
             facet_dim = c(1,2), N = 100, B = 15, time = 1000)
 
 }))
+
 }
 \references{
 \bold{ingredients} \url{https://modeloriented.github.io/ingredients/}

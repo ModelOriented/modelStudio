@@ -46,8 +46,14 @@ d3.tip = function() {
     // make sure that tip is pointing right direction (not outside of svg) \\
     // 'n' means that tooltip will go north from pointer
 
+    // do not move this code V
+    nodel.html(content)
+          .style('position', 'absolute')
+          .style('opacity', .8)
+          .style('pointer-events', 'all')
+    // do not move this code ^
+
     var tdir = dir;
-    var tcontent = content;
 
     var divDim = node.getBoundingClientRect(),
         svgDim = svg.getBBox();
@@ -112,14 +118,14 @@ d3.tip = function() {
           .style('left', (tleft + poffset[1] + scrollLeft) + 'px')
           .style('padding', tpdd);
 
-    nodel.html(tcontent)
-          .style('position', 'absolute')
-          .style('opacity', .8)
-          .style('pointer-events', 'all')
-
     ////////////////////////////////::::::::://///////////////////////////////
 
-    return tip
+    //safeguard
+    if (dw == 0) {
+      return tip.hide()
+    } else {
+      return tip
+    }
   }
 
   // Public - hide the tooltip

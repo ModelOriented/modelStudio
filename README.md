@@ -16,7 +16,7 @@ with only a few lines of code.
 
 #### [See an example](https://modeloriented.github.io/dime/demo.html) &emsp; [It also works with **Python** scikit-learn, keras and more, thanks to DALEXtra](https://github.com/ModelOriented/DALEXtra)  
 
-![](images/gif1.gif)
+![](images/gif3.gif)
 
 The package `dime` is a part of the [DrWhy.AI](http://drwhy.ai) universe.
 
@@ -82,11 +82,11 @@ Make a studio for the model:
  modelStudio(explain_titanic_glm, new_observations, N = 100, B = 10)
 ```
 
-![](images/gif2.gif)
+![](images/gif4.gif)
 
 ------------------------------------------------------
 
-## Save 
+## Save
 
 You can save `modelStudio` using controls on the top of the RStudio Viewer
 or with `r2d3::save_d3_html()` and `r2d3::save_d3_png()`.

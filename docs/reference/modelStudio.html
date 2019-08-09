@@ -171,8 +171,7 @@ of serverless HTML site, that supports animations and interactivity made with D3
 <span class='co'># ex1 classification</span>
 
 <span class='no'>titanic</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/na.fail'>na.omit</a></span>(<span class='no'>titanic</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Random'>set.seed</a></span>(<span class='fl'>1313</span>)
-<span class='no'>titanic_small</span> <span class='kw'>&lt;-</span> <span class='no'>titanic</span>[<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample</a></span>(<span class='fl'>1</span>:<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>titanic</span>), <span class='fl'>500</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>6</span>,<span class='fl'>7</span>,<span class='fl'>9</span>)]
+<span class='no'>titanic_small</span> <span class='kw'>&lt;-</span> <span class='no'>titanic</span>[,<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>6</span>,<span class='fl'>7</span>,<span class='fl'>9</span>)]
 
 <span class='no'>model_titanic_glm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/glm'>glm</a></span>(<span class='no'>survived</span> <span class='kw'>==</span> <span class='st'>"yes"</span> ~ <span class='no'>gender</span> + <span class='no'>age</span> + <span class='no'>fare</span> + <span class='no'>class</span> + <span class='no'>sibsp</span>,
                          <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>titanic_small</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>)
@@ -198,7 +197,7 @@ of serverless HTML site, that supports animations and interactivity made with D3
                               <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>[,-<span class='fl'>1</span>],
                               <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>apartments</span>[,<span class='fl'>1</span>])
 
-<span class='no'>new_apartments</span> <span class='kw'>&lt;-</span> <span class='no'>apartments</span>[<span class='fl'>1</span>:<span class='fl'>2</span>, -<span class='fl'>1</span>]
+<span class='no'>new_apartments</span> <span class='kw'>&lt;-</span> <span class='no'>apartments</span>[<span class='fl'>1</span>:<span class='fl'>2</span>,-<span class='fl'>1</span>]
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>rownames</a></span>(<span class='no'>new_apartments</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"ap1"</span>,<span class='st'>"ap2"</span>)
 
 <span class='fu'>modelStudio</span>(<span class='no'>explain_apartments</span>, <span class='no'>new_apartments</span>,
@@ -207,7 +206,8 @@ of serverless HTML site, that supports animations and interactivity made with D3
 }))</div><div class='output co'>#&gt; <span class='message'>Welcome to DALEX (version: 0.4.6).</span>
 #&gt; <span class='message'>Find examples and detailed introduction at: https://pbiecek.github.io/PM_VEE/</span>
 #&gt; <span class='message'>Additional features will be available after installation of: ALEPlot, breakDown, pdp, factorMerger.</span>
-#&gt; <span class='message'>Use 'install_dependencies()' to get all suggested dependencies</span></div></pre>
+#&gt; <span class='message'>Use 'install_dependencies()' to get all suggested dependencies</span></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
