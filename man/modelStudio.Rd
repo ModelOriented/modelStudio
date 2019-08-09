@@ -9,7 +9,7 @@
 modelStudio(x, ...)
 
 \method{modelStudio}{explainer}(x, new_observation, facet_dim = c(2, 2),
-  max_features = 10, N = 500, B = 25, time = 1000, ...)
+  max_features = 10, N = 500, B = 25, time = 500, ...)
 
 \method{modelStudio}{default}(x, new_observation, facet_dim = c(2, 2),
   max_features = 10, N = 500, B = 25, time = 500, data, y,

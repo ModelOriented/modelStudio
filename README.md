@@ -54,8 +54,7 @@ Create a model:
 
 ```r
  titanic <- na.omit(titanic)
- set.seed(1313)
- titanic_small <- titanic[sample(1:nrow(titanic), 500), c(1,2,3,6,7,9)]
+ titanic_small <- titanic[, c(1,2,3,6,7,9)]
 
  model_titanic_glm <- glm(survived == "yes" ~ gender + age + fare + class + sibsp,
                           data = titanic_small, family = "binomial")
@@ -65,7 +64,7 @@ Wrap it into an explainer:
 
 ```r
  explain_titanic_glm <- explain(model_titanic_glm,
-                                data = titanic_small[,-6],
+                                data = titanic_small[, -6],
                                 y = titanic_small$survived == "yes",
                                 label = "glm")
 ```
@@ -73,19 +72,26 @@ Wrap it into an explainer:
 Pick some data points:
 
 ```r
- new_observations <- titanic_small[1:4,-6]
+ new_observations <- titanic_small[1:4, -6]
  rownames(new_observations) <- c("Lucas", "James", "Thomas", "Nancy")
 ```
 
 Make a studio for the model:
 
 ```r
- modelStudio(explain_titanic_glm,
-             new_observations,
-             facet_dim = c(2,2), N = 200, B = 20, time = 0)
+ modelStudio(explain_titanic_glm, new_observations, N = 100, B = 10)
 ```
 
 ![](images/gif2.gif)
+
+------------------------------------------------------
+
+## Save 
+
+You can save `modelStudio` using controls on the top of the RStudio Viewer
+or with `r2d3::save_d3_html()` and `r2d3::save_d3_png()`.
+
+![Save](images/controls.png)
 
 ------------------------------------------------------
 

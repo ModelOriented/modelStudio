@@ -83,7 +83,7 @@ modelStudio.explainer <- function(x,
                                   max_features = 10,
                                   N = 500,
                                   B = 25,
-                                  time = 1000,
+                                  time = 500,
                                   ...) {
 
   modelStudio.default(x = x$model,
