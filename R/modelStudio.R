@@ -12,6 +12,7 @@
 #' @param N number of observations used for calculation of partial dependency profiles. Default is 500.
 #' @param B number of random paths used for calculation of shapley values. Default is 25.
 #' @param time in ms. Set animation length. Default is 1000.
+#' @param parallel speed up computation using `parallelMap` package. Default is FALSE.
 #' @param ... other parameters.
 #' @param data validation dataset, will be extracted from \code{x} if it's an explainer.
 #' @param y true labels for \code{data}, will be extracted from \code{x} if it's an explainer.
@@ -84,6 +85,7 @@ modelStudio.explainer <- function(x,
                                   N = 500,
                                   B = 25,
                                   time = 500,
+                                  parallel = FALSE,
                                   ...) {
 
   modelStudio.default(x = x$model,
@@ -93,6 +95,7 @@ modelStudio.explainer <- function(x,
                       N = N,
                       B = B,
                       time = time,
+                      parallel = parallel,
                       data = x$data,
                       y = x$y,
                       predict_function = x$predict_function,
@@ -109,6 +112,7 @@ modelStudio.default <- function(x,
                                 N = 500,
                                 B = 25,
                                 time = 500,
+                                parallel = FALSE,
                                 data,
                                 y,
                                 predict_function = predict,
@@ -181,23 +185,50 @@ modelStudio.default <- function(x,
   ad_data <- prepareAccumulatedDependency(ad_n, ad_c, variables = variable_names)
   fd_data <- prepareFeatureDistribution(data, variables = variable_names)
 
-  ## count once per observation
-  for(i in 1:obs_count){
-    new_observation <- obs_data[i,]
+  if (parallel == TRUE) {
+    parallelMap::parallelStart()
 
-    bd <- iBreakDown::local_attributions(
-          x, data, predict_function, new_observation, label = label)
-    sv <- iBreakDown::shap(
-          x, data, predict_function, new_observation, label = label, B = B)
-    cp <- ingredients::ceteris_paribus(
-          x, data, predict_function, new_observation, label = label)
-    setTxtProgressBar(pb, 5+i)
+    f <- function(i) {
+      new_observation <- obs_data[i,]
 
-    bd_data <- prepareBreakDown(bd, max_features)
-    sv_data <- prepareShapleyValues(sv, max_features)
-    cp_data <- prepareCeterisParibus(cp, variables = variable_names)
+      bd <- iBreakDown::local_attributions(
+        x, data, predict_function, new_observation, label = label)
+      sv <- iBreakDown::shap(
+        x, data, predict_function, new_observation, label = label, B = B)
+      cp <- ingredients::ceteris_paribus(
+        x, data, predict_function, new_observation, label = label)
 
-    obs_list[[i]] <- list(bd_data, cp_data, sv_data)
+      bd_data <- prepareBreakDown(bd, max_features)
+      sv_data <- prepareShapleyValues(sv, max_features)
+      cp_data <- prepareCeterisParibus(cp, variables = variable_names)
+
+      list(bd_data, cp_data, sv_data)
+    }
+
+    obs_list <- parallelMap::parallelMap(f, 1:obs_count)
+    parallelMap::parallelStop()
+
+    setTxtProgressBar(pb, obs_count)
+
+  } else {
+    ## count once per observation
+    for(i in 1:obs_count){
+      new_observation <- obs_data[i,]
+
+      bd <- iBreakDown::local_attributions(
+        x, data, predict_function, new_observation, label = label)
+      sv <- iBreakDown::shap(
+        x, data, predict_function, new_observation, label = label, B = B)
+      cp <- ingredients::ceteris_paribus(
+        x, data, predict_function, new_observation, label = label)
+      setTxtProgressBar(pb, 5+i)
+
+      bd_data <- prepareBreakDown(bd, max_features)
+      sv_data <- prepareShapleyValues(sv, max_features)
+      cp_data <- prepareCeterisParibus(cp, variables = variable_names)
+
+      obs_list[[i]] <- list(bd_data, cp_data, sv_data)
+    }
   }
 
   names(obs_list) <- rownames(obs_data)
