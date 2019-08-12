@@ -9,10 +9,12 @@
 modelStudio(x, ...)
 
 \method{modelStudio}{explainer}(x, new_observation, facet_dim = c(2, 2),
-  max_features = 10, N = 500, B = 25, time = 500, ...)
+  time = 500, max_features = 10, N = 500, B = 25,
+  show_info = TRUE, parallel = FALSE, ...)
 
 \method{modelStudio}{default}(x, new_observation, facet_dim = c(2, 2),
-  max_features = 10, N = 500, B = 25, time = 500, data, y,
+  time = 500, max_features = 10, N = 500, B = 25,
+  show_info = TRUE, parallel = FALSE, data, y,
   predict_function = predict, label = NULL, ...)
 }
 \arguments{
@@ -24,13 +26,17 @@ modelStudio(x, ...)
 
 \item{facet_dim}{dimensions of the grid. Default is 2x2.}
 
-\item{max_features}{maximal number of features to be included in BreakDown and FeatureImportance plot.}
+\item{time}{in ms. Set animation length. Default is 1000.}
+
+\item{max_features}{maximum number of features to be included in Break Down and Shapley Values plot.}
 
 \item{N}{number of observations used for calculation of partial dependency profiles. Default is 500.}
 
 \item{B}{number of random paths used for calculation of shapley values. Default is 25.}
 
-\item{time}{in ms. Set animation length. Default is 1000.}
+\item{show_info}{verbose progress bar on console? Default is TRUE.}
+
+\item{parallel}{speed up computation using `parallelMap` package. Default is FALSE.}
 
 \item{data}{validation dataset, will be extracted from \code{x} if it's an explainer.}
 
@@ -87,7 +93,8 @@ new_apartments <- apartments[1:2,-1]
 rownames(new_apartments) <- c("ap1","ap2")
 
 modelStudio(explain_apartments, new_apartments,
-            facet_dim = c(1,2), N = 100, B = 15, time = 1000)
+            facet_dim = c(1,2), time = 1000,
+            N = 100, B = 15)
 
 }))
 

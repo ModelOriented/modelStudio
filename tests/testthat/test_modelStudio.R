@@ -76,6 +76,9 @@ ms_big <- modelStudio(explain_artifficial,
                       new_observation = artifficial[1:2,], N = 5, B = 2,
                       facet_dim = c(3,3))
 
+ms_parallel <- modelStudio(explain_glm, new_observation = titanic_test[1:2,-9],
+                           N = 5, B = 2, parallel = TRUE)
+
 # tests
 
 test_that("explainer/model test", {
@@ -113,4 +116,8 @@ test_that("test various possibilities of data and new obs", {
 
 test_that("more than 10 features", {
   expect_is(ms_big, "r2d3")
+})
+
+test_that("parallel", {
+  expect_is(ms_parallel, "r2d3")
 })

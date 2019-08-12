@@ -1,0 +1,129 @@
+---
+title: "modelStudio - perks and features"
+author: "Hubert Baniecki"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{modelStudio - perks and features}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+## More Examples
+
+Let's use `DALEX::HR` dataset to explore some of `modelStudio` parameters.
+
+```{r results="hide"}
+train <- DALEX::HR
+train$fired <- ifelse(train$status == "fired", 1, 0)
+train <- train[, -6]
+
+head(train)
+```
+
+```{r echo = FALSE}
+knitr::kable(head(train))
+```
+
+Prepare data and model for the explainer.
+
+```{r results="hide"}
+model <- randomForest::randomForest(fired ~., data = train)
+
+test <- DALEX::HR_test
+test$fired <- ifelse(test$status == "fired", 1, 0)
+test <- test[, -6]
+
+explainer <- DALEX::explain(model = model,
+                            data = test,
+                            y = test[, 6])
+
+library("dime")
+```
+
+### local explanations
+
+You can pass data points to `new_observation` parameter for local explanations
+such as Break Down, Shapley Values and Ceteris Paribus Profiles.
+
+```{r eval = FALSE}
+new_observations <- test[1:3,]
+rownames(new_observations) <- c("John Snow","Arya Stark","Samwell Tarly")
+modelStudio(explainer, new_observation = new_observations)
+```
+
+### modelStudio size
+
+You can achieve bigger or smaller `modelStudio` grid with `facet_dim` parameter.
+
+```{r eval = FALSE}
+modelStudio(explainer, new_observation = test[1:2,], facet_dim = c(1,2))
+
+modelStudio(explainer, new_observation = test[1:2,], facet_dim = c(3,3))
+```
+
+### modelStudio looks
+
+You can manipulate `time` parameter to set animation length. Value 0 will make 
+them invisible.
+
+```{r eval = FALSE}
+modelStudio(explainer, new_observation = test[1:2,], time = 1000)
+
+modelStudio(explainer, new_observation = test[1:2,], time = 0)
+```
+
+### more calculations means more time
+
+You can decrease `N` and `B` parameters to lower computation time or increase
+them to get more accurate empirical results.
+
+```{r eval = FALSE}
+modelStudio(explainer, new_observation = test[1:2,], N = 100, B = 10)
+
+modelStudio(explainer, new_observation = test[1:2,], N = 1000, B = 50)
+```
+
+### progress bar
+
+You can hide computation progress bar messages with `show_info` parameter.
+
+```{r eval = FALSE}
+modelStudio(explainer, new_observation = test[1:2,], show_info = FALSE)
+```
+
+## Parallel Computation
+
+You can speed up `modelStudio` computation with `parallel` parameter.
+
+```{r}
+#TBD
+```
+
+## Python scikit-learn Model
+
+You can use `DALEXtra::explain_*()` functions to explain various models.
+Bellow basic example of making `modelStudio` for scikit-learn model using
+[`DALEXTRA::explain_scikitlearn()`](https://modeloriented.github.io/DALEXtra/reference/explain_scikitlearn.html)
+
+```{r}
+library(DALEXtra)
+#TBD
+```
+
+`modelStudio` should work with any `explainer` class object. Find more about 
+making those [here](https://github.com/ModelOriented/DALEXtra)
+
+
+## Plot Options
+
+TBD

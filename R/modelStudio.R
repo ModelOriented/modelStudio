@@ -8,10 +8,11 @@
 #' @param x an explainer created with function \code{DALEX::explain()} or a model to be explained.
 #' @param new_observation a new observation with columns that correspond to variables used in the model.
 #' @param facet_dim dimensions of the grid. Default is 2x2.
-#' @param max_features maximal number of features to be included in BreakDown and FeatureImportance plot.
+#' @param time in ms. Set animation length. Default is 1000.
+#' @param max_features maximum number of features to be included in Break Down and Shapley Values plot.
 #' @param N number of observations used for calculation of partial dependency profiles. Default is 500.
 #' @param B number of random paths used for calculation of shapley values. Default is 25.
-#' @param time in ms. Set animation length. Default is 1000.
+#' @param show_info verbose progress bar on console? Default is TRUE.
 #' @param parallel speed up computation using `parallelMap` package. Default is FALSE.
 #' @param ... other parameters.
 #' @param data validation dataset, will be extracted from \code{x} if it's an explainer.
@@ -67,7 +68,8 @@
 #' rownames(new_apartments) <- c("ap1","ap2")
 #'
 #' modelStudio(explain_apartments, new_apartments,
-#'             facet_dim = c(1,2), N = 100, B = 15, time = 1000)
+#'             facet_dim = c(1,2), time = 1000,
+#'             N = 100, B = 15)
 #'
 #' }))
 #'
@@ -81,20 +83,22 @@ modelStudio <- function(x, ...)
 modelStudio.explainer <- function(x,
                                   new_observation,
                                   facet_dim = c(2,2),
+                                  time = 500,
                                   max_features = 10,
                                   N = 500,
                                   B = 25,
-                                  time = 500,
+                                  show_info = TRUE,
                                   parallel = FALSE,
                                   ...) {
 
   modelStudio.default(x = x$model,
                       new_observation = new_observation,
                       facet_dim = facet_dim,
+                      time = time,
                       max_features = max_features,
                       N = N,
                       B = B,
-                      time = time,
+                      show_info = show_info,
                       parallel = parallel,
                       data = x$data,
                       y = x$y,
@@ -108,10 +112,11 @@ modelStudio.explainer <- function(x,
 modelStudio.default <- function(x,
                                 new_observation,
                                 facet_dim = c(2,2),
+                                time = 500,
                                 max_features = 10,
                                 N = 500,
                                 B = 25,
-                                time = 500,
+                                show_info = TRUE,
                                 parallel = FALSE,
                                 data,
                                 y,
@@ -127,7 +132,8 @@ modelStudio.default <- function(x,
 
   ## get proper names of features that arent target
   is_y <- sapply(data, function(x) identical(x, y))
-  variable_names <- intersect(names(is_y == FALSE), colnames(new_observation))
+  potential_variable_names <- names(is_y[is_y==FALSE])
+  variable_names <- intersect(potential_variable_names, colnames(new_observation))
   ## get rid of target in data
   data <- data[is_y == FALSE]
 
@@ -137,12 +143,12 @@ modelStudio.default <- function(x,
   obs_list <- list()
 
   ## later update progress bar after all explanation functions
-  pb <- txtProgressBar(0, obs_count + 5, style = 3)
+  if (show_info == TRUE) pb <- txtProgressBar(0, obs_count + 5, style = 3)
 
   ## count only once
   fi <- ingredients::feature_importance(
-        x, data, y, predict_function, variables = variable_names)
-  setTxtProgressBar(pb, 1)
+        x, data, y, predict_function, variables = variable_names, B = B)
+  if (show_info == TRUE) setTxtProgressBar(pb, 1)
 
   which_numerical <- sapply(data[,, drop = FALSE], is.numeric)
 
@@ -150,34 +156,34 @@ modelStudio.default <- function(x,
   if (all(which_numerical==TRUE)) {
     pd_n <- ingredients::partial_dependency(
             x, data, predict_function, only_numerical = TRUE, N = N)
-    setTxtProgressBar(pb, 2)
+    if (show_info == TRUE) setTxtProgressBar(pb, 2)
     pd_c <- NULL
     ad_n <- ingredients::accumulated_dependency(
             x, data, predict_function, only_numerical = TRUE, N = N)
-    setTxtProgressBar(pb, 4)
+    if (show_info == TRUE) setTxtProgressBar(pb, 4)
     ad_c <- NULL
   } else if (all(which_numerical==FALSE)) {
     pd_n <- NULL
     pd_c <- ingredients::partial_dependency(
             x, data, predict_function, only_numerical = FALSE, N = N)
-    setTxtProgressBar(pb, 3)
+    if (show_info == TRUE) setTxtProgressBar(pb, 3)
     ad_n <- NULL
     ad_c <- ingredients::accumulated_dependency(
             x, data, predict_function, only_numerical = FALSE, N = N)
-    setTxtProgressBar(pb, 5)
+    if (show_info == TRUE) setTxtProgressBar(pb, 5)
   } else {
     pd_n <- ingredients::partial_dependency(
             x, data, predict_function, only_numerical = TRUE, N = N)
-    setTxtProgressBar(pb, 2)
+    if (show_info == TRUE) setTxtProgressBar(pb, 2)
     pd_c <- ingredients::partial_dependency(
             x, data, predict_function, only_numerical = FALSE, N = N)
-    setTxtProgressBar(pb, 3)
+    if (show_info == TRUE) setTxtProgressBar(pb, 3)
     ad_n <- ingredients::accumulated_dependency(
             x, data, predict_function, only_numerical = TRUE, N = N)
-    setTxtProgressBar(pb, 4)
+    if (show_info == TRUE) setTxtProgressBar(pb, 4)
     ad_c <- ingredients::accumulated_dependency(
             x, data, predict_function, only_numerical = FALSE, N = N)
-    setTxtProgressBar(pb, 5)
+    if (show_info == TRUE) setTxtProgressBar(pb, 5)
   }
 
   fi_data <- prepareFeatureImportance(fi, max_features)
@@ -206,10 +212,10 @@ modelStudio.default <- function(x,
     }
 
     obs_list <- parallelMap::parallelMap(f, 1:obs_count)
+
     parallelMap::parallelStop()
 
-    setTxtProgressBar(pb, obs_count)
-
+    if (show_info == TRUE) setTxtProgressBar(pb, 5 + obs_count)
   } else {
     ## count once per observation
     for(i in 1:obs_count){
@@ -221,7 +227,7 @@ modelStudio.default <- function(x,
         x, data, predict_function, new_observation, label = label, B = B)
       cp <- ingredients::ceteris_paribus(
         x, data, predict_function, new_observation, label = label)
-      setTxtProgressBar(pb, 5+i)
+      if (show_info == TRUE) setTxtProgressBar(pb, 5 + i)
 
       bd_data <- prepareBreakDown(bd, max_features)
       sv_data <- prepareShapleyValues(sv, max_features)
