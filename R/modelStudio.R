@@ -1,4 +1,4 @@
-#' @title Generates interactive studio to explain your predictive model
+#' @title Generates interactive studio to explain predictive model
 #'
 #' @description
 #' This tool uses your model, data and new observations, to provide local
@@ -8,10 +8,15 @@
 #' @param x an explainer created with function \code{DALEX::explain()} or a model to be explained.
 #' @param new_observation a new observation with columns that correspond to variables used in the model.
 #' @param facet_dim dimensions of the grid. Default is 2x2.
-#' @param max_features maximal number of features to be included in BreakDown and FeatureImportance plot.
+#' @param time in ms. Set animation length. Default is 1000.
+#' @param max_features maximum number of features to be included in Break Down and Shapley Values plot.
 #' @param N number of observations used for calculation of partial dependency profiles. Default is 500.
 #' @param B number of random paths used for calculation of shapley values. Default is 25.
-#' @param time in ms. Set animation length. Default is 1000.
+#' @param show_info verbose progress bar on console? Default is \code{TRUE}.
+#' @param parallel speed up computation using \code{parallelMap::parallelMap()}.
+#' Default is \code{FALSE}.
+#' @param options customize \code{modelStudio}. See \code{\link{getDefaultOptions}} and
+#' \href{modeloriented.github.io/dime/articles/vignette_modelStudio.html#plot-options}{\bold{vignette}}.
 #' @param ... other parameters.
 #' @param data validation dataset, will be extracted from \code{x} if it's an explainer.
 #' @param y true labels for \code{data}, will be extracted from \code{x} if it's an explainer.
@@ -24,51 +29,55 @@
 #' @importFrom stats aggregate predict
 #' @importFrom grDevices nclass.Sturges
 #'
-#' @references \bold{ingredients} \url{https://modeloriented.github.io/ingredients/}
-#' \bold{iBreakDown} \url{https://modeloriented.github.io/iBreakDown/}
+#' @references
+#' \href{https://modeloriented.github.io/ingredients/}{\bold{ingredients}}
+#' \href{https://modeloriented.github.io/iBreakDown/}{\bold{iBreakDown}}
+#' \href{https://modeloriented.github.io/DALEX/}{\bold{DALEX}}
+#' \href{https://modeloriented.github.io/DALEXtra/}{\bold{DALEXtra}}
 #'
 #' @examples
-#' invisible(capture.output({
-#'
 #' library("dime")
-#' library("DALEX")
 #'
 #' # ex1 classification
 #'
-#' titanic <- na.omit(titanic)
+#' titanic <- na.omit(DALEX::titanic)
 #' titanic_small <- titanic[,c(1,2,3,6,7,9)]
 #'
 #' model_titanic_glm <- glm(survived == "yes" ~ gender + age + fare + class + sibsp,
 #'                          data = titanic_small, family = "binomial")
 #'
-#' explain_titanic_glm <- explain(model_titanic_glm,
-#'                                data = titanic_small[,-6],
-#'                                y = titanic_small$survived == "yes",
-#'                                label = "glm")
+#' explain_titanic_glm <- DALEX::explain(model_titanic_glm,
+#'                                       data = titanic_small[,-6],
+#'                                       y = titanic_small$survived == "yes",
+#'                                       label = "glm",
+#'                                       verbose = FALSE)
 #'
 #' new_observations <- titanic_small[1:4,-6]
 #' rownames(new_observations) <- c("Lucas","James", "Thomas", "Nancy")
 #'
 #' modelStudio(explain_titanic_glm, new_observations,
-#'             N = 100, B = 15)
+#'             N = 100, B = 15, show_info = FALSE)
 #'
 #'
 #' # ex2 regression
 #'
+#' apartments <- DALEX::apartments
+#'
 #' model_apartments <- glm(m2.price ~. ,
 #'                         data = apartments)
 #'
-#' explain_apartments <- explain(model_apartments,
-#'                               data = apartments[,-1],
-#'                               y = apartments[,1])
+#' explain_apartments <- DALEX::explain(model_apartments,
+#'                                      data = apartments[,-1],
+#'                                      y = apartments[,1],
+#'                                      verbose = FALSE)
 #'
 #' new_apartments <- apartments[1:2,-1]
 #' rownames(new_apartments) <- c("ap1","ap2")
 #'
 #' modelStudio(explain_apartments, new_apartments,
-#'             facet_dim = c(1,2), N = 100, B = 15, time = 1000)
+#'             facet_dim = c(1,2), time = 1000,
+#'             N = 100, B = 15, show_info = FALSE)
 #'
-#' }))
 #'
 #' @export
 #' @rdname modelStudio
@@ -80,19 +89,25 @@ modelStudio <- function(x, ...)
 modelStudio.explainer <- function(x,
                                   new_observation,
                                   facet_dim = c(2,2),
+                                  time = 500,
                                   max_features = 10,
                                   N = 500,
                                   B = 25,
-                                  time = 500,
+                                  show_info = TRUE,
+                                  parallel = FALSE,
+                                  options = NULL,
                                   ...) {
 
   modelStudio.default(x = x$model,
                       new_observation = new_observation,
                       facet_dim = facet_dim,
+                      time = time,
                       max_features = max_features,
                       N = N,
                       B = B,
-                      time = time,
+                      show_info = show_info,
+                      parallel = parallel,
+                      options = options,
                       data = x$data,
                       y = x$y,
                       predict_function = x$predict_function,
@@ -105,10 +120,13 @@ modelStudio.explainer <- function(x,
 modelStudio.default <- function(x,
                                 new_observation,
                                 facet_dim = c(2,2),
+                                time = 500,
                                 max_features = 10,
                                 N = 500,
                                 B = 25,
-                                time = 500,
+                                show_info = TRUE,
+                                parallel = FALSE,
+                                options = NULL,
                                 data,
                                 y,
                                 predict_function = predict,
@@ -123,7 +141,8 @@ modelStudio.default <- function(x,
 
   ## get proper names of features that arent target
   is_y <- sapply(data, function(x) identical(x, y))
-  variable_names <- intersect(names(is_y == FALSE), colnames(new_observation))
+  potential_variable_names <- names(is_y[is_y==FALSE])
+  variable_names <- intersect(potential_variable_names, colnames(new_observation))
   ## get rid of target in data
   data <- data[is_y == FALSE]
 
@@ -133,12 +152,12 @@ modelStudio.default <- function(x,
   obs_list <- list()
 
   ## later update progress bar after all explanation functions
-  pb <- txtProgressBar(0, obs_count + 5, style = 3)
+  if (show_info == TRUE) pb <- txtProgressBar(0, obs_count + 5, style = 3)
 
   ## count only once
   fi <- ingredients::feature_importance(
-        x, data, y, predict_function, variables = variable_names)
-  setTxtProgressBar(pb, 1)
+        x, data, y, predict_function, variables = variable_names, B = B)
+  if (show_info == TRUE) setTxtProgressBar(pb, 1)
 
   which_numerical <- sapply(data[,, drop = FALSE], is.numeric)
 
@@ -146,34 +165,34 @@ modelStudio.default <- function(x,
   if (all(which_numerical==TRUE)) {
     pd_n <- ingredients::partial_dependency(
             x, data, predict_function, only_numerical = TRUE, N = N)
-    setTxtProgressBar(pb, 2)
+    if (show_info == TRUE) setTxtProgressBar(pb, 2)
     pd_c <- NULL
     ad_n <- ingredients::accumulated_dependency(
             x, data, predict_function, only_numerical = TRUE, N = N)
-    setTxtProgressBar(pb, 4)
+    if (show_info == TRUE) setTxtProgressBar(pb, 4)
     ad_c <- NULL
   } else if (all(which_numerical==FALSE)) {
     pd_n <- NULL
     pd_c <- ingredients::partial_dependency(
             x, data, predict_function, only_numerical = FALSE, N = N)
-    setTxtProgressBar(pb, 3)
+    if (show_info == TRUE) setTxtProgressBar(pb, 3)
     ad_n <- NULL
     ad_c <- ingredients::accumulated_dependency(
             x, data, predict_function, only_numerical = FALSE, N = N)
-    setTxtProgressBar(pb, 5)
+    if (show_info == TRUE) setTxtProgressBar(pb, 5)
   } else {
     pd_n <- ingredients::partial_dependency(
             x, data, predict_function, only_numerical = TRUE, N = N)
-    setTxtProgressBar(pb, 2)
+    if (show_info == TRUE) setTxtProgressBar(pb, 2)
     pd_c <- ingredients::partial_dependency(
             x, data, predict_function, only_numerical = FALSE, N = N)
-    setTxtProgressBar(pb, 3)
+    if (show_info == TRUE) setTxtProgressBar(pb, 3)
     ad_n <- ingredients::accumulated_dependency(
             x, data, predict_function, only_numerical = TRUE, N = N)
-    setTxtProgressBar(pb, 4)
+    if (show_info == TRUE) setTxtProgressBar(pb, 4)
     ad_c <- ingredients::accumulated_dependency(
             x, data, predict_function, only_numerical = FALSE, N = N)
-    setTxtProgressBar(pb, 5)
+    if (show_info == TRUE) setTxtProgressBar(pb, 5)
   }
 
   fi_data <- prepareFeatureImportance(fi, max_features)
@@ -181,39 +200,69 @@ modelStudio.default <- function(x,
   ad_data <- prepareAccumulatedDependency(ad_n, ad_c, variables = variable_names)
   fd_data <- prepareFeatureDistribution(data, variables = variable_names)
 
-  ## count once per observation
-  for(i in 1:obs_count){
-    new_observation <- obs_data[i,]
+  if (parallel == TRUE) {
+    parallelMap::parallelStart()
+    parallelMap::parallelLibrary(packages = loadedNamespaces())
 
-    bd <- iBreakDown::local_attributions(
-          x, data, predict_function, new_observation, label = label)
-    sv <- iBreakDown::shap(
-          x, data, predict_function, new_observation, label = label, B = B)
-    cp <- ingredients::ceteris_paribus(
-          x, data, predict_function, new_observation, label = label)
-    setTxtProgressBar(pb, 5+i)
+    f <- function(i, x, data, predict_function, label, B) {
+      new_observation <- obs_data[i,]
 
-    bd_data <- prepareBreakDown(bd, max_features)
-    sv_data <- prepareShapleyValues(sv, max_features)
-    cp_data <- prepareCeterisParibus(cp, variables = variable_names)
+      bd <- iBreakDown::local_attributions(
+        x, data, predict_function, new_observation, label = label)
+      sv <- iBreakDown::shap(
+        x, data, predict_function, new_observation, label = label, B = B)
+      cp <- ingredients::ceteris_paribus(
+        x, data, predict_function, new_observation, label = label)
 
-    obs_list[[i]] <- list(bd_data, cp_data, sv_data)
+      bd_data <- prepareBreakDown(bd, max_features)
+      sv_data <- prepareShapleyValues(sv, max_features)
+      cp_data <- prepareCeterisParibus(cp, variables = variable_names)
+
+      list(bd_data, cp_data, sv_data)
+    }
+
+    obs_list <- parallelMap::parallelMap(f, 1:obs_count,
+                                         more.args = list(
+                                           x = x,
+                                           data = data,
+                                           predict_function = predict_function,
+                                           label = label,
+                                           B = B
+                                         ))
+
+    parallelMap::parallelStop()
+
+    if (show_info == TRUE) setTxtProgressBar(pb, 5 + obs_count)
+  } else {
+    ## count once per observation
+    for(i in 1:obs_count){
+      new_observation <- obs_data[i,]
+
+      bd <- iBreakDown::local_attributions(
+        x, data, predict_function, new_observation, label = label)
+      sv <- iBreakDown::shap(
+        x, data, predict_function, new_observation, label = label, B = B)
+      cp <- ingredients::ceteris_paribus(
+        x, data, predict_function, new_observation, label = label)
+      if (show_info == TRUE) setTxtProgressBar(pb, 5 + i)
+
+      bd_data <- prepareBreakDown(bd, max_features)
+      sv_data <- prepareShapleyValues(sv, max_features)
+      cp_data <- prepareCeterisParibus(cp, variables = variable_names)
+
+      obs_list[[i]] <- list(bd_data, cp_data, sv_data)
+    }
   }
 
   names(obs_list) <- rownames(obs_data)
 
-  ## later for user to define options
-  options <- list(time = time,
-                  size = 2, alpha = 1, bar_width = 16,
-                  bd_title = "Break Down",
-                  sv_title = "Shapley Values",
-                  cp_title = "Ceteris Paribus",
-                  fi_title = "Feature Importance",
-                  pd_title = "Partial Dependency",
-                  ad_title = "Accumulated Dependency",
-                  fd_title = "Feature Distribution",
-                  model_name = label, variable_names = variable_names,
-                  show_rugs = TRUE, facet_dim = facet_dim)
+  if (is.null(options)) {
+    options <- getDefaultOptions()
+  }
+
+  options <- c(list(time = time, model_name = label,
+                    variable_names = variable_names,
+                    facet_dim = facet_dim), options)
 
   temp <- jsonlite::toJSON(list(obs_list, fi_data, pd_data, ad_data, fd_data))
 
@@ -247,7 +296,7 @@ modelStudio.default <- function(x,
 #' @noRd
 #' @title remove_file_paths
 #'
-#' @description `r2d3`` adds comments in html file with direct file paths to dependencies.
+#' @description \code{r2d3} adds comments in html file with direct file paths to dependencies.
 #' This function removes them.
 #'
 #' @param text string

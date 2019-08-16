@@ -23,9 +23,11 @@ Imports:
     jsonlite
 Suggests:
     DALEX,
+    parallelMap,
     randomForest,
     knitr,
     rmarkdown,
-    testthat,
-    htmltools
+    testthat
 VignetteBuilder: knitr
+URL: https://github.com/ModelOriented/dime
+BugReports: https://github.com/ModelOriented/dime/issues

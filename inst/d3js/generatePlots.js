@@ -3,20 +3,6 @@
 // model specific data and other variables come from modelStudio.js file
 // descriptions need to be IN plot functions because of tooltips
 
-/// set colors
-var bdColors = getColors(3, "breakDown"),
-    positiveColor = bdColors[0],
-    negativeColor = bdColors[1],
-    defaultColor = bdColors[2];
-
-var cpColors = getColors(3, "point"),
-    pointColor = cpColors[0],
-    lineColor = cpColors[1],
-    greyColor = cpColors[2];
-
-var fiColors = getColors(1, "bar"),
-    barColor = fiColors[0];
-
 /// initialize plots, select them if already there
 var BD, SV, CP, FI, PD, AD, FD;
 
@@ -106,14 +92,8 @@ function breakDown() {
       xMinMax = bdData.x_min_max,
       desc = bdData.desc;
 
-  var bdPlotHeight = bdBarCount*barWidth + (bdBarCount+1)*barWidth/2,
-      bdPlotWidth = w,
-      bdBarWidth = barWidth;
-
-  if (bdPlotHeight<h || IS_TSCALE) {
-    bdPlotHeight = h;
-    bdBarWidth = h/(3*bdBarCount/2 + 1/2);
-  }
+  var bdPlotHeight = SCALE_PLOT ? h : bdBarCount*bdBarWidth + (bdBarCount+1)*bdBarWidth/2,
+      bdPlotWidth = w;
 
   var x = d3.scaleLinear()
             .range([margin.left,  margin.left + bdPlotWidth])
@@ -138,7 +118,7 @@ function breakDown() {
             .call(g => g.select(".domain").remove());
 
   var y = d3.scaleBand()
-            .rangeRound([margin.top, margin.top + bdPlotHeight])
+            .rangeRound([margin.top - additionalHeight, margin.top + bdPlotHeight])
             .padding(0.33)
             .domain(bData.map(d => d.variable));
 
@@ -147,7 +127,7 @@ function breakDown() {
                 .attr("transform", "translate(0," + (margin.top + bdPlotHeight) + ")")
                 .call(d3.axisBottom(x)
                         .ticks(10)
-                        .tickSize(-bdPlotHeight)
+                        .tickSize(-bdPlotHeight-additionalHeight)
                         .tickFormat("")
                 ).call(g => g.select(".domain").remove());
 
@@ -177,7 +157,7 @@ function breakDown() {
     .attr("x", margin.left)
     .attr("y", margin.top - 15)
     .attr("class", "smallTitle")
-    .text(modelName);
+    .text(bdSubtitle);
 
   BD.append("text")
     .attr("x", margin.left)
@@ -201,7 +181,7 @@ function breakDown() {
 
   // make dotted line from intercept to prediction
   var dotLineData = [{"x": x(intercept), "y": y("intercept")},
-                     {"x": x(intercept), "y": y("prediction") + bdBarWidth}];
+                     {"x": x(intercept), "y": y("prediction") + y.bandwidth()}];
 
   var lineFunction = d3.line()
                        .x(d => d.x)
@@ -222,12 +202,12 @@ function breakDown() {
   bars.append("rect")
       .attr("class", modelName.replace(/\s/g,''))
       .attr("id", (d) => d.variable_name)
-      .attr("fill",function(d){
-        switch(d.sign){
+      .attr("fill", function(d) {
+        switch (d.sign) {
           case "-1":
-            return negativeColor;
+            return bdNegativeColor;
           case "1":
-            return positiveColor;
+            return bdPositiveColor;
           default:
             return defaultColor;
         }
@@ -239,7 +219,7 @@ function breakDown() {
       .attr("x", d => d.contribution > 0 ? x(d.barStart) : x(d.barSupport))
       .on('mouseover', tooltip.show)
       .on('mouseout', tooltip.hide)
-      .on("click", function(){
+      .on("click", function() {
         updatePlots(event = "variableChange",
                     variableName = this.id,
                     observationId = null,
@@ -269,7 +249,7 @@ function breakDown() {
                 return x(d.barSupport) + 5;
             }
           })
-          .attr("y", d => y(d.variable) + bdBarWidth/2)
+          .attr("y", d => y(d.variable) + y.bandwidth()/2)
           .attr("dy", "0.4em")
           .attr("text-anchor", d => d.sign == "X" && d.contribution < 0
                                ? "end" : null)
@@ -302,7 +282,7 @@ function breakDown() {
        .duration(TIME)
        .delay((d,i) => (i+1) * TIME)
        .attr("y2", d => d.variable == "prediction"
-                        ? y(d.variable) : y(d.variable) + bdBarWidth*2.5);
+                        ? y(d.variable) : y(d.variable) + y.bandwidth()*2.5);
 
   var description = BD.append("g")
                       .attr("transform", "translate(" +
@@ -347,14 +327,8 @@ function shapleyValues() {
       xMinMax = svData.x_min_max,
       desc = svData.desc;
 
-  var svPlotHeight = svBarCount*barWidth + (svBarCount+1)*barWidth/2,
-      svPlotWidth = w,
-      svBarWidth = barWidth;
-
-  if (svPlotHeight<h || IS_TSCALE) {
-    svPlotHeight = h;
-    svBarWidth = h/(3*svBarCount/2 + 1/2);
-  }
+  var svPlotHeight = SCALE_PLOT ? h : svBarCount*svBarWidth + (svBarCount+1)*svBarWidth/2,
+      svPlotWidth = w;
 
   var x = d3.scaleLinear()
             .range([margin.left,  margin.left + svPlotWidth])
@@ -379,7 +353,7 @@ function shapleyValues() {
             .call(g => g.select(".domain").remove());
 
   var y = d3.scaleBand()
-            .rangeRound([margin.top, margin.top + svPlotHeight])
+            .rangeRound([margin.top - additionalHeight, margin.top + svPlotHeight])
             .padding(0.33)
             .domain(bData.map(d => d.variable));
 
@@ -388,7 +362,7 @@ function shapleyValues() {
                 .attr("transform", "translate(0," + (margin.top + svPlotHeight) + ")")
                 .call(d3.axisBottom(x)
                         .ticks(10)
-                        .tickSize(-svPlotHeight)
+                        .tickSize(-svPlotHeight - additionalHeight)
                         .tickFormat("")
                 ).call(g => g.select(".domain").remove());
 
@@ -416,7 +390,7 @@ function shapleyValues() {
     .attr("x", margin.left)
     .attr("y", margin.top - 15)
     .attr("class", "smallTitle")
-    .text(modelName);
+    .text(svSubtitle);
 
   SV.append("text")
     .attr("x", margin.left)
@@ -442,12 +416,12 @@ function shapleyValues() {
   bars.append("rect")
       .attr("class", modelName.replace(/\s/g,''))
       .attr("id", (d) => d.variable_name)
-      .attr("fill",function(d){
-        switch(d.sign){
+      .attr("fill", function(d) {
+        switch (d.sign) {
           case "-1":
-            return negativeColor;
+            return svNegativeColor;
           case "1":
-            return positiveColor;
+            return svPositiveColor;
           default:
             return defaultColor;
         }
@@ -459,7 +433,7 @@ function shapleyValues() {
       .attr("height", y.bandwidth())
       .on('mouseover', tooltip.show)
       .on('mouseout', tooltip.hide)
-      .on("click", function(){
+      .on("click", function() {
         updatePlots(event = "variableChange",
                     variableName = this.id,
                     observationId = null,
@@ -482,7 +456,7 @@ function shapleyValues() {
           .attr("class", "axisLabel")
           .attr("x", d => d.contribution < 0
                           ? x(d.barStart) - 5 : x(d.barSupport) + 5)
-          .attr("y", d => y(d.variable) + svBarWidth/2)
+          .attr("y", d => y(d.variable) + y.bandwidth()/2)
           .attr("dy", "0.4em")
           .attr("text-anchor", d => d.sign == "-1" ? "end" : "start")
           .transition()
@@ -506,8 +480,8 @@ function shapleyValues() {
         .duration(TIME)
         .delay((d,i) => (i+1) * TIME)
         .attr("y2", (d,i) => i == svBarCount - 1
-                             ? y(d.variable) + svBarWidth
-                             : y(d.variable) + svBarWidth*2.5);
+                             ? y(d.variable) + y.bandwidth()
+                             : y(d.variable) + y.bandwidth()*2.5);
 
 
 
@@ -573,14 +547,8 @@ function featureImportance() {
       bData = fiData.x,
       xMinMax = fiData.x_min_max;
 
-  var fiPlotHeight = fiBarCount*barWidth + (fiBarCount+1)*barWidth/2,
-      fiPlotWidth = w,
-      fiBarWidth = barWidth;
-
-  if (fiPlotHeight<h || IS_TSCALE) {
-    fiPlotHeight = h;
-    fiBarWidth = h/(3*fiBarCount/2 + 1/2);
-  }
+  var fiPlotHeight = SCALE_PLOT ? h : fiBarCount*fiBarWidth + (fiBarCount+1)*fiBarWidth/2,
+      fiPlotWidth = w;
 
   var x = d3.scaleLinear()
             .range([margin.left, margin.left + fiPlotWidth])
@@ -605,7 +573,7 @@ function featureImportance() {
             .call(g => g.select(".domain").remove());
 
   var y = d3.scaleBand()
-            .rangeRound([margin.top + fiPlotHeight, margin.top])
+            .rangeRound([margin.top + fiPlotHeight, margin.top - additionalHeight])
             .padding(0.33)
             .domain(bData.map(d => d.variable));
 
@@ -614,7 +582,7 @@ function featureImportance() {
                 .attr("transform", "translate(0," + (margin.top + fiPlotHeight) + ")")
                 .call(d3.axisBottom(x)
                         .ticks(10)
-                        .tickSize(-fiPlotHeight)
+                        .tickSize(-fiPlotHeight - additionalHeight)
                         .tickFormat("")
                 ).call(g => g.select(".domain").remove());
 
@@ -639,15 +607,15 @@ function featureImportance() {
 
   FI.append("text")
     .attr("x", margin.left)
-    .attr("y", margin.top - 40)
-    .attr("class", "bigTitle")
-    .text(fiTitle);
+    .attr("y", margin.top - 15)
+    .attr("class", "smallTitle")
+    .text(fiSubtitle);
 
   FI.append("text")
     .attr("x", margin.left)
-    .attr("y", margin.top - 15)
-    .attr("class", "smallTitle")
-    .text(modelName);
+    .attr("y", margin.top - 40)
+    .attr("class", "bigTitle")
+    .text(fiTitle);
 
   // tooltip
   var tooltip = d3.tip()
@@ -669,7 +637,7 @@ function featureImportance() {
 
   bars.append("rect")
       .attr("class", modelName.replace(/\s/g,''))
-      .attr("fill", barColor)
+      .attr("fill", fiBarColor)
       .attr("x", d => x(fullModel))
       .attr("y", d => y(d.variable))
       .attr("height", y.bandwidth())
@@ -823,7 +791,7 @@ function cpNumericalPlot(variableName, lData, mData, yMinMax, pData) {
     .text(variableName + " = " + pData[0][variableName]);
 
   var y = d3.scaleLinear()
-            .range([margin.top + cpPlotHeight, margin.top])
+            .range([margin.top + cpPlotHeight, margin.top - additionalHeight])
             .domain([yMinMax[0], yMinMax[1]]);
 
   var line = d3.line()
@@ -831,17 +799,17 @@ function cpNumericalPlot(variableName, lData, mData, yMinMax, pData) {
                .y(d => y(d.yhat))
                .curve(d3.curveMonotoneX);
 
+   CP.append("text")
+     .attr("class","smallTitle")
+     .attr("x", margin.left)
+     .attr("y", margin.top - 15)
+     .text(cpSubtitle); //variableName + " = " + pData[0][variableName]
+
   CP.append("text")
     .attr("class", "bigTitle")
     .attr("x", margin.left)
     .attr("y", margin.top - 40)
     .text(cpTitle);
-
-  CP.append("text")
-    .attr("class","smallTitle")
-    .attr("x", margin.left)
-    .attr("y", margin.top - 15)
-    .text(modelName); //variableName + " = " + pData[0][variableName]
 
   // find 5 nice ticks with max and min - do better than d3
   var tickValues = getTickValues(x.domain());
@@ -909,15 +877,14 @@ function cpNumericalPlot(variableName, lData, mData, yMinMax, pData) {
   var p = CP.append("path")
             .attr("class", "line " + variableName)
             .style("fill", "none")
-            .style("stroke", lineColor)
-            .style("opacity", alpha)
-            .style("stroke-width", size)
+            .style("stroke", cpLineColor)
+            .style("stroke-width", cpLineSize)
             .on('mouseover', function(d) {
 
               // make mouseover line more visible
               d3.select(this)
-                .style("stroke", pointColor)
-                .style("stroke-width", size*1.5);
+                .style("stroke", defaultColor)
+                .style("stroke-width", cpLineSize*1.5);
 
               // make line and points appear on top
               this.parentNode.appendChild(this);
@@ -931,8 +898,8 @@ function cpNumericalPlot(variableName, lData, mData, yMinMax, pData) {
             .on('mouseout', function(d) {
 
               d3.select(this)
-                .style("stroke", lineColor)
-                .style("stroke-width", size);
+                .style("stroke", cpLineColor)
+                .style("stroke-width", cpLineSize);
 
               // hide changed tooltip
               tooltip.hide(d);
@@ -965,37 +932,34 @@ function cpNumericalPlot(variableName, lData, mData, yMinMax, pData) {
     .style("stroke-width", 15)
     .style("stroke", "red")
     .style("stroke-opacity", 0)
-    .style("fill", pointColor)
+    .style("fill", cpPointColor)
     .on('mouseover', function(d) {
       tooltip.show(d);
   		d3.select(this)
-  			.attr("r", 6);
+  			.attr("r", 2*cpPointSize);
   	})
     .on('mouseout', function(d) {
       tooltip.hide(d);
   		d3.select(this)
-  			.attr("r", 3);
+  			.attr("r", cpPointSize);
   	})
     .transition()
     .duration(TIME)
     .delay(TIME)
-    .attr("r", 3);
+    .attr("r", cpPointSize);
 
-  if (showRugs === true) {
-
-    // add rugs
-    CP.selectAll()
-      .data(pData)
-      .enter()
-      .append("line")
-      .attr("class", "rugLine")
-      .style("stroke", "red")
-      .style("stroke-width", 2)
-      .attr("x1", d => x(d[variableName]))
-      .attr("y1", margin.top + cpPlotHeight)
-      .attr("x2", d => x(d[variableName]))
-      .attr("y2", margin.top + cpPlotHeight - 10);
-  }
+  // add rugs
+  CP.selectAll()
+    .data(pData)
+    .enter()
+    .append("line")
+    .attr("class", "rugLine")
+    .style("stroke", "red")
+    .style("stroke-width", 2)
+    .attr("x1", d => x(d[variableName]))
+    .attr("y1", margin.top + cpPlotHeight)
+    .attr("x2", d => x(d[variableName]))
+    .attr("y2", margin.top + cpPlotHeight - 10);
 
   CP.append("text")
     .attr("class", "axisTitle")
@@ -1006,8 +970,6 @@ function cpNumericalPlot(variableName, lData, mData, yMinMax, pData) {
     .text("prediction");
 
   let desctemp = [{type:"desc", "text":"Under development"}];
-
-
 
   var description = CP.append("g")
                       .attr("transform", "translate(" +
@@ -1043,7 +1005,9 @@ function cpNumericalPlot(variableName, lData, mData, yMinMax, pData) {
 
 function cpCategoricalPlot(variableName, bData, yMinMax, lData) {
 
-  var cpPlotHeight = h,
+  var cpBarCount = bData.map(d => d.xhat).length;
+
+  var cpPlotHeight = SCALE_PLOT ? h : cpBarCount*cpBarWidth + (cpBarCount+1)*cpBarWidth/2,
       cpPlotWidth = w;
 
   var x = d3.scaleLinear()
@@ -1061,7 +1025,7 @@ function cpCategoricalPlot(variableName, bData, yMinMax, lData) {
             .call(g => g.select(".domain").remove());
 
   var y = d3.scaleBand()
-            .rangeRound([margin.top, margin.top + cpPlotHeight])
+            .rangeRound([margin.top - additionalHeight, margin.top + cpPlotHeight])
             .padding(0.33)
             .domain(bData.map(d => d.xhat));
 
@@ -1070,7 +1034,7 @@ function cpCategoricalPlot(variableName, bData, yMinMax, lData) {
                 .attr("transform", "translate(0," + (margin.top + cpPlotHeight) + ")")
                 .call(d3.axisBottom(x)
                         .ticks(10)
-                        .tickSize(-cpPlotHeight)
+                        .tickSize(-cpPlotHeight - additionalHeight)
                         .tickFormat("")
                 ).call(g => g.select(".domain").remove());
 
@@ -1087,17 +1051,17 @@ function cpCategoricalPlot(variableName, bData, yMinMax, lData) {
 
   yAxis = CP.append("g")
             .attr("class", "axisLabel")
-            .attr("transform","translate(" + (margin.left-8) + ",0)")
+            .attr("transform","translate(" + (margin.left - 10) + ",0)")
             .call(yAxis)
             .call(g => g.select(".domain").remove());
 
-  yAxis.selectAll("text").call(wrapText, margin.left-15);
+  yAxis.selectAll("text").call(wrapText, margin.left - 15);
 
   CP.append("text")
     .attr("x", margin.left)
     .attr("y", margin.top - 15)
     .attr("class", "smallTitle")
-    .text(modelName); //variableName + " = " + lData[0][variableName]
+    .text(cpSubtitle); //variableName + " = " + lData[0][variableName]
 
   CP.append("text")
     .attr("x", margin.left)
@@ -1123,7 +1087,7 @@ function cpCategoricalPlot(variableName, bData, yMinMax, lData) {
   // add bars
   bars.append("rect")
       .attr("class", variableName)
-      .attr("fill", lineColor)
+      .attr("fill", cpBarColor)
       .attr("x", d => x(fullModel))
       .attr("y", d => y(d.xhat))
       .attr("height", y.bandwidth())
@@ -1164,8 +1128,6 @@ function cpCategoricalPlot(variableName, bData, yMinMax, lData) {
     .text("prediction");
 
   let desctemp = [{type:"desc", "text":"Under development"}];
-
-
 
   var description = CP.append("g")
                       .attr("transform", "translate(" +
@@ -1217,7 +1179,7 @@ function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
     .text(variableName);
 
   var y = d3.scaleLinear()
-            .range([margin.top + pdPlotHeight, margin.top])
+            .range([margin.top + pdPlotHeight, margin.top - additionalHeight])
             .domain([yMinMax[0], yMinMax[1]]);
 
   var line = d3.line()
@@ -1225,17 +1187,17 @@ function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
                .y(d => y(d.yhat))
                .curve(d3.curveMonotoneX);
 
+   PD.append("text")
+     .attr("class","smallTitle")
+     .attr("x", margin.left)
+     .attr("y", margin.top - 15)
+     .text(pdSubtitle); // variableName
+
   PD.append("text")
     .attr("class", "bigTitle")
     .attr("x", margin.left)
     .attr("y", margin.top - 40)
     .text(pdTitle);
-
-  PD.append("text")
-    .attr("class","smallTitle")
-    .attr("x", margin.left)
-    .attr("y", margin.top - 15)
-    .text(modelName); // variableName
 
   // find 5 nice ticks with max and min - do better than d3
   var tickValues = getTickValues(x.domain());
@@ -1295,15 +1257,14 @@ function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
   var p = PD.append("path")
             .attr("class", "line " + variableName)
             .style("fill", "none")
-            .style("stroke", lineColor)
-            .style("opacity", alpha)
-            .style("stroke-width", size)
+            .style("stroke", pdLineColor)
+            .style("stroke-width", pdLineSize)
             .on('mouseover', function(d){
 
               // make mouseover line more visible
               d3.select(this)
-                .style("stroke", pointColor)
-                .style("stroke-width", size*1.5);
+                .style("stroke", defaultColor)
+                .style("stroke-width", pdLineSize*1.5);
 
               // make line appear on top
               this.parentNode.appendChild(this);
@@ -1314,8 +1275,8 @@ function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
             .on('mouseout', function(d){
 
               d3.select(this)
-                .style("stroke", lineColor)
-                .style("stroke-width", size);
+                .style("stroke", pdLineColor)
+                .style("stroke-width", pdLineSize);
 
               // hide changed tooltip
               tooltip.hide(d);
@@ -1344,8 +1305,6 @@ function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
     .text("average prediction");
 
   let desctemp = [{type:"desc", "text":"Under development"}];
-
-
 
   var description = PD.append("g")
                       .attr("transform", "translate(" +
@@ -1381,7 +1340,9 @@ function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
 
 function pdCategoricalPlot(variableName, bData, yMinMax, yMean) {
 
-  var pdPlotHeight = h,
+  var pdBarCount = bData.map(d => d.xhat).length;
+
+  var pdPlotHeight = SCALE_PLOT ? h : pdBarCount*pdBarWidth + (pdBarCount+1)*pdBarWidth/2,
       pdPlotWidth = w;
 
   var x = d3.scaleLinear()
@@ -1399,7 +1360,7 @@ function pdCategoricalPlot(variableName, bData, yMinMax, yMean) {
             .call(g => g.select(".domain").remove());
 
   var y = d3.scaleBand()
-            .rangeRound([margin.top, margin.top + pdPlotHeight])
+            .rangeRound([margin.top - additionalHeight, margin.top + pdPlotHeight])
             .padding(0.33)
             .domain(bData.map(d => d.xhat));
 
@@ -1408,7 +1369,7 @@ function pdCategoricalPlot(variableName, bData, yMinMax, yMean) {
                 .attr("transform", "translate(0," + (margin.top + pdPlotHeight) + ")")
                 .call(d3.axisBottom(x)
                         .ticks(10)
-                        .tickSize(-pdPlotHeight)
+                        .tickSize(-pdPlotHeight - additionalHeight)
                         .tickFormat("")
                 ).call(g => g.select(".domain").remove());
 
@@ -1425,15 +1386,17 @@ function pdCategoricalPlot(variableName, bData, yMinMax, yMean) {
 
   yAxis = PD.append("g")
             .attr("class", "axisLabel")
-            .attr("transform","translate(" + (margin.left-8) + ",0)")
+            .attr("transform","translate(" + (margin.left - 8) + ",0)")
             .call(yAxis)
             .call(g => g.select(".domain").remove());
+
+  yAxis.selectAll("text").call(wrapText, margin.left - 15);
 
   PD.append("text")
     .attr("x", margin.left)
     .attr("y", margin.top - 15)
     .attr("class", "smallTitle")
-    .text(modelName); // variableName
+    .text(pdSubtitle); // variableName
 
   PD.append("text")
     .attr("x", margin.left)
@@ -1459,7 +1422,7 @@ function pdCategoricalPlot(variableName, bData, yMinMax, yMean) {
   // add bars
   bars.append("rect")
       .attr("class", variableName)
-      .attr("fill", lineColor)
+      .attr("fill", pdBarColor)
       .attr("x", d => x(fullModel))
       .attr("y", d => y(d.xhat))
       .attr("height", y.bandwidth())
@@ -1553,7 +1516,7 @@ function adNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
     .text(variableName);
 
   var y = d3.scaleLinear()
-            .range([margin.top + adPlotHeight, margin.top])
+            .range([margin.top + adPlotHeight, margin.top - additionalHeight])
             .domain([yMinMax[0], yMinMax[1]]);
 
   var line = d3.line()
@@ -1561,17 +1524,17 @@ function adNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
                .y(d => y(d.yhat))
                .curve(d3.curveMonotoneX);
 
+   AD.append("text")
+     .attr("class","smallTitle")
+     .attr("x", margin.left)
+     .attr("y", margin.top - 15)
+     .text(adSubtitle); // variableName
+
   AD.append("text")
     .attr("class", "bigTitle")
     .attr("x", margin.left)
     .attr("y", margin.top - 40)
     .text(adTitle);
-
-  AD.append("text")
-    .attr("class","smallTitle")
-    .attr("x", margin.left)
-    .attr("y", margin.top - 15)
-    .text(modelName); // variableName
 
   // find 5 nice ticks with max and min - do better than d3
   var tickValues = getTickValues(x.domain());
@@ -1631,15 +1594,14 @@ function adNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
   var p = AD.append("path")
             .attr("class", "line " + variableName)
             .style("fill", "none")
-            .style("stroke", lineColor)
-            .style("opacity", alpha)
-            .style("stroke-width", size)
+            .style("stroke", adLineColor)
+            .style("stroke-width", adLineSize)
             .on('mouseover', function(d){
 
               // make mouseover line more visible
               d3.select(this)
-                .style("stroke", pointColor)
-                .style("stroke-width", size*1.5);
+                .style("stroke", defaultColor)
+                .style("stroke-width", adLineSize*1.5);
 
               // make line appear on top
               this.parentNode.appendChild(this);
@@ -1650,8 +1612,8 @@ function adNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
             .on('mouseout', function(d){
 
               d3.select(this)
-                .style("stroke", lineColor)
-                .style("stroke-width", size);
+                .style("stroke", adLineColor)
+                .style("stroke-width", adLineSize);
 
               // hide changed tooltip
               tooltip.hide(d);
@@ -1680,8 +1642,6 @@ function adNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
     .text("accumulated prediction");
 
   let desctemp = [{type:"desc", "text":"Under development"}];
-
-
 
   var description = AD.append("g")
                       .attr("transform", "translate(" +
@@ -1717,7 +1677,9 @@ function adNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
 
 function adCategoricalPlot(variableName, bData, yMinMax, yMean) {
 
-  var adPlotHeight = h,
+  var adBarCount = bData.map(d => d.xhat).length;
+
+  var adPlotHeight = SCALE_PLOT ? h : adBarCount*adBarWidth + (adBarCount+1)*adBarWidth/2,
       adPlotWidth = w;
 
   var x = d3.scaleLinear()
@@ -1735,7 +1697,7 @@ function adCategoricalPlot(variableName, bData, yMinMax, yMean) {
             .call(g => g.select(".domain").remove());
 
   var y = d3.scaleBand()
-            .rangeRound([margin.top, margin.top + adPlotHeight])
+            .rangeRound([margin.top - additionalHeight, margin.top + adPlotHeight])
             .padding(0.33)
             .domain(bData.map(d => d.xhat));
 
@@ -1744,7 +1706,7 @@ function adCategoricalPlot(variableName, bData, yMinMax, yMean) {
                 .attr("transform", "translate(0," + (margin.top + adPlotHeight) + ")")
                 .call(d3.axisBottom(x)
                         .ticks(10)
-                        .tickSize(-adPlotHeight)
+                        .tickSize(-adPlotHeight - additionalHeight)
                         .tickFormat("")
                 ).call(g => g.select(".domain").remove());
 
@@ -1761,15 +1723,17 @@ function adCategoricalPlot(variableName, bData, yMinMax, yMean) {
 
   yAxis = AD.append("g")
             .attr("class", "axisLabel")
-            .attr("transform","translate(" + (margin.left-8) + ",0)")
+            .attr("transform","translate(" + (margin.left - 10) + ",0)")
             .call(yAxis)
             .call(g => g.select(".domain").remove());
+
+  yAxis.selectAll("text").call(wrapText, margin.left - 15);
 
   AD.append("text")
     .attr("x", margin.left)
     .attr("y", margin.top - 15)
     .attr("class", "smallTitle")
-    .text(modelName); // variableName
+    .text(adSubtitle); // variableName
 
   AD.append("text")
     .attr("x", margin.left)
@@ -1795,7 +1759,7 @@ function adCategoricalPlot(variableName, bData, yMinMax, yMean) {
   // add bars
   bars.append("rect")
       .attr("class", variableName)
-      .attr("fill", lineColor)
+      .attr("fill", adBarColor)
       .attr("x", d => x(fullModel))
       .attr("y", d => y(d.xhat))
       .attr("height", y.bandwidth())
@@ -1836,8 +1800,6 @@ function adCategoricalPlot(variableName, bData, yMinMax, yMean) {
     .text("accumulated prediction");
 
   let desctemp = [{type:"desc", "text":"Under development"}];
-
-
 
   var description = AD.append("g")
                       .attr("transform", "translate(" +
@@ -1900,16 +1862,16 @@ function fdNumericalPlot(variableName, dData, mData, nBin) {
         .range([margin.top + fdPlotHeight - 5, margin.top]);
 
   FD.append("text")
+    .attr("class","smallTitle")
+    .attr("x", margin.left)
+    .attr("y", margin.top - 15)
+    .text(fdSubtitle);
+
+  FD.append("text")
     .attr("class", "bigTitle")
     .attr("x", margin.left)
     .attr("y", margin.top - 40)
     .text(fdTitle);
-
-  FD.append("text")
-    .attr("class","smallTitle")
-    .attr("x", margin.left)
-    .attr("y", margin.top - 15)
-    .text(modelName);
 
   // find 5 nice ticks with max and min - do better than d3
   var tickValues = getTickValues(x.domain());
@@ -1939,7 +1901,7 @@ function fdNumericalPlot(variableName, dData, mData, nBin) {
                  .ticks(8)
                  .step(1)
                  .default(nBin)
-                 .fill(lineColor)
+                 .fill(fdBarColor)
                  .on('onchange', val => updateHist(val));
 
   var sliderg = FD.append("g").call(slider);
@@ -1978,7 +1940,7 @@ function fdNumericalPlot(variableName, dData, mData, nBin) {
 
     bars.enter()
         .append("rect")
-        .attr("fill", lineColor)
+        .attr("fill", fdBarColor)
         .merge(bars)
         .attr("x", d => x(d.x0))
         .attr("y", d => y(0))
@@ -1996,14 +1958,16 @@ function fdNumericalPlot(variableName, dData, mData, nBin) {
 
 function fdCategoricalPlot(variableName, dData, mData) {
 
-  var fdPlotHeight = h,
-      fdPlotWidth = w;
-
   // equivalent of R table function
   var tableData = d3.nest()
                     .key(d => d[variableName])
                     .rollup(v => v.length)
                     .entries(dData);
+
+  var fdBarCount = tableData.map(d => d.key).length;
+
+  var fdPlotHeight = SCALE_PLOT ? h : fdBarCount*fdBarWidth + (fdBarCount+1)*fdBarWidth/2,
+      fdPlotWidth = w;
 
   var x = d3.scaleLinear()
             .range([margin.left, margin.left + fdPlotWidth])
@@ -2020,7 +1984,7 @@ function fdCategoricalPlot(variableName, dData, mData) {
             .call(g => g.select(".domain").remove());
 
   var y = d3.scaleBand()
-            .rangeRound([margin.top, margin.top + fdPlotHeight])
+            .rangeRound([margin.top - additionalHeight, margin.top + fdPlotHeight])
             .padding(0.33)
             .domain(tableData.map(d => d.key));
 
@@ -2029,7 +1993,7 @@ function fdCategoricalPlot(variableName, dData, mData) {
                 .attr("transform", "translate(0," + (margin.top + fdPlotHeight) + ")")
                 .call(d3.axisBottom(x)
                         .ticks(10)
-                        .tickSize(-fdPlotHeight)
+                        .tickSize(-fdPlotHeight - additionalHeight)
                         .tickFormat("")
                 ).call(g => g.select(".domain").remove());
 
@@ -2046,15 +2010,17 @@ function fdCategoricalPlot(variableName, dData, mData) {
 
   yAxis = FD.append("g")
             .attr("class", "axisLabel")
-            .attr("transform","translate(" + (margin.left - 8) + ",0)")
+            .attr("transform","translate(" + (margin.left - 10) + ",0)")
             .call(yAxis)
             .call(g => g.select(".domain").remove());
+
+  yAxis.selectAll("text").call(wrapText, margin.left - 15);
 
   FD.append("text")
     .attr("x", margin.left)
     .attr("y", margin.top - 15)
     .attr("class", "smallTitle")
-    .text(modelName);
+    .text(fdSubtitle);
 
   FD.append("text")
     .attr("x", margin.left)
@@ -2070,7 +2036,7 @@ function fdCategoricalPlot(variableName, dData, mData) {
   // add bars
   bars.append("rect")
       .attr("class", variableName)
-      .attr("fill", lineColor)
+      .attr("fill", fdBarColor)
       .attr("x", d => x(0))
       .attr("y", d => y(d.key))
       .attr("height", y.bandwidth())

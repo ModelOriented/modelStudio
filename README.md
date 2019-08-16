@@ -14,7 +14,7 @@ so it also supports EDA on top of that. ModelStudio is a fast and condensed way 
 all the answers without much effort. Break down your model and look into its ingredients
 with only a few lines of code.
 
-#### [See an example](https://modeloriented.github.io/dime/demo.html) &emsp; [It also works with **Python** scikit-learn, keras and more, thanks to DALEXtra](https://github.com/ModelOriented/DALEXtra)  
+### [See an example](https://modeloriented.github.io/dime/demo.html) &emsp; [modelStudio - perks and features](https://modeloriented.github.io/dime/articles/vignette_modelStudio.html)  
 
 ![](images/gif3.gif)
 
@@ -28,7 +28,7 @@ Find more about model explanations in [Predictive Models: Visual Exploration, Ex
 
 Install from GitHub:
 
-```
+```r
 # dependencies
 devtools::install_github("ModelOriented/ingredients")
 devtools::install_github("ModelOriented/iBreakDown")
@@ -81,6 +81,8 @@ Make a studio for the model:
 ```r
  modelStudio(explain_titanic_glm, new_observations, N = 100, B = 10)
 ```
+
+More examples [here](https://modeloriented.github.io/dime/articles/vignette_modelStudio.html).
 
 ![](images/gif4.gif)
 
