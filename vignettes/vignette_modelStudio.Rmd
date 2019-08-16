@@ -18,14 +18,14 @@ knitr::opts_chunk$set(
 )
 ```
 
-## More Examples
+## modelStudio parameters
 
-Let's use `DALEX::HR` dataset to explore some of `modelStudio` parameters.
+Let's use `DALEX::HR` dataset to explore `modelStudio` parameters:
 
 ```{r results="hide"}
-train <- DALEX::HR
+train <- DALEX::HR[1:100,]
 train$fired <- ifelse(train$status == "fired", 1, 0)
-train <- train[, -6]
+train <- train[,-6]
 
 head(train)
 ```
@@ -34,18 +34,20 @@ head(train)
 knitr::kable(head(train))
 ```
 
-Prepare data and model for the explainer.
+Prepare data and model for the explainer:
 
 ```{r results="hide"}
-model <- randomForest::randomForest(fired ~., data = train)
+library("randomForest")
+model <- randomForest(fired ~., data = train)
 
-test <- DALEX::HR_test
+test <- DALEX::HR_test[1:100,]
 test$fired <- ifelse(test$status == "fired", 1, 0)
-test <- test[, -6]
+test <- test[,-6]
 
 explainer <- DALEX::explain(model = model,
                             data = test,
-                            y = test[, 6])
+                            y = test[,6],
+                            verbose = FALSE)
 
 library("dime")
 ```
@@ -61,7 +63,7 @@ rownames(new_observations) <- c("John Snow","Arya Stark","Samwell Tarly")
 modelStudio(explainer, new_observation = new_observations)
 ```
 
-### modelStudio size
+### grid size
 
 You can achieve bigger or smaller `modelStudio` grid with `facet_dim` parameter.
 
@@ -71,7 +73,7 @@ modelStudio(explainer, new_observation = test[1:2,], facet_dim = c(1,2))
 modelStudio(explainer, new_observation = test[1:2,], facet_dim = c(3,3))
 ```
 
-### modelStudio looks
+### animations
 
 You can manipulate `time` parameter to set animation length. Value 0 will make 
 them invisible.
@@ -101,29 +103,62 @@ You can hide computation progress bar messages with `show_info` parameter.
 modelStudio(explainer, new_observation = test[1:2,], show_info = FALSE)
 ```
 
+-------------------------------------------------------------------
+
 ## Parallel Computation
 
-You can speed up `modelStudio` computation with `parallel` parameter.
+You can speed up `modelStudio` computation by setting `parallel` parameter to `TRUE`. 
+It uses [`parallelMap`](https://www.rdocumentation.org/packages/parallelMap) package
+to calculate local explainers faster. It is really useful when using `modelStudio` with
+complicated models, vast datasets or simply many observations are beeing processed. 
 
-```{r}
-#TBD
+All options can be set outside of function call.
+More on that [here](https://github.com/berndbischl/parallelMap#being-lazy-configuration).
+```{r eval = FALSE}
+options(
+  parallelMap.default.mode        = "socket",
+  parallelMap.default.cpus        = 4,
+  parallelMap.default.show.info   = FALSE
+)
+
+modelStudio(explainer, new_observation = test[1,], parallel = TRUE)
 ```
+
+--------------------------------------------------------------------
+
+## Plot Options
+
+You can customize some of `modelStudio` looks by overwriting default options returned
+by `getDefaultOptions()`.
+
+```{r eval = FALSE}
+new_options <- getDefaultOptions()
+
+new_options$show_subtitle <- TRUE
+new_options$bd_subtitle <- "Hello World"
+new_options$line_size <- 5
+new_options$point_size <- 9
+new_options$line_color <- "pink"
+new_options$point_color <- "purple"
+new_options$bd_positive_color <- "yellow"
+new_options$bd_negative_color <- "orange"
+
+modelStudio(explainer, new_observation = test[1,],
+            options = new_options)
+```
+
+-------------------------------------------------------------------
 
 ## Python scikit-learn Model
 
 You can use `DALEXtra::explain_*()` functions to explain various models.
-Bellow basic example of making `modelStudio` for scikit-learn model using
-[`DALEXTRA::explain_scikitlearn()`](https://modeloriented.github.io/DALEXtra/reference/explain_scikitlearn.html)
+Bellow basic example of making `modelStudio` for scikit-learn model using `DALEXtra::explain_scikitlearn()`.
 
-```{r}
+```{r eval = FALSE}
 library(DALEXtra)
 #TBD
 ```
 
 `modelStudio` should work with any `explainer` class object. Find more about 
-making those [here](https://github.com/ModelOriented/DALEXtra)
+making those [here](https://modeloriented.github.io/DALEXtra/).
 
-
-## Plot Options
-
-TBD

@@ -1,4 +1,4 @@
-#' @title Generates interactive studio to explain your predictive model
+#' @title Generates interactive studio to explain predictive model
 #'
 #' @description
 #' This tool uses your model, data and new observations, to provide local
@@ -12,8 +12,11 @@
 #' @param max_features maximum number of features to be included in Break Down and Shapley Values plot.
 #' @param N number of observations used for calculation of partial dependency profiles. Default is 500.
 #' @param B number of random paths used for calculation of shapley values. Default is 25.
-#' @param show_info verbose progress bar on console? Default is TRUE.
-#' @param parallel speed up computation using `parallelMap` package. Default is FALSE.
+#' @param show_info verbose progress bar on console? Default is \code{TRUE}.
+#' @param parallel speed up computation using \code{parallelMap::parallelMap()}.
+#' Default is \code{FALSE}.
+#' @param options customize \code{modelStudio}. See \code{\link{getDefaultOptions}} and
+#' \href{modeloriented.github.io/dime/articles/vignette_modelStudio.html#plot-options}{\bold{vignette}}.
 #' @param ... other parameters.
 #' @param data validation dataset, will be extracted from \code{x} if it's an explainer.
 #' @param y true labels for \code{data}, will be extracted from \code{x} if it's an explainer.
@@ -26,52 +29,55 @@
 #' @importFrom stats aggregate predict
 #' @importFrom grDevices nclass.Sturges
 #'
-#' @references \bold{ingredients} \url{https://modeloriented.github.io/ingredients/}
-#' \bold{iBreakDown} \url{https://modeloriented.github.io/iBreakDown/}
+#' @references
+#' \href{https://modeloriented.github.io/ingredients/}{\bold{ingredients}}
+#' \href{https://modeloriented.github.io/iBreakDown/}{\bold{iBreakDown}}
+#' \href{https://modeloriented.github.io/DALEX/}{\bold{DALEX}}
+#' \href{https://modeloriented.github.io/DALEXtra/}{\bold{DALEXtra}}
 #'
 #' @examples
-#' invisible(capture.output({
-#'
 #' library("dime")
-#' library("DALEX")
 #'
 #' # ex1 classification
 #'
-#' titanic <- na.omit(titanic)
+#' titanic <- na.omit(DALEX::titanic)
 #' titanic_small <- titanic[,c(1,2,3,6,7,9)]
 #'
 #' model_titanic_glm <- glm(survived == "yes" ~ gender + age + fare + class + sibsp,
 #'                          data = titanic_small, family = "binomial")
 #'
-#' explain_titanic_glm <- explain(model_titanic_glm,
-#'                                data = titanic_small[,-6],
-#'                                y = titanic_small$survived == "yes",
-#'                                label = "glm")
+#' explain_titanic_glm <- DALEX::explain(model_titanic_glm,
+#'                                       data = titanic_small[,-6],
+#'                                       y = titanic_small$survived == "yes",
+#'                                       label = "glm",
+#'                                       verbose = FALSE)
 #'
 #' new_observations <- titanic_small[1:4,-6]
 #' rownames(new_observations) <- c("Lucas","James", "Thomas", "Nancy")
 #'
 #' modelStudio(explain_titanic_glm, new_observations,
-#'             N = 100, B = 15)
+#'             N = 100, B = 15, show_info = FALSE)
 #'
 #'
 #' # ex2 regression
 #'
+#' apartments <- DALEX::apartments
+#'
 #' model_apartments <- glm(m2.price ~. ,
 #'                         data = apartments)
 #'
-#' explain_apartments <- explain(model_apartments,
-#'                               data = apartments[,-1],
-#'                               y = apartments[,1])
+#' explain_apartments <- DALEX::explain(model_apartments,
+#'                                      data = apartments[,-1],
+#'                                      y = apartments[,1],
+#'                                      verbose = FALSE)
 #'
 #' new_apartments <- apartments[1:2,-1]
 #' rownames(new_apartments) <- c("ap1","ap2")
 #'
 #' modelStudio(explain_apartments, new_apartments,
 #'             facet_dim = c(1,2), time = 1000,
-#'             N = 100, B = 15)
+#'             N = 100, B = 15, show_info = FALSE)
 #'
-#' }))
 #'
 #' @export
 #' @rdname modelStudio
@@ -89,6 +95,7 @@ modelStudio.explainer <- function(x,
                                   B = 25,
                                   show_info = TRUE,
                                   parallel = FALSE,
+                                  options = NULL,
                                   ...) {
 
   modelStudio.default(x = x$model,
@@ -100,6 +107,7 @@ modelStudio.explainer <- function(x,
                       B = B,
                       show_info = show_info,
                       parallel = parallel,
+                      options = options,
                       data = x$data,
                       y = x$y,
                       predict_function = x$predict_function,
@@ -118,6 +126,7 @@ modelStudio.default <- function(x,
                                 B = 25,
                                 show_info = TRUE,
                                 parallel = FALSE,
+                                options = NULL,
                                 data,
                                 y,
                                 predict_function = predict,
@@ -193,8 +202,9 @@ modelStudio.default <- function(x,
 
   if (parallel == TRUE) {
     parallelMap::parallelStart()
+    parallelMap::parallelLibrary(packages = loadedNamespaces())
 
-    f <- function(i) {
+    f <- function(i, x, data, predict_function, label, B) {
       new_observation <- obs_data[i,]
 
       bd <- iBreakDown::local_attributions(
@@ -211,7 +221,14 @@ modelStudio.default <- function(x,
       list(bd_data, cp_data, sv_data)
     }
 
-    obs_list <- parallelMap::parallelMap(f, 1:obs_count)
+    obs_list <- parallelMap::parallelMap(f, 1:obs_count,
+                                         more.args = list(
+                                           x = x,
+                                           data = data,
+                                           predict_function = predict_function,
+                                           label = label,
+                                           B = B
+                                         ))
 
     parallelMap::parallelStop()
 
@@ -239,18 +256,13 @@ modelStudio.default <- function(x,
 
   names(obs_list) <- rownames(obs_data)
 
-  ## later for user to define options
-  options <- list(time = time,
-                  size = 2, alpha = 1, bar_width = 16,
-                  bd_title = "Break Down",
-                  sv_title = "Shapley Values",
-                  cp_title = "Ceteris Paribus",
-                  fi_title = "Feature Importance",
-                  pd_title = "Partial Dependency",
-                  ad_title = "Accumulated Dependency",
-                  fd_title = "Feature Distribution",
-                  model_name = label, variable_names = variable_names,
-                  show_rugs = TRUE, facet_dim = facet_dim)
+  if (is.null(options)) {
+    options <- getDefaultOptions()
+  }
+
+  options <- c(list(time = time, model_name = label,
+                    variable_names = variable_names,
+                    facet_dim = facet_dim), options)
 
   temp <- jsonlite::toJSON(list(obs_list, fi_data, pd_data, ad_data, fd_data))
 
@@ -284,7 +296,7 @@ modelStudio.default <- function(x,
 #' @noRd
 #' @title remove_file_paths
 #'
-#' @description `r2d3`` adds comments in html file with direct file paths to dependencies.
+#' @description \code{r2d3} adds comments in html file with direct file paths to dependencies.
 #' This function removes them.
 #'
 #' @param text string

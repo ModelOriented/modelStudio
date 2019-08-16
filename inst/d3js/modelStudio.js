@@ -18,15 +18,60 @@ var obsData = data[0],
 
 /// load options
 var TIME = options.time,
-    size = options.size, alpha = options.alpha, barWidth = options.bar_width,
-    bdTitle = options.bd_title, svTitle = options.sv_title,
-    cpTitle = options.cp_title, fiTitle = options.fi_title,
-    pdTitle = options.pd_title, adTitle = options.ad_title,
-    fdTitle = options.fd_title,
     modelName = options.model_name,
     variableNames = options.variable_names,
-    showRugs = options.show_rugs,
-    dim = options.facet_dim;
+    dim = options.facet_dim,
+    SCALE_PLOT = options.scale_plot,
+    SHOW_SUBTITLE = options.show_subtitle,
+    subTitle = options.subtitle || modelName,
+    barWidth = options.bar_width,
+    lineSize = options.line_size,
+    pointSize = options.point_size,
+    barColor = options.bar_color,
+    lineColor = options.line_color,
+    pointColor = options.point_color,
+    positiveColor = options.positive_color,
+    negativeColor = options.negative_color,
+    defaultColor = options.default_color,
+    bdTitle = options.bd_title,
+    bdSubtitle = options.bd_subtitle || subTitle,
+    bdBarWidth = options.bd_bar_width || barWidth,
+    bdPositiveColor = options.bd_positive_color || positiveColor,
+    bdNegativeColor = options.bd_negative_color || negativeColor,
+    bdDefaultColor = options.bd_default_color || defaultColor,
+    svTitle = options.sv_title,
+    svSubtitle = options.sv_subtitle || subTitle,
+    svBarWidth = options.sv_bar_width || barWidth,
+    svPositiveColor = options.sv_positive_color || positiveColor,
+    svNegativeColor = options.sv_negative_color || negativeColor,
+    cpTitle = options.cp_title,
+    cpSubtitle = options.cp_subtitle || subTitle,
+    cpBarWidth = options.cp_bar_width || barWidth,
+    cpLineSize = options.cp_line_size || lineSize,
+    cpPointSize = options.cp_point_size || pointSize,
+    cpBarColor = options.cp_bar_color || barColor,
+    cpLineColor = options.cp_line_color || lineColor,
+    cpPointColor = options.cp_point_color || pointColor,
+    fiTitle = options.fi_title,
+    fiSubtitle = options.fi_subtitle || subTitle,
+    fiBarWidth = options.fi_bar_width || barWidth,
+    fiBarColor = options.fi_bar_color || barColor,
+    pdTitle = options.pd_title,
+    pdSubtitle = options.pd_subtitle || subTitle,
+    pdBarWidth = options.pd_bar_width || barWidth,
+    pdLineSize = options.pd_line_size || lineSize,
+    pdBarColor = options.pd_bar_color || barColor,
+    pdLineColor = options.pd_line_color || lineColor,
+    adTitle = options.ad_title,
+    adSubtitle = options.ad_subtitle || subTitle,
+    adBarWidth = options.ad_bar_width || barWidth,
+    adLineSize = options.ad_line_size || lineSize,
+    adBarColor = options.ad_bar_color || barColor,
+    adLineColor = options.ad_line_color || lineColor,
+    fdTitle = options.fd_title,
+    fdSubtitle = options.fd_subtitle || subTitle,
+    fdBarWidth = options.fd_bar_width || barWidth,
+    fdBarColor = options.fd_bar_color || barColor;
 
 /// for observation choice
 var observationIds = Object.keys(obsData);
@@ -36,21 +81,32 @@ var CLICKED_VARIABLE_NAME = variableNames[0],
     CLICKED_OBSERVATION_ID = observationIds[0],
     IS_BUTTON_CLICKED = false;
 
-/// TODO:change scaling and this flag
-var IS_TSCALE = true;
-
 /// set dimensions
-/// TODO: pass as options
-var margin = {top: 50, right: 20, bottom: 70, left: 105,
-              inner: 40, small: 5, big: 10};
+var margin = {top: options.margin_top, right: options.margin_right,
+              bottom: options.margin_bottom, left: options.margin_left,
+              inner: options.margin_inner,
+              small: options.margin_small, big: options.margin_big};
 
-var w = 420, h = 280;
+var w = options.w, h = options.h;
 
-var plotWidth = 420 + margin.left + margin.right,
-    plotHeight = 280 + margin.top + margin.bottom;
+var plotWidth = w + margin.left + margin.right,
+    plotHeight = h + margin.top + margin.bottom;
 
 var studioWidth = dim[1]*plotWidth,
     studioHeight = dim[0]*plotHeight + margin.top;
+
+/// should subtitle be displayed and plot height be extended
+var additionalHeight = 0;
+if (!SHOW_SUBTITLE) {
+  additionalHeight = 25;
+  bdSubtitle = null;
+  svSubtitle = null;
+  cpSubtitle = null;
+  fiSubtitle = null;
+  pdSubtitle = null;
+  adSubtitle = null;
+  fdSubtitle = null;
+}
 
 /// for plot chosing
 var notVisiblePlots = [{id:"BD", text:"Break Down [Local]"},
@@ -65,8 +121,8 @@ var visiblePlots = [];
 
 /// generate facet x,y coordinates with grid index
 var facetData = [], id = 0;
-for (let i=0; i<dim[0]; i++) {
-  for (let j=0; j<dim[1]; j++) {
+for (let i = 0; i < dim[0]; i++) {
+  for (let j = 0; j < dim[1]; j++) {
     facetData.push({x: 0 + j*plotWidth, y: margin.top + i*plotHeight, index: id});
     id++;
   }
@@ -92,7 +148,7 @@ function initializeStudio() {
   TOP_G.append("line")
         .attr("class", "mainLine")
         .attr("x1", 10)
-        .attr("x2", studioWidth-10)
+        .attr("x2", studioWidth - 10)
         .attr("y1", margin.top - margin.big)
         .attr("y2", margin.top - margin.big);
 
@@ -177,7 +233,7 @@ function initializeStudio() {
   // events
   enterChoiceButtons.on('mouseover', function() { d3.select(this).style("opacity", 1);})
                     .on('mouseout', function() { d3.select(this).style("opacity", 0.5);})
-                    .on("click", function(d,i){
+                    .on("click", function(d,i) {
 
                       // block other buttons
                       if (!IS_BUTTON_CLICKED) {

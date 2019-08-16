@@ -29,3 +29,5 @@ Suggests:
     rmarkdown,
     testthat
 VignetteBuilder: knitr
+URL: https://github.com/ModelOriented/dime
+BugReports: https://github.com/ModelOriented/dime/issues

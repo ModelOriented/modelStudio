@@ -79,6 +79,9 @@ ms_big <- modelStudio(explain_artifficial,
 ms_parallel <- modelStudio(explain_glm, new_observation = titanic_test[1:2,-9],
                            N = 5, B = 2, parallel = TRUE)
 
+ms_parallel_rf <- modelStudio(explain_rf, new_observation = apartments[1:5,-1],
+                              N = 5, B = 2, parallel = TRUE)
+
 # tests
 
 test_that("explainer/model test", {
@@ -119,5 +122,9 @@ test_that("more than 10 features", {
 })
 
 test_that("parallel", {
+  expect_is(ms_parallel, "r2d3")
+})
+
+test_that("parallel rf", {
   expect_is(ms_parallel, "r2d3")
 })

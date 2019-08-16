@@ -1,6 +1,6 @@
 //:\\\ usefull functions //:\\\
 
-function getColors(n, type){
+function getColors(n, type) {
   // get drWhy palette
 
   var temp = ["#8bdcbe", "#f05a71", "#371ea3", "#46bac2", "#ae2c87", "#ffa58c", "#4378bf"];

@@ -1,3 +1,9 @@
+# dime 0.1.4
+* add support for parallel computation with `parallelMap`
+* more `modelStudio` customization with `options` parameter
+* add `getDefaultOptions()` function
+* remove plot subtitles by default
+
 # dime 0.1.3
 * remove file paths of dependencies from html file
 * add animations to line plots
