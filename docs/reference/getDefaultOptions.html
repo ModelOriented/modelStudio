@@ -191,15 +191,9 @@ unintended behaviour.</strong></p>
 
 <span class='no'>explain_apartments</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>DALEX</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/DALEX/topics/explain'>explain</a></span>(<span class='no'>model_apartments</span>,
                                      <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>[,-<span class='fl'>1</span>],
-                                     <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>apartments</span>[,<span class='fl'>1</span>])</div><div class='output co'>#&gt; Preparation of a new explainer is initiated
-#&gt;   -&gt; model label       :  lm  (<span style='color: #BBBB00;'>default</span><span>)
-#&gt;   -&gt; data              :  1000  rows  5  cols 
-#&gt;   -&gt; target variable   :  1000  values 
-#&gt;   -&gt; predict function  :  yhat.glm  will be used (</span><span style='color: #BBBB00;'>default</span><span>)
-#&gt;   -&gt; predicted values  :  numerical, min =  1781.848 , mean =  3487.019 , max =  6176.032  
-#&gt;   -&gt; residual function :  difference between y and yhat (</span><span style='color: #BBBB00;'>default</span><span>)
-#&gt;   -&gt; residuals         :  numerical, min =  -247.4728 , mean =  2.093656e-14 , max =  469.0023  
-#&gt; </span><span style='color: #00BB00;'>A new explainer has been created!</span><span></div><div class='input'>
+                                     <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>apartments</span>[,<span class='fl'>1</span>],
+                                     <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
 <span class='no'>new_apartments</span> <span class='kw'>&lt;-</span> <span class='no'>apartments</span>[<span class='fl'>1</span>:<span class='fl'>2</span>,-<span class='fl'>1</span>]
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>rownames</a></span>(<span class='no'>new_apartments</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"ap1"</span>,<span class='st'>"ap2"</span>)
 
@@ -216,7 +210,7 @@ unintended behaviour.</strong></p>
 
 <span class='fu'><a href='modelStudio.html'>modelStudio</a></span>(<span class='no'>explain_apartments</span>, <span class='no'>new_apartments</span>,
             <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>), <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-            <span class='kw'>options</span> <span class='kw'>=</span> <span class='no'>op</span>)</div></span></pre>
+            <span class='kw'>options</span> <span class='kw'>=</span> <span class='no'>op</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

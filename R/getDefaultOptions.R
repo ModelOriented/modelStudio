@@ -42,7 +42,8 @@
 #'
 #' explain_apartments <- DALEX::explain(model_apartments,
 #'                                      data = apartments[,-1],
-#'                                      y = apartments[,1])
+#'                                      y = apartments[,1],
+#'                                      verbose = FALSE)
 #'
 #' new_apartments <- apartments[1:2,-1]
 #' rownames(new_apartments) <- c("ap1","ap2")
