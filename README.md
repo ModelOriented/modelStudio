@@ -14,7 +14,7 @@ so it also supports EDA on top of that. ModelStudio is a fast and condensed way 
 all the answers without much effort. Break down your model and look into its ingredients
 with only a few lines of code.
 
-##### [See an example](https://modeloriented.github.io/dime/demo.html) &emsp; [modelStudio - perks and features](https://modeloriented.github.io/dime/articles/vignette_modelStudio.html)  
+#### [See an example](https://modeloriented.github.io/dime/demo.html) &emsp; [modelStudio - perks and features](https://modeloriented.github.io/dime/articles/vignette_modelStudio.html)  
 
 ![](images/gif3.gif)
 
