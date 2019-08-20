@@ -527,17 +527,19 @@ function ceterisParibus() {
       xMinMax = cpData.x_min_max_list,
       yMinMax = cpData.y_min_max,
       pData = cpData.observation,
-      isNumeric = cpData.is_numeric;
+      isNumeric = cpData.is_numeric
+      desc = cpData.desc;
 
   let tVariableName = CLICKED_VARIABLE_NAME;
 
   // lines or bars?
   if (isNumeric[tVariableName][0]) {
     cpNumericalPlot(tVariableName, profData[tVariableName],
-                    xMinMax[tVariableName], yMinMax, pData);
+                    xMinMax[tVariableName], yMinMax, pData,
+                    desc[tVariableName]);
   } else {
     cpCategoricalPlot(tVariableName, profData[tVariableName],
-                      yMinMax, pData);
+                      yMinMax, pData, desc[tVariableName]);
   }
 }
 
@@ -545,7 +547,8 @@ function featureImportance() {
 
   var fiBarCount = fiData.m[0],
       bData = fiData.x,
-      xMinMax = fiData.x_min_max;
+      xMinMax = fiData.x_min_max,
+      desc = fiData.desc;
 
   var fiPlotHeight = SCALE_PLOT ? h : fiBarCount*fiBarWidth + (fiBarCount+1)*fiBarWidth/2,
       fiPlotWidth = w;
@@ -676,17 +679,13 @@ function featureImportance() {
     .attr("x2", x(fullModel))
     .attr("y2", maximumY + y.bandwidth());
 
-  let desctemp = [{type:"desc", "text":"Under development"}];
-
-
-
   var description = FI.append("g")
                       .attr("transform", "translate(" +
                             (margin.left + fiPlotWidth - 4*margin.big - margin.small)
                             + "," + (-margin.big) + ")");
 
   description.selectAll()
-             .data(desctemp)
+             .data(desc)
              .enter()
              .append("rect")
              .attr("class", "descriptionBox")
@@ -698,7 +697,7 @@ function featureImportance() {
              .on('mouseout', tooltip.hide);
 
   description.selectAll()
-             .data(desctemp)
+             .data(desc)
              .enter()
              .append("text")
              .attr("class", "descriptionLabel")
@@ -718,17 +717,19 @@ function partialDependency() {
       xMinMax = pdData.x_min_max_list,
       yMinMax = pdData.y_min_max,
       yMean = pdData.y_mean,
-      isNumeric = pdData.is_numeric;
+      isNumeric = pdData.is_numeric,
+      desc = pdData.desc;
 
   let tVariableName = CLICKED_VARIABLE_NAME;
 
   // lines or bars?
   if (isNumeric[tVariableName][0]) {
     pdNumericalPlot(tVariableName, profData[tVariableName],
-                    xMinMax[tVariableName], yMinMax, yMean);
+                    xMinMax[tVariableName], yMinMax, yMean,
+                    desc[tVariableName]);
   } else {
     pdCategoricalPlot(tVariableName, profData[tVariableName],
-                      yMinMax, yMean);
+                      yMinMax, yMean, desc[tVariableName]);
   }
 }
 
@@ -738,17 +739,19 @@ function accumulatedDependency() {
       xMinMax = adData.x_min_max_list,
       yMinMax = adData.y_min_max,
       yMean = adData.y_mean,
-      isNumeric = adData.is_numeric;
+      isNumeric = adData.is_numeric,
+      desc = adData.desc;
 
   let tVariableName = CLICKED_VARIABLE_NAME;
 
   // lines or bars?
   if (isNumeric[tVariableName][0]) {
     adNumericalPlot(tVariableName, profData[tVariableName],
-                    xMinMax[tVariableName], yMinMax, yMean);
+                    xMinMax[tVariableName], yMinMax, yMean,
+                    desc[tVariableName]);
   } else {
     adCategoricalPlot(tVariableName, profData[tVariableName],
-                      yMinMax, yMean);
+                      yMinMax, yMean, desc[tVariableName]);
   }
 }
 
@@ -773,7 +776,7 @@ function featureDistribution() {
 
 /// small plot functions
 
-function cpNumericalPlot(variableName, lData, mData, yMinMax, pData) {
+function cpNumericalPlot(variableName, lData, mData, yMinMax, pData, desc) {
 
   var cpPlotHeight = h,
       cpPlotWidth = w;
@@ -969,15 +972,13 @@ function cpNumericalPlot(variableName, lData, mData, yMinMax, pData) {
     .attr("text-anchor", "middle")
     .text("prediction");
 
-  let desctemp = [{type:"desc", "text":"Under development"}];
-
   var description = CP.append("g")
                       .attr("transform", "translate(" +
                             (margin.left + cpPlotWidth - 4*margin.big - margin.small)
                             + "," + (-margin.big) + ")");
 
   description.selectAll()
-             .data(desctemp)
+             .data(desc)
              .enter()
              .append("rect")
              .attr("class", "descriptionBox")
@@ -989,7 +990,7 @@ function cpNumericalPlot(variableName, lData, mData, yMinMax, pData) {
              .on('mouseout', tooltip.hide);
 
   description.selectAll()
-             .data(desctemp)
+             .data(desc)
              .enter()
              .append("text")
              .attr("class", "descriptionLabel")
@@ -1003,7 +1004,7 @@ function cpNumericalPlot(variableName, lData, mData, yMinMax, pData) {
              .on('mouseout', tooltip.hide);
 }
 
-function cpCategoricalPlot(variableName, bData, yMinMax, lData) {
+function cpCategoricalPlot(variableName, bData, yMinMax, lData, desc) {
 
   var cpBarCount = bData.map(d => d.xhat).length;
 
@@ -1127,15 +1128,13 @@ function cpCategoricalPlot(variableName, bData, yMinMax, lData) {
     .attr("text-anchor", "middle")
     .text("prediction");
 
-  let desctemp = [{type:"desc", "text":"Under development"}];
-
   var description = CP.append("g")
                       .attr("transform", "translate(" +
                             (margin.left + cpPlotWidth - 4*margin.big - margin.small)
                             + "," + (-margin.big) + ")");
 
   description.selectAll()
-             .data(desctemp)
+             .data(desc)
              .enter()
              .append("rect")
              .attr("class", "descriptionBox")
@@ -1147,7 +1146,7 @@ function cpCategoricalPlot(variableName, bData, yMinMax, lData) {
              .on('mouseout', tooltip.hide);
 
   description.selectAll()
-             .data(desctemp)
+             .data(desc)
              .enter()
              .append("text")
              .attr("class", "descriptionLabel")
@@ -1161,7 +1160,7 @@ function cpCategoricalPlot(variableName, bData, yMinMax, lData) {
              .on('mouseout', tooltip.hide);
 }
 
-function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
+function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean, desc) {
 
   var pdPlotHeight = h,
       pdPlotWidth = w;
@@ -1304,15 +1303,13 @@ function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
     .attr("text-anchor", "middle")
     .text("average prediction");
 
-  let desctemp = [{type:"desc", "text":"Under development"}];
-
   var description = PD.append("g")
                       .attr("transform", "translate(" +
                             (margin.left + pdPlotWidth - 4*margin.big - margin.small)
                             + "," + (-margin.big) + ")");
 
   description.selectAll()
-             .data(desctemp)
+             .data(desc)
              .enter()
              .append("rect")
              .attr("class", "descriptionBox")
@@ -1324,7 +1321,7 @@ function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
              .on('mouseout', tooltip.hide);
 
   description.selectAll()
-             .data(desctemp)
+             .data(desc)
              .enter()
              .append("text")
              .attr("class", "descriptionLabel")
@@ -1338,7 +1335,7 @@ function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
              .on('mouseout', tooltip.hide);
 }
 
-function pdCategoricalPlot(variableName, bData, yMinMax, yMean) {
+function pdCategoricalPlot(variableName, bData, yMinMax, yMean, desc) {
 
   var pdBarCount = bData.map(d => d.xhat).length;
 
@@ -1462,17 +1459,13 @@ function pdCategoricalPlot(variableName, bData, yMinMax, yMean) {
     .attr("text-anchor", "middle")
     .text("average prediction");
 
-  let desctemp = [{type:"desc", "text":"Under development"}];
-
-
-
   var description = PD.append("g")
                       .attr("transform", "translate(" +
                             (margin.left + pdPlotWidth - 4*margin.big - margin.small)
                             + "," + (-margin.big) + ")");
 
   description.selectAll()
-             .data(desctemp)
+             .data(desc)
              .enter()
              .append("rect")
              .attr("class", "descriptionBox")
@@ -1484,7 +1477,7 @@ function pdCategoricalPlot(variableName, bData, yMinMax, yMean) {
              .on('mouseout', tooltip.hide);
 
   description.selectAll()
-             .data(desctemp)
+             .data(desc)
              .enter()
              .append("text")
              .attr("class", "descriptionLabel")
@@ -1498,7 +1491,7 @@ function pdCategoricalPlot(variableName, bData, yMinMax, yMean) {
              .on('mouseout', tooltip.hide);
 }
 
-function adNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
+function adNumericalPlot(variableName, lData, mData, yMinMax, yMean, desc) {
 
   var adPlotHeight = h,
       adPlotWidth = w;
@@ -1641,15 +1634,13 @@ function adNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
     .attr("text-anchor", "middle")
     .text("accumulated prediction");
 
-  let desctemp = [{type:"desc", "text":"Under development"}];
-
   var description = AD.append("g")
                       .attr("transform", "translate(" +
                             (margin.left + adPlotWidth - 4*margin.big - margin.small)
                             + "," + (-margin.big) + ")");
 
   description.selectAll()
-             .data(desctemp)
+             .data(desc)
              .enter()
              .append("rect")
              .attr("class", "descriptionBox")
@@ -1661,7 +1652,7 @@ function adNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
              .on('mouseout', tooltip.hide);
 
   description.selectAll()
-             .data(desctemp)
+             .data(desc)
              .enter()
              .append("text")
              .attr("class", "descriptionLabel")
@@ -1675,7 +1666,7 @@ function adNumericalPlot(variableName, lData, mData, yMinMax, yMean) {
              .on('mouseout', tooltip.hide);
 }
 
-function adCategoricalPlot(variableName, bData, yMinMax, yMean) {
+function adCategoricalPlot(variableName, bData, yMinMax, yMean, desc) {
 
   var adBarCount = bData.map(d => d.xhat).length;
 
@@ -1799,15 +1790,13 @@ function adCategoricalPlot(variableName, bData, yMinMax, yMean) {
     .attr("text-anchor", "middle")
     .text("accumulated prediction");
 
-  let desctemp = [{type:"desc", "text":"Under development"}];
-
   var description = AD.append("g")
                       .attr("transform", "translate(" +
                             (margin.left + adPlotWidth - 4*margin.big - margin.small)
                             + "," + (-margin.big) + ")");
 
   description.selectAll()
-             .data(desctemp)
+             .data(desc)
              .enter()
              .append("rect")
              .attr("class", "descriptionBox")
@@ -1819,7 +1808,7 @@ function adCategoricalPlot(variableName, bData, yMinMax, yMean) {
              .on('mouseout', tooltip.hide);
 
   description.selectAll()
-             .data(desctemp)
+             .data(desc)
              .enter()
              .append("text")
              .attr("class", "descriptionLabel")

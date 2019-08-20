@@ -261,7 +261,7 @@ modelStudio.default <- function(x,
   }
 
   footer_text <- paste0("Site built with dime v", installed.packages()["dime","Version"],
-                        " on ", format(Sys.time(),usetz=FALSE))
+                        " on ", format(Sys.time(), usetz = FALSE))
 
   options <- c(list(time = time,
                     model_name = label,

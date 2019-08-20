@@ -6,8 +6,6 @@ prepareBreakDown <- function(x, max_features = 10, baseline = NA, digits = 3,
 
   new_x <- prepareBreakDownDF(x, max_features, baseline, digits, rounding_function)
 
-  #variables <- setdiff(unique(as.character(new_x[,'variable_name'])), c("prediction","intercept","other"))
-
   if (any(is.na(min_max))) {
     if (is.na(baseline)) {
       min_max <- range(new_x[,'cummulative'])
@@ -21,19 +19,12 @@ prepareBreakDown <- function(x, max_features = 10, baseline = NA, digits = 3,
   min_max[1] <- min_max[1] - min_max_margin
   min_max[2] <- min_max[2] + min_max_margin
 
-  desc <- NULL
-  # because apparently describe doesnt work for less than 3 features
-  if (nrow(x) > 5) {
-    desc <- iBreakDown::describe(x, display_values =  TRUE,
-                                 display_numbers = TRUE)
-  } else {
-    desc <- iBreakDown::describe(x, short_description = TRUE)
-  }
+  desc <- iBreakDown::describe(x, display_values =  TRUE,
+                               display_numbers = TRUE)
 
   ret <- NULL
   ret$x <- new_x
   ret$m <- m
-  #ret$variables <- variables
   ret$x_min_max <- min_max
   ret$desc <- data.frame(type = "desc",
                          text = gsub("\n","</br>", desc))
@@ -119,16 +110,9 @@ prepareShapleyValues <- function(x, max_features = 10, baseline = NA, digits = 3
   min_max[1] <- min_max[1] - min_max_margin
   min_max[2] <- min_max[2] + min_max_margin
 
-  desc <- NULL
-  # because apparently describe doesnt work for less than 4 features
-  if (nrow(x) > 3) {
-    desc <- iBreakDown::describe(x, display_values = TRUE,
-                                 display_numbers = TRUE,
-                                 display_shap = TRUE)
-  } else {
-    desc <- iBreakDown::describe(x, short_description = TRUE,
-                                 display_shap = TRUE)
-  }
+  desc <- iBreakDown::describe(x, display_values = TRUE,
+                               display_numbers = TRUE,
+                               display_shap = TRUE)
 
   ret <- NULL
   ret$x <- new_x
@@ -216,14 +200,14 @@ prepareCeterisParibus <- function(x, variables = NULL) {
 
   all_profiles_list <- split(all_profiles, all_profiles$`_vname_`)[variables]
 
-  new_x <- x_min_max_list <- list()
+  new_x <- x_min_max_list <- desc <- list()
 
   # line plot or bar plot?
   for (i in 1:length(is_numeric)) {
     temp <- all_profiles_list[[i]]
-    if (is_numeric[i]) {
+    name <- as.character(head(temp$`_vname_`,1))
 
-      name <- as.character(head(temp$`_vname_`,1))
+    if (is_numeric[i]) {
       temp <- temp[, c(name, "_yhat_", "_ids_", "_vname_")]
       colnames(temp) <- c("xhat", "yhat", "id", "vname")
       temp$xhat <- as.numeric(temp$xhat)
@@ -233,14 +217,19 @@ prepareCeterisParibus <- function(x, variables = NULL) {
       x_min_max_list[[name]] <- list(min(temp$xhat), max(temp$xhat))
 
     } else {
-
-      name <- as.character(head(temp$`_vname_`,1))
       temp <- temp[, c(name, "_yhat_", "_vname_")]
       colnames(temp) <- c("xhat", "yhat", "vname")
       temp$yhat <- as.numeric(temp$yhat)
 
       new_x[[name]] <- temp
     }
+
+    text <- ingredients::describe(x, display_values = TRUE,
+                                  display_numbers = TRUE,
+                                  variables = name)
+
+    desc[[name]] <- data.frame(type = "desc",
+                               text = gsub("\n","</br>", text))
   }
 
   ret <- NULL
@@ -249,6 +238,7 @@ prepareCeterisParibus <- function(x, variables = NULL) {
   ret$y_min_max <- y_min_max
   ret$x_min_max_list <- x_min_max_list
   ret$is_numeric <- as.list(is_numeric)
+  ret$desc <- desc
 
   ret
 }
@@ -263,31 +253,36 @@ prepareFeatureImportance <- function(x, max_features = 10, margin = 0.2) {
 
   ticks_margin <- abs(xmin-xmax)*margin;
 
-  best_fits <- x[x$variable == "_full_model_", ]
-  x <- merge(x, best_fits[,c("label", "dropout_loss")], by = "label")
+  best_fits <- x[x$variable == "_full_model_",]
+  new_x <- merge(x, best_fits[,c("label", "dropout_loss")], by = "label")
 
   # remove rows that starts with _
-  x <- x[!(substr(x$variable,1,1) == "_"),]
+  new_x <- new_x[!(substr(new_x$variable,1,1) == "_"),]
 
-  perm <- aggregate(x$dropout_loss.x, by = list(Category=x$variable), FUN = mean)
+  perm <- aggregate(new_x$dropout_loss.x,
+                    by = list(Category = new_x$variable), FUN = mean)
 
 
   if (!is.null(max_features) && max_features < m) {
     m <- max_features
-    x <- x[tail(order(x$dropout_loss.x), max_features), ]
+    new_x <- new_x[tail(order(new_x$dropout_loss.x), max_features),]
   }
 
   # sorting bars in groups
   perm <- as.character(perm$Category[order(perm$x)])
-  x$variable <- factor(as.character(x$variable), levels = perm)
-  x <- x[order(x$variable),]
+  new_x$variable <- factor(as.character(new_x$variable), levels = perm)
+  new_x <- new_x[order(new_x$variable),]
 
-  colnames(x) <- c("label","variable","dropout_loss", "full_model")
+  colnames(new_x) <- c("label","variable","dropout_loss", "full_model")
+
+  desc <- ingredients::describe(x)
 
   ret <- NULL
-  ret$x <- x[,2:4]
+  ret$x <- new_x[,2:4]
   ret$m <- m
   ret$x_min_max <- c(xmin - ticks_margin, xmax + ticks_margin)
+  ret$desc <- data.frame(type = "desc",
+                         text = gsub("\n","</br>", desc))
 
   ret
 }
@@ -321,15 +316,15 @@ preparePartialDependency <- function(x, y, variables = NULL) {
 
   aggregated_profiles_list <- split(aggregated_profiles, aggregated_profiles$`_vname_`)[variables]
 
-  new_x <- x_min_max_list <- list()
+  new_x <- x_min_max_list <- desc <- list()
   y_mean <- NULL
 
   # line plot or bar plot?
   for (i in 1:length(is_numeric)) {
     temp <- aggregated_profiles_list[[i]]
-    if (is_numeric[i]) {
+    name <- as.character(head(temp$`_vname_`,1))
 
-      name <- as.character(head(temp$`_vname_`,1))
+    if (is_numeric[i]) {
       temp <- temp[, c('_x_', "_yhat_", "_vname_", "_label_")]
       colnames(temp) <- c("xhat", "yhat", "vname", "label")
       temp$xhat <- as.numeric(temp$xhat)
@@ -339,14 +334,20 @@ preparePartialDependency <- function(x, y, variables = NULL) {
       x_min_max_list[[name]] <- list(min(temp$xhat), max(temp$xhat))
 
     } else {
-
-      name <- as.character(head(temp$`_vname_`,1))
       temp <- temp[, c("_x_", "_yhat_", "_vname_", "_label_")]
       colnames(temp) <- c("xhat", "yhat", "vname", "label")
       temp$yhat <- as.numeric(temp$yhat)
 
       new_x[[name]] <- temp
     }
+
+    text <- ingredients::describe(rbind(x,y),
+                                  display_values = TRUE,
+                                  display_numbers = TRUE,
+                                  variables = name)
+
+    desc[[name]] <- data.frame(type = "desc",
+                               text = gsub("\n","</br>", text))
   }
 
   y_mean <- ifelse(is.null(x), round(attr(y, "mean_prediction"),3),
@@ -358,6 +359,7 @@ preparePartialDependency <- function(x, y, variables = NULL) {
   ret$y_min_max <- y_min_max
   ret$x_min_max_list <- x_min_max_list
   ret$is_numeric <- as.list(is_numeric)
+  ret$desc <- desc
 
   ret
 }
@@ -395,15 +397,15 @@ prepareAccumulatedDependency <- function(x, y, variables = NULL) {
   aggregated_profiles_list <-
     aggregated_profiles_list[!unlist(lapply(aggregated_profiles_list, is.null))]
 
-  new_x <- x_min_max_list <- list()
+  new_x <- x_min_max_list <- desc <- list()
   y_mean <- NULL
 
   # line plot or bar plot?
   for (i in 1:length(is_numeric)) {
     temp <- aggregated_profiles_list[[i]]
-    if (is_numeric[i]) {
+    name <- as.character(head(temp$`_vname_`,1))
 
-      name <- as.character(head(temp$`_vname_`,1))
+    if (is_numeric[i]) {
       temp <- temp[, c('_x_', "_yhat_", "_vname_", "_label_")]
       colnames(temp) <- c("xhat", "yhat", "vname", "label")
       temp$xhat <- as.numeric(temp$xhat)
@@ -413,14 +415,21 @@ prepareAccumulatedDependency <- function(x, y, variables = NULL) {
       x_min_max_list[[name]] <- list(min(temp$xhat), max(temp$xhat))
 
     } else {
-
-      name <- as.character(head(temp$`_vname_`,1))
       temp <- temp[, c("_x_", "_yhat_", "_vname_", "_label_")]
       colnames(temp) <- c("xhat", "yhat", "vname", "label")
       temp$yhat <- as.numeric(temp$yhat)
 
       new_x[[name]] <- temp
     }
+
+    text <- ingredients::describe(rbind(x,y),
+                                  display_values = TRUE,
+                                  display_numbers = TRUE,
+                                  variables = name)
+    ## accumulated not still developed
+    text <- "Under development"
+    desc[[name]] <- data.frame(type = "desc",
+                               text = gsub("\n","</br>", text))
   }
 
   y_mean <- ifelse(is.null(x), round(attr(y, "mean_prediction"),3),
@@ -432,6 +441,7 @@ prepareAccumulatedDependency <- function(x, y, variables = NULL) {
   ret$y_min_max <- y_min_max
   ret$x_min_max_list <- x_min_max_list
   ret$is_numeric <- as.list(is_numeric)
+  ret$desc <- desc
 
   ret
 }
