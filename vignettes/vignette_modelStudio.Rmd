@@ -129,19 +129,19 @@ modelStudio(explainer, new_observation = test[1,], parallel = TRUE)
 ## Plot Options
 
 You can customize some of `modelStudio` looks by overwriting default options returned
-by `getDefaultOptions()`.
+by `getOptions()`.
 
 ```{r eval = FALSE}
-new_options <- getDefaultOptions()
-
-new_options$show_subtitle <- TRUE
-new_options$bd_subtitle <- "Hello World"
-new_options$line_size <- 5
-new_options$point_size <- 9
-new_options$line_color <- "pink"
-new_options$point_color <- "purple"
-new_options$bd_positive_color <- "yellow"
-new_options$bd_negative_color <- "orange"
+new_options <- getOptions(
+  show_subtitle = TRUE,
+  bd_subtitle = "Hello World",
+  line_size = 5,
+  point_size = 9,
+  line_color = "pink",
+  point_color = "purple",
+  bd_positive_color = "yellow",
+  bd_negative_color = "orange" 
+)
 
 modelStudio(explainer, new_observation = test[1,],
             options = new_options)

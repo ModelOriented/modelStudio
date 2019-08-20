@@ -99,6 +99,21 @@ text {
   stroke-linecap: butt;
 }
 
+.footerTitle {
+  font-family:'Fira Sans';
+  font-style: normal;
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.footerLine {
+  stroke: #371ea3;
+  stroke-width: 1px;
+  stroke-opacity: 0.5;
+  stroke-linecap: butt;
+}
+
+
 .enterChoiceButton {
   fill: #ceced9;
   opacity: 0.5;

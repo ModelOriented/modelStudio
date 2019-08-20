@@ -3190,7 +3190,7 @@ tbody.collapse.in {
   color: #fff;
   text-decoration: none;
   outline: 0;
-  background-color: #5a9ddb; }
+  background-color: #4a3c89; }
 
 .dropdown-menu > .disabled > a, .dropdown-menu > .disabled > a:hover, .dropdown-menu > .disabled > a:focus {
   color: #bbb; }
@@ -3597,6 +3597,8 @@ tbody.collapse.in {
     background-color: #5a9ddb; }
 
 .nav-stacked > li {
+  margin-top: 2px;
+  margin-left: 0;
   float: none; }
   .nav-stacked > li + li {
     margin-top: 2px;

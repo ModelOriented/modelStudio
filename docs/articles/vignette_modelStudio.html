@@ -94,7 +94,7 @@
       <h1>modelStudio - perks and features</h1>
                         <h4 class="author">Hubert Baniecki</h4>
             
-            <h4 class="date">2019-08-16</h4>
+            <h4 class="date">2019-08-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ModelOriented/dime/blob/master/vignettes/vignette_modelStudio.Rmd"><code>vignettes/vignette_modelStudio.Rmd</code></a></small>
       <div class="hidden name"><code>vignette_modelStudio.Rmd</code></div>
@@ -243,17 +243,17 @@
 <div id="plot-options" class="section level2">
 <h2 class="hasAnchor">
 <a href="#plot-options" class="anchor"></a>Plot Options</h2>
-<p>You can customize some of <code>modelStudio</code> looks by overwriting default options returned by <code><a href="../reference/getDefaultOptions.html">getDefaultOptions()</a></code>.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1">new_options &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getDefaultOptions.html">getDefaultOptions</a></span>()</a>
-<a class="sourceLine" id="cb9-2" title="2"></a>
-<a class="sourceLine" id="cb9-3" title="3">new_options<span class="op">$</span>show_subtitle &lt;-<span class="st"> </span><span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb9-4" title="4">new_options<span class="op">$</span>bd_subtitle &lt;-<span class="st"> "Hello World"</span></a>
-<a class="sourceLine" id="cb9-5" title="5">new_options<span class="op">$</span>line_size &lt;-<span class="st"> </span><span class="dv">5</span></a>
-<a class="sourceLine" id="cb9-6" title="6">new_options<span class="op">$</span>point_size &lt;-<span class="st"> </span><span class="dv">9</span></a>
-<a class="sourceLine" id="cb9-7" title="7">new_options<span class="op">$</span>line_color &lt;-<span class="st"> "pink"</span></a>
-<a class="sourceLine" id="cb9-8" title="8">new_options<span class="op">$</span>point_color &lt;-<span class="st"> "purple"</span></a>
-<a class="sourceLine" id="cb9-9" title="9">new_options<span class="op">$</span>bd_positive_color &lt;-<span class="st"> "yellow"</span></a>
-<a class="sourceLine" id="cb9-10" title="10">new_options<span class="op">$</span>bd_negative_color &lt;-<span class="st"> "orange"</span></a>
+<p>You can customize some of <code>modelStudio</code> looks by overwriting default options returned by <code><a href="../reference/getOptions.html">getOptions()</a></code>.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1">new_options &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getOptions.html">getOptions</a></span>(</a>
+<a class="sourceLine" id="cb9-2" title="2">  <span class="dt">show_subtitle =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb9-3" title="3">  <span class="dt">bd_subtitle =</span> <span class="st">"Hello World"</span>,</a>
+<a class="sourceLine" id="cb9-4" title="4">  <span class="dt">line_size =</span> <span class="dv">5</span>,</a>
+<a class="sourceLine" id="cb9-5" title="5">  <span class="dt">point_size =</span> <span class="dv">9</span>,</a>
+<a class="sourceLine" id="cb9-6" title="6">  <span class="dt">line_color =</span> <span class="st">"pink"</span>,</a>
+<a class="sourceLine" id="cb9-7" title="7">  <span class="dt">point_color =</span> <span class="st">"purple"</span>,</a>
+<a class="sourceLine" id="cb9-8" title="8">  <span class="dt">bd_positive_color =</span> <span class="st">"yellow"</span>,</a>
+<a class="sourceLine" id="cb9-9" title="9">  <span class="dt">bd_negative_color =</span> <span class="st">"orange"</span> </a>
+<a class="sourceLine" id="cb9-10" title="10">)</a>
 <a class="sourceLine" id="cb9-11" title="11"></a>
 <a class="sourceLine" id="cb9-12" title="12"><span class="kw"><a href="../reference/modelStudio.html">modelStudio</a></span>(explainer, <span class="dt">new_observation =</span> test[<span class="dv">1</span>,],</a>
 <a class="sourceLine" id="cb9-13" title="13">            <span class="dt">options =</span> new_options)</a></code></pre></div>

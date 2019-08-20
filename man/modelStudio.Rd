@@ -39,7 +39,7 @@ modelStudio(x, ...)
 \item{parallel}{speed up computation using \code{parallelMap::parallelMap()}.
 Default is \code{FALSE}.}
 
-\item{options}{customize \code{modelStudio}. See \code{\link{getDefaultOptions}} and
+\item{options}{customize \code{modelStudio}. See \code{\link{getOptions}} and
 \href{modeloriented.github.io/dime/articles/vignette_modelStudio.html#plot-options}{\bold{vignette}}.}
 
 \item{data}{validation dataset, will be extracted from \code{x} if it's an explainer.}

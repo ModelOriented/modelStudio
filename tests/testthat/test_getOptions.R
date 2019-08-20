@@ -1,14 +1,14 @@
-context("Check options parameter and getDefaultOptions() function")
+context("Check options parameter and getOptions() function")
 source("test_objects.R")
 
-op <- getDefaultOptions()
+op <- getOptions()
 
-test_that("getDefaultOptions()", {
+test_that("getOptions()", {
   expect_is(op, "list")
   expect_true(length(op) > 30)
 })
 
-new_options <- list(
+new_options <- getOptions(
   scale_plot = FALSE,
   show_subtitle = TRUE,
   subtitle = "hello",

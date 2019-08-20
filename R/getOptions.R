@@ -1,9 +1,11 @@
-#' @title Get default options for modelStudio
+#' @title Get modified options for modelStudio
 #'
 #' @description This function returns default options for \code{modelStudio}.
 #' It is possible to modify values of this list and pass it to \code{options}
 #' parameter in the main function. \strong{WARNING: Editing default options may cause
 #' unintended behaviour.}
+#'
+#' @param ... options to change in the form of \code{option_name = value}.
 #'
 #' @return nested \code{list} of parameters with default values
 #'
@@ -48,25 +50,26 @@
 #' new_apartments <- apartments[1:2,-1]
 #' rownames(new_apartments) <- c("ap1","ap2")
 #'
-#' op <- getDefaultOptions()
-#'
-#' op$show_subtitle <- TRUE
-#' op$bd_subtitle <- "Hello World"
-#' op$line_size <- 5
-#' op$point_size <- 9
-#' op$line_color <- "pink"
-#' op$point_color <- "purple"
-#' op$bd_positive_color <- "yellow"
-#' op$bd_negative_color <- "orange"
+#' op <- getOptions(
+#'   show_subtitle = TRUE,
+#'   bd_subtitle = "Hello World",
+#'   line_size = 5,
+#'   point_size = 9,
+#'   line_color = "pink",
+#'   point_color = "purple",
+#'   bd_positive_color = "yellow",
+#'   bd_negative_color = "orange"
+#' )
 #'
 #' modelStudio(explain_apartments, new_apartments,
 #'             facet_dim = c(1,2), N = 100, B = 15, show_info = FALSE,
 #'             options = op)
 #'
 #' @export
-#' @rdname getDefaultOptions
-getDefaultOptions <- function() {
+#' @rdname getOptions
+getOptions <- function(...) {
 
+  # prepare default options
   default_options <- list(
     scale_plot = TRUE,
     show_subtitle = FALSE,
@@ -130,6 +133,9 @@ getDefaultOptions <- function() {
     fd_bar_width = NULL,
     fd_bar_color = NULL
   )
+
+  # input user options
+  default_options[names(list(...))] <- list(...)
 
   default_options
 }

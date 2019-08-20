@@ -21,6 +21,7 @@ var TIME = options.time,
     modelName = options.model_name,
     variableNames = options.variable_names,
     dim = options.facet_dim,
+    footer_text = options.footer_text,
     SCALE_PLOT = options.scale_plot,
     SHOW_SUBTITLE = options.show_subtitle,
     subTitle = options.subtitle || modelName,
@@ -92,8 +93,9 @@ var w = options.w, h = options.h;
 var plotWidth = w + margin.left + margin.right,
     plotHeight = h + margin.top + margin.bottom;
 
-var studioWidth = dim[1]*plotWidth,
-    studioHeight = dim[0]*plotHeight + margin.top;
+var studioMargin = {top: 50, bottom: 50},
+    studioWidth = dim[1]*plotWidth,
+    studioHeight = studioMargin.top + dim[0]*plotHeight + studioMargin.bottom;
 
 /// should subtitle be displayed and plot height be extended
 var additionalHeight = 0;
@@ -123,7 +125,9 @@ var visiblePlots = [];
 var facetData = [], id = 0;
 for (let i = 0; i < dim[0]; i++) {
   for (let j = 0; j < dim[1]; j++) {
-    facetData.push({x: 0 + j*plotWidth, y: margin.top + i*plotHeight, index: id});
+    facetData.push({x: 0 + j*plotWidth,
+                    y: studioMargin.top + i*plotHeight,
+                    index: id});
     id++;
   }
 }
@@ -137,20 +141,20 @@ function initializeStudio() {
 
   // top decorations
   var TOP_G = svg.append("g")
-                  .attr("class", "TOP_G");
+                 .attr("class", "TOP_G");
 
   TOP_G.append("text")
-        .attr("class", "mainTitle")
-        .attr("x", 15)
-        .attr("y", 30)
-        .text("Interactive Model Studio");
+       .attr("class", "mainTitle")
+       .attr("x", 15)
+       .attr("y", 30)
+       .text("Interactive Model Studio");
 
   TOP_G.append("line")
-        .attr("class", "mainLine")
-        .attr("x1", 10)
-        .attr("x2", studioWidth - 10)
-        .attr("y1", margin.top - margin.big)
-        .attr("y2", margin.top - margin.big);
+       .attr("class", "mainLine")
+       .attr("x1", 10)
+       .attr("x2", studioWidth - 10)
+       .attr("y1", studioMargin.top - margin.big)
+       .attr("y2", studioMargin.top - margin.big);
 
   ///:\\\ add select observation input
   // to make input appear on top
@@ -192,11 +196,28 @@ function initializeStudio() {
   });
   ///:\\\
 
-  // bottom buttons
+  // bottom decorations
   var BOTTOM_G = svg.append("g")
                     .attr("class", "BOTTOM_G");
 
-  var enterChoiceButtons = BOTTOM_G.selectAll()
+  BOTTOM_G.append("text")
+          .attr("class", "footerTitle")
+          .attr("x", studioWidth - 15 - getTextWidth(footer_text, 10, 'Fira Sans, sans-serif'))
+          .attr("y", studioHeight - studioMargin.bottom + 25)
+          .text(footer_text);
+
+  BOTTOM_G.append("line")
+          .attr("class", "footerLine")
+          .attr("x1", 10)
+          .attr("x2", studioWidth - 10)
+          .attr("y1", studioHeight - studioMargin.bottom + margin.big)
+          .attr("y2", studioHeight - studioMargin.bottom + margin.big);
+
+  // middle buttons
+  var MIDDLE_G = svg.append("g")
+                    .attr("class", "MIDDLE_G");
+
+  var enterChoiceButtons = MIDDLE_G.selectAll()
                                    .data(facetData)
                                    .enter()
                                    .append("rect")
@@ -208,7 +229,7 @@ function initializeStudio() {
                                    .attr("y", d => d.y);
 
   // add `+` to buttons
-  BOTTOM_G.selectAll()
+  MIDDLE_G.selectAll()
           .data(facetData)
           .enter()
           .append("line")
@@ -219,7 +240,7 @@ function initializeStudio() {
           .attr("y1", d => d.y + plotHeight/2 - margin.big)
           .attr("y2", d => d.y + plotHeight/2 + margin.big);
 
-  BOTTOM_G.selectAll()
+  MIDDLE_G.selectAll()
           .data(facetData)
           .enter()
           .append("line")
@@ -243,7 +264,7 @@ function initializeStudio() {
                       }
                     });
 
-  var exitChoiceButtons = BOTTOM_G.selectAll()
+  var exitChoiceButtons = MIDDLE_G.selectAll()
                                   .data(facetData)
                                   .enter()
                                   .append("rect")
@@ -268,7 +289,7 @@ function initializeStudio() {
                      IS_BUTTON_CLICKED = false;
                    });
 
-  var exitPlotButtons = BOTTOM_G.selectAll()
+  var exitPlotButtons = MIDDLE_G.selectAll()
                                 .data(facetData)
                                 .enter()
                                 .append("g")
@@ -330,7 +351,7 @@ function initializeStudio() {
         x = parseFloat(d3.select(object).attr("x")),
         y = parseFloat(d3.select(object).attr("y"));
 
-    let chosePlotButtons = BOTTOM_G.append("g")
+    let chosePlotButtons = MIDDLE_G.append("g")
                                    .attr("id","chosePlotButton"+j);
 
     chosePlotButtons.selectAll()

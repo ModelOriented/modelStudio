@@ -15,7 +15,7 @@
 #' @param show_info verbose progress bar on console? Default is \code{TRUE}.
 #' @param parallel speed up computation using \code{parallelMap::parallelMap()}.
 #' Default is \code{FALSE}.
-#' @param options customize \code{modelStudio}. See \code{\link{getDefaultOptions}} and
+#' @param options customize \code{modelStudio}. See \code{\link{getOptions}} and
 #' \href{modeloriented.github.io/dime/articles/vignette_modelStudio.html#plot-options}{\bold{vignette}}.
 #' @param ... other parameters.
 #' @param data validation dataset, will be extracted from \code{x} if it's an explainer.
@@ -25,7 +25,7 @@
 #'
 #' @return an object of the \code{r2d3} class
 #'
-#' @importFrom utils head tail setTxtProgressBar txtProgressBar
+#' @importFrom utils head tail setTxtProgressBar txtProgressBar installed.packages
 #' @importFrom stats aggregate predict
 #' @importFrom grDevices nclass.Sturges
 #'
@@ -257,12 +257,18 @@ modelStudio.default <- function(x,
   names(obs_list) <- rownames(obs_data)
 
   if (is.null(options)) {
-    options <- getDefaultOptions()
+    options <- getOptions()
   }
 
-  options <- c(list(time = time, model_name = label,
+  footer_text <- paste0("Site built with dime v", installed.packages()["dime","Version"],
+                        " on ", format(Sys.time(),usetz=FALSE))
+
+  options <- c(list(time = time,
+                    model_name = label,
                     variable_names = variable_names,
-                    facet_dim = facet_dim), options)
+                    facet_dim = facet_dim,
+                    footer_text = footer_text
+                    ), options)
 
   temp <- jsonlite::toJSON(list(obs_list, fi_data, pd_data, ad_data, fd_data))
 
