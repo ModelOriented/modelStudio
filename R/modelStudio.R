@@ -161,37 +161,37 @@ modelStudio.default <- function(x,
 
   which_numerical <- sapply(data[,, drop = FALSE], is.numeric)
 
-  ## because only_numerical throws errors if used incorectly
+  ## because aggregate_profiles calculates numerical OR categorical
   if (all(which_numerical==TRUE)) {
     pd_n <- ingredients::partial_dependency(
-            x, data, predict_function, only_numerical = TRUE, N = N)
+            x, data, predict_function, variable_type = "numerical", N = N)
     if (show_info == TRUE) setTxtProgressBar(pb, 2)
     pd_c <- NULL
     ad_n <- ingredients::accumulated_dependency(
-            x, data, predict_function, only_numerical = TRUE, N = N)
+            x, data, predict_function, variable_type = "numerical", N = N)
     if (show_info == TRUE) setTxtProgressBar(pb, 4)
     ad_c <- NULL
   } else if (all(which_numerical==FALSE)) {
     pd_n <- NULL
     pd_c <- ingredients::partial_dependency(
-            x, data, predict_function, only_numerical = FALSE, N = N)
+            x, data, predict_function, variable_type = "categorical", N = N)
     if (show_info == TRUE) setTxtProgressBar(pb, 3)
     ad_n <- NULL
     ad_c <- ingredients::accumulated_dependency(
-            x, data, predict_function, only_numerical = FALSE, N = N)
+            x, data, predict_function, variable_type = "categorical", N = N)
     if (show_info == TRUE) setTxtProgressBar(pb, 5)
   } else {
     pd_n <- ingredients::partial_dependency(
-            x, data, predict_function, only_numerical = TRUE, N = N)
+            x, data, predict_function, variable_type = "numerical", N = N)
     if (show_info == TRUE) setTxtProgressBar(pb, 2)
     pd_c <- ingredients::partial_dependency(
-            x, data, predict_function, only_numerical = FALSE, N = N)
+            x, data, predict_function, variable_type = "categorical", N = N)
     if (show_info == TRUE) setTxtProgressBar(pb, 3)
     ad_n <- ingredients::accumulated_dependency(
-            x, data, predict_function, only_numerical = TRUE, N = N)
+            x, data, predict_function, variable_type = "numerical", N = N)
     if (show_info == TRUE) setTxtProgressBar(pb, 4)
     ad_c <- ingredients::accumulated_dependency(
-            x, data, predict_function, only_numerical = FALSE, N = N)
+            x, data, predict_function, variable_type = "categorical", N = N)
     if (show_info == TRUE) setTxtProgressBar(pb, 5)
   }
 

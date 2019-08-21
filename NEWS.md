@@ -1,7 +1,12 @@
+# dime 0.1.5
+* add description to all plots besides AD and FD
+* add footer to `modelStudio`
+* change `only_numerical` to `variable_type` in `ingredients` functions
+
 # dime 0.1.4
 * add support for parallel computation with `parallelMap`
 * more `modelStudio` customization with `options` parameter
-* add `getDefaultOptions()` function
+* add `getOptions()` function
 * remove plot subtitles by default
 
 # dime 0.1.3

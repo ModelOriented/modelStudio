@@ -202,7 +202,7 @@ function initializeStudio() {
 
   BOTTOM_G.append("text")
           .attr("class", "footerTitle")
-          .attr("x", studioWidth - 15 - getTextWidth(footer_text, 11, 'Fira Sans, sans-serif'))
+          .attr("x", studioWidth - 15 - getTextWidth(footer_text, 12, 'Fira Sans, sans-serif'))
           .attr("y", studioHeight - studioMargin.bottom + 25)
           .text(footer_text);
 
