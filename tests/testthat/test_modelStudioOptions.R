@@ -1,14 +1,14 @@
-context("Check options parameter and getOptions() function")
+context("Check options parameter and modelStudioOptions() function")
 source("test_objects.R")
 
-op <- getOptions()
+op <- modelStudioOptions()
 
-test_that("getOptions()", {
+test_that("modelStudioOptions()", {
   expect_is(op, "list")
   expect_true(length(op) > 30)
 })
 
-new_options <- getOptions(
+new_options <- modelStudioOptions(
   scale_plot = FALSE,
   show_subtitle = TRUE,
   subtitle = "hello",

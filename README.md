@@ -46,40 +46,40 @@ Make sure that all dependencies are up-to-date with GitHub.
 This package bases on `DALEX::explain()`.
 
 ```r
- library("dime")
- library("DALEX")
+library("dime")
+library("DALEX")
 ```
 
 Create a model:
 
 ```r
- titanic <- na.omit(titanic)
- titanic_small <- titanic[, c(1,2,3,6,7,9)]
+titanic_small <- titanic_imputed[, c(1,2,3,6,7,9)]
+titanic_small$survived <- titanic_small$survived == "yes"
 
- model_titanic_glm <- glm(survived == "yes" ~ gender + age + fare + class + sibsp,
-                          data = titanic_small, family = "binomial")
+model_titanic_glm <- glm(survived ~ gender + age + fare + class + sibsp,
+                         data = titanic_small, family = "binomial")
 ```
 
 Wrap it into an explainer:
 
 ```r
- explain_titanic_glm <- explain(model_titanic_glm,
-                                data = titanic_small[, -6],
-                                y = titanic_small$survived == "yes",
-                                label = "glm")
+explain_titanic_glm <- explain(model_titanic_glm,
+                               data = titanic_small[,-6],
+                               y = titanic_small[,6],
+                               label = "glm")
 ```
 
 Pick some data points:
 
 ```r
- new_observations <- titanic_small[1:4, -6]
- rownames(new_observations) <- c("Lucas", "James", "Thomas", "Nancy")
+new_observations <- titanic_small[1:4,]
+rownames(new_observations) <- c("Lucas", "James", "Thomas", "Nancy")
 ```
 
 Make a studio for the model:
 
 ```r
- modelStudio(explain_titanic_glm, new_observations, N = 100, B = 10)
+modelStudio(explain_titanic_glm, new_observations)
 ```
 
 More examples [here](https://modeloriented.github.io/dime/articles/vignette_modelStudio.html).

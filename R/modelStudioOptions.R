@@ -5,34 +5,43 @@
 #' parameter in the main function. \strong{WARNING: Editing default options may cause
 #' unintended behaviour.}
 #'
-#' @param ... options to change in the form of \code{option_name = value}.
+#' @param ... options to change, \code{option_name = value}.
 #'
-#' @return nested \code{list} of parameters with default values
+#' @return \code{list} of options for modelStudio
 #'
-#' @section Description of the available options:
+#' \subsection{Main options:}{
 #' \describe{
-#'   \item{scale_plot}{\code{TRUE} make every plot the same height, ignores \code{bar_width}}
-#'   \item{show_subtitle}{\code{TRUE} should subtitle be displayed?}
-#'   \item{subtitle}{\code{label} parameter from \code{explainer}}
-#'   \item{margin_x}{plot margins, change \code{margin_left} for longer/shorter axis labels}
-#'   \item{w}{\code{420} inner plot width}
-#'   \item{h}{\code{280} inner plot height}
-#'   \item{bar_width}{\code{16} in px, width of bars, default for all plots,
-#'   is ignored when \code{scale_plot == TRUE}}
-#'   \item{line_size}{\code{2} in px, width of lines, default for all plots}
-#'   \item{point_size}{\code{3} in px, point radius, default for all plots}
-#'   \item{[bar,line,point]_color}{\code{[#46bac2,#46bac2,#371ea3]}}
-#'   \item{positive_color}{\code{#8bdcbe} for Break Down and Shapley Values}
-#'   \item{negative_color}{\code{#f05a71} for Break Down and Shapley Values}
-#'   \item{default_color}{\code{#371ea3} for Break Down and highlighted line}
-#'   \item{xx_title}{plot specific title}
-#'   \item{xx_subtitle}{plot specific subtitle, default is \code{subtitle}}
-#'   \item{xx_bar_width}{plot specific width of bars, default is \code{bar_width},
-#'   is ignored when \code{scale_plot == TRUE}}
-#'   \item{xx_line_size}{plot specific width of lines, default is \code{line_size}}
-#'   \item{xx_point_size}{plot specific point radius, default is \code{point_size}}
-#'   \item{xx_x_color}{plot specific item color, default is \code{x_color}}
+#' \item{scale_plot}{\code{TRUE} make every plot the same height, ignores \code{bar_width}}
+#' \item{show_subtitle}{\code{TRUE} should subtitle be displayed?}
+#' \item{subtitle}{\code{label} parameter from \code{explainer}}
+#' \item{margin_*}{plot margins, change \code{margin_left} for longer/shorter axis labels}
+#' \item{w}{\code{420} inner plot width}
+#' \item{h}{\code{280} inner plot height}
+#' \item{bar_width}{\code{16} in px, width of bars, default for all plots,
+#' is ignored when \code{scale_plot == TRUE}}
+#' \item{line_size}{\code{2} in px, width of lines, default for all plots}
+#' \item{point_size}{\code{3} in px, point radius, default for all plots}
+#' \item{[bar,line,point]_color}{\code{[#46bac2,#46bac2,#371ea3]}}
+#' \item{positive_color}{\code{#8bdcbe} for Break Down and Shapley Values}
+#' \item{negative_color}{\code{#f05a71} for Break Down and Shapley Values}
+#' \item{default_color}{\code{#371ea3} for Break Down and highlighted line}
 #' }
+#' }
+#' \subsection{Plot specific options:}{
+#' \code{**} is a two letter code unique to each plot, might be
+#' one of \code{[bd,sv,cp,fi,pd,ad,fd]}\cr
+#'
+#' \describe{
+#' \item{**_title}{plot specific title}
+#' \item{**_subtitle}{plot specific subtitle, default is \code{subtitle}}
+#' \item{**_bar_width}{plot specific width of bars, default is \code{bar_width},
+#' is ignored when \code{scale_plot == TRUE}}
+#' \item{**_line_size}{plot specific width of lines, default is \code{line_size}}
+#' \item{**_point_size}{plot specific point radius, default is \code{point_size}}
+#' \item{**_*_color}{plot specific \code{[bar,line,point]} color, default is \code{[bar,line,point]_color}}
+#' }
+#' }
+#'
 #'
 #' @examples
 #' library("dime")
@@ -47,10 +56,10 @@
 #'                                      y = apartments[,1],
 #'                                      verbose = FALSE)
 #'
-#' new_apartments <- apartments[1:2,-1]
+#' new_apartments <- apartments[1:2,]
 #' rownames(new_apartments) <- c("ap1","ap2")
 #'
-#' op <- getOptions(
+#' op <- modelStudioOptions(
 #'   show_subtitle = TRUE,
 #'   bd_subtitle = "Hello World",
 #'   line_size = 5,
@@ -66,8 +75,8 @@
 #'             options = op)
 #'
 #' @export
-#' @rdname getOptions
-getOptions <- function(...) {
+#' @rdname modelStudioOptions
+modelStudioOptions <- function(...) {
 
   # prepare default options
   default_options <- list(
