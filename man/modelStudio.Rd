@@ -6,19 +6,21 @@
 \alias{modelStudio.default}
 \title{Generates interactive studio to explain predictive model}
 \usage{
-modelStudio(x, ...)
+modelStudio(object, ...)
 
-\method{modelStudio}{explainer}(x, new_observation, facet_dim = c(2, 2),
-  time = 500, max_features = 10, N = 500, B = 25,
-  show_info = TRUE, parallel = FALSE, options = NULL, ...)
+\method{modelStudio}{explainer}(object, new_observation, facet_dim = c(2,
+  2), time = 500, max_features = 10, N = 500, B = 25,
+  show_info = TRUE, parallel = FALSE, options = modelStudioOptions(),
+  viewer = "external", ...)
 
-\method{modelStudio}{default}(x, new_observation, facet_dim = c(2, 2),
-  time = 500, max_features = 10, N = 500, B = 25,
-  show_info = TRUE, parallel = FALSE, options = NULL, data, y,
-  predict_function = predict, label = NULL, ...)
+\method{modelStudio}{default}(object, data, y,
+  predict_function = predict, label = class(model)[1], new_observation,
+  facet_dim = c(2, 2), time = 500, max_features = 10, N = 500,
+  B = 25, show_info = TRUE, parallel = FALSE,
+  options = modelStudioOptions(), viewer = "external", ...)
 }
 \arguments{
-\item{x}{an explainer created with function \code{DALEX::explain()} or a model to be explained.}
+\item{object}{an explainer created with function \code{DALEX::explain()} or a model to be explained.}
 
 \item{...}{other parameters.}
 
@@ -37,18 +39,22 @@ modelStudio(x, ...)
 \item{show_info}{verbose progress bar on console? Default is \code{TRUE}.}
 
 \item{parallel}{speed up computation using \code{parallelMap::parallelMap()}.
-Default is \code{FALSE}.}
+See \href{https://modeloriented.github.io/dime/articles/vignette_modelStudio.html#parallel-computation}{\bold{vignette}}.}
 
-\item{options}{customize \code{modelStudio}. See \code{\link{getOptions}} and
-\href{modeloriented.github.io/dime/articles/vignette_modelStudio.html#plot-options}{\bold{vignette}}.}
+\item{options}{customize \code{modelStudio}. See \code{\link{modelStudioOptions}} and
+\href{https://modeloriented.github.io/dime/articles/vignette_modelStudio.html#plot-options}{\bold{vignette}}.}
 
-\item{data}{validation dataset, will be extracted from \code{x} if it's an explainer.}
+\item{viewer}{\code{external} to display in an external RStudio window;
+\code{internal} to use the RStudio internal viewer pane for output;
+\code{browser} to display in an external browser}
 
-\item{y}{true labels for \code{data}, will be extracted from \code{x} if it's an explainer.}
+\item{data}{validation dataset, will be extracted from \code{object} if it is an explainer.}
 
-\item{predict_function}{predict function, will be extracted from \code{x} if it's an explainer.}
+\item{y}{true labels for \code{data}, will be extracted from \code{object} if it is an explainer.}
 
-\item{label}{a name of the model, will be extracted from \code{x} if it's an explainer.}
+\item{predict_function}{predict function, will be extracted from \code{object} if it is an explainer.}
+
+\item{label}{a name of the model, will be extracted from \code{object} if it is an explainer.}
 }
 \value{
 an object of the \code{r2d3} class
@@ -56,26 +62,26 @@ an object of the \code{r2d3} class
 \description{
 This tool uses your model, data and new observations, to provide local
 and global explanations. It generates plots and descriptions in the form
-of serverless HTML site, that supports animations and interactivity made with D3.js.
+of the serverless HTML site, that supports animations and interactivity made with D3.js.
 }
 \examples{
 library("dime")
 
 # ex1 classification
 
-titanic <- na.omit(DALEX::titanic)
-titanic_small <- titanic[,c(1,2,3,6,7,9)]
+titanic_small <- DALEX::titanic_imputed[,c(1,2,3,6,7,9)]
+titanic_small$survived <- titanic_small$survived == "yes"
 
-model_titanic_glm <- glm(survived == "yes" ~ gender + age + fare + class + sibsp,
+model_titanic_glm <- glm(survived ~ gender + age + fare + class + sibsp,
                          data = titanic_small, family = "binomial")
 
 explain_titanic_glm <- DALEX::explain(model_titanic_glm,
                                       data = titanic_small[,-6],
-                                      y = titanic_small$survived == "yes",
+                                      y = titanic_small[,6],
                                       label = "glm",
                                       verbose = FALSE)
 
-new_observations <- titanic_small[1:4,-6]
+new_observations <- titanic_small[1:4,]
 rownames(new_observations) <- c("Lucas","James", "Thomas", "Nancy")
 
 modelStudio(explain_titanic_glm, new_observations,
@@ -94,7 +100,7 @@ explain_apartments <- DALEX::explain(model_apartments,
                                      y = apartments[,1],
                                      verbose = FALSE)
 
-new_apartments <- apartments[1:2,-1]
+new_apartments <- apartments[1:2,]
 rownames(new_apartments) <- c("ap1","ap2")
 
 modelStudio(explain_apartments, new_apartments,

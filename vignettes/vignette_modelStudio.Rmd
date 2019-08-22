@@ -18,7 +18,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-## modelStudio parameters
+`dime::modelStudio` uses your model, data and new observations, to provide local
+and global explanations. It generates plots and descriptions in the form
+of the serverless HTML site, that supports animations and interactivity made with D3.js.
 
 Let's use `DALEX::HR` dataset to explore `modelStudio` parameters:
 
@@ -36,7 +38,7 @@ knitr::kable(head(train))
 
 Prepare data and model for the explainer:
 
-```{r results="hide"}
+```{r results="hide", eval = FALSE}
 library("randomForest")
 model <- randomForest(fired ~., data = train)
 
@@ -45,12 +47,16 @@ test$fired <- ifelse(test$status == "fired", 1, 0)
 test <- test[,-6]
 
 explainer <- DALEX::explain(model = model,
-                            data = test,
+                            data = test[,-6],
                             y = test[,6],
                             verbose = FALSE)
 
 library("dime")
 ```
+
+-------------------------------------------------------------------
+
+## modelStudio parameters
 
 ### local explanations
 
@@ -86,6 +92,8 @@ modelStudio(explainer, new_observation = test[1:2,], time = 0)
 
 ### more calculations means more time
 
+`N` is a number of observations used for calculation of partial dependency profiles.
+`B` is a number of random paths used for calculation of shapley values.
 You can decrease `N` and `B` parameters to lower computation time or increase
 them to get more accurate empirical results.
 
@@ -103,9 +111,17 @@ You can hide computation progress bar messages with `show_info` parameter.
 modelStudio(explainer, new_observation = test[1:2,], show_info = FALSE)
 ```
 
+### viewer or browser?
+
+Best described here: [`r2d3 viewer argument`](https://rstudio.github.io/r2d3/articles/visualization_options.html#viewer).
+
+```{r eval = FALSE}
+modelStudio(explainer, new_observation = test[1:2,], viewer = "browser")
+```
+
 -------------------------------------------------------------------
 
-## Parallel Computation
+## parallel computation
 
 You can speed up `modelStudio` computation by setting `parallel` parameter to `TRUE`. 
 It uses [`parallelMap`](https://www.rdocumentation.org/packages/parallelMap) package
@@ -114,6 +130,7 @@ complicated models, vast datasets or simply many observations are beeing process
 
 All options can be set outside of function call.
 More on that [here](https://github.com/berndbischl/parallelMap#being-lazy-configuration).
+
 ```{r eval = FALSE}
 options(
   parallelMap.default.mode        = "socket",
@@ -126,13 +143,13 @@ modelStudio(explainer, new_observation = test[1,], parallel = TRUE)
 
 --------------------------------------------------------------------
 
-## Plot Options
+## plot options
 
 You can customize some of `modelStudio` looks by overwriting default options returned
-by `getOptions()`.
+by `modelStudioOptions()`.
 
 ```{r eval = FALSE}
-new_options <- getOptions(
+new_options <- modelStudioOptions(
   show_subtitle = TRUE,
   bd_subtitle = "Hello World",
   line_size = 5,
@@ -149,16 +166,56 @@ modelStudio(explainer, new_observation = test[1,],
 
 -------------------------------------------------------------------
 
-## Python scikit-learn Model
+## R mlr model 
 
 You can use `DALEXtra::explain_*()` functions to explain various models.
-Bellow basic example of making `modelStudio` for scikit-learn model using `DALEXtra::explain_scikitlearn()`.
+Bellow basic example of making `modelStudio` for mlr model using `DALEXtra::explain_mlr()`
 
 ```{r eval = FALSE}
 library(DALEXtra)
-#TBD
+
+task <- mlr::makeRegrTask(id = "task",
+                          data = train,
+                          target = "fired")
+
+learner <- mlr::makeLearner("regr.randomForest",
+                            par.vals = list(ntree = 300),
+                            predict.type = "response")
+
+model <- mlr::train(learner, task)
+
+explainer_mlr <- explain_mlr(model, data = test[,-6], y = test[,6])
+
+modelStudio(explainer_mlr,
+            new_observation = test[1:4,],
+            N = 100, B = 10)
+```
+
+-------------------------------------------------------------------
+
+## Python scikit-learn model
+
+Bellow basic example of making `modelStudio` for scikit-learn model using `DALEXtra::explain_scikitlearn()`
+and **Python Anaconda**.
+
+```{r eval = FALSE}
+library(DALEXtra)
+
+titanic_test <- read.csv(system.file("extdata", "titanic_test.csv", package = "DALEXtra")) 
+titanic_train <- read.csv(system.file("extdata", "titanic_train.csv", package = "DALEXtra"))
+yml <- system.file("extdata", "scikitlearn.yml", package = "DALEXtra")
+pkl_gbm <- system.file("extdata", "scikitlearn.pkl", package = "DALEXtra")
+pkl_SGDC <- "SGDC.pkl"
+
+explainer_scikit <- explain_scikitlearn(pkl_gbm,
+                                        yml = yml,
+                                        data = titanic_test[,1:17],
+                                        y = titanic_test[,18])
+
+modelStudio(explainer_scikit,
+            new_observation = titanic_test[1:4,1:17],
+            N = 100, B = 10, options = modelStudioOptions(margin_left = 160))
 ```
 
 `modelStudio` should work with any `explainer` class object. Find more about 
-making those [here](https://modeloriented.github.io/DALEXtra/).
-
+making those [here](https://modeloriented.github.io/DALEXtra/reference/).

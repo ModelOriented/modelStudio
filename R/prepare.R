@@ -1,10 +1,10 @@
-prepareBreakDown <- function(x, max_features = 10, baseline = NA, digits = 3,
-                             rounding_function = round, margin = 0.2, min_max = NA) {
+prepare_break_down <- function(x, max_features = 10, baseline = NA, digits = 3,
+                               rounding_function = round, margin = 0.2, min_max = NA) {
   ### This function returns object needed to plot BreakDown in D3 ###
 
   m <- ifelse(nrow(x) - 2 <= max_features, nrow(x), max_features + 3)
 
-  new_x <- prepareBreakDownDF(x, max_features, baseline, digits, rounding_function)
+  new_x <- prepare_break_down_df(x, max_features, baseline, digits, rounding_function)
 
   if (any(is.na(min_max))) {
     if (is.na(baseline)) {
@@ -32,8 +32,8 @@ prepareBreakDown <- function(x, max_features = 10, baseline = NA, digits = 3,
   ret
 }
 
-prepareBreakDownDF <- function(x, max_features = 10, baseline = NA, digits = 3,
-                               rounding_function = round) {
+prepare_break_down_df <- function(x, max_features = 10, baseline = NA, digits = 3,
+                                  rounding_function = round) {
   ### This function returns data as DF needed to plot BreakDown in D3 ###
 
   # fix df
@@ -89,8 +89,8 @@ prepareBreakDownDF <- function(x, max_features = 10, baseline = NA, digits = 3,
   x
 }
 
-prepareShapleyValues <- function(x, max_features = 10, baseline = NA, digits = 3,
-                                 rounding_function = round, margin = 0.2, min_max = NA) {
+prepare_shapley_values <- function(x, max_features = 10, baseline = NA, digits = 3,
+                                   rounding_function = round, margin = 0.2, min_max = NA) {
   ### This function returns object needed to plot Shap in D3 ###
 
   x <- x[x$B == 0,]
@@ -99,7 +99,7 @@ prepareShapleyValues <- function(x, max_features = 10, baseline = NA, digits = 3
 
   m <- ifelse(nrow(x) <= max_features, nrow(x), max_features + 1)
 
-  new_x <- prepareShapleyValuesDF(x, max_features, baseline, prediction, digits, rounding_function)
+  new_x <- prepare_shapley_values_df(x, max_features, baseline, prediction, digits, rounding_function)
 
   if (any(is.na(min_max))) {
     min_max <- range(new_x[,"barStart"], new_x[,"barSupport"])
@@ -124,7 +124,7 @@ prepareShapleyValues <- function(x, max_features = 10, baseline = NA, digits = 3
   ret
 }
 
-prepareShapleyValuesDF <- function(x, max_features = 10, baseline = NA, prediction,
+prepare_shapley_values_df <- function(x, max_features = 10, baseline = NA, prediction,
                                    digits = 3, rounding_function = round) {
   ### This function returns data as DF needed to plot ShapleyValues in D3 ###
 
@@ -168,7 +168,7 @@ prepareShapleyValuesDF <- function(x, max_features = 10, baseline = NA, predicti
   x
 }
 
-prepareCeterisParibus <- function(x, variables = NULL) {
+prepare_ceteris_paribus <- function(x, variables = NULL) {
   ### This function returns object needed to plot CeterisParibus in D3 ###
 
   # which variable is numeric?
@@ -224,9 +224,11 @@ prepareCeterisParibus <- function(x, variables = NULL) {
       new_x[[name]] <- temp
     }
 
-    text <- ingredients::describe(x, display_values = TRUE,
-                                  display_numbers = TRUE,
-                                  variables = name)
+    text <- suppressWarnings(
+      ingredients::describe(x, display_values = TRUE,
+                            display_numbers = TRUE,
+                            variables = name)
+    )
 
     desc[[name]] <- data.frame(type = "desc",
                                text = gsub("\n","</br>", text))
@@ -243,7 +245,7 @@ prepareCeterisParibus <- function(x, variables = NULL) {
   ret
 }
 
-prepareFeatureImportance <- function(x, max_features = 10, margin = 0.2) {
+prepare_feature_importance <- function(x, max_features = 10, margin = 0.2) {
   ### This function returns object needed to plot FeatureImportance in D3 ###
 
   m <- dim(x)[1] - 2
@@ -287,7 +289,7 @@ prepareFeatureImportance <- function(x, max_features = 10, margin = 0.2) {
   ret
 }
 
-preparePartialDependency <- function(x, y, variables = NULL) {
+prepare_partial_dependency <- function(x, y, variables = NULL) {
   ### This function returns object needed to plot PartialDependency in D3 ###
 
   # which variable is numeric?
@@ -341,10 +343,12 @@ preparePartialDependency <- function(x, y, variables = NULL) {
       new_x[[name]] <- temp
     }
 
-    text <- ingredients::describe(rbind(x,y),
-                                  display_values = TRUE,
-                                  display_numbers = TRUE,
-                                  variables = name)
+    text <- suppressWarnings(
+      ingredients::describe(rbind(x,y),
+                            display_values = TRUE,
+                            display_numbers = TRUE,
+                            variables = name)
+    )
 
     desc[[name]] <- data.frame(type = "desc",
                                text = gsub("\n","</br>", text))
@@ -364,7 +368,7 @@ preparePartialDependency <- function(x, y, variables = NULL) {
   ret
 }
 
-prepareAccumulatedDependency <- function(x, y, variables = NULL) {
+prepare_accumulated_dependency <- function(x, y, variables = NULL) {
   ### This function returns object needed to plot AccumulatedDependency in D3 ###
 
   # which variable is numeric?
@@ -422,10 +426,13 @@ prepareAccumulatedDependency <- function(x, y, variables = NULL) {
       new_x[[name]] <- temp
     }
 
-    text <- ingredients::describe(rbind(x,y),
-                                  display_values = TRUE,
-                                  display_numbers = TRUE,
-                                  variables = name)
+    text <- suppressWarnings(
+      ingredients::describe(rbind(x,y),
+                            display_values = TRUE,
+                            display_numbers = TRUE,
+                            variables = name)
+    )
+
     ## accumulated not still developed
     text <- "Under development"
     desc[[name]] <- data.frame(type = "desc",
@@ -446,7 +453,7 @@ prepareAccumulatedDependency <- function(x, y, variables = NULL) {
   ret
 }
 
-prepareFeatureDistribution <- function(x, variables = NULL) {
+prepare_feature_distribution <- function(x, variables = NULL) {
   ### This function returns object needed to plot FeatureDistribution in D3 ###
 
   # which variable is numeric?

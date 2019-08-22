@@ -1,3 +1,11 @@
+# dime 0.1.6
+many minor changes stated in #20, most notably:
+* rename `x` parameter to `object` in `modelStudio()`
+* rename `getOptions()` to `modelStudioOptions()`
+* add `viewer` parameter to `modelStudio()`
+* add suppressWarnings(ingredients::describe)
+* upgrade documentation, examples and vignette
+
 # dime 0.1.5
 * add description to all plots besides AD and FD
 * add footer to `modelStudio`

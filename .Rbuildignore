@@ -12,4 +12,3 @@
 ^_pkgdown\.yml$
 ^codecov\.yml$
 dime_my_test.R
-vignettes/

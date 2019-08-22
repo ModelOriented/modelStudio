@@ -39,7 +39,7 @@
 
 <meta property="og:description" content="This tool uses your model, data and new observations, to provide local
 and global explanations. It generates plots and descriptions in the form
-of serverless HTML site, that supports animations and interactivity made with D3.js." />
+of the serverless HTML site, that supports animations and interactivity made with D3.js." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -84,7 +84,7 @@ of serverless HTML site, that supports animations and interactivity made with D3
         <div class="info">
           <span class="partof">part of the <a href="https://github.com/ModelOriented/DrWhy">DrWhy.AI</a>
            developed by the <a href="https://mi2.mini.pw.edu.pl/">MI^2 DataLab</a> </span>
-          <span class="version version-default">0.1.5</span>
+          <span class="version version-default">0.1.6</span>
         </div>
       </div>
     </div>
@@ -141,28 +141,30 @@ of serverless HTML site, that supports animations and interactivity made with D3
     
     <p>This tool uses your model, data and new observations, to provide local
 and global explanations. It generates plots and descriptions in the form
-of serverless HTML site, that supports animations and interactivity made with D3.js.</p>
+of the serverless HTML site, that supports animations and interactivity made with D3.js.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>modelStudio</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>modelStudio</span>(<span class='no'>object</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for explainer</span>
-<span class='fu'>modelStudio</span>(<span class='no'>x</span>, <span class='no'>new_observation</span>, <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>2</span>),
-  <span class='kw'>time</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>max_features</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>25</span>,
-  <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>options</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+<span class='fu'>modelStudio</span>(<span class='no'>object</span>, <span class='no'>new_observation</span>, <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>2</span>,
+  <span class='fl'>2</span>), <span class='kw'>time</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>max_features</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>25</span>,
+  <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>options</span> <span class='kw'>=</span> <span class='fu'><a href='modelStudioOptions.html'>modelStudioOptions</a></span>(),
+  <span class='kw'>viewer</span> <span class='kw'>=</span> <span class='st'>"external"</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for default</span>
-<span class='fu'>modelStudio</span>(<span class='no'>x</span>, <span class='no'>new_observation</span>, <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>2</span>),
-  <span class='kw'>time</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>max_features</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>25</span>,
-  <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>options</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>data</span>, <span class='no'>y</span>,
-  <span class='kw'>predict_function</span> <span class='kw'>=</span> <span class='no'>predict</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>modelStudio</span>(<span class='no'>object</span>, <span class='no'>data</span>, <span class='no'>y</span>,
+  <span class='kw'>predict_function</span> <span class='kw'>=</span> <span class='no'>predict</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/class'>class</a></span>(<span class='no'>model</span>)[<span class='fl'>1</span>], <span class='no'>new_observation</span>,
+  <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>2</span>), <span class='kw'>time</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>max_features</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>500</span>,
+  <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>25</span>, <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>options</span> <span class='kw'>=</span> <span class='fu'><a href='modelStudioOptions.html'>modelStudioOptions</a></span>(), <span class='kw'>viewer</span> <span class='kw'>=</span> <span class='st'>"external"</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
+      <th>object</th>
       <td><p>an explainer created with function <code><a href='https://www.rdocumentation.org/packages/DALEX/topics/explain'>DALEX::explain()</a></code> or a model to be explained.</p></td>
     </tr>
     <tr>
@@ -200,28 +202,34 @@ of serverless HTML site, that supports animations and interactivity made with D3
     <tr>
       <th>parallel</th>
       <td><p>speed up computation using <code><a href='https://www.rdocumentation.org/packages/parallelMap/topics/parallelMap'>parallelMap::parallelMap()</a></code>.
-Default is <code>FALSE</code>.</p></td>
+See <a href='https://modeloriented.github.io/dime/articles/vignette_modelStudio.html#parallel-computation'><b>vignette</b></a>.</p></td>
     </tr>
     <tr>
       <th>options</th>
-      <td><p>customize <code>modelStudio</code>. See <code><a href='getOptions.html'>getOptions</a></code> and
-<a href='modeloriented.github.io/dime/articles/vignette_modelStudio.html#plot-options'><b>vignette</b></a>.</p></td>
+      <td><p>customize <code>modelStudio</code>. See <code><a href='modelStudioOptions.html'>modelStudioOptions</a></code> and
+<a href='https://modeloriented.github.io/dime/articles/vignette_modelStudio.html#plot-options'><b>vignette</b></a>.</p></td>
+    </tr>
+    <tr>
+      <th>viewer</th>
+      <td><p><code>external</code> to display in an external RStudio window;
+<code>internal</code> to use the RStudio internal viewer pane for output;
+<code>browser</code> to display in an external browser</p></td>
     </tr>
     <tr>
       <th>data</th>
-      <td><p>validation dataset, will be extracted from <code>x</code> if it's an explainer.</p></td>
+      <td><p>validation dataset, will be extracted from <code>object</code> if it is an explainer.</p></td>
     </tr>
     <tr>
       <th>y</th>
-      <td><p>true labels for <code>data</code>, will be extracted from <code>x</code> if it's an explainer.</p></td>
+      <td><p>true labels for <code>data</code>, will be extracted from <code>object</code> if it is an explainer.</p></td>
     </tr>
     <tr>
       <th>predict_function</th>
-      <td><p>predict function, will be extracted from <code>x</code> if it's an explainer.</p></td>
+      <td><p>predict function, will be extracted from <code>object</code> if it is an explainer.</p></td>
     </tr>
     <tr>
       <th>label</th>
-      <td><p>a name of the model, will be extracted from <code>x</code> if it's an explainer.</p></td>
+      <td><p>a name of the model, will be extracted from <code>object</code> if it is an explainer.</p></td>
     </tr>
     </table>
     
@@ -242,19 +250,19 @@ Default is <code>FALSE</code>.</p></td>
 
 <span class='co'># ex1 classification</span>
 
-<span class='no'>titanic</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/na.fail'>na.omit</a></span>(<span class='kw pkg'>DALEX</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/DALEX/topics/titanic'>titanic</a></span>)
-<span class='no'>titanic_small</span> <span class='kw'>&lt;-</span> <span class='no'>titanic</span>[,<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>6</span>,<span class='fl'>7</span>,<span class='fl'>9</span>)]
+<span class='no'>titanic_small</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>DALEX</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/DALEX/topics/titanic'>titanic_imputed</a></span>[,<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>6</span>,<span class='fl'>7</span>,<span class='fl'>9</span>)]
+<span class='no'>titanic_small</span>$<span class='no'>survived</span> <span class='kw'>&lt;-</span> <span class='no'>titanic_small</span>$<span class='no'>survived</span> <span class='kw'>==</span> <span class='st'>"yes"</span>
 
-<span class='no'>model_titanic_glm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/glm'>glm</a></span>(<span class='no'>survived</span> <span class='kw'>==</span> <span class='st'>"yes"</span> ~ <span class='no'>gender</span> + <span class='no'>age</span> + <span class='no'>fare</span> + <span class='no'>class</span> + <span class='no'>sibsp</span>,
+<span class='no'>model_titanic_glm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/glm'>glm</a></span>(<span class='no'>survived</span> ~ <span class='no'>gender</span> + <span class='no'>age</span> + <span class='no'>fare</span> + <span class='no'>class</span> + <span class='no'>sibsp</span>,
                          <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>titanic_small</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>)
 
 <span class='no'>explain_titanic_glm</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>DALEX</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/DALEX/topics/explain'>explain</a></span>(<span class='no'>model_titanic_glm</span>,
                                       <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>titanic_small</span>[,-<span class='fl'>6</span>],
-                                      <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>titanic_small</span>$<span class='no'>survived</span> <span class='kw'>==</span> <span class='st'>"yes"</span>,
+                                      <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>titanic_small</span>[,<span class='fl'>6</span>],
                                       <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"glm"</span>,
                                       <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='no'>new_observations</span> <span class='kw'>&lt;-</span> <span class='no'>titanic_small</span>[<span class='fl'>1</span>:<span class='fl'>4</span>,-<span class='fl'>6</span>]
+<span class='no'>new_observations</span> <span class='kw'>&lt;-</span> <span class='no'>titanic_small</span>[<span class='fl'>1</span>:<span class='fl'>4</span>,]
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>rownames</a></span>(<span class='no'>new_observations</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Lucas"</span>,<span class='st'>"James"</span>, <span class='st'>"Thomas"</span>, <span class='st'>"Nancy"</span>)
 
 <span class='fu'>modelStudio</span>(<span class='no'>explain_titanic_glm</span>, <span class='no'>new_observations</span>,
@@ -273,14 +281,12 @@ Default is <code>FALSE</code>.</p></td>
                                      <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>apartments</span>[,<span class='fl'>1</span>],
                                      <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='no'>new_apartments</span> <span class='kw'>&lt;-</span> <span class='no'>apartments</span>[<span class='fl'>1</span>:<span class='fl'>2</span>,-<span class='fl'>1</span>]
+<span class='no'>new_apartments</span> <span class='kw'>&lt;-</span> <span class='no'>apartments</span>[<span class='fl'>1</span>:<span class='fl'>2</span>,]
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>rownames</a></span>(<span class='no'>new_apartments</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"ap1"</span>,<span class='st'>"ap2"</span>)
 
 <span class='fu'>modelStudio</span>(<span class='no'>explain_apartments</span>, <span class='no'>new_apartments</span>,
             <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>), <span class='kw'>time</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
-            <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: essentially perfect fit: summary may be unreliable</span></div><div class='output co'>#&gt; <span class='warning'>Warning: essentially perfect fit: summary may be unreliable</span></div><div class='output co'>#&gt; <span class='warning'>Warning: essentially perfect fit: summary may be unreliable</span></div><div class='output co'>#&gt; <span class='warning'>Warning: essentially perfect fit: summary may be unreliable</span></div><div class='output co'>#&gt; <span class='warning'>Warning: essentially perfect fit: summary may be unreliable</span></div><div class='output co'>#&gt; <span class='warning'>Warning: essentially perfect fit: summary may be unreliable</span></div><div class='output co'>#&gt; <span class='warning'>Warning: essentially perfect fit: summary may be unreliable</span></div><div class='output co'>#&gt; <span class='warning'>Warning: essentially perfect fit: summary may be unreliable</span></div><div class='output co'>#&gt; <span class='warning'>Warning: essentially perfect fit: summary may be unreliable</span></div><div class='output co'>#&gt; <span class='warning'>Warning: essentially perfect fit: summary may be unreliable</span></div><div class='output co'>#&gt; <span class='warning'>Warning: essentially perfect fit: summary may be unreliable</span></div><div class='output co'>#&gt; <span class='warning'>Warning: essentially perfect fit: summary may be unreliable</span></div><div class='output co'>#&gt; <span class='warning'>Warning: essentially perfect fit: summary may be unreliable</span></div><div class='output co'>#&gt; <span class='warning'>Warning: essentially perfect fit: summary may be unreliable</span></div><div class='output co'>#&gt; <span class='warning'>Warning: essentially perfect fit: summary may be unreliable</span></div><div class='output co'>#&gt; <span class='warning'>Warning: essentially perfect fit: summary may be unreliable</span></div><div class='output co'>#&gt; <span class='warning'>Warning: essentially perfect fit: summary may be unreliable</span></div><div class='output co'>#&gt; <span class='warning'>Warning: essentially perfect fit: summary may be unreliable</span></div><div class='output co'>#&gt; <span class='warning'>Warning: essentially perfect fit: summary may be unreliable</span></div><div class='output co'>#&gt; <span class='warning'>Warning: essentially perfect fit: summary may be unreliable</span></div><div class='output co'>#&gt; <span class='warning'>Warning: essentially perfect fit: summary may be unreliable</span></div><div class='output co'>#&gt; <span class='warning'>Warning: essentially perfect fit: summary may be unreliable</span></div><div class='output co'>#&gt; <span class='warning'>Warning: essentially perfect fit: summary may be unreliable</span></div><div class='output co'>#&gt; <span class='warning'>Warning: essentially perfect fit: summary may be unreliable</span></div><div class='output co'>#&gt; <span class='warning'>Warning: essentially perfect fit: summary may be unreliable</span></div><div class='output co'>#&gt; <span class='warning'>Warning: essentially perfect fit: summary may be unreliable</span></div><div class='input'>
-
-</div></pre>
+            <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

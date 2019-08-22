@@ -8,7 +8,6 @@ ms2 <- modelStudio(model_glm,
                    max_features = 5,
                    data = titanic_test[,-9],
                    y = titanic_test$survived == "yes",
-                   label = NULL,
                    new_observation = titanic_test[1:2,-9],
                    N = 50, B = 10)
 

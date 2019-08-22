@@ -16,7 +16,7 @@ model_titanic_glm <- glm(survived == "yes" ~ gender + age + fare + class + sibsp
 explain_titanic_glm <- explain(model_titanic_glm,
                                data = titanic_small[,-6],
                                y = titanic_small$survived == "yes",
-                               label = "glm")
+                               label = "glm", verbose = TRUE)
 
 new_observations <- titanic_small[1:4,-6]
 rownames(new_observations) <- c("Lucas", "James", "Thomas", "Nancy")
@@ -32,7 +32,7 @@ model_glm <- glm(survived == "yes" ~.,
 explain_glm <- explain(model_glm,
                        data = titanic_test[,-9],
                        y = titanic_test$survived == "yes",
-                       label = "glm")
+                       label = "glm", verbose = TRUE)
 
 glm_numerical <- glm(survived == "yes" ~ age + fare + sibsp + parch,
                        data = titanic_test[, c(2,6,7,8,9)],
@@ -40,7 +40,7 @@ glm_numerical <- glm(survived == "yes" ~ age + fare + sibsp + parch,
 
 explain_glm_numerical <- explain(glm_numerical,
                                    data = titanic_test[, c(2,6,7,8)],
-                                   y = titanic_test$survived == "yes")
+                                   y = titanic_test$survived == "yes", verbose = TRUE)
 
 glm_not_numerical <- glm(survived == "yes" ~ gender + class + embarked + country,
                            data = titanic_test[, c(1,3,4,5,9)],
@@ -48,7 +48,7 @@ glm_not_numerical <- glm(survived == "yes" ~ gender + class + embarked + country
 
 explain_glm_not_numerical <- explain(glm_not_numerical,
                                        data = titanic_test[, c(1,3,4,5)],
-                                       y = titanic_test$survived == "yes")
+                                       y = titanic_test$survived == "yes", verbose = TRUE)
 
 model_small <- glm(survived == "yes" ~ age + gender,
                    data = titanic_test[, c(1,2,9)],
@@ -56,7 +56,7 @@ model_small <- glm(survived == "yes" ~ age + gender,
 
 explain_model_small <- explain(model_small,
                                data = titanic_test[, c(1,2)],
-                               y = titanic_test$survived == "yes")
+                               y = titanic_test$survived == "yes", verbose = TRUE)
 
 
 ### randomForest + apartments
@@ -66,7 +66,7 @@ library("randomForest")
 model_rf <- randomForest(m2.price ~. , data = apartments)
 explain_rf <- explain(model_rf,
                       data = apartments,
-                      y = apartments$m2.price)
+                      y = apartments$m2.price, verbose = TRUE)
 
 
 ### data/new_observation permutations
@@ -105,5 +105,5 @@ model_artifficial <- glm(y ~.,
 
 explain_artifficial <- explain(model_artifficial,
                                data = artifficial[,-12],
-                               y = artifficial[,12])
+                               y = artifficial[,12], verbose = TRUE)
 
