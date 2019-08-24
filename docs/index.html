@@ -99,39 +99,34 @@
 <div id="dime-deep-interactive-model-explanations" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#dime-deep-interactive-model-explanations" class="anchor"></a>dime: Deep Interactive Model Explanations</h1></div>
-<div id="automate-explaining-machine-learning-predictive-models" class="section level3">
-<h3 class="hasAnchor">
-<a href="#automate-explaining-machine-learning-predictive-models" class="anchor"></a>Automate Explaining Machine Learning Predictive Models</h3>
 
-<p>This package generates advanced interactive and animated model explanations in the form of serverless HTML site.</p>
+<div id="overview" class="section level2">
+<h2 class="hasAnchor">
+<a href="#overview" class="anchor"></a>Overview</h2>
+<p>The <code>dime</code> package automates explanation of Machine Learning predictive models This package generates advanced interactive and animated model explanations in the form of serverless HTML site.</p>
 <p>It combines <strong>R</strong> with <strong>D3.js</strong> to produce plots and descriptions for local and global explanations. The whole is greater than the sum of its parts, so it also supports EDA on top of that. ModelStudio is a fast and condensed way to get all the answers without much effort. Break down your model and look into its ingredients with only a few lines of code.</p>
-</div>
-<div id="see-an-example---modelstudio---perks-and-features" class="section level3">
-<h3 class="hasAnchor">
-<a href="#see-an-example---modelstudio---perks-and-features" class="anchor"></a><a href="https://modeloriented.github.io/dime/demo.html">See an example</a>   <a href="https://modeloriented.github.io/dime/articles/vignette_modelStudio.html">modelStudio - perks and features</a>
-</h3>
+<p><a href="https://modeloriented.github.io/dime/demo.html">See a demo</a>   <a href="https://modeloriented.github.io/dime/articles/vignette_modelStudio.html">Read the vigniette: modelStudio - perks and features</a></p>
 <p><img src="images/gif3.gif"></p>
 <p>The package <code>dime</code> is a part of the <a href="http://drwhy.ai">DrWhy.AI</a> universe.</p>
-<p>Find more about model explanations in <a href="https://pbiecek.github.io/PM_VEE/">Predictive Models: Visual Exploration, Explanation and Debugging</a> e-book.</p>
-<hr>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>Install from GitHub:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># dependencies</span></a>
-<a class="sourceLine" id="cb1-2" title="2">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"ModelOriented/ingredients"</span>)</a>
-<a class="sourceLine" id="cb1-3" title="3">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"ModelOriented/iBreakDown"</span>)</a>
-<a class="sourceLine" id="cb1-4" title="4"></a>
-<a class="sourceLine" id="cb1-5" title="5"><span class="co"># dime</span></a>
-<a class="sourceLine" id="cb1-6" title="6">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"ModelOriented/dime"</span>)</a></code></pre></div>
-<p>Make sure that all dependencies are up-to-date with GitHub.</p>
-<hr>
+<pre class="{r}"><code># the easiest way to get ingredients is to install it from CRAN:
+install.packages("ingredients")
+
+# Install the development version from GitHub:
+# dependencies
+devtools::install_github("ModelOriented/ingredients")
+devtools::install_github("ModelOriented/iBreakDown")
+
+# dime
+devtools::install_github("ModelOriented/dime")</code></pre>
 </div>
 <div id="demo" class="section level2">
 <h2 class="hasAnchor">
 <a href="#demo" class="anchor"></a>Demo</h2>
-<p>This package bases on <code><a href="https://www.rdocumentation.org/packages/DALEX/topics/explain">DALEX::explain()</a></code>.</p>
+<p>This package bases on DALEX explainers created with <code><a href="https://www.rdocumentation.org/packages/DALEX/topics/explain">DALEX::explain()</a></code>.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"dime"</span>)</a>
 <a class="sourceLine" id="cb2-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"DALEX"</span>)</a></code></pre></div>
 <p>Create a model:</p>
@@ -165,6 +160,11 @@
 <h2 class="hasAnchor">
 <a href="#cheat-sheet" class="anchor"></a>Cheat Sheet</h2>
 <p><img src="images/basicCheatSheet.bmp" alt="CheatSheet"></p>
+</div>
+<div id="acknowledgments" class="section level2">
+<h2 class="hasAnchor">
+<a href="#acknowledgments" class="anchor"></a>Acknowledgments</h2>
+<p>Work on this package was financially supported by the ‘NCN Opus grant 2016/21/B/ST6/02176’.</p>
 </div>
 </div>
   </div>

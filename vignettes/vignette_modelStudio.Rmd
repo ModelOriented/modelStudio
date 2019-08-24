@@ -39,18 +39,22 @@ knitr::kable(head(train))
 Prepare data and model for the explainer:
 
 ```{r results="hide", eval = FALSE}
+# create a random forest model
 library("randomForest")
 model <- randomForest(fired ~., data = train)
 
+# prepare validation dataset
 test <- DALEX::HR_test[1:100,]
 test$fired <- ifelse(test$status == "fired", 1, 0)
 test <- test[,-6]
 
+# create an explainer
 explainer <- DALEX::explain(model = model,
                             data = test[,-6],
                             y = test[,6],
                             verbose = FALSE)
 
+# start dime
 library("dime")
 ```
 
@@ -65,7 +69,8 @@ such as Break Down, Shapley Values and Ceteris Paribus Profiles.
 
 ```{r eval = FALSE}
 new_observations <- test[1:3,]
-rownames(new_observations) <- c("John Snow","Arya Stark","Samwell Tarly")
+rownames(new_observations) <- c("John Snow", "Arya Stark", "Samwell Tarly")
+
 modelStudio(explainer, new_observation = new_observations)
 ```
 
@@ -74,8 +79,10 @@ modelStudio(explainer, new_observation = new_observations)
 You can achieve bigger or smaller `modelStudio` grid with `facet_dim` parameter.
 
 ```{r eval = FALSE}
+# small dashboard with 2 panels
 modelStudio(explainer, new_observation = test[1:2,], facet_dim = c(1,2))
 
+# large dashboard with 9 panels
 modelStudio(explainer, new_observation = test[1:2,], facet_dim = c(3,3))
 ```
 
@@ -85,6 +92,7 @@ You can manipulate `time` parameter to set animation length. Value 0 will make
 them invisible.
 
 ```{r eval = FALSE}
+# turn on animations
 modelStudio(explainer, new_observation = test[1:2,], time = 1000)
 
 modelStudio(explainer, new_observation = test[1:2,], time = 0)
@@ -132,12 +140,14 @@ All options can be set outside of function call.
 More on that [here](https://github.com/berndbischl/parallelMap#being-lazy-configuration).
 
 ```{r eval = FALSE}
+#set up the cluster 
 options(
   parallelMap.default.mode        = "socket",
   parallelMap.default.cpus        = 4,
   parallelMap.default.show.info   = FALSE
 )
 
+# calculations will be distributed into 4 cores
 modelStudio(explainer, new_observation = test[1,], parallel = TRUE)
 ```
 
@@ -149,6 +159,7 @@ You can customize some of `modelStudio` looks by overwriting default options ret
 by `modelStudioOptions()`.
 
 ```{r eval = FALSE}
+# set additional graphical parameters
 new_options <- modelStudioOptions(
   show_subtitle = TRUE,
   bd_subtitle = "Hello World",
@@ -173,7 +184,7 @@ Bellow basic example of making `modelStudio` for mlr model using `DALEXtra::expl
 
 ```{r eval = FALSE}
 library(DALEXtra)
-
+# prepare mlr model
 task <- mlr::makeRegrTask(id = "task",
                           data = train,
                           target = "fired")
@@ -184,8 +195,10 @@ learner <- mlr::makeLearner("regr.randomForest",
 
 model <- mlr::train(learner, task)
 
+# create an explainer for mlr model
 explainer_mlr <- explain_mlr(model, data = test[,-6], y = test[,6])
 
+# call model studio for mlr model
 modelStudio(explainer_mlr,
             new_observation = test[1:4,],
             N = 100, B = 10)
@@ -203,15 +216,19 @@ library(DALEXtra)
 
 titanic_test <- read.csv(system.file("extdata", "titanic_test.csv", package = "DALEXtra")) 
 titanic_train <- read.csv(system.file("extdata", "titanic_train.csv", package = "DALEXtra"))
+
+# read scikitlearn model
 yml <- system.file("extdata", "scikitlearn.yml", package = "DALEXtra")
 pkl_gbm <- system.file("extdata", "scikitlearn.pkl", package = "DALEXtra")
 pkl_SGDC <- "SGDC.pkl"
 
+# prepare an explainer for scikitlearn model
 explainer_scikit <- explain_scikitlearn(pkl_gbm,
                                         yml = yml,
                                         data = titanic_test[,1:17],
                                         y = titanic_test[,18])
 
+# start model studio
 modelStudio(explainer_scikit,
             new_observation = titanic_test[1:4,1:17],
             N = 100, B = 10, options = modelStudioOptions(margin_left = 160))
