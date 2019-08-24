@@ -24,9 +24,6 @@ The package `dime` is a part of the [DrWhy.AI](http://drwhy.ai) universe.
 ## Installation
 
 ```{r}
-# the easiest way to get ingredients is to install it from CRAN:
-install.packages("ingredients")
-
 # Install the development version from GitHub:
 # dependencies
 devtools::install_github("ModelOriented/ingredients")
