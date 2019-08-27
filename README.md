@@ -95,7 +95,7 @@ and [`r2d3::save_d3_png()`](https://rstudio.github.io/r2d3/articles/publishing.h
 
 ## Cheat Sheet
 
-![CheatSheet](images/cheatSheet.png)
+![CheatSheet](images/cheatsheet.png)
 
 ------------------------------------------------
 
