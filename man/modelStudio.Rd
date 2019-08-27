@@ -26,15 +26,15 @@ modelStudio(object, ...)
 
 \item{new_observation}{a new observation with columns that correspond to variables used in the model.}
 
-\item{facet_dim}{dimensions of the grid. Default is 2x2.}
+\item{facet_dim}{dimensions of the grid. Default is \code{c(2,2)}.}
 
-\item{time}{in ms. Set animation length. Default is 1000.}
+\item{time}{in ms. Set animation length. Default is \code{500}.}
 
-\item{max_features}{maximum number of features to be included in Break Down and Shapley Values plot.}
+\item{max_features}{maximum number of features to be included in Break Down and Shapley Values plot. Default is \code{10}.}
 
-\item{N}{number of observations used for calculation of partial dependency profiles. Default is 500.}
+\item{N}{number of observations used for calculation of partial dependency profiles. Default is \code{500}.}
 
-\item{B}{number of random paths used for calculation of shapley values. Default is 25.}
+\item{B}{number of random paths used for calculation of shapley values. Default is \code{25}.}
 
 \item{show_info}{verbose progress bar on console? Default is \code{TRUE}.}
 
@@ -44,11 +44,12 @@ See \href{https://modeloriented.github.io/dime/articles/vignette_modelStudio.htm
 \item{options}{customize \code{modelStudio}. See \code{\link{modelStudioOptions}} and
 \href{https://modeloriented.github.io/dime/articles/vignette_modelStudio.html#plot-options}{\bold{vignette}}.}
 
-\item{viewer}{\code{external} to display in an external RStudio window;
-\code{internal} to use the RStudio internal viewer pane for output;
-\code{browser} to display in an external browser}
+\item{viewer}{Default is \code{external} to display in an external RStudio window.
+Use \code{browser} to display in an external browser or
+\code{internal} to use the RStudio internal viewer pane for output.}
 
-\item{data}{validation dataset, will be extracted from \code{object} if it is an explainer.}
+\item{data}{validation dataset, will be extracted from \code{object} if it is an explainer.
+NOTE: It is best when target variable is not present in the \code{data}.}
 
 \item{y}{true labels for \code{data}, will be extracted from \code{object} if it is an explainer.}
 

@@ -177,23 +177,23 @@ of the serverless HTML site, that supports animations and interactivity made wit
     </tr>
     <tr>
       <th>facet_dim</th>
-      <td><p>dimensions of the grid. Default is 2x2.</p></td>
+      <td><p>dimensions of the grid. Default is <code><a href='https://www.rdocumentation.org/packages/base/topics/c'>c(2,2)</a></code>.</p></td>
     </tr>
     <tr>
       <th>time</th>
-      <td><p>in ms. Set animation length. Default is 1000.</p></td>
+      <td><p>in ms. Set animation length. Default is <code>500</code>.</p></td>
     </tr>
     <tr>
       <th>max_features</th>
-      <td><p>maximum number of features to be included in Break Down and Shapley Values plot.</p></td>
+      <td><p>maximum number of features to be included in Break Down and Shapley Values plot. Default is <code>10</code>.</p></td>
     </tr>
     <tr>
       <th>N</th>
-      <td><p>number of observations used for calculation of partial dependency profiles. Default is 500.</p></td>
+      <td><p>number of observations used for calculation of partial dependency profiles. Default is <code>500</code>.</p></td>
     </tr>
     <tr>
       <th>B</th>
-      <td><p>number of random paths used for calculation of shapley values. Default is 25.</p></td>
+      <td><p>number of random paths used for calculation of shapley values. Default is <code>25</code>.</p></td>
     </tr>
     <tr>
       <th>show_info</th>
@@ -201,7 +201,7 @@ of the serverless HTML site, that supports animations and interactivity made wit
     </tr>
     <tr>
       <th>parallel</th>
-      <td><p>speed up computation using <code>parallelMap::parallelMap()</code>.
+      <td><p>speed up computation using <code><a href='https://www.rdocumentation.org/packages/parallelMap/topics/parallelMap'>parallelMap::parallelMap()</a></code>.
 See <a href='https://modeloriented.github.io/dime/articles/vignette_modelStudio.html#parallel-computation'><b>vignette</b></a>.</p></td>
     </tr>
     <tr>
@@ -211,13 +211,14 @@ See <a href='https://modeloriented.github.io/dime/articles/vignette_modelStudio.
     </tr>
     <tr>
       <th>viewer</th>
-      <td><p><code>external</code> to display in an external RStudio window;
-<code>internal</code> to use the RStudio internal viewer pane for output;
-<code>browser</code> to display in an external browser</p></td>
+      <td><p>Default is <code>external</code> to display in an external RStudio window.
+Use <code>browser</code> to display in an external browser or
+<code>internal</code> to use the RStudio internal viewer pane for output.</p></td>
     </tr>
     <tr>
       <th>data</th>
-      <td><p>validation dataset, will be extracted from <code>object</code> if it is an explainer.</p></td>
+      <td><p>validation dataset, will be extracted from <code>object</code> if it is an explainer.
+NOTE: It is best when target variable is not present in the <code>data</code>.</p></td>
     </tr>
     <tr>
       <th>y</th>

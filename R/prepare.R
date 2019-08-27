@@ -426,12 +426,12 @@ prepare_accumulated_dependency <- function(x, y, variables = NULL) {
       new_x[[name]] <- temp
     }
 
-    text <- suppressWarnings(
-      ingredients::describe(rbind(x,y),
-                            display_values = TRUE,
-                            display_numbers = TRUE,
-                            variables = name)
-    )
+    # text <- suppressWarnings(
+    #   ingredients::describe(rbind(x,y),
+    #                         display_values = TRUE,
+    #                         display_numbers = TRUE,
+    #                         variables = name)
+    # )
 
     ## accumulated not still developed
     text <- "Under development"

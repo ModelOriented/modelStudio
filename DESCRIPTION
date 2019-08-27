@@ -3,8 +3,9 @@ Title: Deep Interactive Model Explanations
 Version: 0.1.6
 Authors@R:
     c(person("Hubert", "Baniecki", role = c("aut", "cre"), email = "hbaniecki@gmail.com"),
-      person("Przemyslaw", "Biecek", role = c("aut")))
-Description: Automate explaining machine learning predictive models.
+      person("Przemyslaw", "Biecek", role = c("aut"), 
+             comment = c(ORCID = "0000-0001-8423-1823")))
+Description: Automate explanation of machine learning predictive models.
   This package generates advanced interactive and animated model explanations in the form
   of serverless HTML site. It combines R with D3.js to produce plots and descriptions
   for local and global explanations. The whole is greater than the sum of its parts,

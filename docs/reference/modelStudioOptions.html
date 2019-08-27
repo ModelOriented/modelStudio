@@ -140,7 +140,7 @@ unintended behaviour." />
 
     <div class="ref-description">
     
-    <p>This function returns default options for <code>modelStudio</code>.
+    <p>This function returns default options for <code><a href='modelStudio.html'>modelStudio</a></code>.
 It is possible to modify values of this list and pass it to <code>options</code>
 parameter in the main function. <strong>WARNING: Editing default options may cause
 unintended behaviour.</strong></p>
@@ -164,35 +164,35 @@ unintended behaviour.</strong></p>
 <h3>Main options:</h3>
 
 <dl class='dl-horizontal'>
-<dt>scale_plot</dt><dd><p><code>TRUE</code> make every plot the same height, ignores <code>bar_width</code></p></dd>
-<dt>show_subtitle</dt><dd><p><code>TRUE</code> should subtitle be displayed?</p></dd>
-<dt>subtitle</dt><dd><p><code>label</code> parameter from <code>explainer</code></p></dd>
-<dt>margin_*</dt><dd><p>plot margins, change <code>margin_left</code> for longer/shorter axis labels</p></dd>
-<dt>w</dt><dd><p><code>420</code> inner plot width</p></dd>
-<dt>h</dt><dd><p><code>280</code> inner plot height</p></dd>
-<dt>bar_width</dt><dd><p><code>16</code> in px, width of bars, default for all plots,
-is ignored when <code>scale_plot == TRUE</code></p></dd>
-<dt>line_size</dt><dd><p><code>2</code> in px, width of lines, default for all plots</p></dd>
-<dt>point_size</dt><dd><p><code>3</code> in px, point radius, default for all plots</p></dd>
+<dt>scale_plot</dt><dd><p><code>TRUE</code> Makes every plot the same height, ignores <code>bar_width</code>.</p></dd>
+<dt>show_subtitle</dt><dd><p><code>TRUE</code> Should subtitle be displayed?</p></dd>
+<dt>subtitle</dt><dd><p><code>label</code> parameter from <code>explainer</code>.</p></dd>
+<dt>margin_*</dt><dd><p>plot margins. Change <code>margin_left</code> for longer/shorter axis labels.</p></dd>
+<dt>w</dt><dd><p><code>420</code> in px. Inner plot width.</p></dd>
+<dt>h</dt><dd><p><code>280</code> in px. Inner plot height.</p></dd>
+<dt>bar_width</dt><dd><p><code>16</code> in px. Default width of bars for all plots,
+ignored when <code>scale_plot = TRUE</code>.</p></dd>
+<dt>line_size</dt><dd><p><code>2</code> in px. Default width of lines for all plots.</p></dd>
+<dt>point_size</dt><dd><p><code>3</code> in px. Default point radius for all plots.</p></dd>
 <dt>[bar,line,point]_color</dt><dd><p><code>[#46bac2,#46bac2,#371ea3]</code></p></dd>
-<dt>positive_color</dt><dd><p><code>#8bdcbe</code> for Break Down and Shapley Values</p></dd>
-<dt>negative_color</dt><dd><p><code>#f05a71</code> for Break Down and Shapley Values</p></dd>
-<dt>default_color</dt><dd><p><code>#371ea3</code> for Break Down and highlighted line</p></dd>
+<dt>positive_color</dt><dd><p><code>#8bdcbe</code> for Break Down and Shapley Values bars.</p></dd>
+<dt>negative_color</dt><dd><p><code>#f05a71</code> for Break Down and Shapley Values bars.</p></dd>
+<dt>default_color</dt><dd><p><code>#371ea3</code> for Break Down bar and highlighted line.</p></dd>
 </dl>
 
 <h3>Plot specific options:</h3>
 
 <code>**</code> is a two letter code unique to each plot, might be
-one of <code>[bd,sv,cp,fi,pd,ad,fd]</code><br />
+one of <code>[bd,sv,cp,fi,pd,ad,fd]</code>.<br />
 
 <dl class='dl-horizontal'>
-<dt>**_title</dt><dd><p>plot specific title</p></dd>
-<dt>**_subtitle</dt><dd><p>plot specific subtitle, default is <code>subtitle</code></p></dd>
-<dt>**_bar_width</dt><dd><p>plot specific width of bars, default is <code>bar_width</code>,
-is ignored when <code>scale_plot == TRUE</code></p></dd>
-<dt>**_line_size</dt><dd><p>plot specific width of lines, default is <code>line_size</code></p></dd>
-<dt>**_point_size</dt><dd><p>plot specific point radius, default is <code>point_size</code></p></dd>
-<dt>**_*_color</dt><dd><p>plot specific <code>[bar,line,point]</code> color, default is <code>[bar,line,point]_color</code></p></dd>
+<dt>**_title</dt><dd><p>plot specific title. Default varies.</p></dd>
+<dt>**_subtitle</dt><dd><p>plot specific subtitle. Default is <code>subtitle</code>.</p></dd>
+<dt>**_bar_width</dt><dd><p>plot specific width of bars. Default is <code>bar_width</code>,
+ignored when <code>scale_plot = TRUE</code>.</p></dd>
+<dt>**_line_size</dt><dd><p><code>line_size</code> plot specific width of lines. Default is <code>line_size</code>.</p></dd>
+<dt>**_point_size</dt><dd><p>plot specific point radius. Default is <code>point_size</code>.</p></dd>
+<dt>**_*_color</dt><dd><p>plot specific <code>[bar,line,point]</code> color. Default is <code>[bar,line,point]_color</code>.</p></dd>
 </dl>
 
 

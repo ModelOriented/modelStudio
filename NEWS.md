@@ -1,5 +1,5 @@
 # dime 0.1.6
-many minor changes stated in #20, most notably:
+Many minor changes stated in #20, most notably:
 * rename `x` parameter to `object` in `modelStudio()`
 * rename `getOptions()` to `modelStudioOptions()`
 * add `viewer` parameter to `modelStudio()`

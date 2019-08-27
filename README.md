@@ -1,12 +1,13 @@
 # dime: Deep Interactive Model Explanations
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/dime)](https://cran.r-project.org/package=dime)
 [![Build Status](https://travis-ci.org/ModelOriented/dime.svg?branch=master)](https://travis-ci.org/ModelOriented/dime)
 [![Coverage Status](https://codecov.io/gh/ModelOriented/dime/branch/master/graph/badge.svg)](https://codecov.io/github/ModelOriented/dime?branch=master)
 
 ## Overview
 
-The `dime` package automates explanation of Machine Learning predictive models This package generates advanced interactive and animated model explanations in the form
+The `dime` package automates explanation of Machine Learning predictive models. This package generates advanced interactive and animated model explanations in the form
 of serverless HTML site.
 
 It combines **R** with **D3.js** to produce plots and descriptions
@@ -19,15 +20,15 @@ with only a few lines of code.
 
 ![](images/gif3.gif)
 
-The package `dime` is a part of the [DrWhy.AI](http://drwhy.ai) universe.
+The `dime` package is a part of the [DrWhy.AI](http://drwhy.ai) universe.
 
 ## Installation
 
-```{r}
+```r
 # Install the development version from GitHub:
 # dependencies
-devtools::install_github("ModelOriented/ingredients")
-devtools::install_github("ModelOriented/iBreakDown")
+install.packages("ModelOriented/ingredients")
+install.packages("ModelOriented/iBreakDown")
 
 # dime
 devtools::install_github("ModelOriented/dime")
@@ -78,22 +79,25 @@ More examples [here](https://modeloriented.github.io/dime/articles/vignette_mode
 
 ![](images/gif4.gif)
 
-------------------------------------------------------
+------------------------------------------------
 
 ## Save
 
 You can save `modelStudio` using controls on the top of the RStudio Viewer
-or with `r2d3::save_d3_html()` and `r2d3::save_d3_png()`.
+or with [`r2d3::save_d3_html()`](https://rstudio.github.io/r2d3/articles/publishing.html#save-as-html)
+and [`r2d3::save_d3_png()`](https://rstudio.github.io/r2d3/articles/publishing.html#save_d3_png).
 
-![Save](images/controls.png)
+<p align="center">
+  <img src="images/controls.png">
+</p>
 
-------------------------------------------------------
+------------------------------------------------
 
 ## Cheat Sheet
 
-![CheatSheet](images/basicCheatSheet.bmp)
+![CheatSheet](images/cheatSheet.png)
 
-
+------------------------------------------------
 
 ## Acknowledgments
 

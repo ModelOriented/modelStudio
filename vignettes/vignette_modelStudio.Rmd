@@ -32,8 +32,8 @@ train <- train[,-6]
 head(train)
 ```
 
-```{r echo = FALSE}
-knitr::kable(head(train))
+```{r echo = FALSE, fig.align='center'}
+knitr::kable(head(train), digits = 2, caption = "DALEX::HR dataset")
 ```
 
 Prepare data and model for the explainer:
@@ -92,9 +92,10 @@ You can manipulate `time` parameter to set animation length. Value 0 will make
 them invisible.
 
 ```{r eval = FALSE}
-# turn on animations
+# slow down animations
 modelStudio(explainer, new_observation = test[1:2,], time = 1000)
 
+# turn off animations
 modelStudio(explainer, new_observation = test[1:2,], time = 0)
 ```
 
@@ -121,7 +122,7 @@ modelStudio(explainer, new_observation = test[1:2,], show_info = FALSE)
 
 ### viewer or browser?
 
-Best described here: [`r2d3 viewer argument`](https://rstudio.github.io/r2d3/articles/visualization_options.html#viewer).
+You can change `viewer` parameter to set where to display `modelStudio`. Best described here: [`r2d3 viewer argument`](https://rstudio.github.io/r2d3/articles/visualization_options.html#viewer).
 
 ```{r eval = FALSE}
 modelStudio(explainer, new_observation = test[1:2,], viewer = "browser")
@@ -184,6 +185,8 @@ Bellow basic example of making `modelStudio` for mlr model using `DALEXtra::expl
 
 ```{r eval = FALSE}
 library(DALEXtra)
+library(mlr)
+
 # prepare mlr model
 task <- mlr::makeRegrTask(id = "task",
                           data = train,
