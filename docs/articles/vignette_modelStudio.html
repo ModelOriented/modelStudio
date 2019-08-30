@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>modelStudio - perks and features • dime</title>
+<title>modelStudio - perks and features • modelStudio</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="../dalexverse.css" rel="stylesheet">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../dalexverse-2.css" rel="stylesheet">
@@ -39,7 +39,7 @@
       <div class="navbar-brand-container">
       <a class="navbar-mi2logo" href="http://DrWhy.AI/">
     <img src="https://github.com/ModelOriented/DrWhyTemplate/blob/master/inst/pkgdown/assets/drwhy_znak_violet_small.jpg?raw=true" alt="MI2" height="46" title="MI2"></a>
-        <a class="navbar-brand" href="../index.html">dime</a>
+        <a class="navbar-brand" href="../index.html">modelStudio</a>
         <div class="info">
           <span class="partof">part of the <a href="https://github.com/ModelOriented/DrWhy">DrWhy.AI</a>
            developed by the <a href="https://mi2.mini.pw.edu.pl/">MI^2 DataLab</a> </span>
@@ -74,7 +74,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
         <li>
-  <a href="https://github.com/ModelOriented/dime">
+  <a href="https://github.com/ModelOriented/modelStudio">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -94,16 +94,16 @@
       <h1>modelStudio - perks and features</h1>
                         <h4 class="author">Hubert Baniecki</h4>
             
-            <h4 class="date">2019-08-27</h4>
+            <h4 class="date">2019-08-30</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/ModelOriented/dime/blob/master/vignettes/vignette_modelStudio.Rmd"><code>vignettes/vignette_modelStudio.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ModelOriented/modelStudio/blob/master/vignettes/vignette_modelStudio.Rmd"><code>vignettes/vignette_modelStudio.Rmd</code></a></small>
       <div class="hidden name"><code>vignette_modelStudio.Rmd</code></div>
 
     </div>
 
     
     
-<p><code><a href="../reference/modelStudio.html">dime::modelStudio</a></code> uses your model, data and new observations, to provide local and global explanations. It generates plots and descriptions in the form of the serverless HTML site, that supports animations and interactivity made with D3.js.</p>
+<p><code><a href="../reference/modelStudio.html">modelStudio::modelStudio</a></code> uses your model, data and new observations, to provide local and global explanations. It generates plots and descriptions in the form of the serverless HTML site, that supports animations and interactivity made with D3.js.</p>
 <p>Let’s use <code><a href="https://www.rdocumentation.org/packages/DALEX/topics/HR">DALEX::HR</a></code> dataset to explore <code>modelStudio</code> parameters:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">train &lt;-<span class="st"> </span>DALEX<span class="op">::</span>HR[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>,]</a>
 <a class="sourceLine" id="cb1-2" title="2">train<span class="op">$</span>fired &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(train<span class="op">$</span>status <span class="op">==</span><span class="st"> "fired"</span>, <span class="dv">1</span>, <span class="dv">0</span>)</a>
@@ -187,8 +187,8 @@
 <a class="sourceLine" id="cb2-13" title="13">                            <span class="dt">y =</span> test[,<span class="dv">6</span>],</a>
 <a class="sourceLine" id="cb2-14" title="14">                            <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb2-15" title="15"></a>
-<a class="sourceLine" id="cb2-16" title="16"><span class="co"># start dime</span></a>
-<a class="sourceLine" id="cb2-17" title="17"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"dime"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb2-16" title="16"><span class="co"># start modelStudio</span></a>
+<a class="sourceLine" id="cb2-17" title="17"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"modelStudio"</span>)</a></code></pre></div>
 <hr>
 <div id="modelstudio-parameters" class="section level2">
 <h2 class="hasAnchor">
@@ -257,7 +257,7 @@
 <a class="sourceLine" id="cb9-6" title="6">)</a>
 <a class="sourceLine" id="cb9-7" title="7"></a>
 <a class="sourceLine" id="cb9-8" title="8"><span class="co"># calculations will be distributed into 4 cores</span></a>
-<a class="sourceLine" id="cb9-9" title="9"><span class="kw"><a href="../reference/modelStudio.html">modelStudio</a></span>(explainer, <span class="dt">new_observation =</span> test[<span class="dv">1</span>,], <span class="dt">parallel =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb9-9" title="9"><span class="kw"><a href="../reference/modelStudio.html">modelStudio</a></span>(explainer, <span class="dt">new_observation =</span> test[<span class="dv">1</span><span class="op">:</span><span class="dv">16</span>,], <span class="dt">parallel =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <hr>
 </div>
 <div id="plot-options" class="section level2">
@@ -276,8 +276,7 @@
 <a class="sourceLine" id="cb10-10" title="10">  <span class="dt">bd_negative_color =</span> <span class="st">"orange"</span> </a>
 <a class="sourceLine" id="cb10-11" title="11">)</a>
 <a class="sourceLine" id="cb10-12" title="12"></a>
-<a class="sourceLine" id="cb10-13" title="13"><span class="kw"><a href="../reference/modelStudio.html">modelStudio</a></span>(explainer, <span class="dt">new_observation =</span> test[<span class="dv">1</span>,],</a>
-<a class="sourceLine" id="cb10-14" title="14">            <span class="dt">options =</span> new_options)</a></code></pre></div>
+<a class="sourceLine" id="cb10-13" title="13"><span class="kw"><a href="../reference/modelStudio.html">modelStudio</a></span>(explainer, <span class="dt">new_observation =</span> test[<span class="dv">1</span>,], <span class="dt">options =</span> new_options)</a></code></pre></div>
 <hr>
 </div>
 <div id="r-mlr-model" class="section level2">

@@ -1,4 +1,4 @@
 library(testthat)
-library(dime)
+library(modelStudio)
 
-test_check("dime")
+test_check("modelStudio")

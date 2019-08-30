@@ -1,14 +1,13 @@
-# dime: Deep Interactive Model Explanations
+# modelStudio: Interactive Studio with Explanations for ML Models
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/dime)](https://cran.r-project.org/package=dime)
-[![Build Status](https://travis-ci.org/ModelOriented/dime.svg?branch=master)](https://travis-ci.org/ModelOriented/dime)
-[![Coverage Status](https://codecov.io/gh/ModelOriented/dime/branch/master/graph/badge.svg)](https://codecov.io/github/ModelOriented/dime?branch=master)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/modelStudio)](https://cran.r-project.org/package=modelStudio)
+[![Build Status](https://travis-ci.org/ModelOriented/modelStudio.svg?branch=master)](https://travis-ci.org/ModelOriented/modelStudio)
+[![Coverage Status](https://codecov.io/gh/ModelOriented/modelStudio/branch/master/graph/badge.svg)](https://codecov.io/github/ModelOriented/modelStudio?branch=master)
 
 ## Overview
 
-The `dime` package automates explanation of Machine Learning predictive models. This package generates advanced interactive and animated model explanations in the form
-of serverless HTML site.
+The `modelStudio` package automates explanation of machine learning predictive models. This package generates advanced interactive and animated model explanations in the form of serverless HTML site.
 
 It combines **R** with **D3.js** to produce plots and descriptions
 for local and global explanations. The whole is greater than the sum of its parts,
@@ -16,22 +15,20 @@ so it also supports EDA on top of that. ModelStudio is a fast and condensed way 
 all the answers without much effort. Break down your model and look into its ingredients
 with only a few lines of code.
 
-[See a demo](https://modeloriented.github.io/dime/demo.html) &emsp; [Read the vigniette: modelStudio - perks and features](https://modeloriented.github.io/dime/articles/vignette_modelStudio.html)  
+[See a demo](https://modeloriented.github.io/modelStudio/demo.html) &emsp; [Read the vigniette: modelStudio - perks and features](https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html)  
 
 ![](images/gif3.gif)
 
-The `dime` package is a part of the [DrWhy.AI](http://drwhy.ai) universe.
+The `modelStudio` package is a part of the [DrWhy.AI](http://drwhy.ai) universe.
 
 ## Installation
 
 ```r
-# Install the development version from GitHub:
-# dependencies
-install.packages("ModelOriented/ingredients")
-install.packages("ModelOriented/iBreakDown")
+# Install from CRAN: 
+install.packages("ModelOriented/modelStudio")
 
-# dime
-devtools::install_github("ModelOriented/dime")
+# Install the development version from GitHub:
+devtools::install_github("ModelOriented/modelStudio")
 ```
 
 ## Demo
@@ -39,7 +36,7 @@ devtools::install_github("ModelOriented/dime")
 This package bases on DALEX explainers created with `DALEX::explain()`.
 
 ```r
-library("dime")
+library("modelStudio")
 library("DALEX")
 ```
 
@@ -75,7 +72,7 @@ Make a studio for the model:
 modelStudio(explain_titanic_glm, new_observations)
 ```
 
-More examples [here](https://modeloriented.github.io/dime/articles/vignette_modelStudio.html).
+More examples [here](https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html).
 
 ![](images/gif4.gif)
 

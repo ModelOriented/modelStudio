@@ -11,4 +11,4 @@
 ^.*README.*$
 ^_pkgdown\.yml$
 ^codecov\.yml$
-dime_my_test.R
+modelStudio_my_test.R

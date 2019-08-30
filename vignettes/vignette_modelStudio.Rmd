@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-`dime::modelStudio` uses your model, data and new observations, to provide local
+`modelStudio::modelStudio` uses your model, data and new observations, to provide local
 and global explanations. It generates plots and descriptions in the form
 of the serverless HTML site, that supports animations and interactivity made with D3.js.
 
@@ -54,8 +54,8 @@ explainer <- DALEX::explain(model = model,
                             y = test[,6],
                             verbose = FALSE)
 
-# start dime
-library("dime")
+# start modelStudio
+library("modelStudio")
 ```
 
 -------------------------------------------------------------------
@@ -149,7 +149,7 @@ options(
 )
 
 # calculations will be distributed into 4 cores
-modelStudio(explainer, new_observation = test[1,], parallel = TRUE)
+modelStudio(explainer, new_observation = test[1:16,], parallel = TRUE)
 ```
 
 --------------------------------------------------------------------
@@ -172,8 +172,7 @@ new_options <- modelStudioOptions(
   bd_negative_color = "orange" 
 )
 
-modelStudio(explainer, new_observation = test[1,],
-            options = new_options)
+modelStudio(explainer, new_observation = test[1,], options = new_options)
 ```
 
 -------------------------------------------------------------------

@@ -14,12 +14,12 @@
 #' @param B number of random paths used for calculation of shapley values. Default is \code{25}.
 #' @param show_info verbose progress bar on console? Default is \code{TRUE}.
 #' @param parallel speed up computation using \code{parallelMap::parallelMap()}.
-#' See \href{https://modeloriented.github.io/dime/articles/vignette_modelStudio.html#parallel-computation}{\bold{vignette}}.
+#' See \href{https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#parallel-computation}{\bold{vignette}}.
 #' @param viewer Default is \code{external} to display in an external RStudio window.
 #' Use \code{browser} to display in an external browser or
 #' \code{internal} to use the RStudio internal viewer pane for output.
 #' @param options customize \code{modelStudio}. See \code{\link{modelStudioOptions}} and
-#' \href{https://modeloriented.github.io/dime/articles/vignette_modelStudio.html#plot-options}{\bold{vignette}}.
+#' \href{https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#plot-options}{\bold{vignette}}.
 #' @param ... other parameters.
 #' @param data validation dataset, will be extracted from \code{object} if it is an explainer.
 #' NOTE: It is best when target variable is not present in the \code{data}.
@@ -40,7 +40,7 @@
 #' \href{https://modeloriented.github.io/DALEXtra/}{\bold{DALEXtra}}
 #'
 #' @examples
-#' library("dime")
+#' library("modelStudio")
 #'
 #' # ex1 classification
 #'
@@ -56,13 +56,13 @@
 #'                                       label = "glm",
 #'                                       verbose = FALSE)
 #'
-#' new_observations <- titanic_small[1:4,]
-#' rownames(new_observations) <- c("Lucas","James", "Thomas", "Nancy")
+#' new_observations <- titanic_small[1:2,]
+#' rownames(new_observations) <- c("Lucas","James")
 #'
 #' modelStudio(explain_titanic_glm, new_observations,
-#'             N = 100, B = 15, show_info = FALSE)
+#'             N = 100, B = 10, show_info = FALSE)
 #'
-#'
+#' \donttest{
 #' # ex2 regression
 #'
 #' apartments <- DALEX::apartments
@@ -80,8 +80,8 @@
 #'
 #' modelStudio(explain_apartments, new_apartments,
 #'             facet_dim = c(1,2), time = 1000,
-#'             N = 100, B = 15, show_info = FALSE)
-#'
+#'             show_info = FALSE)
+#' }
 #'
 #' @export
 #' @rdname modelStudio
@@ -267,7 +267,7 @@ modelStudio.default <- function(object,
 
   names(obs_list) <- rownames(obs_data)
 
-  footer_text <- paste0("Site built with dime v", installed.packages()["dime","Version"],
+  footer_text <- paste0("Site built with modelStudio v", installed.packages()["modelStudio","Version"],
                         " on ", format(Sys.time(), usetz = FALSE))
 
   options <- c(list(time = time,
@@ -283,17 +283,17 @@ modelStudio.default <- function(object,
 
   model_studio <- r2d3::r2d3(
                     data = temp,
-                    script = system.file("d3js/modelStudio.js", package = "dime"),
+                    script = system.file("d3js/modelStudio.js", package = "modelStudio"),
                     dependencies = list(
-                      system.file("d3js/hackHead.js", package = "dime"),
-                      system.file("d3js/myTools.js", package = "dime"),
-                      system.file("d3js/d3-tip.js", package = "dime"),
-                      system.file("d3js/d3-simple-slider.min.js", package = "dime"),
-                      system.file("d3js/d3-interpolate-path.min.js", package = "dime"),
-                      system.file("d3js/generatePlots.js", package = "dime"),
-                      system.file("d3js/generateTooltipHtml.js", package = "dime")
+                      system.file("d3js/hackHead.js", package = "modelStudio"),
+                      system.file("d3js/myTools.js", package = "modelStudio"),
+                      system.file("d3js/d3-tip.js", package = "modelStudio"),
+                      system.file("d3js/d3-simple-slider.min.js", package = "modelStudio"),
+                      system.file("d3js/d3-interpolate-path.min.js", package = "modelStudio"),
+                      system.file("d3js/generatePlots.js", package = "modelStudio"),
+                      system.file("d3js/generateTooltipHtml.js", package = "modelStudio")
                     ),
-                    css = system.file("d3js/modelStudio.css", package = "dime"),
+                    css = system.file("d3js/modelStudio.css", package = "modelStudio"),
                     options = options,
                     d3_version = "4",
                     viewer = viewer,
@@ -320,16 +320,16 @@ remove_file_paths <- function(text, type = NULL) {
   if (is.null(type)) stop("error in remove_file_paths")
 
   if (type == "js") {
-    text <- gsub(system.file("d3js/modelStudio.js", package = "dime"), "", text, fixed = TRUE)
-    text <- gsub(system.file("d3js/hackHead.js", package = "dime"), "", text, fixed = TRUE)
-    text <- gsub(system.file("d3js/myTools.js", package = "dime"), "", text, fixed = TRUE)
-    text <- gsub(system.file("d3js/d3-tip.js", package = "dime"), "", text, fixed = TRUE)
-    text <- gsub(system.file("d3js/d3-simple-slider.min.js", package = "dime"), "", text, fixed = TRUE)
-    text <- gsub(system.file("d3js/d3-interpolate-path.min.js", package = "dime"), "", text, fixed = TRUE)
-    text <- gsub(system.file("d3js/generatePlots.js", package = "dime"), "", text, fixed = TRUE)
-    text <- gsub(system.file("d3js/generateTooltipHtml.js", package = "dime"), "", text, fixed = TRUE)
+    text <- gsub(system.file("d3js/modelStudio.js", package = "modelStudio"), "", text, fixed = TRUE)
+    text <- gsub(system.file("d3js/hackHead.js", package = "modelStudio"), "", text, fixed = TRUE)
+    text <- gsub(system.file("d3js/myTools.js", package = "modelStudio"), "", text, fixed = TRUE)
+    text <- gsub(system.file("d3js/d3-tip.js", package = "modelStudio"), "", text, fixed = TRUE)
+    text <- gsub(system.file("d3js/d3-simple-slider.min.js", package = "modelStudio"), "", text, fixed = TRUE)
+    text <- gsub(system.file("d3js/d3-interpolate-path.min.js", package = "modelStudio"), "", text, fixed = TRUE)
+    text <- gsub(system.file("d3js/generatePlots.js", package = "modelStudio"), "", text, fixed = TRUE)
+    text <- gsub(system.file("d3js/generateTooltipHtml.js", package = "modelStudio"), "", text, fixed = TRUE)
   } else if (type == "css") {
-    text <- gsub(system.file("d3js/modelStudio.css", package = "dime"), "", text, fixed = TRUE)
+    text <- gsub(system.file("d3js/modelStudio.css", package = "modelStudio"), "", text, fixed = TRUE)
   }
 
   text

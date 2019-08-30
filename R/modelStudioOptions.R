@@ -44,7 +44,7 @@
 #'
 #'
 #' @examples
-#' library("dime")
+#' library("modelStudio")
 #'
 #' apartments <- DALEX::apartments
 #'
@@ -71,7 +71,7 @@
 #' )
 #'
 #' modelStudio(explain_apartments, new_apartments,
-#'             facet_dim = c(1,2), N = 100, B = 15, show_info = FALSE,
+#'             facet_dim = c(1,2), N = 100, B = 10, show_info = FALSE,
 #'             options = op)
 #'
 #' @export

@@ -1,5 +1,5 @@
 # preparation
-library("dime")
+library("modelStudio")
 library("DALEX")
 
 titanic <- na.omit(titanic)

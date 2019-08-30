@@ -39,10 +39,10 @@ modelStudio(object, ...)
 \item{show_info}{verbose progress bar on console? Default is \code{TRUE}.}
 
 \item{parallel}{speed up computation using \code{parallelMap::parallelMap()}.
-See \href{https://modeloriented.github.io/dime/articles/vignette_modelStudio.html#parallel-computation}{\bold{vignette}}.}
+See \href{https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#parallel-computation}{\bold{vignette}}.}
 
 \item{options}{customize \code{modelStudio}. See \code{\link{modelStudioOptions}} and
-\href{https://modeloriented.github.io/dime/articles/vignette_modelStudio.html#plot-options}{\bold{vignette}}.}
+\href{https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#plot-options}{\bold{vignette}}.}
 
 \item{viewer}{Default is \code{external} to display in an external RStudio window.
 Use \code{browser} to display in an external browser or
@@ -66,7 +66,7 @@ and global explanations. It generates plots and descriptions in the form
 of the serverless HTML site, that supports animations and interactivity made with D3.js.
 }
 \examples{
-library("dime")
+library("modelStudio")
 
 # ex1 classification
 
@@ -82,13 +82,13 @@ explain_titanic_glm <- DALEX::explain(model_titanic_glm,
                                       label = "glm",
                                       verbose = FALSE)
 
-new_observations <- titanic_small[1:4,]
-rownames(new_observations) <- c("Lucas","James", "Thomas", "Nancy")
+new_observations <- titanic_small[1:2,]
+rownames(new_observations) <- c("Lucas","James")
 
 modelStudio(explain_titanic_glm, new_observations,
-            N = 100, B = 15, show_info = FALSE)
+            N = 100, B = 10, show_info = FALSE)
 
-
+\donttest{
 # ex2 regression
 
 apartments <- DALEX::apartments
@@ -106,8 +106,8 @@ rownames(new_apartments) <- c("ap1","ap2")
 
 modelStudio(explain_apartments, new_apartments,
             facet_dim = c(1,2), time = 1000,
-            N = 100, B = 15, show_info = FALSE)
-
+            show_info = FALSE)
+}
 
 }
 \references{
