@@ -49,7 +49,7 @@ ignored when \code{scale_plot = TRUE}.}
 This function returns default options for \code{\link{modelStudio}}.
 It is possible to modify values of this list and pass it to \code{options}
 parameter in the main function. \strong{WARNING: Editing default options may cause
-unintended behaviour.}
+unintended behavior.}
 }
 \examples{
 library("modelStudio")

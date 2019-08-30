@@ -135,7 +135,7 @@ modelStudio(explainer, new_observation = test[1:2,], viewer = "browser")
 You can speed up `modelStudio` computation by setting `parallel` parameter to `TRUE`. 
 It uses [`parallelMap`](https://www.rdocumentation.org/packages/parallelMap) package
 to calculate local explainers faster. It is really useful when using `modelStudio` with
-complicated models, vast datasets or simply many observations are beeing processed. 
+complicated models, vast datasets or simply many observations are being processed. 
 
 All options can be set outside of function call.
 More on that [here](https://github.com/berndbischl/parallelMap#being-lazy-configuration).

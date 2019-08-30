@@ -247,7 +247,7 @@
 <div id="parallel-computation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#parallel-computation" class="anchor"></a>parallel computation</h2>
-<p>You can speed up <code>modelStudio</code> computation by setting <code>parallel</code> parameter to <code>TRUE</code>. It uses <a href="https://www.rdocumentation.org/packages/parallelMap"><code>parallelMap</code></a> package to calculate local explainers faster. It is really useful when using <code>modelStudio</code> with complicated models, vast datasets or simply many observations are beeing processed.</p>
+<p>You can speed up <code>modelStudio</code> computation by setting <code>parallel</code> parameter to <code>TRUE</code>. It uses <a href="https://www.rdocumentation.org/packages/parallelMap"><code>parallelMap</code></a> package to calculate local explainers faster. It is really useful when using <code>modelStudio</code> with complicated models, vast datasets or simply many observations are being processed.</p>
 <p>All options can be set outside of function call. More on that <a href="https://github.com/berndbischl/parallelMap#being-lazy-configuration">here</a>.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="co">#set up the cluster </span></a>
 <a class="sourceLine" id="cb9-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/options">options</a></span>(</a>
