@@ -1,4 +1,4 @@
-# modelStudio: Interactive Studio with Explanations for ML Models
+# modelStudio: Interactive Studio with Explanations for ML Predictive Models
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/modelStudio)](https://cran.r-project.org/package=modelStudio)
@@ -11,9 +11,9 @@ The `modelStudio` package automates explanation of machine learning predictive m
 
 It combines **R** with **D3.js** to produce plots and descriptions
 for local and global explanations. The whole is greater than the sum of its parts,
-so it also supports EDA on top of that. ModelStudio is a fast and condensed way to get
-all the answers without much effort. Break down your model and look into its ingredients
-with only a few lines of code.
+so it also supports EDA (Exploratory Data Analysis) on top of that. `modelStudio` is
+a fast and condensed way to get all the answers without much effort. Break down your model
+and look into its ingredients with only a few lines of code.
 
 [See a demo](https://modeloriented.github.io/modelStudio/demo.html) &emsp; [Read the vignette: modelStudio - perks and features](https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html)  
 

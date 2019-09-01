@@ -1,5 +1,9 @@
 my_tests.R
 
+# CRAN
+CRAN-RELEASE
+cran-comments.md
+
 # History files
 .Rhistory
 .Rapp.history

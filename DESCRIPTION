@@ -1,5 +1,5 @@
 Package: modelStudio
-Title: Interactive Studio with Explanations for ML Models
+Title: Interactive Studio with Explanations for ML Predictive Models
 Version: 0.1.6
 Authors@R:
     c(person("Hubert", "Baniecki", role = c("aut", "cre"), email = "hbaniecki@gmail.com"),
@@ -7,11 +7,11 @@ Authors@R:
              comment = c(ORCID = "0000-0001-8423-1823")))
 Description: Automate explanation of machine learning predictive models.
   This package generates advanced interactive and animated model explanations in the form
-  of serverless HTML site. It combines R with D3.js to produce plots and descriptions
+  of serverless HTML site. It combines 'R' with 'D3.js' to produce plots and descriptions
   for local and global explanations. The whole is greater than the sum of its parts,
-  so it also supports EDA on top of that. ModelStudio is a fast and condensed way to get
-  all the answers without much effort. Break down your model and look into its ingredients
-  with only a few lines of code.
+  so it also supports EDA (Exploratory Data Analysis) on top of that. 'modelStudio' is
+  a fast and condensed way to get all the answers without much effort. 
+  Break down your model and look into its ingredients with only a few lines of code.
 Depends: R (>= 3.5.0)
 License: GPL
 Encoding: UTF-8
