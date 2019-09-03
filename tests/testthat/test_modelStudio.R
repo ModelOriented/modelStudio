@@ -1,4 +1,5 @@
 context("Check modelStudio() function")
+library(DALEX)
 source("test_objects.R")
 
 ms1 <- modelStudio(explain_glm,
@@ -125,5 +126,5 @@ test_that("parallel", {
 })
 
 test_that("parallel rf", {
-  expect_is(ms_parallel, "r2d3")
+  expect_is(ms_parallel_rf, "r2d3")
 })

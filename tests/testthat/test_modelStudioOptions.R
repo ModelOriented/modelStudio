@@ -1,4 +1,5 @@
 context("Check options parameter and modelStudioOptions() function")
+library(DALEX)
 source("test_objects.R")
 
 op <- modelStudioOptions()

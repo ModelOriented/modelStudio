@@ -13,7 +13,7 @@ titanic_small <- titanic[sample(1:nrow(titanic), 500), c(1,2,3,6,7,9)]
 model_titanic_glm <- glm(survived == "yes" ~ gender + age + fare + class + sibsp,
                          data = titanic_small, family = "binomial")
 
-explain_titanic_glm <- explain(model_titanic_glm,
+explain_titanic_glm <- DALEX::explain(model_titanic_glm,
                                data = titanic_small[,-6],
                                y = titanic_small$survived == "yes",
                                label = "glm", verbose = TRUE)
@@ -29,7 +29,7 @@ titanic_test <- titanic[sample(1:nrow(titanic), 500),]
 model_glm <- glm(survived == "yes" ~.,
                  data = titanic_test, family = "binomial")
 
-explain_glm <- explain(model_glm,
+explain_glm <- DALEX::explain(model_glm,
                        data = titanic_test[,-9],
                        y = titanic_test$survived == "yes",
                        label = "glm", verbose = TRUE)
@@ -38,7 +38,7 @@ glm_numerical <- glm(survived == "yes" ~ age + fare + sibsp + parch,
                        data = titanic_test[, c(2,6,7,8,9)],
                        family = "binomial")
 
-explain_glm_numerical <- explain(glm_numerical,
+explain_glm_numerical <- DALEX::explain(glm_numerical,
                                    data = titanic_test[, c(2,6,7,8)],
                                    y = titanic_test$survived == "yes", verbose = TRUE)
 
@@ -46,7 +46,7 @@ glm_not_numerical <- glm(survived == "yes" ~ gender + class + embarked + country
                            data = titanic_test[, c(1,3,4,5,9)],
                            family = "binomial")
 
-explain_glm_not_numerical <- explain(glm_not_numerical,
+explain_glm_not_numerical <- DALEX::explain(glm_not_numerical,
                                        data = titanic_test[, c(1,3,4,5)],
                                        y = titanic_test$survived == "yes", verbose = TRUE)
 
@@ -54,7 +54,7 @@ model_small <- glm(survived == "yes" ~ age + gender,
                    data = titanic_test[, c(1,2,9)],
                    family = "binomial")
 
-explain_model_small <- explain(model_small,
+explain_model_small <- DALEX::explain(model_small,
                                data = titanic_test[, c(1,2)],
                                y = titanic_test$survived == "yes", verbose = TRUE)
 
@@ -64,7 +64,7 @@ explain_model_small <- explain(model_small,
 library("randomForest")
 
 model_rf <- randomForest(m2.price ~. , data = apartments)
-explain_rf <- explain(model_rf,
+explain_rf <- DALEX::explain(model_rf,
                       data = apartments,
                       y = apartments$m2.price, verbose = TRUE)
 
@@ -103,7 +103,7 @@ model_artifficial <- glm(y ~.,
                          data = artifficial,
                          family = "binomial")
 
-explain_artifficial <- explain(model_artifficial,
+explain_artifficial <- DALEX::explain(model_artifficial,
                                data = artifficial[,-12],
                                y = artifficial[,12], verbose = TRUE)
 
