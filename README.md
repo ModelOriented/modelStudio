@@ -25,7 +25,7 @@ The `modelStudio` package is a part of the [DrWhy.AI](http://drwhy.ai) universe.
 
 ```r
 # Install from CRAN: 
-install.packages("ModelOriented/modelStudio")
+install.packages("modelStudio")
 
 # Install the development version from GitHub:
 devtools::install_github("ModelOriented/modelStudio")
