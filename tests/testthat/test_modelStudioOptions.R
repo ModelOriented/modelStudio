@@ -1,15 +1,15 @@
 context("Check options parameter and modelStudioOptions() function")
-library(DALEX)
+
 source("test_objects.R")
 
-op <- modelStudioOptions()
+op <- modelStudio::modelStudioOptions()
 
-test_that("modelStudioOptions()", {
-  expect_is(op, "list")
-  expect_true(length(op) > 30)
+testthat::test_that("modelStudioOptions()", {
+  testthat::expect_is(op, "list")
+  testthat::expect_true(length(op) > 30)
 })
 
-new_options <- modelStudioOptions(
+new_options <- modelStudio::modelStudioOptions(
   scale_plot = FALSE,
   show_subtitle = TRUE,
   subtitle = "hello",
@@ -73,10 +73,10 @@ new_options <- modelStudioOptions(
   fd_bar_color = NULL
 )
 
-ms <- modelStudio(explain_rf, apartments[1:2,],
+ms <- modelStudio::modelStudio(explain_rf, apartments[1:2,],
                   facet_dim = c(2,3), N = 5, B = 2, show_info = FALSE,
                   options = new_options)
 
-test_that("options parameter", {
-  expect_is(ms, "r2d3")
+testthat::test_that("options parameter", {
+  testthat::expect_is(ms, "r2d3")
 })

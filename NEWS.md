@@ -1,3 +1,6 @@
+# modelStudio 0.1.7
+* fix tests for CRAN
+
 # modelStudio 0.1.6
 Many minor changes stated in #20, most notably:
 * rename `x` parameter to `object` in `modelStudio()`

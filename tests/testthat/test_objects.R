@@ -1,8 +1,4 @@
-# preparation
-library("modelStudio")
-library("DALEX")
-
-titanic <- na.omit(titanic)
+titanic <- na.omit(DALEX::titanic)
 set.seed(1313)
 
 
@@ -61,9 +57,7 @@ explain_model_small <- DALEX::explain(model_small,
 
 ### randomForest + apartments
 
-library("randomForest")
-
-model_rf <- randomForest(m2.price ~. , data = apartments)
+model_rf <- randomForest::randomForest(m2.price ~. , data = apartments)
 explain_rf <- DALEX::explain(model_rf,
                       data = apartments,
                       y = apartments$m2.price, verbose = TRUE)
