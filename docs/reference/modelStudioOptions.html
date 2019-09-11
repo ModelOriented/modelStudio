@@ -36,12 +36,13 @@
 
 
 <meta property="og:title" content="Get modified options for modelStudio — modelStudioOptions" />
-
 <meta property="og:description" content="This function returns default options for modelStudio.
 It is possible to modify values of this list and pass it to options
 parameter in the main function. WARNING: Editing default options may cause
 unintended behavior." />
+<meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -62,6 +63,7 @@ unintended behavior." />
 
  gtag('config', 'UA-5650686-14');
 </script>
+
   </head>
 
   <body>
@@ -78,9 +80,6 @@ unintended behavior." />
       </button>
 
       <div class="navbar-brand-container">
-      <a class = "navbar-mi2logo" href="http://DrWhy.AI/">
-    <img src = "https://github.com/ModelOriented/DrWhyTemplate/blob/master/inst/pkgdown/assets/drwhy_znak_violet_small.jpg?raw=true" alt = "MI2" height = 46 title = "MI2">
-	  </a>
         <a class="navbar-brand" href="../index.html">modelStudio</a>
         <div class="info">
           <span class="partof">part of the <a href="https://github.com/ModelOriented/DrWhy">DrWhy.AI</a>
@@ -93,7 +92,7 @@ unintended behavior." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -117,7 +116,7 @@ unintended behavior." />
 </li>
         <li>
   <a href="https://github.com/ModelOriented/modelStudio">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -128,6 +127,7 @@ unintended behavior." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -139,16 +139,14 @@ unintended behavior." />
     </div>
 
     <div class="ref-description">
-    
     <p>This function returns default options for <code><a href='modelStudio.html'>modelStudio</a></code>.
 It is possible to modify values of this list and pass it to <code>options</code>
 parameter in the main function. <strong>WARNING: Editing default options may cause
 unintended behavior.</strong></p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>modelStudioOptions</span>(<span class='no'>...</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -157,7 +155,7 @@ unintended behavior.</strong></p>
       <td><p>options to change, <code>option_name = value</code>.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>list</code> of options for modelStudio</p>
@@ -178,13 +176,12 @@ ignored when <code>scale_plot = TRUE</code>.</p></dd>
 <dt>positive_color</dt><dd><p><code>#8bdcbe</code> for Break Down and Shapley Values bars.</p></dd>
 <dt>negative_color</dt><dd><p><code>#f05a71</code> for Break Down and Shapley Values bars.</p></dd>
 <dt>default_color</dt><dd><p><code>#371ea3</code> for Break Down bar and highlighted line.</p></dd>
+
 </dl>
 
 <h3>Plot specific options:</h3>
-
-<code>**</code> is a two letter code unique to each plot, might be
-one of <code>[bd,sv,cp,fi,pd,ad,fd]</code>.<br />
-
+<p><code>**</code> is a two letter code unique to each plot, might be
+one of <code>[bd,sv,cp,fi,pd,ad,fd]</code>.<br /></p>
 <dl class='dl-horizontal'>
 <dt>**_title</dt><dd><p>plot specific title. Default varies.</p></dd>
 <dt>**_subtitle</dt><dd><p>plot specific subtitle. Default is <code>subtitle</code>.</p></dd>
@@ -193,26 +190,26 @@ ignored when <code>scale_plot = TRUE</code>.</p></dd>
 <dt>**_line_size</dt><dd><p><code>line_size</code> plot specific width of lines. Default is <code>line_size</code>.</p></dd>
 <dt>**_point_size</dt><dd><p>plot specific point radius. Default is <code>point_size</code>.</p></dd>
 <dt>**_*_color</dt><dd><p>plot specific <code>[bar,line,point]</code> color. Default is <code>[bar,line,point]_color</code>.</p></dd>
+
 </dl>
 
 
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='st'>"modelStudio"</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"modelStudio"</span>)
 
-<span class='no'>apartments</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>DALEX</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/DALEX/topics/apartments'>apartments</a></span>
+<span class='no'>apartments</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>DALEX</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/DALEX/man/apartments.html'>apartments</a></span>
 
-<span class='no'>model_apartments</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/glm'>glm</a></span>(<span class='no'>m2.price</span> ~<span class='no'>.</span> ,
+<span class='no'>model_apartments</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>m2.price</span> ~<span class='no'>.</span> ,
                         <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>)
 
-<span class='no'>explain_apartments</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>DALEX</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/DALEX/topics/explain'>explain</a></span>(<span class='no'>model_apartments</span>,
+<span class='no'>explain_apartments</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>DALEX</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='no'>model_apartments</span>,
                                      <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>[,-<span class='fl'>1</span>],
                                      <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>apartments</span>[,<span class='fl'>1</span>],
                                      <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='no'>new_apartments</span> <span class='kw'>&lt;-</span> <span class='no'>apartments</span>[<span class='fl'>1</span>:<span class='fl'>2</span>,]
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>rownames</a></span>(<span class='no'>new_apartments</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"ap1"</span>,<span class='st'>"ap2"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>new_apartments</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ap1"</span>,<span class='st'>"ap2"</span>)
 
 <span class='no'>op</span> <span class='kw'>&lt;-</span> <span class='fu'>modelStudioOptions</span>(
   <span class='kw'>show_subtitle</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
@@ -226,21 +223,20 @@ ignored when <code>scale_plot = TRUE</code>.</p></dd>
 )
 
 <span class='fu'><a href='modelStudio.html'>modelStudio</a></span>(<span class='no'>explain_apartments</span>, <span class='no'>new_apartments</span>,
-            <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>), <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+            <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>), <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
             <span class='kw'>options</span> <span class='kw'>=</span> <span class='no'>op</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="author">
@@ -249,11 +245,14 @@ ignored when <code>scale_plot = TRUE</code>.</p></dd>
     Site built by <a href="https://pkgdown.r-lib.org">pkgdown</a>.
   </p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 
