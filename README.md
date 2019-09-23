@@ -33,7 +33,7 @@ devtools::install_github("ModelOriented/modelStudio")
 
 ## Demo
 
-This package bases on DALEX explainers created with `DALEX::explain()`.
+This package bases on `DALEX` explainers created with `DALEX::explain()`.
 
 ```r
 library("modelStudio")
