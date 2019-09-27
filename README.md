@@ -36,7 +36,7 @@ devtools::install_github("ModelOriented/modelStudio")
 
 This package bases on `DALEX` explainers created with `DALEX::explain()`.
 
-```{r}
+```r
 library("modelStudio")
 
 # Prepare data
