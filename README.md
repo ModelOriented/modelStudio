@@ -36,41 +36,30 @@ devtools::install_github("ModelOriented/modelStudio")
 
 This package bases on `DALEX` explainers created with `DALEX::explain()`.
 
-```r
+```{r}
 library("modelStudio")
-library("DALEX")
-```
 
-Create a model:
-
-```r
-titanic_small <- titanic_imputed[, c(1,2,3,6,7,9)]
+# Prepare data
+titanic_small <- DALEX::titanic_imputed[, c(1,2,3,6,7,9)]
 titanic_small$survived <- titanic_small$survived == "yes"
 
-model_titanic_glm <- glm(survived ~ gender + age + fare + class + sibsp,
-                         data = titanic_small, family = "binomial")
-```
-
-Wrap it into an explainer:
-
-```r
-explain_titanic_glm <- explain(model_titanic_glm,
-                               data = titanic_small[,-6],
-                               y = titanic_small[,6],
-                               label = "glm")
-```
-
-Pick some data points:
-
-```r
+# Create a model
+model <- glm(survived ~.,
+             data = titanic_small,
+             family = "binomial")
+                 
+# Wrap it into an explainer        
+explainer <- DALEX::explain(model,
+                            data = titanic_small[,-6],
+                            y = titanic_small[,6],
+                            label = "glm")
+                   
+# Pick some data points
 new_observations <- titanic_small[1:4,]
 rownames(new_observations) <- c("Lucas", "James", "Thomas", "Nancy")
-```
 
-Make a studio for the model:
-
-```r
-modelStudio(explain_titanic_glm, new_observations)
+# Make a studio for the model
+modelStudio(explainer, new_observations)
 ```
 
 More examples [here](https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html).

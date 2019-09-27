@@ -123,24 +123,29 @@
 <h2 class="hasAnchor">
 <a href="#demo" class="anchor"></a>Demo</h2>
 <p>This package bases on <code>DALEX</code> explainers created with <code><a href="https://rdrr.io/pkg/DALEX/man/explain.html">DALEX::explain()</a></code>.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"modelStudio"</span>)</a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"DALEX"</span>)</a></code></pre></div>
-<p>Create a model:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">titanic_small &lt;-<span class="st"> </span>titanic_imputed[, <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">9</span>)]</a>
-<a class="sourceLine" id="cb3-2" title="2">titanic_small<span class="op">$</span>survived &lt;-<span class="st"> </span>titanic_small<span class="op">$</span>survived <span class="op">==</span><span class="st"> "yes"</span></a>
-<a class="sourceLine" id="cb3-3" title="3"></a>
-<a class="sourceLine" id="cb3-4" title="4">model_titanic_glm &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span>(survived <span class="op">~</span><span class="st"> </span>gender <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>fare <span class="op">+</span><span class="st"> </span>class <span class="op">+</span><span class="st"> </span>sibsp,</a>
-<a class="sourceLine" id="cb3-5" title="5">                         <span class="dt">data =</span> titanic_small, <span class="dt">family =</span> <span class="st">"binomial"</span>)</a></code></pre></div>
-<p>Wrap it into an explainer:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">explain_titanic_glm &lt;-<span class="st"> </span><span class="kw">explain</span>(model_titanic_glm,</a>
-<a class="sourceLine" id="cb4-2" title="2">                               <span class="dt">data =</span> titanic_small[,<span class="op">-</span><span class="dv">6</span>],</a>
-<a class="sourceLine" id="cb4-3" title="3">                               <span class="dt">y =</span> titanic_small[,<span class="dv">6</span>],</a>
-<a class="sourceLine" id="cb4-4" title="4">                               <span class="dt">label =</span> <span class="st">"glm"</span>)</a></code></pre></div>
-<p>Pick some data points:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">new_observations &lt;-<span class="st"> </span>titanic_small[<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>,]</a>
-<a class="sourceLine" id="cb5-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(new_observations) &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Lucas"</span>, <span class="st">"James"</span>, <span class="st">"Thomas"</span>, <span class="st">"Nancy"</span>)</a></code></pre></div>
-<p>Make a studio for the model:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw"><a href="reference/modelStudio.html">modelStudio</a></span>(explain_titanic_glm, new_observations)</a></code></pre></div>
+<pre class="{r}"><code>library("modelStudio")
+
+# Prepare data
+titanic_small &lt;- DALEX::titanic_imputed[, c(1,2,3,6,7,9)]
+titanic_small$survived &lt;- titanic_small$survived == "yes"
+
+# Create a model
+model &lt;- glm(survived ~.,
+             data = titanic_small,
+             family = "binomial")
+                 
+# Wrap it into an explainer        
+explainer &lt;- DALEX::explain(model,
+                            data = titanic_small[,-6],
+                            y = titanic_small[,6],
+                            label = "glm")
+                   
+# Pick some data points
+new_observations &lt;- titanic_small[1:4,]
+rownames(new_observations) &lt;- c("Lucas", "James", "Thomas", "Nancy")
+
+# Make a studio for the model
+modelStudio(explainer, new_observations)</code></pre>
 <p>More examples <a href="https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html">here</a>.</p>
 <p><img src="images/gif4.gif"></p>
 <hr>
@@ -200,6 +205,7 @@
 <li><a href="https://cran.r-project.org/package=modelStudio"><img src="http://www.r-pkg.org/badges/version/modelStudio" alt="CRAN_Status_Badge"></a></li>
 <li><a href="https://travis-ci.org/ModelOriented/modelStudio"><img src="https://travis-ci.org/ModelOriented/modelStudio.svg?branch=master" alt="Build Status"></a></li>
 <li><a href="https://codecov.io/github/ModelOriented/modelStudio?branch=master"><img src="https://codecov.io/gh/ModelOriented/modelStudio/branch/master/graph/badge.svg" alt="Coverage Status"></a></li>
+<li><a href="http://drwhy.ai/#AutoMat"><img src="https://img.shields.io/badge/DrWhy-AutoMat-ae2c87" alt="DrWhy-eXtrAI"></a></li>
 </ul>
 </div>
 </div>
