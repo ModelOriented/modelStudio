@@ -241,8 +241,8 @@ making those [here](https://modeloriented.github.io/DALEXtra/reference/).
 
 ## References
 
-* Wrapper for the function can be found in \href{https://modeloriented.github.io/DALEX/}{\bold{DALEX}}
+* Wrapper for the function can be found in [DALEX](https://modeloriented.github.io/DALEX/)
 * Feature Importance, Ceteris Paribus, Partial Dependency and Accumulated Dependency plots 
-are implemented in \href{https://modeloriented.github.io/ingredients/}{\bold{ingredients}}
-* Break Down and SHAP Values plots are implemented in \href{https://modeloriented.github.io/iBreakDown/}{\bold{iBreakDown}}
-* Python wrappers and more can be found in \href{https://modeloriented.github.io/DALEXtra/}{\bold{DALEXtra}}
+are implemented in [ingredients](https://modeloriented.github.io/ingredients/)
+* Break Down and SHAP Values plots are implemented in [iBreakDown](https://modeloriented.github.io/iBreakDown/)
+* Python wrappers and more can be found in [DALEXtra](https://modeloriented.github.io/DALEXtra/)
