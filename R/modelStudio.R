@@ -5,13 +5,15 @@
 #' and global explanations. It generates plots and descriptions in the form
 #' of the serverless HTML site, that supports animations and interactivity made with D3.js.
 #'
+#' Find more details about plots in \href{https://pbiecek.github.io/PM_VEE/}{Predictive Models: Explore, Explain, and Debug}
+#'
 #' @param object an explainer created with function \code{DALEX::explain()} or a model to be explained.
 #' @param new_observation a new observation with columns that correspond to variables used in the model.
 #' @param facet_dim dimensions of the grid. Default is \code{c(2,2)}.
 #' @param time in ms. Set animation length. Default is \code{500}.
-#' @param max_features maximum number of features to be included in Break Down and Shapley Values plot. Default is \code{10}.
+#' @param max_features maximum number of features to be included in Break Down and SHAP Values plots. Default is \code{10}.
 #' @param N number of observations used for calculation of partial dependency profiles. Default is \code{500}.
-#' @param B number of random paths used for calculation of shapley values. Default is \code{25}.
+#' @param B number of random paths used for calculation of SHAP values. Default is \code{25}.
 #' @param show_info verbose progress bar on console? Default is \code{TRUE}.
 #' @param parallel speed up computation using \code{parallelMap::parallelMap()}.
 #' See \href{https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#parallel-computation}{\bold{vignette}}.
@@ -34,10 +36,16 @@
 #' @importFrom grDevices nclass.Sturges
 #'
 #' @references
-#' \href{https://modeloriented.github.io/ingredients/}{\bold{ingredients}}
-#' \href{https://modeloriented.github.io/iBreakDown/}{\bold{iBreakDown}}
-#' \href{https://modeloriented.github.io/DALEX/}{\bold{DALEX}}
-#' \href{https://modeloriented.github.io/DALEXtra/}{\bold{DALEXtra}}
+#'
+#' \itemize{
+#'   \item Wrapper for the function can be found in \href{https://modeloriented.github.io/DALEX/}{\bold{DALEX}}
+#'   \item Feature Importance, Ceteris Paribus, Partial Dependency and Accumulated Dependency plots
+#' are implemented in \href{https://modeloriented.github.io/ingredients/}{\bold{ingredients}}
+#'   \item Break Down and SHAP Values plots are implemented in \href{https://modeloriented.github.io/iBreakDown/}{\bold{iBreakDown}}
+#' }
+#'
+#' @seealso
+#' Python wrappers and more can be found in \href{https://modeloriented.github.io/DALEXtra/}{\bold{DALEXtra}}
 #'
 #' @examples
 #' library("modelStudio")
@@ -225,7 +233,7 @@ modelStudio.default <- function(object,
         model, data, predict_function, new_observation, label = label)
 
       bd_data <- prepare_break_down(bd, max_features)
-      sv_data <- prepare_shapley_values(sv, max_features)
+      sv_data <- prepare_shap_values(sv, max_features)
       cp_data <- prepare_ceteris_paribus(cp, variables = variable_names)
 
       list(bd_data, cp_data, sv_data)
@@ -258,7 +266,7 @@ modelStudio.default <- function(object,
       if (show_info) setTxtProgressBar(pb, 5 + i)
 
       bd_data <- prepare_break_down(bd, max_features)
-      sv_data <- prepare_shapley_values(sv, max_features)
+      sv_data <- prepare_shap_values(sv, max_features)
       cp_data <- prepare_ceteris_paribus(cp, variables = variable_names)
 
       obs_list[[i]] <- list(bd_data, cp_data, sv_data)

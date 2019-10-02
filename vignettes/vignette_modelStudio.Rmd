@@ -65,7 +65,7 @@ library("modelStudio")
 ### local explanations
 
 You can pass data points to `new_observation` parameter for local explanations
-such as Break Down, Shapley Values and Ceteris Paribus Profiles.
+such as Break Down, SHAP Values and Ceteris Paribus Profiles.
 
 ```{r eval = FALSE}
 new_observations <- test[1:3,]
@@ -102,7 +102,7 @@ modelStudio(explainer, new_observation = test[1:2,], time = 0)
 ### more calculations means more time
 
 `N` is a number of observations used for calculation of partial dependency profiles.
-`B` is a number of random paths used for calculation of shapley values.
+`B` is a number of random paths used for calculation of SHAP values.
 You can decrease `N` and `B` parameters to lower computation time or increase
 them to get more accurate empirical results.
 
@@ -238,3 +238,11 @@ modelStudio(explainer_scikit,
 
 `modelStudio` should work with any `explainer` class object. Find more about 
 making those [here](https://modeloriented.github.io/DALEXtra/reference/).
+
+## References
+
+* Wrapper for the function can be found in \href{https://modeloriented.github.io/DALEX/}{\bold{DALEX}}
+* Feature Importance, Ceteris Paribus, Partial Dependency and Accumulated Dependency plots 
+are implemented in \href{https://modeloriented.github.io/ingredients/}{\bold{ingredients}}
+* Break Down and SHAP Values plots are implemented in \href{https://modeloriented.github.io/iBreakDown/}{\bold{iBreakDown}}
+* Python wrappers and more can be found in \href{https://modeloriented.github.io/DALEXtra/}{\bold{DALEXtra}}

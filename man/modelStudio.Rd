@@ -30,11 +30,11 @@ modelStudio(object, ...)
 
 \item{time}{in ms. Set animation length. Default is \code{500}.}
 
-\item{max_features}{maximum number of features to be included in Break Down and Shapley Values plot. Default is \code{10}.}
+\item{max_features}{maximum number of features to be included in Break Down and SHAP Values plots. Default is \code{10}.}
 
 \item{N}{number of observations used for calculation of partial dependency profiles. Default is \code{500}.}
 
-\item{B}{number of random paths used for calculation of shapley values. Default is \code{25}.}
+\item{B}{number of random paths used for calculation of SHAP values. Default is \code{25}.}
 
 \item{show_info}{verbose progress bar on console? Default is \code{TRUE}.}
 
@@ -64,6 +64,8 @@ an object of the \code{r2d3} class
 This tool uses your model, data and new observations, to provide local
 and global explanations. It generates plots and descriptions in the form
 of the serverless HTML site, that supports animations and interactivity made with D3.js.
+
+Find more details about plots in \href{https://pbiecek.github.io/PM_VEE/}{Predictive Models: Explore, Explain, and Debug}
 }
 \examples{
 library("modelStudio")
@@ -111,8 +113,13 @@ modelStudio(explain_apartments, new_apartments,
 
 }
 \references{
-\href{https://modeloriented.github.io/ingredients/}{\bold{ingredients}}
-\href{https://modeloriented.github.io/iBreakDown/}{\bold{iBreakDown}}
-\href{https://modeloriented.github.io/DALEX/}{\bold{DALEX}}
-\href{https://modeloriented.github.io/DALEXtra/}{\bold{DALEXtra}}
+\itemize{
+  \item Wrapper for the function can be found in \href{https://modeloriented.github.io/DALEX/}{\bold{DALEX}}
+  \item Feature Importance, Ceteris Paribus, Partial Dependency and Accumulated Dependency plots
+are implemented in \href{https://modeloriented.github.io/ingredients/}{\bold{ingredients}}
+  \item Break Down and SHAP Values plots are implemented in \href{https://modeloriented.github.io/iBreakDown/}{\bold{iBreakDown}}
+}
+}
+\seealso{
+Python wrappers and more can be found in \href{https://modeloriented.github.io/DALEXtra/}{\bold{DALEXtra}}
 }

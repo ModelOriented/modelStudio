@@ -25,8 +25,8 @@ ignored when \code{scale_plot = TRUE}.}
 \item{line_size}{\code{2} in px. Default width of lines for all plots.}
 \item{point_size}{\code{3} in px. Default point radius for all plots.}
 \item{[bar,line,point]_color}{\code{[#46bac2,#46bac2,#371ea3]}}
-\item{positive_color}{\code{#8bdcbe} for Break Down and Shapley Values bars.}
-\item{negative_color}{\code{#f05a71} for Break Down and Shapley Values bars.}
+\item{positive_color}{\code{#8bdcbe} for Break Down and SHAP Values bars.}
+\item{negative_color}{\code{#f05a71} for Break Down and SHAP Values bars.}
 \item{default_color}{\code{#371ea3} for Break Down bar and highlighted line.}
 }
 }

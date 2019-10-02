@@ -39,7 +39,8 @@
 
 <meta property="og:description" content="This tool uses your model, data and new observations, to provide local
 and global explanations. It generates plots and descriptions in the form
-of the serverless HTML site, that supports animations and interactivity made with D3.js." />
+of the serverless HTML site, that supports animations and interactivity made with D3.js.
+Find more details about plots in Predictive Models: Explore, Explain, and Debug" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -84,7 +85,7 @@ of the serverless HTML site, that supports animations and interactivity made wit
         <div class="info">
           <span class="partof">part of the <a href="https://github.com/ModelOriented/DrWhy">DrWhy.AI</a>
            developed by the <a href="https://mi2.mini.pw.edu.pl/">MI^2 DataLab</a> </span>
-          <span class="version version-default">0.1.7</span>
+          <span class="version version-default">0.1.8</span>
         </div>
       </div>
     </div>
@@ -143,6 +144,7 @@ of the serverless HTML site, that supports animations and interactivity made wit
     <p>This tool uses your model, data and new observations, to provide local
 and global explanations. It generates plots and descriptions in the form
 of the serverless HTML site, that supports animations and interactivity made with D3.js.</p>
+<p>Find more details about plots in <a href='https://pbiecek.github.io/PM_VEE/'>Predictive Models: Explore, Explain, and Debug</a></p>
     
     </div>
 
@@ -186,7 +188,7 @@ of the serverless HTML site, that supports animations and interactivity made wit
     </tr>
     <tr>
       <th>max_features</th>
-      <td><p>maximum number of features to be included in Break Down and Shapley Values plot. Default is <code>10</code>.</p></td>
+      <td><p>maximum number of features to be included in Break Down and SHAP Values plots. Default is <code>10</code>.</p></td>
     </tr>
     <tr>
       <th>N</th>
@@ -194,7 +196,7 @@ of the serverless HTML site, that supports animations and interactivity made wit
     </tr>
     <tr>
       <th>B</th>
-      <td><p>number of random paths used for calculation of shapley values. Default is <code>25</code>.</p></td>
+      <td><p>number of random paths used for calculation of SHAP values. Default is <code>25</code>.</p></td>
     </tr>
     <tr>
       <th>show_info</th>
@@ -241,10 +243,18 @@ NOTE: It is best when target variable is not present in the <code>data</code>.</
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p><a href='https://modeloriented.github.io/ingredients/'><b>ingredients</b></a>
-<a href='https://modeloriented.github.io/iBreakDown/'><b>iBreakDown</b></a>
-<a href='https://modeloriented.github.io/DALEX/'><b>DALEX</b></a>
-<a href='https://modeloriented.github.io/DALEXtra/'><b>DALEXtra</b></a></p>
+    
+<ul>
+<li><p>Wrapper for the function can be found in <a href='https://modeloriented.github.io/DALEX/'><b>DALEX</b></a></p></li>
+<li><p>Feature Importance, Ceteris Paribus, Partial Dependency and Accumulated Dependency plots
+are implemented in <a href='https://modeloriented.github.io/ingredients/'><b>ingredients</b></a></p></li>
+<li><p>Break Down and SHAP Values plots are implemented in <a href='https://modeloriented.github.io/iBreakDown/'><b>iBreakDown</b></a></p></li>
+</ul>
+
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Python wrappers and more can be found in <a href='https://modeloriented.github.io/DALEXtra/'><b>DALEXtra</b></a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -299,6 +309,8 @@ NOTE: It is best when target variable is not present in the <code>data</code>.</
       <li><a href="#value">Value</a></li>
 
       <li><a href="#references">References</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

@@ -27,7 +27,7 @@ if (svg.select("#SV").empty()) {
 } else {
   SV = svg.select("#SV");
 }
-mapIdPlotFunction.SV = shapleyValues;
+mapIdPlotFunction.SV = shapValues;
 
 if (svg.select("#CP").empty()) {
   CP = svg.append("g")
@@ -316,7 +316,7 @@ function breakDown() {
              .on('mouseout', tooltip.hide);
 }
 
-function shapleyValues() {
+function shapValues() {
 
   let tObservationId = CLICKED_OBSERVATION_ID,
       tData = obsData[tObservationId];

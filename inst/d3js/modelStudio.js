@@ -112,7 +112,7 @@ if (!SHOW_SUBTITLE) {
 
 /// for plot chosing
 var notVisiblePlots = [{id:"BD", text:"Break Down [Local]"},
-                       {id:"SV", text:"Shapley Values [Local]"},
+                       {id:"SV", text:"SHAP Values [Local]"},
                        {id:"CP", text:"Ceteris Paribus [Local]"},
                        {id:"FI", text:"Feature Importance [Global]"},
                        {id:"PD", text:"Partial Dependency [Global]"},

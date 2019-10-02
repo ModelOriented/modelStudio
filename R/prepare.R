@@ -89,9 +89,9 @@ prepare_break_down_df <- function(x, max_features = 10, baseline = NA, digits = 
   x
 }
 
-prepare_shapley_values <- function(x, max_features = 10, baseline = NA, digits = 3,
+prepare_shap_values <- function(x, max_features = 10, baseline = NA, digits = 3,
                                    rounding_function = round, margin = 0.2, min_max = NA) {
-  ### This function returns object needed to plot Shap in D3 ###
+  ### This function returns object needed to plot SHAPValues in D3 ###
 
   x <- x[x$B == 0,]
   if (is.na(baseline)) baseline <- attr(x, "intercept")[[1]]
@@ -99,7 +99,7 @@ prepare_shapley_values <- function(x, max_features = 10, baseline = NA, digits =
 
   m <- ifelse(nrow(x) <= max_features, nrow(x), max_features + 1)
 
-  new_x <- prepare_shapley_values_df(x, max_features, baseline, prediction, digits, rounding_function)
+  new_x <- prepare_shap_values_df(x, max_features, baseline, prediction, digits, rounding_function)
 
   if (any(is.na(min_max))) {
     min_max <- range(new_x[,"barStart"], new_x[,"barSupport"])
@@ -124,9 +124,9 @@ prepare_shapley_values <- function(x, max_features = 10, baseline = NA, digits =
   ret
 }
 
-prepare_shapley_values_df <- function(x, max_features = 10, baseline = NA, prediction,
+prepare_shap_values_df <- function(x, max_features = 10, baseline = NA, prediction,
                                    digits = 3, rounding_function = round) {
-  ### This function returns data as DF needed to plot ShapleyValues in D3 ###
+  ### This function returns data as DF needed to plot SHAPValues in D3 ###
 
   x <- as.data.frame(x)
   rownames(x) <- NULL

@@ -1,3 +1,6 @@
+# modelStudio 0.1.8
+* change "Shapley Values" to "SHAP Values"
+
 # modelStudio 0.1.7
 * fix tests for CRAN
 
