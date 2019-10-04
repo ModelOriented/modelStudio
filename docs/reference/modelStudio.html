@@ -36,14 +36,13 @@
 
 
 <meta property="og:title" content="Generates interactive studio to explain predictive model — modelStudio" />
-
 <meta property="og:description" content="This tool uses your model, data and new observations, to provide local
 and global explanations. It generates plots and descriptions in the form
 of the serverless HTML site, that supports animations and interactivity made with D3.js.
 Find more details about plots in Predictive Models: Explore, Explain, and Debug" />
-
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -140,12 +139,10 @@ Find more details about plots in Predictive Models: Explore, Explain, and Debug"
     </div>
 
     <div class="ref-description">
-    
     <p>This tool uses your model, data and new observations, to provide local
 and global explanations. It generates plots and descriptions in the form
 of the serverless HTML site, that supports animations and interactivity made with D3.js.</p>
 <p>Find more details about plots in <a href='https://pbiecek.github.io/PM_VEE/'>Predictive Models: Explore, Explain, and Debug</a></p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>modelStudio</span>(<span class='no'>object</span>, <span class='no'>...</span>)
@@ -153,7 +150,7 @@ of the serverless HTML site, that supports animations and interactivity made wit
 <span class='co'># S3 method for explainer</span>
 <span class='fu'>modelStudio</span>(<span class='no'>object</span>, <span class='no'>new_observation</span>, <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,
   <span class='fl'>2</span>), <span class='kw'>time</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>max_features</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>25</span>,
-  <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>options</span> <span class='kw'>=</span> <span class='fu'><a href='modelStudioOptions.html'>modelStudioOptions</a></span>(),
+  <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>options</span> <span class='kw'>=</span> <span class='fu'>modelStudioOptions</span>(),
   <span class='kw'>viewer</span> <span class='kw'>=</span> <span class='st'>"external"</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for default</span>
@@ -161,8 +158,8 @@ of the serverless HTML site, that supports animations and interactivity made wit
   <span class='kw'>predict_function</span> <span class='kw'>=</span> <span class='no'>predict</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='no'>model</span>)[<span class='fl'>1</span>], <span class='no'>new_observation</span>,
   <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>2</span>), <span class='kw'>time</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>max_features</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>500</span>,
   <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>25</span>, <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>options</span> <span class='kw'>=</span> <span class='fu'><a href='modelStudioOptions.html'>modelStudioOptions</a></span>(), <span class='kw'>viewer</span> <span class='kw'>=</span> <span class='st'>"external"</span>, <span class='no'>...</span>)</pre>
-    
+  <span class='kw'>options</span> <span class='kw'>=</span> <span class='fu'>modelStudioOptions</span>(), <span class='kw'>viewer</span> <span class='kw'>=</span> <span class='st'>"external"</span>, <span class='no'>...</span>)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -209,7 +206,7 @@ See <a href='https://modeloriented.github.io/modelStudio/articles/vignette_model
     </tr>
     <tr>
       <th>options</th>
-      <td><p>customize <code>modelStudio</code>. See <code><a href='modelStudioOptions.html'>modelStudioOptions</a></code> and
+      <td><p>customize <code>modelStudio</code>. See <code>modelStudioOptions</code> and
 <a href='https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#plot-options'><b>vignette</b></a>.</p></td>
     </tr>
     <tr>
@@ -236,11 +233,10 @@ NOTE: It is best when target variable is not present in the <code>data</code>.</
       <td><p>a name of the model, will be extracted from <code>object</code> if it is an explainer.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>an object of the <code>r2d3</code> class</p>
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     
@@ -251,11 +247,9 @@ are implemented in <a href='https://modeloriented.github.io/ingredients/'><b>ing
 <li><p>Break Down and SHAP Values plots are implemented in <a href='https://modeloriented.github.io/iBreakDown/'><b>iBreakDown</b></a></p></li>
 </ul>
 
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Python wrappers and more can be found in <a href='https://modeloriented.github.io/DALEXtra/'><b>DALEXtra</b></a></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"modelStudio"</span>)
@@ -277,7 +271,7 @@ are implemented in <a href='https://modeloriented.github.io/ingredients/'><b>ing
 <span class='no'>new_observations</span> <span class='kw'>&lt;-</span> <span class='no'>titanic_small</span>[<span class='fl'>1</span>:<span class='fl'>2</span>,]
 <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>new_observations</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Lucas"</span>,<span class='st'>"James"</span>)
 
-<span class='fu'>modelStudio</span>(<span class='no'>explain_titanic_glm</span>, <span class='no'>new_observations</span>,
+<span class='fu'><a href='https://rdrr.io/pkg/modelStudio/man/modelStudio.html'>modelStudio</a></span>(<span class='no'>explain_titanic_glm</span>, <span class='no'>new_observations</span>,
             <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># \donttest{</span>
@@ -296,7 +290,7 @@ are implemented in <a href='https://modeloriented.github.io/ingredients/'><b>ing
 <span class='no'>new_apartments</span> <span class='kw'>&lt;-</span> <span class='no'>apartments</span>[<span class='fl'>1</span>:<span class='fl'>2</span>,]
 <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>new_apartments</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ap1"</span>,<span class='st'>"ap2"</span>)
 
-<span class='fu'>modelStudio</span>(<span class='no'>explain_apartments</span>, <span class='no'>new_apartments</span>,
+<span class='fu'><a href='https://rdrr.io/pkg/modelStudio/man/modelStudio.html'>modelStudio</a></span>(<span class='no'>explain_apartments</span>, <span class='no'>new_apartments</span>,
             <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>), <span class='kw'>time</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
             <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='co'># }</span></div></pre>
@@ -305,13 +299,9 @@ are implemented in <a href='https://modeloriented.github.io/ingredients/'><b>ing
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#references">References</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
