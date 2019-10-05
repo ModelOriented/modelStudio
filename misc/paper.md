@@ -3,6 +3,7 @@ title: 'modelStudio: Interactive Studio with Explanations for ML Predictive Mode
 authors:
 - affiliation: 1
   name: Hubert Baniecki
+  orcid: 0000-0001-6661-5364
 - affiliation: 1
   name: Przemyslaw Biecek
   orcid: 0000-0001-8423-1823
