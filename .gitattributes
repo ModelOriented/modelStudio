@@ -2,3 +2,4 @@ inst/d3js/modelStudio.js linguist-vendored=false
 
 docs/* linguist-documentation
 man/* linguist-documentation
+misc/* linguist-documentation
