@@ -7,7 +7,7 @@ authors:
 - affiliation: 1
   name: Przemyslaw Biecek
   orcid: 0000-0001-8423-1823
-date: "27 September 2019"
+date: "5 October 2019"
 bibliography: paper.bib
 tags:
 - automated data analysis
