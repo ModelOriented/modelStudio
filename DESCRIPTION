@@ -2,7 +2,9 @@ Package: modelStudio
 Title: Interactive Studio with Explanations for ML Predictive Models
 Version: 0.1.8
 Authors@R:
-    c(person("Hubert", "Baniecki", role = c("aut", "cre"), email = "hbaniecki@gmail.com"),
+    c(person("Hubert", "Baniecki", role = c("aut", "cre"),
+             email = "hbaniecki@gmail.com"
+             comment = c(ORCID = "0000-0001-6661-5364")),
       person("Przemyslaw", "Biecek", role = c("aut"), 
              comment = c(ORCID = "0000-0001-8423-1823")))
 Description: Automate explanation of machine learning predictive models.
