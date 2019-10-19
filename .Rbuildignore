@@ -14,3 +14,4 @@
 modelStudio_my_test.R
 ^CRAN-RELEASE$
 ^cran-comments\.md$
+^pkgdown.*$

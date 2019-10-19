@@ -16,7 +16,7 @@ modelStudio(object, ...)
 \method{modelStudio}{default}(object, data, y,
   predict_function = predict, label = class(model)[1], new_observation,
   facet_dim = c(2, 2), time = 500, max_features = 10, N = 500,
-  B = 25, show_info = TRUE, parallel = FALSE,
+  B = 15, show_info = TRUE, parallel = FALSE,
   options = modelStudioOptions(), viewer = "external", ...)
 }
 \arguments{
@@ -82,7 +82,7 @@ explain_titanic_glm <- DALEX::explain(model_titanic_glm,
                                       label = "glm",
                                       verbose = FALSE)
 
-new_observations <- titanic_small[1:2,]
+new_observations <- DALEX::titanic_imputed[1:2,]
 rownames(new_observations) <- c("Lucas","James")
 
 modelStudio(explain_titanic_glm, new_observations,
