@@ -13,7 +13,7 @@
 #' @param time in ms. Set animation length. Default is \code{500}.
 #' @param max_features maximum number of features to be included in Break Down and SHAP Values plots. Default is \code{10}.
 #' @param N number of observations used for calculation of partial dependency profiles. Default is \code{500}.
-#' @param B number of random paths used for calculation of SHAP values. Default is \code{25}.
+#' @param B number of random paths used for calculation of SHAP values. Default is \code{15}.
 #' @param show_info verbose progress bar on console? Default is \code{TRUE}.
 #' @param parallel speed up computation using \code{parallelMap::parallelMap()}.
 #' See \href{https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#parallel-computation}{\bold{vignette}}.
@@ -52,19 +52,17 @@
 #'
 #' # ex1 classification
 #'
-#' titanic_small <- DALEX::titanic_imputed[,c(1,2,3,6,7,9)]
-#' titanic_small$survived <- titanic_small$survived == "yes"
-#'
-#' model_titanic_glm <- glm(survived ~ gender + age + fare + class + sibsp,
-#'                          data = titanic_small, family = "binomial")
+#' model_titanic_glm <- glm(survived ~.,
+#'                          data = DALEX::titanic_imputed,
+#'                          family = "binomial")
 #'
 #' explain_titanic_glm <- DALEX::explain(model_titanic_glm,
-#'                                       data = titanic_small[,-6],
-#'                                       y = titanic_small[,6],
+#'                                       data = DALEX::titanic_imputed[,-8],
+#'                                       y = DALEX::titanic_imputed[,8],
 #'                                       label = "glm",
 #'                                       verbose = FALSE)
 #'
-#' new_observations <- titanic_small[1:2,]
+#' new_observations <- DALEX::titanic_imputed[1:2,]
 #' rownames(new_observations) <- c("Lucas","James")
 #'
 #' modelStudio(explain_titanic_glm, new_observations,
@@ -73,21 +71,19 @@
 #' \donttest{
 #' # ex2 regression
 #'
-#' apartments <- DALEX::apartments
-#'
 #' model_apartments <- glm(m2.price ~. ,
-#'                         data = apartments)
+#'                         data = DALEX::apartments)
 #'
 #' explain_apartments <- DALEX::explain(model_apartments,
-#'                                      data = apartments[,-1],
-#'                                      y = apartments[,1],
+#'                                      data = DALEX::apartments[,-1],
+#'                                      y = DALEX::apartments[,1],
 #'                                      verbose = FALSE)
 #'
-#' new_apartments <- apartments[1:2,]
+#' new_apartments <- DALEX::apartments[1:2,]
 #' rownames(new_apartments) <- c("ap1","ap2")
 #'
 #' modelStudio(explain_apartments, new_apartments,
-#'             facet_dim = c(1,2), time = 1000,
+#'             facet_dim = c(2, 3), time = 1000,
 #'             show_info = FALSE)
 #' }
 #'
@@ -105,7 +101,7 @@ modelStudio.explainer <- function(object,
                                   time = 500,
                                   max_features = 10,
                                   N = 500,
-                                  B = 25,
+                                  B = 15,
                                   show_info = TRUE,
                                   parallel = FALSE,
                                   options = modelStudioOptions(),
@@ -144,7 +140,7 @@ modelStudio.default <- function(object,
                                 time = 500,
                                 max_features = 10,
                                 N = 500,
-                                B = 25,
+                                B = 15,
                                 show_info = TRUE,
                                 parallel = FALSE,
                                 options = modelStudioOptions(),
