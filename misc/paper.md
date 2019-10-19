@@ -58,26 +58,18 @@ explanations side by side adds wider context and allows for deeper understanding
 
 The package `modelStudio` is available on [CRAN](https://CRAN.R-project.org/package=modelStudio). It can be installed
 using the `install.packages('modelStudio')` command. This package is based
-on `DALEX` explainers created with `DALEX::explain()`. Below is basic code
+on `DALEX` explainers created with `DALEX::explain()`. Below there is a basic code
 example, which produces [demo](https://modeloriented.github.io/modelStudio/demo.html).
 
 ``` r
 library("modelStudio")
 
-# Prepare data
-titanic_small <- DALEX::titanic_imputed[, c(1,2,3,6,7,9)]
-titanic_small$survived <- titanic_small$survived == "yes"
-
 # Create a model
-model <- glm(survived ~.,
-             data = titanic_small,
-             family = "binomial")
+model <- glm(survived ~., data = DALEX::titanic_imputed, family = "binomial")
                  
 # Wrap it into an explainer        
-explainer <- DALEX::explain(model,
-                            data = titanic_small[,-6],
-                            y = titanic_small[,6],
-                            label = "glm")
+explainer <- DALEX::explain(model, data = DALEX::titanic_imputed[,-8],
+                            y = DALEX::titanic_imputed[,8], label = "glm")
                    
 # Pick some data points
 new_observations <- titanic_small[1:4,]
