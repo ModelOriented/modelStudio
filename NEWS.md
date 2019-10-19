@@ -1,8 +1,6 @@
-# modelStudio 0.1.9
-* Lower parameter `B` default value from 25 to 15
-
 # modelStudio 0.1.8
 * change "Shapley Values" to "SHAP Values"
+* Lower `B` default value from 25 to 15
 
 # modelStudio 0.1.7
 * fix tests for CRAN
