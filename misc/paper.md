@@ -26,12 +26,12 @@ Machine learning predictive models are widely used in many areas of
 bussiness and research. Their rising popularity is due to them beeing
 effective but often lead to problems with explaining their prediction.
 This has led to development of many Interpretable Machine Learning
-tools, e.g. `DALEX` [@2018arXiv180608915B] R package, `lime` [@lime] and
+tools, e.g. `DALEX` [@DALEX] R package, `lime` [@lime] and
 `shap` [@NIPS2017_7062] Python packages and `H2o.ai Driverless AI` [@Gill2017MachineLI].
 
 Nowadays, we can see huge demand for automation in many areas. This is
 how Automated Machine Learning and Automated Exploratory Data Analysis
-have came to existance. AutoML [@Truong2019TowardsAM] and AutoEDA [@2018arXiv180401955S]
+came to existance. AutoML [@Truong2019TowardsAM] and AutoEDA [@2018arXiv180401955S]
 tools not only speed up the model development process
 but also often lead to new discoveries or higher quality of models.
 
@@ -43,10 +43,10 @@ compares various models and explains them. But such tools generate static report
 
 # The `modelStudio` package
 
-The `modelStudio` R package automates the process of model exploration. It generates advanced interactive and animated model explanations in the form of serverless HTML site. It combines **R** [@R] with **D3.js** [@bostock2016d3] to produce plots and descriptions for various local and global explanations. Tools for model exploration are enriched with tools for data exploration EDA to give broad overview of the model behavior. 
+The `modelStudio` R package automates the process of model exploration. It generates advanced interactive and animated model explanations in the form of serverless HTML site. It combines **R** [@R] with **D3.js** [@bostock2016d3] to produce plots and descriptions for various local and global explanations. Tools for model exploration unite with tools for EDA to give broad overview of the model behaviour.
 
 The usage of `modelStudio` is meant to be intuitive and simple to use. The computation time needed to produce the output might not be short though.
-The main goal of `modelStudio` is to make model explaining more automated and achieve higher quality explanations by juxtaposition of complementary aspects of a model.
+The main goal of this tool is to make model explaining more automated and achieve higher quality explanations by juxtaposition of complementary aspects of a model.
 
 Comparing instance level explanations and model level
 explanations side by side adds wider context and allows for deeper understanding. 
@@ -57,8 +57,8 @@ explanations side by side adds wider context and allows for deeper understanding
 # Example
 
 The package `modelStudio` is available on [CRAN](https://CRAN.R-project.org/package=modelStudio). It can be installed
-using the `install.packages('modelStudio')` command. This package bases
-on `DALEX` explainers created with `DALEX::explain()`. Below basic code
+using the `install.packages('modelStudio')` command. This package is based
+on `DALEX` explainers created with `DALEX::explain()`. Below is basic code
 example, which produces [demo](https://modeloriented.github.io/modelStudio/demo.html).
 
 ``` r
@@ -91,22 +91,17 @@ modelStudio(explainer, new_observations)
 
 # Key Features
 
-Generated HTML site has many interactive features. One can choose
+The generated HTML site has many interactive features. One can choose
 which plots are displayed on the grid and change them at any given
-moment by clicking on the X symbol. Use the drop down list to pick the
-observation, that will be considered for local explanation plots. Plots
-that use a variable as their dimension can be changed through clicking
-on bars of other plots. Mouse over D symbol next to explanations to
-display text descriptions. Finally, mouse over lines and bars to disply
-the
-tooltip.
+moment by clicking the X symbol. Drop down list may be used to pick the
+observation that will be considered for local explanation plots. One may manipulate plots having a variable-based dimension by selecting corresponding bars on the other plots. Mousing over D symbol next to explanations displays text descriptions. Finally, mousing over lines and bars displays the tooltip.
 
-![1. Open in browser or save as html or png 2. Click on bars to choose which feature will be used for other plots 3. Mouse over D to display plot description and click on X to close the plot 4. Choose which observation will be used for local explanations 5. Mouse over lines and bars to display the tooltip 6. Click on the text to choose the plot 7. Interact with other elements like slider ](images/cheatsheetcut.png)
+![1. Open in browser or save as HTML document or PNG image 2. Click on bars to choose which feature will be used for other plots 3. Mouse over D to display plot description and click X to close the plot 4. Choose which observation will be used for local explanations 5. Mouse over lines and bars to display the tooltip 6. Click on the text to choose the plot 7. Interact with other elements like slider](images/cheatsheetcut.png)
 
 # Explanations
 
-Seven possible plots to chose from are implemented. There are three
-local explanations, three global explanations and feature density plot.
+Seven possible plots to choose from are implemented. There are three
+local explanation plots, three global explanation plots and a feature density plot.
 
 **Local explanations** are designed to better understand model behaviour
 around a single observation.
@@ -118,7 +113,7 @@ around a single observation.
   - **Ceteris Paribus** plot presents model responses around a single
     point in the feature space [@ceterisParibus].
 
-**Global explanations** are designed to better understand how the model
+**Global explanations** are designed to allow for better understanding of how the model
 works in general, for some population of interest.
 
   - **Feature Importance** plot presents permutation based feature
@@ -130,8 +125,8 @@ works in general, for some population of interest.
   - **Accumulated Dependency** plot presents accumulated local changes
     in Ceteris Paribus Profiles [@apley2016visualizing].
 
-Detailed overview of those methods can be found in “Predictive Models:
-Explore, Explain, and Debug” [@pmeed]. Last explanations are implemented 
+Detailed overview of these methods can be found in “Predictive Models:
+Explore, Explain, and Debug” [@pmeed]. The last explanations are implemented 
 in the `ingredients` [@ingredients] R package.
 
 # Conclusions

@@ -39,23 +39,19 @@ This package bases on `DALEX` explainers created with `DALEX::explain()`.
 ```r
 library("modelStudio")
 
-# Prepare data
-titanic_small <- DALEX::titanic_imputed[, c(1,2,3,6,7,9)]
-titanic_small$survived <- titanic_small$survived == "yes"
-
 # Create a model
 model <- glm(survived ~.,
-             data = titanic_small,
+             data = DALEX::titanic_imputed,
              family = "binomial")
                  
 # Wrap it into an explainer        
 explainer <- DALEX::explain(model,
-                            data = titanic_small[,-6],
-                            y = titanic_small[,6],
+                            data = DALEX::titanic_imputed[,-8],
+                            y = DALEX::titanic_imputed[,8],
                             label = "glm")
                    
 # Pick some data points
-new_observations <- titanic_small[1:4,]
+new_observations <- DALEX::titanic_imputed[1:4,]
 rownames(new_observations) <- c("Lucas", "James", "Thomas", "Nancy")
 
 # Make a studio for the model

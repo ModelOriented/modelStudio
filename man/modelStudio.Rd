@@ -9,14 +9,14 @@
 modelStudio(object, ...)
 
 \method{modelStudio}{explainer}(object, new_observation, facet_dim = c(2,
-  2), time = 500, max_features = 10, N = 500, B = 25,
+  2), time = 500, max_features = 10, N = 500, B = 15,
   show_info = TRUE, parallel = FALSE, options = modelStudioOptions(),
   viewer = "external", ...)
 
 \method{modelStudio}{default}(object, data, y,
   predict_function = predict, label = class(model)[1], new_observation,
   facet_dim = c(2, 2), time = 500, max_features = 10, N = 500,
-  B = 25, show_info = TRUE, parallel = FALSE,
+  B = 15, show_info = TRUE, parallel = FALSE,
   options = modelStudioOptions(), viewer = "external", ...)
 }
 \arguments{
@@ -34,7 +34,7 @@ modelStudio(object, ...)
 
 \item{N}{number of observations used for calculation of partial dependency profiles. Default is \code{500}.}
 
-\item{B}{number of random paths used for calculation of SHAP values. Default is \code{25}.}
+\item{B}{number of random paths used for calculation of SHAP values. Default is \code{15}.}
 
 \item{show_info}{verbose progress bar on console? Default is \code{TRUE}.}
 
@@ -72,19 +72,17 @@ library("modelStudio")
 
 # ex1 classification
 
-titanic_small <- DALEX::titanic_imputed[,c(1,2,3,6,7,9)]
-titanic_small$survived <- titanic_small$survived == "yes"
-
-model_titanic_glm <- glm(survived ~ gender + age + fare + class + sibsp,
-                         data = titanic_small, family = "binomial")
+model_titanic_glm <- glm(survived ~.,
+                         data = DALEX::titanic_imputed,
+                         family = "binomial")
 
 explain_titanic_glm <- DALEX::explain(model_titanic_glm,
-                                      data = titanic_small[,-6],
-                                      y = titanic_small[,6],
+                                      data = DALEX::titanic_imputed[,-8],
+                                      y = DALEX::titanic_imputed[,8],
                                       label = "glm",
                                       verbose = FALSE)
 
-new_observations <- titanic_small[1:2,]
+new_observations <- DALEX::titanic_imputed[1:2,]
 rownames(new_observations) <- c("Lucas","James")
 
 modelStudio(explain_titanic_glm, new_observations,
@@ -93,21 +91,19 @@ modelStudio(explain_titanic_glm, new_observations,
 \donttest{
 # ex2 regression
 
-apartments <- DALEX::apartments
-
 model_apartments <- glm(m2.price ~. ,
-                        data = apartments)
+                        data = DALEX::apartments)
 
 explain_apartments <- DALEX::explain(model_apartments,
-                                     data = apartments[,-1],
-                                     y = apartments[,1],
+                                     data = DALEX::apartments[,-1],
+                                     y = DALEX::apartments[,1],
                                      verbose = FALSE)
 
-new_apartments <- apartments[1:2,]
+new_apartments <- DALEX::apartments[1:2,]
 rownames(new_apartments) <- c("ap1","ap2")
 
 modelStudio(explain_apartments, new_apartments,
-            facet_dim = c(1,2), time = 1000,
+            facet_dim = c(2, 3), time = 1000,
             show_info = FALSE)
 }
 
