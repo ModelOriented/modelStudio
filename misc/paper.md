@@ -43,7 +43,7 @@ compares various models and explains them. But such tools generate static report
 
 # The `modelStudio` package
 
-The `modelStudio` R package automates the process of model exploration. It generates advanced interactive and animated model explanations in the form of serverless HTML site. It combines **R** [@R] with **D3.js** [@bostock2016d3] to produce plots and descriptions for various local and global explanations. Tools for model exploration unite with tools for EDA to give broead overview of the model behaviour.
+The `modelStudio` R package automates the process of model exploration. It generates advanced interactive and animated model explanations in the form of serverless HTML site. It combines **R** [@R] with **D3.js** [@bostock2016d3] to produce plots and descriptions for various local and global explanations. Tools for model exploration unite with tools for EDA to give broad overview of the model behaviour.
 
 The usage of `modelStudio` is meant to be intuitive and simple to use. The computation time needed to produce the output might not be short though.
 The main goal of this tool is to make model explaining more automated and achieve higher quality explanations by juxtaposition of complementary aspects of a model.
