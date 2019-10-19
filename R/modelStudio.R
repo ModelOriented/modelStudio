@@ -305,7 +305,9 @@ modelStudio.default <- function(object,
                     options = options,
                     d3_version = "4",
                     viewer = viewer,
-                    sizing = sizing_policy
+                    sizing = sizing_policy,
+                    width = facet_dim[2]*(options$w + options$margin_left + options$margin_right),
+                    height = 100 + facet_dim[1]*(options$h + options$margin_top + options$margin_bottom)
                   )
 
   model_studio$x$script <- remove_file_paths(model_studio$x$script, "js")
