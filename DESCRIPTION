@@ -9,7 +9,7 @@ Authors@R:
              comment = c(ORCID = "0000-0001-8423-1823")))
 Description: Automate explanation of machine learning predictive models.
   This package generates advanced interactive and animated model explanations in the form
-  of serverless HTML site. It combines 'R' with 'D3.js' to produce plots and descriptions
+  of a serverless HTML site. It combines 'R' with 'D3.js' to produce plots and descriptions
   for local and global explanations. The whole is greater than the sum of its parts,
   so it also supports EDA (Exploratory Data Analysis) on top of that. 'modelStudio' is
   a fast and condensed way to get all the answers without much effort. 

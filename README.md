@@ -8,7 +8,7 @@
 
 ## Overview
 
-The `modelStudio` package automates explanation of machine learning predictive models. This package generates advanced interactive and animated model explanations in the form of serverless HTML site.
+The `modelStudio` package automates explanation of machine learning predictive models. This package generates advanced interactive and animated model explanations in the form of a serverless HTML site.
 
 It combines **R** with **D3.js** to produce plots and descriptions
 for local and global explanations. The whole is greater than the sum of its parts,
