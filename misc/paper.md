@@ -124,7 +124,7 @@ in the `ingredients` [@ingredients] R package.
 # Conclusions
 
 The `modelStudio` package is easy to use and its output is intuitive to
-explore. Automation is convenient and interactivity adds another
+explore. Automation is convenient and interactivity adds an another
 dimension to visualisations. All of this enhance explanation of machine
 learning predictive models. More features and examples can be found in
 the vignette: [modelStudio - perks and features](https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html)
