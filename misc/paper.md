@@ -38,7 +38,7 @@ but also often lead to new discoveries or higher quality of models.
 Explaining predictive models might be a time consuming and tedious task. 
 Libraries for interpretable machine learning [@DALEX], [@iml], [@tfexplain], [@sklearnexplain], [@InterpretML] require high programing skills and endless exploration of different aspects of a predictive model.
 
-There are tools for automation of the XAI process like `modelDown` [@Romaszko2019] which produces static HTML site to compare and explain various models. Unfortunately, such tools are focused on global level explanations only and deliver monotonous experience.  
+There are tools for automation of the XAI process like `modelDown` [@Romaszko2019] which produces static HTML site to compare and explain various models. Unfortunately, such tools are focused on global level explanations and deliver monotonous experience.  
 
 # The `modelStudio` package
 
