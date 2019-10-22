@@ -7,7 +7,7 @@ authors:
 - affiliation: 1
   name: Przemyslaw Biecek
   orcid: 0000-0001-8423-1823
-date: "5 October 2019"
+date: "22 October 2019"
 bibliography: paper.bib
 tags:
 - automated data analysis
@@ -38,8 +38,7 @@ but also often lead to new discoveries or higher quality of models.
 Explaining predictive models might be a time consuming and tedious task. 
 Libraries for interpretable machine learning [@DALEX], [@iml], [@tfexplain], [@sklearnexplain], [@InterpretML] require high programing skills and endless exploration of different aspects of a predictive model.
 
-There are tools for automation of the XAI process like `modelDown` [@Romaszko2019] which generates static HTML site and
-compares various models and explains them. But such tools generate static reports and are focused on global level explanations.  
+There are tools for automation of the XAI process like `modelDown` [@Romaszko2019] which produces static HTML site to compare and explain various models. Unfortunately, such tools are focused on global level explanations only and deliver monotonous experience.  
 
 # The `modelStudio` package
 
