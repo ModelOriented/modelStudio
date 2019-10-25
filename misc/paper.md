@@ -23,8 +23,8 @@ affiliations:
 # Introduction
 
 Machine learning predictive models are widely used in many areas of
-business and research. Their rising popularity is due to them beeing
-effective but often lead to problems with explaining their prediction.
+business and research. Their rising popularity is due to them being
+effective but often leads to problems with explaining their prediction.
 This has led to development of many Interpretable Machine Learning
 tools, e.g. `DALEX` [@DALEX] R package, `lime` [@lime] and
 `shap` [@NIPS2017_7062] Python packages and `H2o.ai Driverless AI` [@Gill2017MachineLI].
