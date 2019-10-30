@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get modified options for modelStudio — modelStudioOptions • modelStudio</title>
+<title>Modifiy options and pass them to modelStudio — modelStudioOptions • modelStudio</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -35,10 +35,10 @@
 
 
 
-<meta property="og:title" content="Get modified options for modelStudio — modelStudioOptions" />
+<meta property="og:title" content="Modifiy options and pass them to modelStudio — modelStudioOptions" />
 
 <meta property="og:description" content="This function returns default options for modelStudio.
-It is possible to modify values of this list and pass it to options
+It is possible to modify values of this list and pass it to the options
 parameter in the main function. WARNING: Editing default options may cause
 unintended behavior." />
 
@@ -134,7 +134,7 @@ unintended behavior." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get modified options for modelStudio</h1>
+    <h1>Modifiy options and pass them to modelStudio</h1>
     <small class="dont-index">Source: <a href='https://github.com/ModelOriented/modelStudio/blob/master/R/modelStudioOptions.R'><code>R/modelStudioOptions.R</code></a></small>
     <div class="hidden name"><code>modelStudioOptions.Rd</code></div>
     </div>
@@ -142,7 +142,7 @@ unintended behavior." />
     <div class="ref-description">
     
     <p>This function returns default options for <code><a href='modelStudio.html'>modelStudio</a></code>.
-It is possible to modify values of this list and pass it to <code>options</code>
+It is possible to modify values of this list and pass it to the <code>options</code>
 parameter in the main function. <strong>WARNING: Editing default options may cause
 unintended behavior.</strong></p>
     
@@ -155,20 +155,20 @@ unintended behavior.</strong></p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>...</th>
-      <td><p>options to change, <code>option_name = value</code>.</p></td>
+      <td><p>Options to change, <code>option_name = value</code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>list</code> of options for modelStudio</p>
+    <p><code>list</code> of options for <code>modelStudio</code>.</p>
 <h3>Main options:</h3>
 
 <dl class='dl-horizontal'>
 <dt>scale_plot</dt><dd><p><code>TRUE</code> Makes every plot the same height, ignores <code>bar_width</code>.</p></dd>
-<dt>show_subtitle</dt><dd><p><code>TRUE</code> Should subtitle be displayed?</p></dd>
+<dt>show_subtitle</dt><dd><p><code>TRUE</code> Should the subtitle be displayed?</p></dd>
 <dt>subtitle</dt><dd><p><code>label</code> parameter from <code>explainer</code>.</p></dd>
-<dt>margin_*</dt><dd><p>plot margins. Change <code>margin_left</code> for longer/shorter axis labels.</p></dd>
+<dt>margin_*</dt><dd><p>Plot margins. Change <code>margin_left</code> for longer/shorter axis labels.</p></dd>
 <dt>w</dt><dd><p><code>420</code> in px. Inner plot width.</p></dd>
 <dt>h</dt><dd><p><code>280</code> in px. Inner plot height.</p></dd>
 <dt>bar_width</dt><dd><p><code>16</code> in px. Default width of bars for all plots,
@@ -186,13 +186,13 @@ ignored when <code>scale_plot = TRUE</code>.</p></dd>
 <p><code>**</code> is a two letter code unique to each plot, might be
 one of <code>[bd,sv,cp,fi,pd,ad,fd]</code>.<br /></p>
 <dl class='dl-horizontal'>
-<dt>**_title</dt><dd><p>plot specific title. Default varies.</p></dd>
-<dt>**_subtitle</dt><dd><p>plot specific subtitle. Default is <code>subtitle</code>.</p></dd>
-<dt>**_bar_width</dt><dd><p>plot specific width of bars. Default is <code>bar_width</code>,
+<dt>**_title</dt><dd><p>Plot specific title. Default varies.</p></dd>
+<dt>**_subtitle</dt><dd><p>Plot specific subtitle. Default is <code>subtitle</code>.</p></dd>
+<dt>**_bar_width</dt><dd><p>Plot specific width of bars. Default is <code>bar_width</code>,
 ignored when <code>scale_plot = TRUE</code>.</p></dd>
-<dt>**_line_size</dt><dd><p><code>line_size</code> plot specific width of lines. Default is <code>line_size</code>.</p></dd>
-<dt>**_point_size</dt><dd><p>plot specific point radius. Default is <code>point_size</code>.</p></dd>
-<dt>**_*_color</dt><dd><p>plot specific <code>[bar,line,point]</code> color. Default is <code>[bar,line,point]_color</code>.</p></dd>
+<dt>**_line_size</dt><dd><p><code>line_size</code> Plot specific width of lines. Default is <code>line_size</code>.</p></dd>
+<dt>**_point_size</dt><dd><p>Plot specific point radius. Default is <code>point_size</code>.</p></dd>
+<dt>**_*_color</dt><dd><p>Plot specific <code>[bar,line,point]</code> color. Default is <code>[bar,line,point]_color</code>.</p></dd>
 
 </dl>
 

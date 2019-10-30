@@ -2,6 +2,10 @@ language: R
 sudo: false
 cache: packages
 
+env:
+  global:
+  - R_CHECK_ARGS="--timings --run-donttest"
+  
 r:
   - release
   - devel

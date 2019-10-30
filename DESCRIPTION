@@ -10,9 +10,9 @@ Authors@R:
 Description: Automate explanation of machine learning predictive models.
   This package generates advanced interactive and animated model explanations in the form
   of a serverless HTML site. It combines 'R' with 'D3.js' to produce plots and descriptions
-  for local and global explanations. The whole is greater than the sum of its parts,
-  so it also supports EDA (Exploratory Data Analysis) on top of that. 'modelStudio' is
-  a fast and condensed way to get all the answers without much effort. 
+  for various local and global explanations. Tools for model exploration unite with
+  tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behaviour.
+  'modelStudio' is a fast and condensed way to get all the answers without much effort. 
   Break down your model and look into its ingredients with only a few lines of code.
 Depends: R (>= 3.5.0)
 License: file LICENSE
@@ -21,11 +21,11 @@ LazyData: true
 RoxygenNote: 6.1.1
 Imports:
     iBreakDown (>= 0.9.9),
-    ingredients (>= 0.3.9),
+    ingredients (>= 0.4.0),
     r2d3,
     jsonlite
 Suggests:
-    DALEX,
+    DALEX (>= 0.4.9),
     parallelMap,
     randomForest,
     knitr,
