@@ -1,6 +1,9 @@
+# modelStudio 0.1.9
+* This version requires `DALEX 0.4.9` and `ingredients 0.4.0`
+
 # modelStudio 0.1.8
-* change "Shapley Values" to "SHAP Values"
-* Lower `B` default value from 25 to 15
+* change `Shapley Values` to `SHAP Values`
+* Lower `B` default value from 25 to 15, `N` default value from 500 to 400
 
 # modelStudio 0.1.7
 * fix tests for CRAN

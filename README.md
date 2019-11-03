@@ -5,16 +5,16 @@
 [![Build Status](https://travis-ci.org/ModelOriented/modelStudio.svg?branch=master)](https://travis-ci.org/ModelOriented/modelStudio)
 [![Coverage Status](https://codecov.io/gh/ModelOriented/modelStudio/branch/master/graph/badge.svg)](https://codecov.io/github/ModelOriented/modelStudio?branch=master)
 [![DrWhy-eXtrAI](https://img.shields.io/badge/DrWhy-AutoMat-ae2c87)](http://drwhy.ai/#AutoMat)
+[![JOSS-status](https://joss.theoj.org/papers/9eec8c9d1969fbd44b3ea438a74af911/status.svg)](https://joss.theoj.org/papers/9eec8c9d1969fbd44b3ea438a74af911)
 
 ## Overview
 
 The `modelStudio` package automates explanation of machine learning predictive models. This package generates advanced interactive and animated model explanations in the form of a serverless HTML site.
 
 It combines **R** with **D3.js** to produce plots and descriptions
-for local and global explanations. The whole is greater than the sum of its parts,
-so it also supports EDA (Exploratory Data Analysis) on top of that. `modelStudio` is
-a fast and condensed way to get all the answers without much effort. Break down your model
-and look into its ingredients with only a few lines of code.
+for various local and global explanations. Tools for model exploration unite with
+tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behaviour. 
+`modelStudio` is a fast and condensed way to get all the answers without much effort. Break down your model and look into its ingredients with only a few lines of code.
 
 [See a demo](https://modeloriented.github.io/modelStudio/demo.html) &emsp; [Read the vignette: modelStudio - perks and features](https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html)  
 
@@ -35,8 +35,6 @@ devtools::install_github("ModelOriented/modelStudio")
 ## Demo
 
 This package bases on `DALEX` explainers created with `DALEX::explain()`.
-
-**Demo works on the new version of DALEX** ``` devtools::install_github("ModelOriented/DALEX") ```
 
 ```r
 library("modelStudio")
@@ -86,4 +84,4 @@ and [`r2d3::save_d3_png()`](https://rstudio.github.io/r2d3/articles/publishing.h
 
 ## Acknowledgments
 
-Work on this package was financially supported by the 'NCN Opus grant 2016/21/B/ST6/02176'.
+Work on this package was financially supported by the `NCN Opus grant 2016/21/B/ST6/02176`.

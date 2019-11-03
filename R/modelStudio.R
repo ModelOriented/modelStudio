@@ -1,4 +1,4 @@
-#' @title Generates interactive studio to explain predictive model
+#' @title Generate Interactive Studio with Explanations for the Model
 #'
 #' @description
 #' This tool uses your model, data and new observations, to provide local
@@ -7,29 +7,29 @@
 #'
 #' Find more details about plots in \href{https://pbiecek.github.io/PM_VEE/}{Predictive Models: Explore, Explain, and Debug}
 #'
-#' @param object an explainer created with function \code{DALEX::explain()} or a model to be explained.
-#' @param new_observation a new observation with columns that correspond to variables used in the model.
-#' @param facet_dim dimensions of the grid. Default is \code{c(2,2)}.
-#' @param time in ms. Set animation length. Default is \code{500}.
-#' @param max_features maximum number of features to be included in Break Down and SHAP Values plots. Default is \code{10}.
-#' @param N number of observations used for calculation of partial dependency profiles. Default is \code{500}.
-#' @param B number of random paths used for calculation of SHAP values. Default is \code{15}.
-#' @param show_info verbose progress bar on console? Default is \code{TRUE}.
-#' @param parallel speed up computation using \code{parallelMap::parallelMap()}.
+#' @param object An \code{explainer} created with function \code{DALEX::explain()} or a model to be explained.
+#' @param new_observation A new observation with columns that correspond to variables used in the model.
+#' @param facet_dim Dimensions of the grid. Default is \code{c(2,2)}.
+#' @param time Time in ms. Set animation length. Default is \code{500}.
+#' @param max_features Maximum number of features to be included in Break Down and SHAP Values plots. Default is \code{10}.
+#' @param N Number of observations used for calculation of partial dependency profiles. Default is \code{400}.
+#' @param B Number of random paths used for calculation of SHAP values. Default is \code{15}.
+#' @param show_info Verbose progress bar on the console. Default is \code{TRUE}.
+#' @param parallel Speed up the computation using \code{parallelMap::parallelMap()}.
 #' See \href{https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#parallel-computation}{\bold{vignette}}.
 #' @param viewer Default is \code{external} to display in an external RStudio window.
 #' Use \code{browser} to display in an external browser or
 #' \code{internal} to use the RStudio internal viewer pane for output.
-#' @param options customize \code{modelStudio}. See \code{\link{modelStudioOptions}} and
+#' @param options Customize \code{modelStudio}. See \code{\link{modelStudioOptions}} and
 #' \href{https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#plot-options}{\bold{vignette}}.
-#' @param ... other parameters.
-#' @param data validation dataset, will be extracted from \code{object} if it is an explainer.
+#' @param ... Other parameters.
+#' @param data Validation dataset, will be extracted from \code{object} if it is an explainer.
 #' NOTE: It is best when target variable is not present in the \code{data}.
-#' @param y true labels for \code{data}, will be extracted from \code{object} if it is an explainer.
-#' @param predict_function predict function, will be extracted from \code{object} if it is an explainer.
-#' @param label a name of the model, will be extracted from \code{object} if it is an explainer.
+#' @param y True labels for \code{data}, will be extracted from \code{object} if it is an \code{explainer}.
+#' @param predict_function Predict function, will be extracted from \code{object} if it is an \code{explainer}.
+#' @param label A name of the model, will be extracted from \code{object} if it is an \code{explainer}.
 #'
-#' @return an object of the \code{r2d3} class
+#' @return An object of the \code{r2d3} class.
 #'
 #' @importFrom utils head tail setTxtProgressBar txtProgressBar installed.packages
 #' @importFrom stats aggregate predict
@@ -100,7 +100,7 @@ modelStudio.explainer <- function(object,
                                   facet_dim = c(2,2),
                                   time = 500,
                                   max_features = 10,
-                                  N = 500,
+                                  N = 400,
                                   B = 15,
                                   show_info = TRUE,
                                   parallel = FALSE,
@@ -139,7 +139,7 @@ modelStudio.default <- function(object,
                                 facet_dim = c(2,2),
                                 time = 500,
                                 max_features = 10,
-                                N = 500,
+                                N = 400,
                                 B = 15,
                                 show_info = TRUE,
                                 parallel = FALSE,

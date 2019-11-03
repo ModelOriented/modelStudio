@@ -4,61 +4,61 @@
 \alias{modelStudio}
 \alias{modelStudio.explainer}
 \alias{modelStudio.default}
-\title{Generates interactive studio to explain predictive model}
+\title{Generate Interactive Studio with Explanations for the Model}
 \usage{
 modelStudio(object, ...)
 
 \method{modelStudio}{explainer}(object, new_observation, facet_dim = c(2,
-  2), time = 500, max_features = 10, N = 500, B = 15,
+  2), time = 500, max_features = 10, N = 400, B = 15,
   show_info = TRUE, parallel = FALSE, options = modelStudioOptions(),
   viewer = "external", ...)
 
 \method{modelStudio}{default}(object, data, y,
   predict_function = predict, label = class(model)[1], new_observation,
-  facet_dim = c(2, 2), time = 500, max_features = 10, N = 500,
+  facet_dim = c(2, 2), time = 500, max_features = 10, N = 400,
   B = 15, show_info = TRUE, parallel = FALSE,
   options = modelStudioOptions(), viewer = "external", ...)
 }
 \arguments{
-\item{object}{an explainer created with function \code{DALEX::explain()} or a model to be explained.}
+\item{object}{An \code{explainer} created with function \code{DALEX::explain()} or a model to be explained.}
 
-\item{...}{other parameters.}
+\item{...}{Other parameters.}
 
-\item{new_observation}{a new observation with columns that correspond to variables used in the model.}
+\item{new_observation}{A new observation with columns that correspond to variables used in the model.}
 
-\item{facet_dim}{dimensions of the grid. Default is \code{c(2,2)}.}
+\item{facet_dim}{Dimensions of the grid. Default is \code{c(2,2)}.}
 
-\item{time}{in ms. Set animation length. Default is \code{500}.}
+\item{time}{Time in ms. Set animation length. Default is \code{500}.}
 
-\item{max_features}{maximum number of features to be included in Break Down and SHAP Values plots. Default is \code{10}.}
+\item{max_features}{Maximum number of features to be included in Break Down and SHAP Values plots. Default is \code{10}.}
 
-\item{N}{number of observations used for calculation of partial dependency profiles. Default is \code{500}.}
+\item{N}{Number of observations used for calculation of partial dependency profiles. Default is \code{400}.}
 
-\item{B}{number of random paths used for calculation of SHAP values. Default is \code{15}.}
+\item{B}{Number of random paths used for calculation of SHAP values. Default is \code{15}.}
 
-\item{show_info}{verbose progress bar on console? Default is \code{TRUE}.}
+\item{show_info}{Verbose progress bar on the console. Default is \code{TRUE}.}
 
-\item{parallel}{speed up computation using \code{parallelMap::parallelMap()}.
+\item{parallel}{Speed up the computation using \code{parallelMap::parallelMap()}.
 See \href{https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#parallel-computation}{\bold{vignette}}.}
 
-\item{options}{customize \code{modelStudio}. See \code{\link{modelStudioOptions}} and
+\item{options}{Customize \code{modelStudio}. See \code{\link{modelStudioOptions}} and
 \href{https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#plot-options}{\bold{vignette}}.}
 
 \item{viewer}{Default is \code{external} to display in an external RStudio window.
 Use \code{browser} to display in an external browser or
 \code{internal} to use the RStudio internal viewer pane for output.}
 
-\item{data}{validation dataset, will be extracted from \code{object} if it is an explainer.
+\item{data}{Validation dataset, will be extracted from \code{object} if it is an explainer.
 NOTE: It is best when target variable is not present in the \code{data}.}
 
-\item{y}{true labels for \code{data}, will be extracted from \code{object} if it is an explainer.}
+\item{y}{True labels for \code{data}, will be extracted from \code{object} if it is an \code{explainer}.}
 
-\item{predict_function}{predict function, will be extracted from \code{object} if it is an explainer.}
+\item{predict_function}{Predict function, will be extracted from \code{object} if it is an \code{explainer}.}
 
-\item{label}{a name of the model, will be extracted from \code{object} if it is an explainer.}
+\item{label}{A name of the model, will be extracted from \code{object} if it is an \code{explainer}.}
 }
 \value{
-an object of the \code{r2d3} class
+An object of the \code{r2d3} class.
 }
 \description{
 This tool uses your model, data and new observations, to provide local

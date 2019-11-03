@@ -1,4 +1,4 @@
-## Contribute to modelStudio
+# Contribute to modelStudio
 
 #### **Did you find a bug?**
 

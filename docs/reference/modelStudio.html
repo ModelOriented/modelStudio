@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generates interactive studio to explain predictive model — modelStudio • modelStudio</title>
+<title>Generate Interactive Studio with Explanations for the Model — modelStudio • modelStudio</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -35,7 +35,7 @@
 
 
 
-<meta property="og:title" content="Generates interactive studio to explain predictive model — modelStudio" />
+<meta property="og:title" content="Generate Interactive Studio with Explanations for the Model — modelStudio" />
 
 <meta property="og:description" content="This tool uses your model, data and new observations, to provide local
 and global explanations. It generates plots and descriptions in the form
@@ -85,7 +85,7 @@ Find more details about plots in Predictive Models: Explore, Explain, and Debug"
         <div class="info">
           <span class="partof">part of the <a href="https://github.com/ModelOriented/DrWhy">DrWhy.AI</a>
            developed by the <a href="https://mi2.mini.pw.edu.pl/">MI^2 DataLab</a> </span>
-          <span class="version version-default">0.1.8</span>
+          <span class="version version-default">0.1.9</span>
         </div>
       </div>
     </div>
@@ -134,7 +134,7 @@ Find more details about plots in Predictive Models: Explore, Explain, and Debug"
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Generates interactive studio to explain predictive model</h1>
+    <h1>Generate Interactive Studio with Explanations for the Model</h1>
     <small class="dont-index">Source: <a href='https://github.com/ModelOriented/modelStudio/blob/master/R/modelStudio.R'><code>R/modelStudio.R</code></a></small>
     <div class="hidden name"><code>modelStudio.Rd</code></div>
     </div>
@@ -152,14 +152,14 @@ of the serverless HTML site, that supports animations and interactivity made wit
 
 <span class='co'># S3 method for explainer</span>
 <span class='fu'>modelStudio</span>(<span class='no'>object</span>, <span class='no'>new_observation</span>, <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,
-  <span class='fl'>2</span>), <span class='kw'>time</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>max_features</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>15</span>,
+  <span class='fl'>2</span>), <span class='kw'>time</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>max_features</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>400</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>15</span>,
   <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>options</span> <span class='kw'>=</span> <span class='fu'><a href='modelStudioOptions.html'>modelStudioOptions</a></span>(),
   <span class='kw'>viewer</span> <span class='kw'>=</span> <span class='st'>"external"</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for default</span>
 <span class='fu'>modelStudio</span>(<span class='no'>object</span>, <span class='no'>data</span>, <span class='no'>y</span>,
   <span class='kw'>predict_function</span> <span class='kw'>=</span> <span class='no'>predict</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='no'>model</span>)[<span class='fl'>1</span>], <span class='no'>new_observation</span>,
-  <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>2</span>), <span class='kw'>time</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>max_features</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>500</span>,
+  <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>2</span>), <span class='kw'>time</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>max_features</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>400</span>,
   <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>options</span> <span class='kw'>=</span> <span class='fu'><a href='modelStudioOptions.html'>modelStudioOptions</a></span>(), <span class='kw'>viewer</span> <span class='kw'>=</span> <span class='st'>"external"</span>, <span class='no'>...</span>)</pre>
     
@@ -168,48 +168,48 @@ of the serverless HTML site, that supports animations and interactivity made wit
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>an explainer created with function <code><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>DALEX::explain()</a></code> or a model to be explained.</p></td>
+      <td><p>An <code>explainer</code> created with function <code><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>DALEX::explain()</a></code> or a model to be explained.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>other parameters.</p></td>
+      <td><p>Other parameters.</p></td>
     </tr>
     <tr>
       <th>new_observation</th>
-      <td><p>a new observation with columns that correspond to variables used in the model.</p></td>
+      <td><p>A new observation with columns that correspond to variables used in the model.</p></td>
     </tr>
     <tr>
       <th>facet_dim</th>
-      <td><p>dimensions of the grid. Default is <code><a href='https://rdrr.io/r/base/c.html'>c(2,2)</a></code>.</p></td>
+      <td><p>Dimensions of the grid. Default is <code><a href='https://rdrr.io/r/base/c.html'>c(2,2)</a></code>.</p></td>
     </tr>
     <tr>
       <th>time</th>
-      <td><p>in ms. Set animation length. Default is <code>500</code>.</p></td>
+      <td><p>Time in ms. Set animation length. Default is <code>500</code>.</p></td>
     </tr>
     <tr>
       <th>max_features</th>
-      <td><p>maximum number of features to be included in Break Down and SHAP Values plots. Default is <code>10</code>.</p></td>
+      <td><p>Maximum number of features to be included in Break Down and SHAP Values plots. Default is <code>10</code>.</p></td>
     </tr>
     <tr>
       <th>N</th>
-      <td><p>number of observations used for calculation of partial dependency profiles. Default is <code>500</code>.</p></td>
+      <td><p>Number of observations used for calculation of partial dependency profiles. Default is <code>400</code>.</p></td>
     </tr>
     <tr>
       <th>B</th>
-      <td><p>number of random paths used for calculation of SHAP values. Default is <code>15</code>.</p></td>
+      <td><p>Number of random paths used for calculation of SHAP values. Default is <code>15</code>.</p></td>
     </tr>
     <tr>
       <th>show_info</th>
-      <td><p>verbose progress bar on console? Default is <code>TRUE</code>.</p></td>
+      <td><p>Verbose progress bar on the console. Default is <code>TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>parallel</th>
-      <td><p>speed up computation using <code><a href='https://rdrr.io/pkg/parallelMap/man/parallelMap.html'>parallelMap::parallelMap()</a></code>.
+      <td><p>Speed up the computation using <code><a href='https://rdrr.io/pkg/parallelMap/man/parallelMap.html'>parallelMap::parallelMap()</a></code>.
 See <a href='https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#parallel-computation'><b>vignette</b></a>.</p></td>
     </tr>
     <tr>
       <th>options</th>
-      <td><p>customize <code>modelStudio</code>. See <code><a href='modelStudioOptions.html'>modelStudioOptions</a></code> and
+      <td><p>Customize <code>modelStudio</code>. See <code><a href='modelStudioOptions.html'>modelStudioOptions</a></code> and
 <a href='https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#plot-options'><b>vignette</b></a>.</p></td>
     </tr>
     <tr>
@@ -220,26 +220,26 @@ Use <code>browser</code> to display in an external browser or
     </tr>
     <tr>
       <th>data</th>
-      <td><p>validation dataset, will be extracted from <code>object</code> if it is an explainer.
+      <td><p>Validation dataset, will be extracted from <code>object</code> if it is an explainer.
 NOTE: It is best when target variable is not present in the <code>data</code>.</p></td>
     </tr>
     <tr>
       <th>y</th>
-      <td><p>true labels for <code>data</code>, will be extracted from <code>object</code> if it is an explainer.</p></td>
+      <td><p>True labels for <code>data</code>, will be extracted from <code>object</code> if it is an <code>explainer</code>.</p></td>
     </tr>
     <tr>
       <th>predict_function</th>
-      <td><p>predict function, will be extracted from <code>object</code> if it is an explainer.</p></td>
+      <td><p>Predict function, will be extracted from <code>object</code> if it is an <code>explainer</code>.</p></td>
     </tr>
     <tr>
       <th>label</th>
-      <td><p>a name of the model, will be extracted from <code>object</code> if it is an explainer.</p></td>
+      <td><p>A name of the model, will be extracted from <code>object</code> if it is an <code>explainer</code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>an object of the <code>r2d3</code> class</p>
+    <p>An object of the <code>r2d3</code> class.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 

@@ -14,9 +14,9 @@
 <meta property="og:description" content="Automate explanation of machine learning predictive models.
   This package generates advanced interactive and animated model explanations in the form
   of a serverless HTML site. It combines R with D3.js to produce plots and descriptions
-  for local and global explanations. The whole is greater than the sum of its parts,
-  so it also supports EDA (Exploratory Data Analysis) on top of that. modelStudio is
-  a fast and condensed way to get all the answers without much effort. 
+  for various local and global explanations. Tools for model exploration unite with
+  tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behaviour.
+  modelStudio is a fast and condensed way to get all the answers without much effort. 
   Break down your model and look into its ingredients with only a few lines of code.">
 <meta property="og:image" content="/logo.png">
 <meta name="twitter:card" content="summary">
@@ -48,7 +48,7 @@
         <div class="info">
           <span class="partof">part of the <a href="https://github.com/ModelOriented/DrWhy">DrWhy.AI</a>
            developed by the <a href="https://mi2.mini.pw.edu.pl/">MI^2 DataLab</a> </span>
-          <span class="version version-default">0.1.8</span>
+          <span class="version version-default">0.1.9</span>
         </div>
       </div>
     </div>
@@ -105,7 +105,7 @@
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
 <p>The <code>modelStudio</code> package automates explanation of machine learning predictive models. This package generates advanced interactive and animated model explanations in the form of a serverless HTML site.</p>
-<p>It combines <strong>R</strong> with <strong>D3.js</strong> to produce plots and descriptions for local and global explanations. The whole is greater than the sum of its parts, so it also supports EDA (Exploratory Data Analysis) on top of that. <code>modelStudio</code> is a fast and condensed way to get all the answers without much effort. Break down your model and look into its ingredients with only a few lines of code.</p>
+<p>It combines <strong>R</strong> with <strong>D3.js</strong> to produce plots and descriptions for various local and global explanations. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behaviour. <code>modelStudio</code> is a fast and condensed way to get all the answers without much effort. Break down your model and look into its ingredients with only a few lines of code.</p>
 <p><a href="https://modeloriented.github.io/modelStudio/demo.html">See a demo</a>   <a href="https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html">Read the vignette: modelStudio - perks and features</a></p>
 <p><img src="images/gif3.gif"></p>
 <p>The <code>modelStudio</code> package is a part of the <a href="http://drwhy.ai">DrWhy.AI</a> universe.</p>
@@ -123,7 +123,6 @@
 <h2 class="hasAnchor">
 <a href="#demo" class="anchor"></a>Demo</h2>
 <p>This package bases on <code>DALEX</code> explainers created with <code><a href="https://rdrr.io/pkg/DALEX/man/explain.html">DALEX::explain()</a></code>.</p>
-<p><strong>Demo works on the new version of DALEX</strong> <code><a href="https://rdrr.io/pkg/devtools/man/reexports.html">devtools::install_github("ModelOriented/DALEX")</a></code></p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"modelStudio"</span>)</a>
 <a class="sourceLine" id="cb2-2" title="2"></a>
 <a class="sourceLine" id="cb2-3" title="3"><span class="co"># Create a model</span></a>
@@ -164,7 +163,7 @@
 <div id="acknowledgments" class="section level2">
 <h2 class="hasAnchor">
 <a href="#acknowledgments" class="anchor"></a>Acknowledgments</h2>
-<p>Work on this package was financially supported by the ‘NCN Opus grant 2016/21/B/ST6/02176’.</p>
+<p>Work on this package was financially supported by the <code>NCN Opus grant 2016/21/B/ST6/02176</code>.</p>
 </div>
 </div>
   </div>
@@ -184,8 +183,7 @@
 <div class="license">
 <h2>License</h2>
 <ul class="list-unstyled">
-<li>file <a href="LICENSE-text.html">LICENSE</a>
-</li>
+<li><a href="https://www.r-project.org/Licenses/GPL-2">GPL-2</a></li>
 </ul>
 </div>
 <div class="community">
@@ -210,6 +208,7 @@
 <li><a href="https://travis-ci.org/ModelOriented/modelStudio"><img src="https://travis-ci.org/ModelOriented/modelStudio.svg?branch=master" alt="Build Status"></a></li>
 <li><a href="https://codecov.io/github/ModelOriented/modelStudio?branch=master"><img src="https://codecov.io/gh/ModelOriented/modelStudio/branch/master/graph/badge.svg" alt="Coverage Status"></a></li>
 <li><a href="http://drwhy.ai/#AutoMat"><img src="https://img.shields.io/badge/DrWhy-AutoMat-ae2c87" alt="DrWhy-eXtrAI"></a></li>
+<li><a href="https://joss.theoj.org/papers/9eec8c9d1969fbd44b3ea438a74af911"><img src="https://joss.theoj.org/papers/9eec8c9d1969fbd44b3ea438a74af911/status.svg" alt="JOSS-status"></a></li>
 </ul>
 </div>
 </div>
