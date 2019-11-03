@@ -15,7 +15,7 @@ Description: Automate explanation of machine learning predictive models.
   'modelStudio' is a fast and condensed way to get all the answers without much effort. 
   Break down your model and look into its ingredients with only a few lines of code.
 Depends: R (>= 3.5.0)
-License: file LICENSE
+License: GPL-2
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
