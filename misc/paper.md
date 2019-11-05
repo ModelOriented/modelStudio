@@ -26,7 +26,7 @@ Machine learning predictive models are widely used in many areas of
 business and research. Their rising popularity is due to them being
 effective but often leads to problems with explaining their prediction.
 This has led to development of many Interpretable Machine Learning
-tools, e.g. `DALEX` [@DALEX] R package, `lime` [@lime] and
+tools, e.g., `DALEX` [@DALEX] R package, `lime` [@lime] and
 `shap` [@NIPS2017_7062] Python packages and `H2o.ai Driverless AI` [@Gill2017MachineLI].
 
 Nowadays, we can see a huge demand for automation in many areas. This is
@@ -36,7 +36,7 @@ tools not only speed up the model development process
 but also often lead to new discoveries or higher quality of models.
 
 Explaining predictive models might be a time consuming and tedious task. 
-Libraries for interpretable machine learning [@DALEX], [@iml], [@tfexplain], [@sklearnexplain], [@InterpretML] require high programing skills and endless exploration of different aspects of a predictive model.
+Libraries for interpretable machine learning [@DALEX; @iml; @tfexplain; @sklearnexplain; @InterpretML] require high programing skills and endless exploration of different aspects of a predictive model.
 
 There are tools for automation of the XAI process like `modelDown` [@Romaszko2019] which produces static HTML site to compare and explain various models. Unfortunately, such tools are focused on global level explanations and deliver monotonous experience.  
 
@@ -49,7 +49,7 @@ The main goal of this tool is to make model explaining more automated and achiev
 
 Comparing instance level explanations and model level
 explanations side by side adds wider context and allows for deeper understanding. 
-`modelStudio` helps to study relations between various methods for model explanation like *Break Down*, *SHAP*, *Partial Dependency Plots*, *Feature Importance* and others.
+`modelStudio` helps to study relations between various methods for model explanation like *Break Down*, *SHAP*, *Partial Dependency Plots*, *Feature Importance*, and others.
 
 
 
