@@ -71,7 +71,7 @@ explainer <- DALEX::explain(model, data = DALEX::titanic_imputed[,-8],
                             y = DALEX::titanic_imputed[,8], label = "glm")
                    
 # Pick some data points
-new_observations <- titanic_small[1:4,]
+new_observations <- DALEX::titanic_imputed[1:4,]
 rownames(new_observations) <- c("Lucas", "James", "Thomas", "Nancy")
 
 # Make a studio for the model
