@@ -1,15 +1,19 @@
 language: R
 sudo: false
 cache: packages
-
-env:
-  global:
-  - R_CHECK_ARGS="--timings --run-donttest"
+warnings_are_errors: true
+os:
+  - linux
+  - osx
   
 r:
   - release
   - devel
 
+env:
+  global:
+  - R_CHECK_ARGS="--timings --run-donttest"
+  
 notifications:
   email: false
 

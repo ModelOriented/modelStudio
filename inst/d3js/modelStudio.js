@@ -395,4 +395,6 @@ function initializeStudio() {
                IS_BUTTON_CLICKED = false;
              });
   }
+
+  svg.select('.enterChoiceButton').dispatch('click');
 }
