@@ -209,7 +209,7 @@ modelStudio.default <- function(object,
     if (show_info) setTxtProgressBar(pb, 5)
   }
 
-  fi_data <- prepare_feature_importance(fi, max_features)
+  fi_data <- prepare_feature_importance(fi, max_features, ...)
   pd_data <- prepare_partial_dependency(pd_n, pd_c, variables = variable_names)
   ad_data <- prepare_accumulated_dependency(ad_n, ad_c, variables = variable_names)
   fd_data <- prepare_feature_distribution(data, variables = variable_names)
@@ -218,7 +218,7 @@ modelStudio.default <- function(object,
     parallelMap::parallelStart()
     parallelMap::parallelLibrary(packages = loadedNamespaces())
 
-    f <- function(i, model, data, predict_function, label, B) {
+    f <- function(i, model, data, predict_function, label, B, ...) {
       new_observation <- obs_data[i,]
 
       bd <- iBreakDown::local_attributions(
@@ -228,8 +228,8 @@ modelStudio.default <- function(object,
       cp <- ingredients::ceteris_paribus(
         model, data, predict_function, new_observation, label = label)
 
-      bd_data <- prepare_break_down(bd, max_features)
-      sv_data <- prepare_shap_values(sv, max_features)
+      bd_data <- prepare_break_down(bd, max_features, ...)
+      sv_data <- prepare_shap_values(sv, max_features, ...)
       cp_data <- prepare_ceteris_paribus(cp, variables = variable_names)
 
       list(bd_data, cp_data, sv_data)
@@ -241,7 +241,8 @@ modelStudio.default <- function(object,
                                            data = data,
                                            predict_function = predict_function,
                                            label = label,
-                                           B = B
+                                           B = B,
+                                           ...
                                          ))
 
     parallelMap::parallelStop()
@@ -261,8 +262,8 @@ modelStudio.default <- function(object,
 
       if (show_info) setTxtProgressBar(pb, 5 + i)
 
-      bd_data <- prepare_break_down(bd, max_features)
-      sv_data <- prepare_shap_values(sv, max_features)
+      bd_data <- prepare_break_down(bd, max_features, ...)
+      sv_data <- prepare_shap_values(sv, max_features, ...)
       cp_data <- prepare_ceteris_paribus(cp, variables = variable_names)
 
       obs_list[[i]] <- list(bd_data, cp_data, sv_data)

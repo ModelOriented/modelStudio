@@ -90,6 +90,7 @@ modelStudioOptions <- function(...) {
     margin_inner = 40,
     margin_small = 5,
     margin_big = 10,
+    margin_ytitle = 40,
     w = 420,
     h = 280,
     bar_width = 16,

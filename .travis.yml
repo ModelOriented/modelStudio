@@ -2,18 +2,23 @@ language: R
 sudo: false
 cache: packages
 warnings_are_errors: true
-os:
-  - linux
-  - osx
-  
+
 r:
   - release
   - devel
 
+os:
+  - linux
+  - osx
+
+matrix:
+  exclude:
+    - os: osx
+      r: devel
 env:
   global:
   - R_CHECK_ARGS="--timings --run-donttest"
-  
+
 notifications:
   email: false
 

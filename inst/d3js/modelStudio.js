@@ -86,7 +86,8 @@ var CLICKED_VARIABLE_NAME = variableNames[0],
 var margin = {top: options.margin_top, right: options.margin_right,
               bottom: options.margin_bottom, left: options.margin_left,
               inner: options.margin_inner,
-              small: options.margin_small, big: options.margin_big};
+              small: options.margin_small, big: options.margin_big,
+              ytitle: options.margin_ytitle};
 
 var w = options.w, h = options.h;
 
@@ -396,5 +397,12 @@ function initializeStudio() {
              });
   }
 
-  svg.select('.enterChoiceButton').dispatch('click');
+  if (facetData.length >= 1) {
+    svg.selectAll('.enterChoiceButton').filter('#enterChoiceButton0').dispatch('click');
+    svg.select("#chosePlotButton0").select("#BD").dispatch('click');
+  }
+
+  if (facetData.length >= 2) {
+    svg.selectAll('.enterChoiceButton').filter('#enterChoiceButton1').dispatch('click');
+  }
 }

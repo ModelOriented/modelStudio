@@ -245,7 +245,8 @@ prepare_ceteris_paribus <- function(x, variables = NULL) {
   ret
 }
 
-prepare_feature_importance <- function(x, max_features = 10, margin = 0.2) {
+prepare_feature_importance <- function(x, max_features = 10, margin = 0.2,
+                                       digits = 3, rounding_function = round) {
   ### This function returns object needed to plot FeatureImportance in D3 ###
 
   m <- dim(x)[1] - 2
@@ -276,6 +277,8 @@ prepare_feature_importance <- function(x, max_features = 10, margin = 0.2) {
   new_x <- new_x[order(new_x$variable),]
 
   colnames(new_x) <- c("label","variable","dropout_loss", "full_model")
+  new_x$dropout_loss <- rounding_function(new_x$dropout_loss, digits)
+  new_x$full_model <- rounding_function(new_x$full_model, digits)
 
   desc <- ingredients::describe(x)
 

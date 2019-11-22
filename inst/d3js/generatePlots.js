@@ -967,7 +967,7 @@ function cpNumericalPlot(variableName, lData, mData, yMinMax, pData, desc) {
   CP.append("text")
     .attr("class", "axisTitle")
     .attr("transform", "rotate(-90)")
-    .attr("y", margin.left-40)
+    .attr("y", margin.left - margin.ytitle)
     .attr("x", -(margin.top + cpPlotHeight/2))
     .attr("text-anchor", "middle")
     .text("prediction");
@@ -1298,7 +1298,7 @@ function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean, desc) {
   PD.append("text")
     .attr("class", "axisTitle")
     .attr("transform", "rotate(-90)")
-    .attr("y", margin.left-40)
+    .attr("y", margin.left - margin.ytitle)
     .attr("x", -(margin.top + pdPlotHeight/2))
     .attr("text-anchor", "middle")
     .text("average prediction");
@@ -1629,7 +1629,7 @@ function adNumericalPlot(variableName, lData, mData, yMinMax, yMean, desc) {
   AD.append("text")
     .attr("class", "axisTitle")
     .attr("transform", "rotate(-90)")
-    .attr("y", margin.left-40)
+    .attr("y", margin.left - margin.ytitle)
     .attr("x", -(margin.top + adPlotHeight/2))
     .attr("text-anchor", "middle")
     .text("accumulated prediction");
@@ -1842,7 +1842,7 @@ function fdNumericalPlot(variableName, dData, mData, nBin) {
   FD.append("text")
     .attr("class", "axisTitle")
     .attr("transform", "rotate(-90)")
-    .attr("y", margin.left-40)
+    .attr("y", margin.left - margin.ytitle)
     .attr("x", -(margin.top + fdPlotHeight/2))
     .attr("text-anchor", "middle")
     .text("count");
