@@ -1,4 +1,5 @@
 titanic <- na.omit(DALEX::titanic)
+apartments <- DALEX::apartments
 set.seed(1313)
 
 

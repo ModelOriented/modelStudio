@@ -1,9 +1,21 @@
+# modelStudio 0.2.0
+* TODO: scatterplot eda (#38)
+* add `new_observation_y` argument to `modelStudio` (#39)
+* pass `...` to `prepare_*` functions (e.g. allows to round numbers)
+* add `margin_ytitle` argument to options
+* by default: observations to calculate local explanations are taken at random from the data (#25)
+* by default: first plot is selected as `BD` and second is `clicked` (#37)
+* `try_catch` blocks added - errors in `ingredients` or `iBreakDown` functions are
+now treated as warnings and do not stop the `modelStudio` computation (#35)
+* add `spellcheck` to tests (#36)
+* Travis-CI now checks OSX
+
 # modelStudio 0.1.9
-* This version requires `DALEX 0.4.9` and `ingredients 0.4.0`
+* this version requires `DALEX 0.4.9` and `ingredients 0.4.0`
 
 # modelStudio 0.1.8
 * change `Shapley Values` to `SHAP Values`
-* Lower `B` default value from 25 to 15, `N` default value from 500 to 400
+* lower `B` default value from 25 to 15, `N` default value from 500 to 400
 
 # modelStudio 0.1.7
 * fix tests for CRAN

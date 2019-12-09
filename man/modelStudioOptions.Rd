@@ -2,7 +2,7 @@
 % Please edit documentation in R/modelStudioOptions.R
 \name{modelStudioOptions}
 \alias{modelStudioOptions}
-\title{Modifiy options and pass them to modelStudio}
+\title{Modify options and pass them to modelStudio}
 \usage{
 modelStudioOptions(...)
 }

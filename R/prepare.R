@@ -2,6 +2,8 @@ prepare_break_down <- function(x, max_features = 10, baseline = NA, digits = 3,
                                rounding_function = round, margin = 0.2, min_max = NA) {
   ### This function returns object needed to plot BreakDown in D3 ###
 
+  if (is.null(x)) return(NULL)
+
   m <- ifelse(nrow(x) - 2 <= max_features, nrow(x), max_features + 3)
 
   new_x <- prepare_break_down_df(x, max_features, baseline, digits, rounding_function)
@@ -19,8 +21,9 @@ prepare_break_down <- function(x, max_features = 10, baseline = NA, digits = 3,
   min_max[1] <- min_max[1] - min_max_margin
   min_max[2] <- min_max[2] + min_max_margin
 
-  desc <- iBreakDown::describe(x, display_values =  TRUE,
-                               display_numbers = TRUE)
+  desc <- try_catch(iBreakDown::describe(x, display_values =  TRUE,
+                                            display_numbers = TRUE),
+                    "iBreakDown::describe.break_down")
 
   ret <- NULL
   ret$x <- new_x
@@ -93,6 +96,8 @@ prepare_shap_values <- function(x, max_features = 10, baseline = NA, digits = 3,
                                    rounding_function = round, margin = 0.2, min_max = NA) {
   ### This function returns object needed to plot SHAPValues in D3 ###
 
+  if (is.null(x)) return(NULL)
+
   x <- x[x$B == 0,]
   if (is.na(baseline)) baseline <- attr(x, "intercept")[[1]]
   prediction <- attr(x, "prediction")[[1]]
@@ -110,9 +115,10 @@ prepare_shap_values <- function(x, max_features = 10, baseline = NA, digits = 3,
   min_max[1] <- min_max[1] - min_max_margin
   min_max[2] <- min_max[2] + min_max_margin
 
-  desc <- iBreakDown::describe(x, display_values = TRUE,
-                               display_numbers = TRUE,
-                               display_shap = TRUE)
+  desc <- try_catch(iBreakDown::describe(x, display_values = TRUE,
+                                            display_numbers = TRUE,
+                                            display_shap = TRUE),
+                    "iBreakDown::describe.shap")
 
   ret <- NULL
   ret$x <- new_x
@@ -171,6 +177,8 @@ prepare_shap_values_df <- function(x, max_features = 10, baseline = NA, predicti
 prepare_ceteris_paribus <- function(x, variables = NULL) {
   ### This function returns object needed to plot CeterisParibus in D3 ###
 
+  if (is.null(x)) return(NULL)
+
   # which variable is numeric?
   is_numeric <- sapply(x[, variables, drop = FALSE], is.numeric)
   names(is_numeric) <- variables
@@ -224,11 +232,11 @@ prepare_ceteris_paribus <- function(x, variables = NULL) {
       new_x[[name]] <- temp
     }
 
-    text <- suppressWarnings(
-      ingredients::describe(x, display_values = TRUE,
-                            display_numbers = TRUE,
-                            variables = name)
-    )
+    text <- try_catch(
+      suppressWarnings(ingredients::describe(x, display_values = TRUE,
+                                                display_numbers = TRUE,
+                                                variables = name)),
+      "ingredients::describe.ceteris_paribus")
 
     desc[[name]] <- data.frame(type = "desc",
                                text = gsub("\n","</br>", text))
@@ -248,6 +256,8 @@ prepare_ceteris_paribus <- function(x, variables = NULL) {
 prepare_feature_importance <- function(x, max_features = 10, margin = 0.2,
                                        digits = 3, rounding_function = round) {
   ### This function returns object needed to plot FeatureImportance in D3 ###
+
+  if (is.null(x)) return(NULL)
 
   m <- dim(x)[1] - 2
 
@@ -280,7 +290,8 @@ prepare_feature_importance <- function(x, max_features = 10, margin = 0.2,
   new_x$dropout_loss <- rounding_function(new_x$dropout_loss, digits)
   new_x$full_model <- rounding_function(new_x$full_model, digits)
 
-  desc <- ingredients::describe(x)
+  desc <- try_catch(ingredients::describe(x),
+                    "ingredients::describe.feature_importance")
 
   ret <- NULL
   ret$x <- new_x[,2:4]
@@ -294,6 +305,8 @@ prepare_feature_importance <- function(x, max_features = 10, margin = 0.2,
 
 prepare_partial_dependency <- function(x, y, variables = NULL) {
   ### This function returns object needed to plot PartialDependency in D3 ###
+
+  if (is.null(x) | is.null(y)) return(NULL)
 
   # which variable is numeric?
   num <- as.character(unique(x$`_vname_`))
@@ -346,12 +359,11 @@ prepare_partial_dependency <- function(x, y, variables = NULL) {
       new_x[[name]] <- temp
     }
 
-    text <- suppressWarnings(
-      ingredients::describe(rbind(x,y),
-                            display_values = TRUE,
-                            display_numbers = TRUE,
-                            variables = name)
-    )
+    text <- try_catch(
+      suppressWarnings(ingredients::describe(rbind(x,y), display_values = TRUE,
+                                                         display_numbers = TRUE,
+                                                         variables = name)),
+      "ingredients::describe.partial_dependency")
 
     desc[[name]] <- data.frame(type = "desc",
                                text = gsub("\n","</br>", text))
@@ -373,6 +385,8 @@ prepare_partial_dependency <- function(x, y, variables = NULL) {
 
 prepare_accumulated_dependency <- function(x, y, variables = NULL) {
   ### This function returns object needed to plot AccumulatedDependency in D3 ###
+
+  if (is.null(x) | is.null(y)) return(NULL)
 
   # which variable is numeric?
   num <- as.character(unique(x$`_vname_`))
@@ -429,11 +443,13 @@ prepare_accumulated_dependency <- function(x, y, variables = NULL) {
       new_x[[name]] <- temp
     }
 
-    # text <- suppressWarnings(
+    # text <- try_catch(
+    #   suppressWarnings(
     #   ingredients::describe(rbind(x,y),
     #                         display_values = TRUE,
     #                         display_numbers = TRUE,
-    #                         variables = name)
+    #                         variables = name)),
+    #   "ingredients::describe.accumulated_dependency"
     # )
 
     ## accumulated not still developed

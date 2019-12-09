@@ -86,6 +86,8 @@ function breakDown() {
   let tObservationId = CLICKED_OBSERVATION_ID,
       tData = obsData[tObservationId];
 
+  if (tData[0].x === undefined) return null;
+
   var bdData = tData[0],
       bData = bdData.x;
       bdBarCount = bdData.m[0],
@@ -321,6 +323,8 @@ function shapValues() {
   let tObservationId = CLICKED_OBSERVATION_ID,
       tData = obsData[tObservationId];
 
+  if (tData[2].x === undefined) return null;
+
   var svData = tData[2],
       bData = svData.x,
       svBarCount = svData.m[0],
@@ -522,6 +526,8 @@ function ceterisParibus() {
   let tObservationId = CLICKED_OBSERVATION_ID,
       tData = obsData[tObservationId];
 
+  if (tData[1].x === undefined) return null;
+
   let cpData = tData[1],
       profData = cpData.x,
       xMinMax = cpData.x_min_max_list,
@@ -544,6 +550,8 @@ function ceterisParibus() {
 }
 
 function featureImportance() {
+
+  if (fiData.x === undefined) return null;
 
   var fiBarCount = fiData.m[0],
       bData = fiData.x,
@@ -713,6 +721,8 @@ function featureImportance() {
 
 function partialDependency() {
 
+  if (pdData.x === undefined) return null;
+
   let profData = pdData.x,
       xMinMax = pdData.x_min_max_list,
       yMinMax = pdData.y_min_max,
@@ -735,6 +745,8 @@ function partialDependency() {
 
 function accumulatedDependency() {
 
+  if (adData.x === undefined) return null;
+
   let profData = adData.x,
       xMinMax = adData.x_min_max_list,
       yMinMax = adData.y_min_max,
@@ -756,6 +768,8 @@ function accumulatedDependency() {
 }
 
 function featureDistribution() {
+
+  if (fdData.x === undefined) return null;
 
   let dData = fdData.x,
       xMinMax = fdData.x_min_max_list,
@@ -2091,7 +2105,7 @@ function updatePlots(event, variableName, observationId, plotId) {
 
     default:
       console.log("Unknown event in updatePlots " +
-                  [event,variableName,observationId,plotId]);
+                  [event,variableName, observationId, plotId]);
       break;
   }
 }

@@ -21,7 +21,8 @@ var TIME = options.time,
     modelName = options.model_name,
     variableNames = options.variable_names,
     dim = options.facet_dim,
-    footer_text = options.footer_text,
+    footerText = options.footer_text,
+    dropDownData = options.drop_down_data,
     SCALE_PLOT = options.scale_plot,
     SHOW_SUBTITLE = options.show_subtitle,
     subTitle = options.subtitle || modelName,
@@ -162,7 +163,7 @@ function initializeStudio() {
   d3.select(".r2d3.html-widget.html-widget-static-bound")
     .style("position","absolute");
 
-  let tempW = calculateTextWidth(observationIds)*1.6 + 18; // 15px bold 600
+  let tempW = calculateTextWidth(dropDownData.map(e => e.text))*1.6 + 18; // 15px bold 600
 
   var inputDiv = d3.select("#htmlwidget_container")
                    .append("div")
@@ -178,11 +179,11 @@ function initializeStudio() {
                       .style("color", "#371ea3");
 
   input.selectAll()
-       .data(observationIds)
+       .data(dropDownData)
        .enter()
        .append("option")
-       .attr("value", d => d)
-       .text(d => d)
+       .attr("value", d => d.id)
+       .text(d => d.text)
        .style("font-size", "15px")
        .style("font-weight", 600)
        .style("color", "#371ea3");
@@ -203,9 +204,9 @@ function initializeStudio() {
 
   BOTTOM_G.append("text")
           .attr("class", "footerTitle")
-          .attr("x", studioWidth - 15 - getTextWidth(footer_text, 12, 'Fira Sans, sans-serif'))
+          .attr("x", studioWidth - 15 - getTextWidth(footerText, 12, 'Fira Sans, sans-serif'))
           .attr("y", studioHeight - studioMargin.bottom + 25)
-          .text(footer_text);
+          .text(footerText);
 
   BOTTOM_G.append("line")
           .attr("class", "footerLine")

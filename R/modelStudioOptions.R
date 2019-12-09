@@ -1,4 +1,4 @@
-#' @title Modifiy options and pass them to modelStudio
+#' @title Modify options and pass them to modelStudio
 #'
 #' @description This function returns default options for \code{\link{modelStudio}}.
 #' It is possible to modify values of this list and pass it to the \code{options}

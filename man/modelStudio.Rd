@@ -8,16 +8,41 @@
 \usage{
 modelStudio(object, ...)
 
-\method{modelStudio}{explainer}(object, new_observation, facet_dim = c(2,
-  2), time = 500, max_features = 10, N = 400, B = 15,
-  show_info = TRUE, parallel = FALSE, options = modelStudioOptions(),
-  viewer = "external", ...)
+\method{modelStudio}{explainer}(
+  object,
+  new_observation = NULL,
+  new_observation_y = NULL,
+  facet_dim = c(2, 2),
+  time = 500,
+  max_features = 10,
+  N = 400,
+  B = 15,
+  show_info = TRUE,
+  parallel = FALSE,
+  options = modelStudioOptions(),
+  viewer = "external",
+  ...
+)
 
-\method{modelStudio}{default}(object, data, y,
-  predict_function = predict, label = class(model)[1], new_observation,
-  facet_dim = c(2, 2), time = 500, max_features = 10, N = 400,
-  B = 15, show_info = TRUE, parallel = FALSE,
-  options = modelStudioOptions(), viewer = "external", ...)
+\method{modelStudio}{default}(
+  object,
+  data,
+  y,
+  predict_function = predict,
+  label = class(model)[1],
+  new_observation = NULL,
+  new_observation_y = NULL,
+  facet_dim = c(2, 2),
+  time = 500,
+  max_features = 10,
+  N = 400,
+  B = 15,
+  show_info = TRUE,
+  parallel = FALSE,
+  options = modelStudioOptions(),
+  viewer = "external",
+  ...
+)
 }
 \arguments{
 \item{object}{An \code{explainer} created with function \code{DALEX::explain()} or a model to be explained.}
@@ -25,6 +50,8 @@ modelStudio(object, ...)
 \item{...}{Other parameters.}
 
 \item{new_observation}{A new observation with columns that correspond to variables used in the model.}
+
+\item{new_observation_y}{True label for \code{new_observation}.}
 
 \item{facet_dim}{Dimensions of the grid. Default is \code{c(2,2)}.}
 
