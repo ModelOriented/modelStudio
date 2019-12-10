@@ -1,10 +1,10 @@
 //:\\\ here are functions for modelStudio plots //:\\\
 
 // model specific data and other variables come from modelStudio.js file
-// descriptions need to be IN plot functions because of tooltips
+// descriptions need to be IN plot functions because of tooltips 
 
 /// initialize plots, select them if already there
-var BD, SV, CP, FI, PD, AD, FD;
+var BD, SV, CP, FI, PD, AD, FD, TV;
 
 /// later plot specific plotIds
 var mapIdPlotFunction = {};
@@ -78,6 +78,18 @@ if (svg.select("#FD").empty()) {
   FD = svg.select("#FD");
 }
 mapIdPlotFunction.FD = featureDistribution;
+
+
+if (svg.select("#TV").empty()) {
+  TV = svg.append("g")
+          .attr("class","plot")
+          .attr("id","TV")
+          .style("visibility", "hidden");
+} else {
+  TV = svg.select("#TV");
+}
+mapIdPlotFunction.TV = targetVs;
+
 
 /// general plot functions
 
@@ -785,6 +797,25 @@ function featureDistribution() {
                     nBin[tVariableName]);
   } else {
     fdCategoricalPlot(tVariableName, dData, xMax[tVariableName]);
+  }
+}
+
+function targetVs() {
+
+  if (tvData.x === undefined) return null;
+
+  let xData = tvData.x,
+      xMinMax = tvData.x_min_max_list,
+      yMinMax = tvData.y_min_max,
+      isNumeric = tvData.is_numeric;
+
+  let tVariableName = CLICKED_VARIABLE_NAME;
+
+  // scatterplot or violin?
+  if (isNumeric[tVariableName][0]) {
+    tvNumericalPlot(tVariableName, xData, xMinMax[tVariableName], yMinMax);
+  } else {
+    tvCategoricalPlot(tVariableName, xData, xMinMax[tVariableName], yMinMax);
   }
 }
 
@@ -1919,7 +1950,7 @@ function fdNumericalPlot(variableName, dData, mData, nBin) {
     var histogram = d3.histogram()
                       .value(d => d[variableName])
                       .domain(x.domain())
-                      .thresholds(x.ticks(nbin));
+                      .thresholds(nbin);
 
     var bins = histogram(dData);
 
@@ -2077,6 +2108,224 @@ function fdCategoricalPlot(variableName, dData, mData) {
     .text("count");
 }
 
+function tvNumericalPlot(variableName, xData, xMinMax, yMinMax) {
+
+  var tvPlotHeight = h,
+      tvPlotWidth = w;
+
+  var x = d3.scaleLinear()
+            .range([margin.left + 10, margin.left + tvPlotWidth - 10])
+            .domain([xMinMax[0], xMinMax[1]]);
+
+  TV.append("text")
+    .attr("transform",
+          "translate(" + (margin.left + tvPlotWidth/2) + " ," +
+                         (margin.top + tvPlotHeight + 45) + ")")
+    .attr("class", "axisTitle")
+    .attr("text-anchor", "middle")
+    .text(variableName);
+
+  var y = d3.scaleLinear()
+            .range([margin.top + tvPlotHeight, margin.top - additionalHeight])
+            .domain([yMinMax[0], yMinMax[1]]);
+
+  TV.append("text")
+    .attr("class","smallTitle")
+    .attr("x", margin.left)
+    .attr("y", margin.top - 15)
+    .text(tvSubtitle);
+
+  TV.append("text")
+    .attr("class", "bigTitle")
+    .attr("x", margin.left)
+    .attr("y", margin.top - 40)
+    .text(tvTitle + variableName);
+
+  // find 5 nice ticks with max and min - do better than d3
+  var tickValues = getTickValues(x.domain());
+
+  var xAxis = d3.axisBottom(x)
+                .tickValues(tickValues)
+                .tickSizeInner(0)
+                .tickPadding(15);
+
+  xAxis = TV.append("g")
+            .attr("class", "axisLabel")
+            .attr("transform", "translate(0,"+ (margin.top + tvPlotHeight) + ")")
+            .call(xAxis);
+
+  var yGrid = TV.append("g")
+                .attr("class", "grid")
+                .attr("transform", "translate(" + margin.left + ",0)")
+                .call(d3.axisLeft(y)
+                        .ticks(10)
+                        .tickSize(-tvPlotWidth)
+                        .tickFormat("")
+                ).call(g => g.select(".domain").remove());
+
+  var yAxis = d3.axisLeft(y)
+                .ticks(5)
+                .tickSize(0);
+
+  yAxis = TV.append("g")
+            .attr("class", "axisLabel")
+            .attr("transform","translate(" + margin.left + ",0)")
+            .call(yAxis)
+            .call(g => g.select(".domain").remove());
+
+  TV.append("text")
+    .attr("class", "axisTitle")
+    .attr("transform", "rotate(-90)")
+    .attr("y", margin.left - margin.ytitle)
+    .attr("x", -(margin.top + tvPlotHeight/2))
+    .attr("text-anchor", "middle")
+    .text("target");
+
+  TV.selectAll()
+    .data(xData)
+    .enter()
+    .append("circle")
+    .attr("class", "point")
+    .attr("cx", d => x(d[variableName]))
+    .attr("cy", d => y(d.target))
+    .attr("r", 0)
+    .style("fill", tvPointColor)
+    .transition()
+    .duration(TIME)
+    .attr("r", tvPointSize);
+}
+
+function tvCategoricalPlot(variableName, xData, xMinMax, yMinMax) {
+
+  var tvPlotHeight = h,
+      tvPlotWidth = w;
+
+    var x = d3.scaleLinear()
+              .range([margin.left, margin.left + tvPlotWidth])
+              .domain([yMinMax[0], yMinMax[1]]);
+
+    var xAxis = d3.axisBottom(x)
+                  .ticks(5)
+                  .tickSize(0);
+
+    xAxis = TV.append("g")
+              .attr("class", "axisLabel")
+              .attr("transform", "translate(0," + (margin.top + tvPlotHeight) + ")")
+              .call(xAxis)
+              .call(g => g.select(".domain").remove());
+
+    var y = d3.scaleBand()
+              .rangeRound([margin.top - additionalHeight, margin.top + tvPlotHeight])
+              .padding(0.33)
+              .domain(tableData.map(d => d[variableName]));
+
+    var xGrid = TV.append("g")
+                  .attr("class", "grid")
+                  .attr("transform", "translate(0," + (margin.top + tvPlotHeight) + ")")
+                  .call(d3.axisBottom(x)
+                          .ticks(10)
+                          .tickSize(-tvPlotHeight - additionalHeight)
+                          .tickFormat("")
+                  ).call(g => g.select(".domain").remove());
+
+    var yGrid = TV.append("g")
+                  .attr("class", "grid")
+                  .attr("transform", "translate(" + margin.left + ",0)")
+                  .call(d3.axisLeft(y)
+                          .tickSize(-tvPlotWidth)
+                          .tickFormat("")
+                  ).call(g => g.select(".domain").remove());
+
+    var yAxis = d3.axisLeft(y)
+                  .tickSize(0);
+
+    yAxis = FD.append("g")
+              .attr("class", "axisLabel")
+              .attr("transform","translate(" + (margin.left - 10) + ",0)")
+              .call(yAxis)
+              .call(g => g.select(".domain").remove());
+
+    yAxis.selectAll("text").call(wrapText, margin.left - 15);
+
+    TV.append("text")
+      .attr("x", margin.left)
+      .attr("y", margin.top - 15)
+      .attr("class", "smallTitle")
+      .text(tvSubtitle);
+
+    TV.append("text")
+      .attr("x", margin.left)
+      .attr("y", margin.top - 40)
+      .attr("class", "bigTitle")
+      .text(tvTitle);
+    /////////////////
+// Features of the histogram
+var histogram = d3.histogram()
+      .domain(y.domain())
+      .thresholds(y.ticks(20))    // Important: how many bins approx are going to be made? It is the 'resolution' of the violin plot
+      .value(d => d)
+
+// Compute the binning for each group of the dataset
+var sumstat = d3.nest()  // nest function allows to group the calculation per level of a factor
+  .key(function(d) { return d.Species;})
+  .rollup(function(d) {   // For each key..
+    input = d.map(function(g) { return g.Sepal_Length;})    // Keep the variable called Sepal_Length
+    bins = histogram(input)   // And compute the binning on it.
+    return(bins)
+  })
+  .entries(data)
+
+// What is the biggest number of value in a bin? We need it cause this value will have a width of 100% of the bandwidth.
+var maxNum = 0
+for ( i in sumstat ){
+  allBins = sumstat[i].value
+  lengths = allBins.map(function(a){return a.length;})
+  longuest = d3.max(lengths)
+  if (longuest > maxNum) { maxNum = longuest }
+}
+
+// The maximum width of a violin must be x.bandwidth = the width dedicated to a group
+var xNum = d3.scaleLinear()
+  .range([0, x.bandwidth()])
+  .domain([-maxNum,maxNum])
+
+// Color scale for dots
+var myColor = d3.scaleSequential()
+  .interpolator(d3.interpolateInferno)
+  .domain([3,9])
+
+// Add the shape to this svg!
+svg
+  .selectAll("myViolin")
+  .data(sumstat)
+  .enter()        // So now we are working group per group
+  .append("g")
+    .attr("transform", function(d){ return("translate(" + x(d.key) +" ,0)") } ) // Translation on the right to be at the group position
+  .append("path")
+      .datum(function(d){ return(d.value)})     // So now we are working bin per bin
+      .style("stroke", "none")
+      .style("fill","grey")
+      .attr("d", d3.area()
+          .x0( xNum(0) )
+          .x1(function(d){ return(xNum(d.length)) } )
+          .y(function(d){ return(y(d.x0)) } )
+          .curve(d3.curveCatmullRom)    // This makes the line smoother to give the violin appearance. Try d3.curveStep to see the difference
+      )
+
+// Add individual points with jitter
+var jitterWidth = 40
+svg
+  .selectAll("indPoints")
+  .data(data)
+  .enter()
+  .append("circle")
+    .attr("cx", function(d){return(x(d.Species) + x.bandwidth()/2 - Math.random()*jitterWidth )})
+    .attr("cy", function(d){return(y(d.Sepal_Length))})
+    .attr("r", 5)
+    .style("fill", function(d){ return(myColor(d.Sepal_Length))})
+    .attr("stroke", "white")
+}
+
 /// event plot functions
 
 function updatePlots(event, variableName, observationId, plotId) {
@@ -2094,8 +2343,8 @@ function updatePlots(event, variableName, observationId, plotId) {
       if (variableName == "prediction" || variableName == "intercept" ||
           variableName == "other") { return; }
       CLICKED_VARIABLE_NAME = variableName;
-      removePlots(["CP", "PD", "AD", "FD"]);
-      generatePlots(["CP", "PD", "AD", "FD"]);
+      removePlots(["CP", "PD", "AD", "FD", "TV"]);
+      generatePlots(["CP", "PD", "AD", "FD", "TV"]);
       break;
 
     case "chosePlot":

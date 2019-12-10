@@ -229,7 +229,7 @@ prepare_ceteris_paribus <- function(x, variables = NULL) {
       colnames(temp) <- c("xhat", "yhat", "vname")
       temp$yhat <- as.numeric(temp$yhat)
 
-      new_x[[name]] <- temp
+      new_x[[name]] <- temp[order(temp$xhat),]
     }
 
     text <- try_catch(
@@ -356,7 +356,7 @@ prepare_partial_dependency <- function(x, y, variables = NULL) {
       colnames(temp) <- c("xhat", "yhat", "vname", "label")
       temp$yhat <- as.numeric(temp$yhat)
 
-      new_x[[name]] <- temp
+      new_x[[name]] <- temp[order(temp$xhat),]
     }
 
     text <- try_catch(
@@ -440,7 +440,7 @@ prepare_accumulated_dependency <- function(x, y, variables = NULL) {
       colnames(temp) <- c("xhat", "yhat", "vname", "label")
       temp$yhat <- as.numeric(temp$yhat)
 
-      new_x[[name]] <- temp
+      new_x[[name]] <- temp[order(temp$xhat),]
     }
 
     # text <- try_catch(
@@ -485,12 +485,13 @@ prepare_feature_distribution <- function(x, variables = NULL) {
   x_min_max_list <- x_max_list <- nbin <- list()
 
   for (i in 1:length(is_numeric)) {
+    name <- names(is_numeric[i])
+    x[,name] <- sort(x[,name])
+
     if (is_numeric[i]) {
-      name <- names(is_numeric[i])
       x_min_max_list[[name]] <- range(x[,name])
-      nbin[[name]] <- nclass.Sturges(x[,name]) ## FD, scott nbin choice
+      nbin[[name]] <- nclass.scott(x[,name]) ## FD, scott nbin choice
     } else {
-      name <- names(is_numeric[i])
       x_max_list[[name]] <-max(table(x[,name]))
     }
   }
@@ -500,6 +501,43 @@ prepare_feature_distribution <- function(x, variables = NULL) {
   ret$x_min_max_list <- x_min_max_list
   ret$x_max_list <- x_max_list
   ret$nbin <- nbin
+  ret$is_numeric <- as.list(is_numeric)
+
+  ret
+}
+
+prepare_target_vs <- function(x, y, variables = NULL) {
+  ### This function returns object needed to plot TargetVariable in D3 ###
+
+  # which variable is numeric?
+  is_numeric <- sapply(x[, variables, drop = FALSE], is.numeric)
+  names(is_numeric) <- variables
+
+  # safeguard
+  is_numeric <- is_numeric[!is.na(is_numeric)]
+
+  x_min_max_list <- x_max_list <- list()
+
+  for (i in 1:length(is_numeric)) {
+    name <- names(is_numeric[i])
+    if (is_numeric[i]) {
+      x_min_max_list[[name]] <- range(x[,name])
+    } else {
+      x[,name] <- sort(x[,name])
+    }
+  }
+
+  X <- cbind(x[,variables], y)
+  colnames(X) <- c(variables, "target")
+
+  y_max <- max(y)
+  y_min <- min(y)
+  y_margin <- abs(y_max - y_min)*0.1
+
+  ret <- NULL
+  ret$x <- X
+  ret$x_min_max_list <- x_min_max_list
+  ret$y_min_max <- c(y_min - y_margin, y_max + y_margin)
   ret$is_numeric <- as.list(is_numeric)
 
   ret

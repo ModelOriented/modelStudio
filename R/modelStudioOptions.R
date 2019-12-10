@@ -95,10 +95,10 @@ modelStudioOptions <- function(...) {
     h = 280,
     bar_width = 16,
     line_size = 2,
-    point_size = 3,
+    point_size = 2,
     bar_color = "#46bac2",
     line_color = "#46bac2",
-    point_color = "#371ea3",
+    point_color = "#46bac2",
     positive_color = "#8bdcbe",
     negative_color = "#f05a71",
     default_color = "#371ea3",
@@ -118,10 +118,10 @@ modelStudioOptions <- function(...) {
     cp_subtitle = NULL,
     cp_bar_width = NULL,
     cp_line_size = NULL,
-    cp_point_size = NULL,
+    cp_point_size = 3,
     cp_bar_color = NULL,
     cp_line_color = NULL,
-    cp_point_color = NULL,
+    cp_point_color = "#371ea3",
     fi_title = "Feature Importance",
     fi_subtitle = NULL,
     fi_bar_width = NULL,
@@ -141,7 +141,11 @@ modelStudioOptions <- function(...) {
     fd_title = "Feature Distribution",
     fd_subtitle = NULL,
     fd_bar_width = NULL,
-    fd_bar_color = NULL
+    fd_bar_color = NULL,
+    tv_title = "Target vs ",
+    tv_subtitle = NULL,
+    tv_point_size = NULL,
+    tv_point_color = NULL
   )
 
   # input user options

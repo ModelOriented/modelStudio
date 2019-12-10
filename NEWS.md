@@ -1,10 +1,12 @@
 # modelStudio 0.2.0
-* TODO: scatterplot eda (#38)
+* new plot: `Target vs Feature [EDA]` (#38)
 * add `new_observation_y` argument to `modelStudio` (#39)
 * pass `...` to `prepare_*` functions (e.g. allows to round numbers)
 * add `margin_ytitle` argument to options
-* by default: observations to calculate local explanations are taken at random from the data (#25)
+* by default: observations to calculate local explanations are taken at random from the `data` (#25)
 * by default: first plot is selected as `BD` and second is `clicked` (#37)
+* nicer histogram when few unique values + by default: first histogram bin
+value is calculated with `nclass.scott`
 * `try_catch` blocks added - errors in `ingredients` or `iBreakDown` functions are
 now treated as warnings and do not stop the `modelStudio` computation (#35)
 * add `spellcheck` to tests (#36)

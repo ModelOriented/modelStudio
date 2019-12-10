@@ -132,6 +132,11 @@ rownames(new_apartments) <- c("ap1","ap2")
 modelStudio(explain_apartments, new_apartments,
             facet_dim = c(2, 3), time = 1000,
             show_info = FALSE)
+
+modelStudio(explain_apartments, show_info = FALSE)
+modelStudio(explain_apartments, new_observation = new_apartments,
+                                new_observation_y = DALEX::apartments[1:2, 1],
+                                show_info = FALSE)
 }
 
 }

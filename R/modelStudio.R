@@ -34,7 +34,7 @@
 #'
 #' @importFrom utils head tail setTxtProgressBar txtProgressBar installed.packages
 #' @importFrom stats aggregate predict
-#' @importFrom grDevices nclass.Sturges
+#' @importFrom grDevices nclass.scott
 #'
 #' @references
 #'
@@ -246,6 +246,7 @@ modelStudio.default <- function(object,
   pd_data <- prepare_partial_dependency(pd_n, pd_c, variables = variable_names)
   ad_data <- prepare_accumulated_dependency(ad_n, ad_c, variables = variable_names)
   fd_data <- prepare_feature_distribution(data, variables = variable_names)
+  tv_data <- prepare_target_vs(data, y, variables = variable_names)
 
   if (parallel) {
     parallelMap::parallelStart()
@@ -334,7 +335,7 @@ modelStudio.default <- function(object,
                     drop_down_data = jsonlite::toJSON(drop_down_data)
                     ), options)
 
-  temp <- jsonlite::toJSON(list(obs_list, fi_data, pd_data, ad_data, fd_data))
+  temp <- jsonlite::toJSON(list(obs_list, fi_data, pd_data, ad_data, fd_data, tv_data))
 
   sizing_policy <- r2d3::sizingPolicy(padding = 10, browser.fill = TRUE)
 
