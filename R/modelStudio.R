@@ -34,7 +34,7 @@
 #'
 #' @importFrom utils head tail setTxtProgressBar txtProgressBar installed.packages
 #' @importFrom stats aggregate predict
-#' @importFrom grDevices nclass.scott
+#' @importFrom grDevices nclass.Sturges
 #'
 #' @references
 #'

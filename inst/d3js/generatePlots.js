@@ -1,7 +1,7 @@
 //:\\\ here are functions for modelStudio plots //:\\\
 
 // model specific data and other variables come from modelStudio.js file
-// descriptions need to be IN plot functions because of tooltips 
+// descriptions need to be IN plot functions because of tooltips
 
 /// initialize plots, select them if already there
 var BD, SV, CP, FI, PD, AD, FD, TV;
@@ -1287,7 +1287,7 @@ function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean, desc) {
   var bisectXhat = d3.bisector(d => d.xhat).right;
 
   // show tooltip with info nearest to mouseover
-  function showTooltip(hover){
+  function showTooltip(hover) {
     var x0 = x.invert(d3.mouse(d3.event.currentTarget)[0]),
         i = bisectXhat(hover, x0),
         d0 = hover[i - 1],
@@ -1618,7 +1618,7 @@ function adNumericalPlot(variableName, lData, mData, yMinMax, yMean, desc) {
   var bisectXhat = d3.bisector(d => d.xhat).right;
 
   // show tooltip with info nearest to mouseover
-  function showTooltip(hover){
+  function showTooltip(hover) {
     var x0 = x.invert(d3.mouse(d3.event.currentTarget)[0]),
         i = bisectXhat(hover, x0),
         d0 = hover[i - 1],
@@ -1943,7 +1943,7 @@ function fdNumericalPlot(variableName, dData, mData, nBin) {
   sliderg.attr("transform", "translate(" + (margin.left + fdPlotWidth/2 - margin.small)
                             + "," + margin.small + ")");
 
-  updateHist(nBin);
+  updateHist(+nBin);
 
   function updateHist(nbin) {
 
@@ -2187,7 +2187,7 @@ function tvNumericalPlot(variableName, xData, xMinMax, yMinMax) {
     .append("circle")
     .attr("class", "point")
     .attr("cx", d => x(d[variableName]))
-    .attr("cy", d => y(d.target))
+    .attr("cy", d => y(d["_target_"]))
     .attr("r", 0)
     .style("fill", tvPointColor)
     .transition()
@@ -2217,7 +2217,7 @@ function tvCategoricalPlot(variableName, xData, xMinMax, yMinMax) {
     var y = d3.scaleBand()
               .rangeRound([margin.top - additionalHeight, margin.top + tvPlotHeight])
               .padding(0.33)
-              .domain(tableData.map(d => d[variableName]));
+              .domain(xData.map(d => d[variableName]));
 
     var xGrid = TV.append("g")
                   .attr("class", "grid")
@@ -2239,7 +2239,7 @@ function tvCategoricalPlot(variableName, xData, xMinMax, yMinMax) {
     var yAxis = d3.axisLeft(y)
                   .tickSize(0);
 
-    yAxis = FD.append("g")
+    yAxis = TV.append("g")
               .attr("class", "axisLabel")
               .attr("transform","translate(" + (margin.left - 10) + ",0)")
               .call(yAxis)
@@ -2257,73 +2257,29 @@ function tvCategoricalPlot(variableName, xData, xMinMax, yMinMax) {
       .attr("x", margin.left)
       .attr("y", margin.top - 40)
       .attr("class", "bigTitle")
-      .text(tvTitle);
-    /////////////////
-// Features of the histogram
-var histogram = d3.histogram()
-      .domain(y.domain())
-      .thresholds(y.ticks(20))    // Important: how many bins approx are going to be made? It is the 'resolution' of the violin plot
-      .value(d => d)
+      .text(tvTitle + variableName);
 
-// Compute the binning for each group of the dataset
-var sumstat = d3.nest()  // nest function allows to group the calculation per level of a factor
-  .key(function(d) { return d.Species;})
-  .rollup(function(d) {   // For each key..
-    input = d.map(function(g) { return g.Sepal_Length;})    // Keep the variable called Sepal_Length
-    bins = histogram(input)   // And compute the binning on it.
-    return(bins)
-  })
-  .entries(data)
+    TV.append("text")
+      .attr("transform",
+            "translate(" + (margin.left + tvPlotWidth/2) + " ," +
+                           (margin.top + tvPlotHeight + 45) + ")")
+      .attr("class", "axisTitle")
+      .attr("text-anchor", "middle")
+      .text("target");
 
-// What is the biggest number of value in a bin? We need it cause this value will have a width of 100% of the bandwidth.
-var maxNum = 0
-for ( i in sumstat ){
-  allBins = sumstat[i].value
-  lengths = allBins.map(function(a){return a.length;})
-  longuest = d3.max(lengths)
-  if (longuest > maxNum) { maxNum = longuest }
-}
-
-// The maximum width of a violin must be x.bandwidth = the width dedicated to a group
-var xNum = d3.scaleLinear()
-  .range([0, x.bandwidth()])
-  .domain([-maxNum,maxNum])
-
-// Color scale for dots
-var myColor = d3.scaleSequential()
-  .interpolator(d3.interpolateInferno)
-  .domain([3,9])
-
-// Add the shape to this svg!
-svg
-  .selectAll("myViolin")
-  .data(sumstat)
-  .enter()        // So now we are working group per group
-  .append("g")
-    .attr("transform", function(d){ return("translate(" + x(d.key) +" ,0)") } ) // Translation on the right to be at the group position
-  .append("path")
-      .datum(function(d){ return(d.value)})     // So now we are working bin per bin
-      .style("stroke", "none")
-      .style("fill","grey")
-      .attr("d", d3.area()
-          .x0( xNum(0) )
-          .x1(function(d){ return(xNum(d.length)) } )
-          .y(function(d){ return(y(d.x0)) } )
-          .curve(d3.curveCatmullRom)    // This makes the line smoother to give the violin appearance. Try d3.curveStep to see the difference
-      )
-
-// Add individual points with jitter
-var jitterWidth = 40
-svg
-  .selectAll("indPoints")
-  .data(data)
-  .enter()
-  .append("circle")
-    .attr("cx", function(d){return(x(d.Species) + x.bandwidth()/2 - Math.random()*jitterWidth )})
-    .attr("cy", function(d){return(y(d.Sepal_Length))})
-    .attr("r", 5)
-    .style("fill", function(d){ return(myColor(d.Sepal_Length))})
-    .attr("stroke", "white")
+    TV.selectAll()
+      .data(xData)
+      .enter()
+      .append("circle")
+      .attr("class", "point")
+      .attr("cx", d => x(d["_target_"]))
+      .attr("cy", d => y(d[variableName]) + y.bandwidth()
+      - (0.1 + 0.8*Math.random()) * y.bandwidth())
+      .attr("r", 0)
+      .style("fill", tvPointColor)
+      .transition()
+      .duration(TIME)
+      .attr("r", tvPointSize);
 }
 
 /// event plot functions

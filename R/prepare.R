@@ -490,7 +490,7 @@ prepare_feature_distribution <- function(x, variables = NULL) {
 
     if (is_numeric[i]) {
       x_min_max_list[[name]] <- range(x[,name])
-      nbin[[name]] <- nclass.scott(x[,name]) ## FD, scott nbin choice
+      nbin[[name]] <- nclass.Sturges(x[,name]) ## FD, scott/Sturges nbin choice
     } else {
       x_max_list[[name]] <-max(table(x[,name]))
     }
@@ -528,7 +528,7 @@ prepare_target_vs <- function(x, y, variables = NULL) {
   }
 
   X <- cbind(x[,variables], y)
-  colnames(X) <- c(variables, "target")
+  colnames(X) <- c(variables, "_target_")
 
   y_max <- max(y)
   y_min <- min(y)
