@@ -1,5 +1,6 @@
 # modelStudio 0.2.0
 * new plot: `Target vs Feature [EDA]` (#38)
+* TODO: new plot: `Target average vs Feature [EDA]` (#41)
 * add `new_observation_y` argument to `modelStudio` (#39)
 * pass `...` to `prepare_*` functions (e.g. allows to round numbers)
 * add `margin_ytitle` argument to options
@@ -8,6 +9,7 @@
 * nicer histogram when few unique values
 * `try_catch` blocks added - errors in `ingredients` or `iBreakDown` functions are
 now treated as warnings and do not stop the `modelStudio` computation (#35)
+* `show_info` adds messages saying what is currently calculated (#40)
 * add `spellcheck` to tests (#36)
 * Travis-CI now checks OSX
 

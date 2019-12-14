@@ -23,7 +23,7 @@ prepare_break_down <- function(x, max_features = 10, baseline = NA, digits = 3,
 
   desc <- try_catch(iBreakDown::describe(x, display_values =  TRUE,
                                             display_numbers = TRUE),
-                    "iBreakDown::describe.break_down")
+                    "iBreakDown::describe.break_down", show_info = FALSE)
 
   ret <- NULL
   ret$x <- new_x
@@ -118,7 +118,7 @@ prepare_shap_values <- function(x, max_features = 10, baseline = NA, digits = 3,
   desc <- try_catch(iBreakDown::describe(x, display_values = TRUE,
                                             display_numbers = TRUE,
                                             display_shap = TRUE),
-                    "iBreakDown::describe.shap")
+                    "iBreakDown::describe.shap", show_info = FALSE)
 
   ret <- NULL
   ret$x <- new_x
@@ -236,7 +236,7 @@ prepare_ceteris_paribus <- function(x, variables = NULL) {
       suppressWarnings(ingredients::describe(x, display_values = TRUE,
                                                 display_numbers = TRUE,
                                                 variables = name)),
-      "ingredients::describe.ceteris_paribus")
+      "ingredients::describe.ceteris_paribus", show_info = FALSE)
 
     desc[[name]] <- data.frame(type = "desc",
                                text = gsub("\n","</br>", text))
@@ -291,7 +291,7 @@ prepare_feature_importance <- function(x, max_features = 10, margin = 0.2,
   new_x$full_model <- rounding_function(new_x$full_model, digits)
 
   desc <- try_catch(ingredients::describe(x),
-                    "ingredients::describe.feature_importance")
+                    "ingredients::describe.feature_importance", show_info = FALSE)
 
   ret <- NULL
   ret$x <- new_x[,2:4]
@@ -363,7 +363,7 @@ prepare_partial_dependency <- function(x, y, variables = NULL) {
       suppressWarnings(ingredients::describe(rbind(x,y), display_values = TRUE,
                                                          display_numbers = TRUE,
                                                          variables = name)),
-      "ingredients::describe.partial_dependency")
+      "ingredients::describe.partial_dependency", show_info = FALSE)
 
     desc[[name]] <- data.frame(type = "desc",
                                text = gsub("\n","</br>", text))
@@ -507,8 +507,45 @@ prepare_feature_distribution <- function(x, variables = NULL) {
 }
 
 prepare_target_vs <- function(x, y, variables = NULL) {
-  ### This function returns object needed to plot TargetVariable in D3 ###
+  ### This function returns object needed to plot TargetVs in D3 ###
 
+  # which variable is numeric?
+  is_numeric <- sapply(x[, variables, drop = FALSE], is.numeric)
+  names(is_numeric) <- variables
+
+  # safeguard
+  is_numeric <- is_numeric[!is.na(is_numeric)]
+
+  x_min_max_list <- x_max_list <- list()
+
+  for (i in 1:length(is_numeric)) {
+    name <- names(is_numeric[i])
+    if (is_numeric[i]) {
+      x_min_max_list[[name]] <- range(x[,name])
+    } else {
+      x[,name] <- sort(x[,name])
+    }
+  }
+
+  X <- cbind(x[,variables], y)
+  colnames(X) <- c(variables, "_target_")
+
+  y_max <- max(y)
+  y_min <- min(y)
+  y_margin <- abs(y_max - y_min)*0.1
+
+  ret <- NULL
+  ret$x <- X
+  ret$x_min_max_list <- x_min_max_list
+  ret$y_min_max <- c(y_min - y_margin, y_max + y_margin)
+  ret$is_numeric <- as.list(is_numeric)
+
+  ret
+}
+
+prepare_target_average <- function(x, y, variables = NULL) {
+  ### This function returns object needed to plot TargetAverage in D3 ###
+  return(NULL)
   # which variable is numeric?
   is_numeric <- sapply(x[, variables, drop = FALSE], is.numeric)
   names(is_numeric) <- variables
