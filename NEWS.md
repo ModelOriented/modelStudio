@@ -1,6 +1,6 @@
 # modelStudio 0.2.0
 * new plot: `Target vs Feature [EDA]` (#38)
-* TODO: new plot: `Target average vs Feature [EDA]` (#41)
+* new plot: `Target Average vs Feature [EDA]` (#41)
 * add `new_observation_y` argument to `modelStudio` (#39)
 * pass `...` to `prepare_*` functions (e.g. allows to round numbers)
 * add `margin_ytitle` argument to options

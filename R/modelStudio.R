@@ -33,7 +33,7 @@
 #' @return An object of the \code{r2d3} class.
 #'
 #' @importFrom utils head tail setTxtProgressBar txtProgressBar installed.packages
-#' @importFrom stats aggregate predict
+#' @importFrom stats aggregate predict quantile
 #' @importFrom grDevices nclass.Sturges
 #'
 #' @references
@@ -211,7 +211,7 @@ modelStudio.default <- function(object,
     pd_c <- try_catch(
       ingredients::partial_dependency(
           model, data, predict_function, variable_type = "categorical", N = N),
-      "ingredients::partial_dependenct", "categorical", show_info)
+      "ingredients::partial_dependency", "categorical", show_info)
     if (show_info) setTxtProgressBar(pb, 3)
     ad_n <- NULL
     ad_c <- try_catch(
@@ -228,7 +228,7 @@ modelStudio.default <- function(object,
     pd_c <- try_catch(
       ingredients::partial_dependency(
         model, data, predict_function, variable_type = "categorical", N = N),
-      "ingredients::partial_dependenct", "categorical", show_info)
+      "ingredients::partial_dependency", "categorical", show_info)
     if (show_info) setTxtProgressBar(pb, 3)
     ad_n <- try_catch(
       ingredients::accumulated_dependency(

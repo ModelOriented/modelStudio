@@ -32,7 +32,7 @@ ignored when \code{scale_plot = TRUE}.}
 }
 \subsection{Plot specific options:}{
 \code{**} is a two letter code unique to each plot, might be
-one of \code{[bd,sv,cp,fi,pd,ad,fd]}.\cr
+one of \code{[bd,sv,cp,fi,pd,ad,fd,tv,ta]}.\cr
 
 \describe{
 \item{**_title}{Plot specific title. Default varies.}

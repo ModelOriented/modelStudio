@@ -523,7 +523,7 @@ prepare_target_vs <- function(x, y, variables = NULL) {
     if (is_numeric[i]) {
       x_min_max_list[[name]] <- range(x[,name])
     } else {
-      x[,name] <- sort(x[,name])
+      x_min_max_list[[name]] <- sort(unique(x[,name]))
     }
   }
 
@@ -545,7 +545,7 @@ prepare_target_vs <- function(x, y, variables = NULL) {
 
 prepare_target_average <- function(x, y, variables = NULL) {
   ### This function returns object needed to plot TargetAverage in D3 ###
-  return(NULL)
+
   # which variable is numeric?
   is_numeric <- sapply(x[, variables, drop = FALSE], is.numeric)
   names(is_numeric) <- variables
@@ -553,19 +553,43 @@ prepare_target_average <- function(x, y, variables = NULL) {
   # safeguard
   is_numeric <- is_numeric[!is.na(is_numeric)]
 
-  x_min_max_list <- x_max_list <- list()
+  x_min_max_list <- X <- list()
+  # y_min_max_list <- list()
+
+  probs <- seq(0, 1, length.out = 101)
 
   for (i in 1:length(is_numeric)) {
     name <- names(is_numeric[i])
+
     if (is_numeric[i]) {
       x_min_max_list[[name]] <- range(x[,name])
-    } else {
-      x[,name] <- sort(x[,name])
-    }
-  }
 
-  X <- cbind(x[,variables], y)
-  colnames(X) <- c(variables, "_target_")
+      variable_splits <- unique(quantile(x[,name], probs = probs))
+      x_bin <- cut(x[,name], variable_splits, include.lowest = TRUE)
+
+      y_mean <- aggregate(y, by = list(x_bin), mean)
+
+      y_mean <- as.data.frame(cbind(variable_splits[-length(variable_splits)],
+                                    variable_splits[-1], y_mean[, 2]))
+      colnames(y_mean) <- c("x0", "x1", "y")
+
+    } else {
+      x_min_max_list[[name]] <-
+      variable_splits <- sort(unique(x[,name]))
+
+      y_mean <- aggregate(y, by = list(x[,name]), mean)
+      colnames(y_mean) <- c("x", "y")
+    }
+
+    # y_mean_max <- max(y_mean$y)
+    # y_mean_min <- min(y_mean$y)
+    # y_mean_margin <- abs(y_mean_max - y_mean_min)*0.1
+    #
+    # y_min_max_list[[name]] <- c(y_mean_min - y_mean_margin,
+    #                             y_mean_max + y_mean_margin)
+
+    X[[name]] <- y_mean
+  }
 
   y_max <- max(y)
   y_min <- min(y)
@@ -574,6 +598,7 @@ prepare_target_average <- function(x, y, variables = NULL) {
   ret <- NULL
   ret$x <- X
   ret$x_min_max_list <- x_min_max_list
+  # ret$y_min_max_list <- y_min_max_list
   ret$y_min_max <- c(y_min - y_margin, y_max + y_margin)
   ret$is_numeric <- as.list(is_numeric)
 

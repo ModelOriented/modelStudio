@@ -3,14 +3,16 @@ context("Check modelStudio() function")
 source("test_objects.R")
 
 ms1 <- modelStudio::modelStudio(explain_glm,
-                   new_observation = titanic_test[1,-9])
+                   new_observation = titanic_test[1,-9],
+                   show_info = v)
 
 ms2 <- modelStudio::modelStudio(model_glm,
                    max_features = 5,
                    data = titanic_test[,-9],
                    y = titanic_test$survived == "yes",
                    new_observation = titanic_test[1:2,-9],
-                   N = 50, B = 10)
+                   N = 50, B = 10,
+                   show_info = v)
 
 ms3 <- modelStudio::modelStudio(model_glm,
                    max_features = 5,
@@ -21,66 +23,79 @@ ms3 <- modelStudio::modelStudio(model_glm,
                    data = titanic_test[,-9],
                    y = titanic_test$survived == "yes",
                    label = "xxx",
-                   new_observation = titanic_test[1:10,-9])
+                   new_observation = titanic_test[1:10,-9],
+                   show_info = v)
 
 ms4 <- modelStudio::modelStudio(explain_glm_numerical,
                    new_observation = titanic_test[1:2, c(2,6,7,8)],
-                   N = 50, B = 10)
+                   N = 50, B = 10,
+                   show_info = v)
 
 ms5 <- modelStudio::modelStudio(explain_glm_not_numerical,
                    new_observation = titanic_test[1:2, c(1,3,4,5)],
-                   N = 50, B = 10)
+                   N = 50, B = 10,
+                   show_info = v)
 
 ms6 <- modelStudio::modelStudio(explain_model_small,
                    new_observation = titanic_test[1:2, c(1,2)],
-                   N = 50, B = 10)
+                   N = 50, B = 10,
+                   show_info = v)
 
 ms_readme <-  modelStudio::modelStudio(explain_titanic_glm,
                           new_observations,
-                          facet_dim = c(2,2), N = 200, B = 20, time = 0)
+                          facet_dim = c(2,2), N = 200, B = 20, time = 0,
+                          show_info = v)
 
 ms_rf_apartments <- modelStudio::modelStudio(explain_rf,
                                 new_observation = apartments[1:2,-1],
                                 N = 50, B = 10, facet_dim = c(3,3),
-                                time = 50, max_features = 4)
+                                time = 50, max_features = 4,
+                                show_info = v)
 
 both_without_target <- modelStudio::modelStudio(model_titanic_glm,
                                    new_observation = nx,
                                    N = 10,
                                    B = 2,
                                    data = x,
-                                   y = y)
+                                   y = y,
+                                   show_info = v)
 
 both_full <- modelStudio::modelStudio(model_titanic_glm,
                          new_observation = nz,
                          N = 10,
                          B = 2,
                          data = z,
-                         y = y)
+                         y = y,
+                         show_info = v)
 
 obs_without_target_data_full <- modelStudio::modelStudio(model_titanic_glm,
                                             new_observation = nx,
                                             N = 10,
                                             B = 2,
                                             data = z,
-                                            y = y)
+                                            y = y,
+                                            show_info = v)
 
 obs_full_data_without_target <- modelStudio::modelStudio(model_titanic_glm,
                                             new_observation = nz,
                                             N = 10,
                                             B = 2,
                                             data = x,
-                                            y = y)
+                                            y = y,
+                                            show_info = v)
 
 ms_big <- modelStudio::modelStudio(explain_artifficial,
                       new_observation = artifficial[1:2,], N = 5, B = 2,
-                      facet_dim = c(3,3))
+                      facet_dim = c(3,3),
+                      show_info = v)
 
 ms_parallel <- modelStudio::modelStudio(explain_glm, new_observation = titanic_test[1:2,-9],
-                           N = 5, B = 2, parallel = TRUE)
+                           N = 5, B = 2, parallel = TRUE,
+                           show_info = v)
 
 ms_parallel_rf <- modelStudio::modelStudio(explain_rf, new_observation = apartments[1:5,-1],
-                              N = 5, B = 2, parallel = TRUE)
+                              N = 5, B = 2, parallel = TRUE,
+                              show_info = v)
 
 # tests
 

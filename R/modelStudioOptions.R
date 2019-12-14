@@ -29,7 +29,7 @@
 #' }
 #' \subsection{Plot specific options:}{
 #' \code{**} is a two letter code unique to each plot, might be
-#' one of \code{[bd,sv,cp,fi,pd,ad,fd]}.\cr
+#' one of \code{[bd,sv,cp,fi,pd,ad,fd,tv,ta]}.\cr
 #'
 #' \describe{
 #' \item{**_title}{Plot specific title. Default varies.}
@@ -145,7 +145,11 @@ modelStudioOptions <- function(...) {
     tv_title = "Target vs ",
     tv_subtitle = NULL,
     tv_point_size = NULL,
-    tv_point_color = NULL
+    tv_point_color = NULL,
+    ta_title = "Target Average vs ",
+    ta_subtitle = NULL,
+    ta_point_size = 3,
+    ta_point_color = "#371ea3"
   )
 
   # input user options

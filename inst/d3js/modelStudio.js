@@ -15,7 +15,7 @@ r2d3.onResize(function() {
 var obsData = data[0],
     fiData = data[1], pdData = data[2],
     adData = data[3], fdData = data[4],
-    tvData = data[5];
+    tvData = data[5], taData = data[6];
 
 /// load options
 var TIME = options.time,
@@ -78,7 +78,11 @@ var TIME = options.time,
     tvTitle = options.tv_title,
     tvSubtitle = options.tv_subtitle || subTitle,
     tvPointSize = options.tv_point_size || pointSize,
-    tvPointColor = options.tv_point_color || pointColor;
+    tvPointColor = options.tv_point_color || pointColor,
+    taTitle = options.ta_title,
+    taSubtitle = options.ta_subtitle || subTitle,
+    taPointSize = options.ta_point_size || pointSize,
+    taPointColor = options.ta_point_color || pointColor;
 
 /// for observation choice
 var observationIds = Object.keys(obsData);
@@ -116,6 +120,7 @@ if (!SHOW_SUBTITLE) {
   adSubtitle = null;
   fdSubtitle = null;
   tvSubtitle = null;
+  taSubtitle = null;
 }
 
 /// for plot chosing
@@ -126,7 +131,8 @@ var notVisiblePlots = [{id:"BD", text:"Break Down [Local]"},
                        {id:"PD", text:"Partial Dependency [Global]"},
                        {id:"AD", text:"Accumulated Dependency [Global]"},
                        {id:"FD", text:"Feature Distribution [EDA]"},
-                       {id:"TV", text:"Target vs Feature [EDA]"}];
+                       {id:"TV", text:"Target vs Feature [EDA]"},
+                       {id:"TA", text:"Target Average vs Feature [EDA]"}];
 
 var visiblePlots = [];
 
