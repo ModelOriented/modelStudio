@@ -15,7 +15,7 @@ r2d3.onResize(function() {
 var obsData = data[0],
     fiData = data[1], pdData = data[2],
     adData = data[3], fdData = data[4],
-    tvData = data[5], taData = data[6];
+    tvData = data[5], atData = data[6];
 
 /// load options
 var TIME = options.time,
@@ -79,10 +79,14 @@ var TIME = options.time,
     tvSubtitle = options.tv_subtitle || subTitle,
     tvPointSize = options.tv_point_size || pointSize,
     tvPointColor = options.tv_point_color || pointColor,
-    taTitle = options.ta_title,
-    taSubtitle = options.ta_subtitle || subTitle,
-    taPointSize = options.ta_point_size || pointSize,
-    taPointColor = options.ta_point_color || pointColor;
+    atTitle = options.at_title,
+    atSubtitle = options.at_subtitle || subTitle,
+    atBarWidth = options.at_bar_width || barWidth,
+    atLineSize = options.at_line_size || lineSize,
+    atPointSize = options.at_point_size || pointSize,
+    atBarColor = options.at_bar_color || barColor,
+    atLineColor = options.at_line_color || lineColor,
+    atPointColor = options.at_point_color || pointColor;
 
 /// for observation choice
 var observationIds = Object.keys(obsData);
@@ -120,7 +124,7 @@ if (!SHOW_SUBTITLE) {
   adSubtitle = null;
   fdSubtitle = null;
   tvSubtitle = null;
-  taSubtitle = null;
+  atSubtitle = null;
 }
 
 /// for plot chosing
@@ -132,7 +136,7 @@ var notVisiblePlots = [{id:"BD", text:"Break Down [Local]"},
                        {id:"AD", text:"Accumulated Dependency [Global]"},
                        {id:"FD", text:"Feature Distribution [EDA]"},
                        {id:"TV", text:"Target vs Feature [EDA]"},
-                       {id:"TA", text:"Target Average vs Feature [EDA]"}];
+                       {id:"AT", text:"Average Target vs Feature [EDA]"}];
 
 var visiblePlots = [];
 

@@ -247,7 +247,7 @@ modelStudio.default <- function(object,
   ad_data <- prepare_accumulated_dependency(ad_n, ad_c, variables = variable_names)
   fd_data <- prepare_feature_distribution(data, variables = variable_names)
   tv_data <- prepare_target_vs(data, y, variables = variable_names)
-  ta_data <- prepare_target_average(data, y, variables = variable_names)
+  at_data <- prepare_average_target(data, y, variables = variable_names)
 
   if (parallel) {
     parallelMap::parallelStart()
@@ -336,7 +336,7 @@ modelStudio.default <- function(object,
                     drop_down_data = jsonlite::toJSON(drop_down_data)
                     ), options)
 
-  temp <- jsonlite::toJSON(list(obs_list, fi_data, pd_data, ad_data, fd_data, tv_data, ta_data))
+  temp <- jsonlite::toJSON(list(obs_list, fi_data, pd_data, ad_data, fd_data, tv_data, at_data))
 
   sizing_policy <- r2d3::sizingPolicy(padding = 10, browser.fill = TRUE)
 

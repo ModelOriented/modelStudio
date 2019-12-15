@@ -543,7 +543,7 @@ prepare_target_vs <- function(x, y, variables = NULL) {
   ret
 }
 
-prepare_target_average <- function(x, y, variables = NULL) {
+prepare_average_target <- function(x, y, variables = NULL) {
   ### This function returns object needed to plot TargetAverage in D3 ###
 
   # which variable is numeric?
@@ -556,7 +556,8 @@ prepare_target_average <- function(x, y, variables = NULL) {
   x_min_max_list <- X <- list()
   # y_min_max_list <- list()
 
-  probs <- seq(0, 1, length.out = 101)
+  probs <- seq(0, 1, length.out = 21)
+  y_mean <- mean(y)
 
   for (i in 1:length(is_numeric)) {
     name <- names(is_numeric[i])
@@ -565,20 +566,30 @@ prepare_target_average <- function(x, y, variables = NULL) {
       x_min_max_list[[name]] <- range(x[,name])
 
       variable_splits <- unique(quantile(x[,name], probs = probs))
+
       x_bin <- cut(x[,name], variable_splits, include.lowest = TRUE)
+      y_mean_aggr <- aggregate(y, by = list(x_bin), mean)
 
-      y_mean <- aggregate(y, by = list(x_bin), mean)
+      ci <- y_mean_aggr[, 1]
+      ci2 <- substr(as.character(ci), 2, nchar(as.character(ci)) - 1)
+      lb <- sapply(ci2, function(x) strsplit(x, ",")[[1]][1])
+      ub <- sapply(ci2, function(x) strsplit(x, ",")[[1]][2])
+      mid_points <- (as.numeric(lb) + as.numeric(ub)) / 2
 
-      y_mean <- as.data.frame(cbind(variable_splits[-length(variable_splits)],
-                                    variable_splits[-1], y_mean[, 2]))
-      colnames(y_mean) <- c("x0", "x1", "y")
+      p <- length(mid_points)
+
+      temp <- as.data.frame(cbind(mid_points[-p], mid_points[-1],
+                                    y_mean_aggr[-p, 2], y_mean_aggr[-1, 2]))
+      colnames(temp) <- c("x0", "x1", "y0", "y1")
 
     } else {
-      x_min_max_list[[name]] <-
-      variable_splits <- sort(unique(x[,name]))
+      x_min_max_list[[name]] <- sort(unique(x[,name]))
 
-      y_mean <- aggregate(y, by = list(x[,name]), mean)
-      colnames(y_mean) <- c("x", "y")
+      y_mean_aggr <- aggregate(y, by = list(x[,name]), mean)
+
+      temp <- as.data.frame(y_mean_aggr)
+      colnames(temp) <- c("y", "x0")
+      temp$sign <- ifelse(temp$x0 < y_mean, -1, 1)
     }
 
     # y_mean_max <- max(y_mean$y)
@@ -588,7 +599,7 @@ prepare_target_average <- function(x, y, variables = NULL) {
     # y_min_max_list[[name]] <- c(y_mean_min - y_mean_margin,
     #                             y_mean_max + y_mean_margin)
 
-    X[[name]] <- y_mean
+    X[[name]] <- temp
   }
 
   y_max <- max(y)
@@ -600,6 +611,7 @@ prepare_target_average <- function(x, y, variables = NULL) {
   ret$x_min_max_list <- x_min_max_list
   # ret$y_min_max_list <- y_min_max_list
   ret$y_min_max <- c(y_min - y_margin, y_max + y_margin)
+  ret$y_mean <- y_mean
   ret$is_numeric <- as.list(is_numeric)
 
   ret
