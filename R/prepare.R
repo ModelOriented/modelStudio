@@ -334,6 +334,10 @@ prepare_partial_dependency <- function(x, y, variables = NULL) {
 
   aggregated_profiles_list <- split(aggregated_profiles, aggregated_profiles$`_vname_`)[variables]
 
+  # safeguard
+  aggregated_profiles_list <-
+    aggregated_profiles_list[!sapply(aggregated_profiles_list, is.null)]
+
   new_x <- x_min_max_list <- desc <- list()
   y_mean <- NULL
 
@@ -356,7 +360,7 @@ prepare_partial_dependency <- function(x, y, variables = NULL) {
       colnames(temp) <- c("xhat", "yhat", "vname", "label")
       temp$yhat <- as.numeric(temp$yhat)
 
-      new_x[[name]] <- temp[order(temp$xhat),]
+      new_x[[name]] <- temp
     }
 
     text <- try_catch(
@@ -416,7 +420,7 @@ prepare_accumulated_dependency <- function(x, y, variables = NULL) {
 
   # safeguard
   aggregated_profiles_list <-
-    aggregated_profiles_list[!unlist(lapply(aggregated_profiles_list, is.null))]
+    aggregated_profiles_list[!sapply(aggregated_profiles_list, is.null)]
 
   new_x <- x_min_max_list <- desc <- list()
   y_mean <- NULL
@@ -440,7 +444,7 @@ prepare_accumulated_dependency <- function(x, y, variables = NULL) {
       colnames(temp) <- c("xhat", "yhat", "vname", "label")
       temp$yhat <- as.numeric(temp$yhat)
 
-      new_x[[name]] <- temp[order(temp$xhat),]
+      new_x[[name]] <- temp
     }
 
     # text <- try_catch(
@@ -458,8 +462,8 @@ prepare_accumulated_dependency <- function(x, y, variables = NULL) {
                                text = gsub("\n","</br>", text))
   }
 
-  y_mean <- ifelse(is.null(x), round(attr(y, "mean_prediction"),3),
-                   round(attr(x, "mean_prediction"),3))
+  y_mean <- 0
+  #ifelse(is.null(x), round(attr(y, "mean_prediction"),3),round(attr(x, "mean_prediction"),3))
 
   ret <- NULL
   ret$y_mean <- y_mean
