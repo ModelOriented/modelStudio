@@ -258,16 +258,34 @@ prepare_feature_importance <- function(x, max_features = 10, margin = 0.2,
   ### This function returns object needed to plot FeatureImportance in D3 ###
 
   if (is.null(x)) return(NULL)
+  permutation <- NULL
 
-  m <- dim(x)[1] - 2
+  #:# change the input to save boxplot data
+  x_stats <- data.frame(
+    min = tapply(x$dropout_loss, x$variable, min, na.rm = TRUE),
+    q1 = tapply(x$dropout_loss, x$variable, quantile, 0.25, na.rm = TRUE),
+    q3 = tapply(x$dropout_loss, x$variable, quantile, 0.75, na.rm = TRUE),
+    max = tapply(x$dropout_loss, x$variable, max, na.rm = TRUE)
+  )
 
-  xmin <- min(x$dropout_loss)
-  xmax <- max(x[x$variable!="_baseline_",]$dropout_loss)
+  x_stats$min <- as.numeric(x_stats$min)
+  x_stats$q1 <- as.numeric(x_stats$q1)
+  x_stats$q3 <- as.numeric(x_stats$q3)
+  x_stats$max <- as.numeric(x_stats$max)
+
+  x_short <- merge(x[x$permutation == 0,], cbind(rownames(x_stats),x_stats), by.x = "variable", by.y = "rownames(x_stats)")
+  x_short <- subset(x_short, select = -permutation)
+  #:#
+
+  m <- dim(x_short)[1] - 2
+
+  xmin <- min(x_short$dropout_loss)
+  xmax <- max(x_short[x_short$variable!="_baseline_",]$dropout_loss)
 
   ticks_margin <- abs(xmin-xmax)*margin;
 
-  best_fits <- x[x$variable == "_full_model_",]
-  new_x <- merge(x, best_fits[,c("label", "dropout_loss")], by = "label")
+  best_fits <- x_short[x_short$variable == "_full_model_",]
+  new_x <- merge(x_short, best_fits[,c("label", "dropout_loss")], by = "label", sort = FALSE)
 
   # remove rows that starts with _
   new_x <- new_x[!(substr(new_x$variable,1,1) == "_"),]
@@ -286,7 +304,7 @@ prepare_feature_importance <- function(x, max_features = 10, margin = 0.2,
   new_x$variable <- factor(as.character(new_x$variable), levels = perm)
   new_x <- new_x[order(new_x$variable),]
 
-  colnames(new_x) <- c("label","variable","dropout_loss", "full_model")
+  colnames(new_x)[c(3,8)] <- c("dropout_loss", "full_model")
   new_x$dropout_loss <- rounding_function(new_x$dropout_loss, digits)
   new_x$full_model <- rounding_function(new_x$full_model, digits)
 
@@ -294,7 +312,7 @@ prepare_feature_importance <- function(x, max_features = 10, margin = 0.2,
                     "ingredients::describe.feature_importance", show_info = FALSE)
 
   ret <- NULL
-  ret$x <- new_x[,2:4]
+  ret$x <- new_x
   ret$m <- m
   ret$x_min_max <- c(xmin - ticks_margin, xmax + ticks_margin)
   ret$desc <- data.frame(type = "desc",

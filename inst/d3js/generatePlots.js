@@ -688,7 +688,7 @@ function featureImportance() {
                       ? x(d.dropout_loss) : x(fullModel))
       .attr("width", d => Math.abs(x(d.dropout_loss) - x(fullModel)));
 
-  // make line next to bars
+  // make the interceptLine
   var minimumY = Number.MAX_VALUE;
   var maximumY = Number.MIN_VALUE;
   bars.selectAll(".".concat(modelName.replace(/\s/g,''))).each(function() {
@@ -707,6 +707,33 @@ function featureImportance() {
     .attr("x2", x(fullModel))
     .attr("y2", maximumY + y.bandwidth());
 
+  // boxplots
+  // main horizontal line
+  bars.append("line")
+      .attr("class", "interceptLine")
+      .attr("x1", d => x(d.dropout_loss) < x(fullModel) ? x(d.max) : x(d.min))
+      .attr("x2", d => x(d.dropout_loss) < x(fullModel) ? x(d.max) : x(d.min))
+      .attr("y1", d => y(d.variable) + y.bandwidth()/2)
+      .attr("y2", d => y(d.variable) + y.bandwidth()/2)
+      .transition()
+      .duration(TIME)
+      .delay((d,i) => i * TIME)
+      .attr("x1", d => x(d.min))
+      .attr("x2", d => x(d.max));
+
+  // rectangle for the main box
+  bars.append("rect")
+      .attr("x", d => x(d.dropout_loss) < x(fullModel) ? x(d.q3) : x(d.q1))
+      .attr("y", d => y(d.variable) + y.bandwidth()/6)
+      .attr("height", 2*y.bandwidth()/3)
+      .style("fill", "#371ea3")
+      .transition()
+      .duration(TIME)
+      .delay((d,i) => i * TIME)
+      .attr("x", d => x(d.q1))
+      .attr("width", d => Math.abs(x(d.q3) - x(d.q1)));
+
+  // description
   var description = FI.append("g")
                       .attr("transform", "translate(" +
                             (margin.left + fiPlotWidth - 4*margin.big - margin.small)

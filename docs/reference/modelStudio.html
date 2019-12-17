@@ -305,7 +305,8 @@ are implemented in <a href='https://modeloriented.github.io/ingredients/'><b>ing
 <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>new_observations</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Lucas"</span>,<span class='st'>"James"</span>)
 
 <span class='fu'>modelStudio</span>(<span class='no'>explain_titanic_glm</span>, <span class='no'>new_observations</span>,
-            <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: number of rows of result is not a multiple of vector length (arg 3)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: number of rows of result is not a multiple of vector length (arg 3)</span></div><div class='input'>
+            <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
 <span class='co'># \donttest{</span>
 <span class='co'># ex2 regression</span>
 
@@ -322,12 +323,12 @@ are implemented in <a href='https://modeloriented.github.io/ingredients/'><b>ing
 
 <span class='fu'>modelStudio</span>(<span class='no'>explain_apartments</span>, <span class='no'>new_apartments</span>,
             <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>3</span>), <span class='kw'>time</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
-            <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: number of rows of result is not a multiple of vector length (arg 3)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: number of rows of result is not a multiple of vector length (arg 3)</span></div><div class='input'>
-<span class='fu'>modelStudio</span>(<span class='no'>explain_apartments</span>, <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>`new_observation` argument is NULL. Observations needed to calculate local explanations are taken at random from the data.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: number of rows of result is not a multiple of vector length (arg 3)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: number of rows of result is not a multiple of vector length (arg 3)</span></div><div class='input'><span class='fu'>modelStudio</span>(<span class='no'>explain_apartments</span>, <span class='kw'>new_observation</span> <span class='kw'>=</span> <span class='no'>new_apartments</span>,
-                                <span class='kw'>new_observation_y</span> <span class='kw'>=</span> <span class='kw pkg'>DALEX</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/DALEX/man/apartments.html'>apartments</a></span>[<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='fl'>1</span>],
-                                <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: number of rows of result is not a multiple of vector length (arg 3)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: number of rows of result is not a multiple of vector length (arg 3)</span></div><div class='input'># }
+            <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-</div></pre>
+<span class='fu'>modelStudio</span>(<span class='no'>explain_apartments</span>, <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>`new_observation` argument is NULL. Observations needed to calculate local explanations are taken at random from the data.</span></div><div class='input'><span class='fu'>modelStudio</span>(<span class='no'>explain_apartments</span>, <span class='kw'>new_observation</span> <span class='kw'>=</span> <span class='no'>new_apartments</span>,
+                                <span class='kw'>new_observation_y</span> <span class='kw'>=</span> <span class='kw pkg'>DALEX</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/DALEX/man/apartments.html'>apartments</a></span>[<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='fl'>1</span>],
+                                <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='co'># }</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
