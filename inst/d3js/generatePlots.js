@@ -869,7 +869,7 @@ function averageTarget() {
   // scatterplot or violin?
   if (isNumeric[tVariableName][0]) {
     atNumericalPlot(tVariableName, xData[tVariableName],
-                    xMinMax[tVariableName], yMinMax);
+                    xMinMax[tVariableName], yMinMax, yMean);
   } else {
     atCategoricalPlot(tVariableName, xData[tVariableName],
                       xMinMax[tVariableName], yMinMax, yMean);
@@ -2339,7 +2339,7 @@ function tvCategoricalPlot(variableName, xData, xMinMax, yMinMax) {
     .attr("r", tvPointSize);
 }
 
-function atNumericalPlot(variableName, xData, xMinMax, yMinMax) {
+function atNumericalPlot(variableName, xData, xMinMax, yMinMax, yMean) {
 
   var atPlotHeight = h,
       atPlotWidth = w;
@@ -2412,6 +2412,13 @@ function atNumericalPlot(variableName, xData, xMinMax, yMinMax) {
     .attr("text-anchor", "middle")
     .text("average target");
 
+  AT.append("line")
+    .attr("class", "interceptLine")
+    .attr("x1", x(x.domain()[0]))
+    .attr("y1", y(yMean))
+    .attr("x2", x(x.domain()[1]))
+    .attr("y2", y(yMean));
+
   var lines = AT.selectAll()
                 .data(xData)
                 .enter()
@@ -2425,8 +2432,8 @@ function atNumericalPlot(variableName, xData, xMinMax, yMinMax) {
        .attr("y1", d => y(d.y0))
        .attr("y2", d => y(d.y0))
        .transition()
-       .duration(TIME)
-       .delay((d,i) => (i+1) * TIME)
+       .duration(TIME/2)
+       .delay((d,i) => (i+1) * TIME/2)
        .attr("x2", d => x(d.x1))
        .attr("y2", d => y(d.y1))
 
@@ -2436,21 +2443,21 @@ function atNumericalPlot(variableName, xData, xMinMax, yMinMax) {
        .attr("r", 0)
        .style("fill", atPointColor)
        .transition()
-       .duration(TIME)
-       .delay((d,i) => i * TIME)
+       .duration(TIME/2)
+       .delay((d,i) => i * TIME/2)
        .attr("r", atPointSize);
 
-  // add last point
-  lines.data(xData.slice(-1))
-       .append("circle")
-       .attr("cx", d => x(d.x1))
-       .attr("cy", d => y(d.y1))
-       .attr("r", 0)
-       .style("fill", atPointColor)
-       .transition()
-       .duration(TIME)
-       .delay(xData.length * TIME)
-       .attr("r", atPointSize);
+  let lastPoint = xData.slice(-1)[0]
+
+  AT.append("circle")
+    .attr("cx", x(lastPoint.x1))
+    .attr("cy", y(lastPoint.y1))
+    .attr("r", 0)
+    .style("fill", atPointColor)
+    .transition()
+    .duration(TIME/2)
+    .delay(xData.length * TIME/2)
+    .attr("r", atPointSize);
 }
 
 function atCategoricalPlot(variableName, xData, xMinMax, yMinMax, yMean) {
