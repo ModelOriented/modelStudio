@@ -8,10 +8,7 @@ bibentry(key = "modelStudio",
   doi = "10.21105/joss.01798",
   url = "https://doi.org/10.21105/joss.01798",
   year = "2019",
-  month = "nov",
+  month = "Nov",
   publisher = "The Open Journal",
-  volume = "4",
-  number = "43",
-  pages = "1798",
-  journal = "Journal of Open Source Software"
+  journal = "The Journal of Open Source Software"
 )

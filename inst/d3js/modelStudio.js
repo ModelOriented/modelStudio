@@ -14,14 +14,16 @@ r2d3.onResize(function() {
 /// load all data
 var obsData = data[0],
     fiData = data[1], pdData = data[2],
-    adData = data[3], fdData = data[4];
+    adData = data[3], fdData = data[4],
+    tvData = data[5], atData = data[6];
 
 /// load options
 var TIME = options.time,
     modelName = options.model_name,
     variableNames = options.variable_names,
     dim = options.facet_dim,
-    footer_text = options.footer_text,
+    footerText = options.footer_text,
+    dropDownData = options.drop_down_data,
     SCALE_PLOT = options.scale_plot,
     SHOW_SUBTITLE = options.show_subtitle,
     subTitle = options.subtitle || modelName,
@@ -72,7 +74,19 @@ var TIME = options.time,
     fdTitle = options.fd_title,
     fdSubtitle = options.fd_subtitle || subTitle,
     fdBarWidth = options.fd_bar_width || barWidth,
-    fdBarColor = options.fd_bar_color || barColor;
+    fdBarColor = options.fd_bar_color || barColor,
+    tvTitle = options.tv_title,
+    tvSubtitle = options.tv_subtitle || subTitle,
+    tvPointSize = options.tv_point_size || pointSize,
+    tvPointColor = options.tv_point_color || pointColor,
+    atTitle = options.at_title,
+    atSubtitle = options.at_subtitle || subTitle,
+    atBarWidth = options.at_bar_width || barWidth,
+    atLineSize = options.at_line_size || lineSize,
+    atPointSize = options.at_point_size || pointSize,
+    atBarColor = options.at_bar_color || barColor,
+    atLineColor = options.at_line_color || lineColor,
+    atPointColor = options.at_point_color || pointColor;
 
 /// for observation choice
 var observationIds = Object.keys(obsData);
@@ -86,7 +100,8 @@ var CLICKED_VARIABLE_NAME = variableNames[0],
 var margin = {top: options.margin_top, right: options.margin_right,
               bottom: options.margin_bottom, left: options.margin_left,
               inner: options.margin_inner,
-              small: options.margin_small, big: options.margin_big};
+              small: options.margin_small, big: options.margin_big,
+              ytitle: options.margin_ytitle};
 
 var w = options.w, h = options.h;
 
@@ -108,6 +123,8 @@ if (!SHOW_SUBTITLE) {
   pdSubtitle = null;
   adSubtitle = null;
   fdSubtitle = null;
+  tvSubtitle = null;
+  atSubtitle = null;
 }
 
 /// for plot chosing
@@ -117,7 +134,9 @@ var notVisiblePlots = [{id:"BD", text:"Break Down [Local]"},
                        {id:"FI", text:"Feature Importance [Global]"},
                        {id:"PD", text:"Partial Dependency [Global]"},
                        {id:"AD", text:"Accumulated Dependency [Global]"},
-                       {id:"FD", text:"Feature Distribution [EDA]"}];
+                       {id:"FD", text:"Feature Distribution [EDA]"},
+                       {id:"TV", text:"Target vs Feature [EDA]"},
+                       {id:"AT", text:"Average Target vs Feature [EDA]"}];
 
 var visiblePlots = [];
 
@@ -161,7 +180,7 @@ function initializeStudio() {
   d3.select(".r2d3.html-widget.html-widget-static-bound")
     .style("position","absolute");
 
-  let tempW = calculateTextWidth(observationIds)*1.6 + 18; // 15px bold 600
+  let tempW = calculateTextWidth(dropDownData.map(e => e.text))*1.6 + 18; // 15px bold 600
 
   var inputDiv = d3.select("#htmlwidget_container")
                    .append("div")
@@ -177,11 +196,11 @@ function initializeStudio() {
                       .style("color", "#371ea3");
 
   input.selectAll()
-       .data(observationIds)
+       .data(dropDownData)
        .enter()
        .append("option")
-       .attr("value", d => d)
-       .text(d => d)
+       .attr("value", d => d.id)
+       .text(d => d.text)
        .style("font-size", "15px")
        .style("font-weight", 600)
        .style("color", "#371ea3");
@@ -202,9 +221,9 @@ function initializeStudio() {
 
   BOTTOM_G.append("text")
           .attr("class", "footerTitle")
-          .attr("x", studioWidth - 15 - getTextWidth(footer_text, 12, 'Fira Sans, sans-serif'))
+          .attr("x", studioWidth - 15 - getTextWidth(footerText, 12, 'Fira Sans, sans-serif'))
           .attr("y", studioHeight - studioMargin.bottom + 25)
-          .text(footer_text);
+          .text(footerText);
 
   BOTTOM_G.append("line")
           .attr("class", "footerLine")
@@ -394,5 +413,14 @@ function initializeStudio() {
                // let the user click other buttons
                IS_BUTTON_CLICKED = false;
              });
+  }
+
+  if (facetData.length >= 1) {
+    svg.selectAll('.enterChoiceButton').filter('#enterChoiceButton0').dispatch('click');
+    svg.select("#chosePlotButton0").select("#BD").dispatch('click');
+  }
+
+  if (facetData.length >= 2) {
+    svg.selectAll('.enterChoiceButton').filter('#enterChoiceButton1').dispatch('click');
   }
 }

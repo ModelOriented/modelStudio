@@ -1,6 +1,7 @@
 titanic <- na.omit(DALEX::titanic)
+apartments <- DALEX::apartments
 set.seed(1313)
-
+v <- FALSE
 
 ### README DEMO
 
@@ -12,7 +13,8 @@ model_titanic_glm <- glm(survived == "yes" ~ gender + age + fare + class + sibsp
 explain_titanic_glm <- DALEX::explain(model_titanic_glm,
                                data = titanic_small[,-6],
                                y = titanic_small$survived == "yes",
-                               label = "glm", verbose = TRUE)
+                               label = "glm",
+                               verbose = v)
 
 new_observations <- titanic_small[1:4,-6]
 rownames(new_observations) <- c("Lucas", "James", "Thomas", "Nancy")
@@ -28,7 +30,8 @@ model_glm <- glm(survived == "yes" ~.,
 explain_glm <- DALEX::explain(model_glm,
                        data = titanic_test[,-9],
                        y = titanic_test$survived == "yes",
-                       label = "glm", verbose = TRUE)
+                       label = "glm",
+                       verbose = v)
 
 glm_numerical <- glm(survived == "yes" ~ age + fare + sibsp + parch,
                        data = titanic_test[, c(2,6,7,8,9)],
@@ -36,7 +39,8 @@ glm_numerical <- glm(survived == "yes" ~ age + fare + sibsp + parch,
 
 explain_glm_numerical <- DALEX::explain(glm_numerical,
                                    data = titanic_test[, c(2,6,7,8)],
-                                   y = titanic_test$survived == "yes", verbose = TRUE)
+                                   y = titanic_test$survived == "yes",
+                                   verbose = v)
 
 glm_not_numerical <- glm(survived == "yes" ~ gender + class + embarked + country,
                            data = titanic_test[, c(1,3,4,5,9)],
@@ -44,7 +48,8 @@ glm_not_numerical <- glm(survived == "yes" ~ gender + class + embarked + country
 
 explain_glm_not_numerical <- DALEX::explain(glm_not_numerical,
                                        data = titanic_test[, c(1,3,4,5)],
-                                       y = titanic_test$survived == "yes", verbose = TRUE)
+                                       y = titanic_test$survived == "yes",
+                                       verbose = v)
 
 model_small <- glm(survived == "yes" ~ age + gender,
                    data = titanic_test[, c(1,2,9)],
@@ -52,7 +57,8 @@ model_small <- glm(survived == "yes" ~ age + gender,
 
 explain_model_small <- DALEX::explain(model_small,
                                data = titanic_test[, c(1,2)],
-                               y = titanic_test$survived == "yes", verbose = TRUE)
+                               y = titanic_test$survived == "yes",
+                               verbose = v)
 
 
 ### randomForest + apartments
@@ -60,7 +66,8 @@ explain_model_small <- DALEX::explain(model_small,
 model_rf <- randomForest::randomForest(m2.price ~. , data = apartments)
 explain_rf <- DALEX::explain(model_rf,
                       data = apartments,
-                      y = apartments$m2.price, verbose = TRUE)
+                      y = apartments$m2.price,
+                      verbose = v)
 
 
 ### data/new_observation permutations
@@ -99,5 +106,6 @@ model_artifficial <- glm(y ~.,
 
 explain_artifficial <- DALEX::explain(model_artifficial,
                                data = artifficial[,-12],
-                               y = artifficial[,12], verbose = TRUE)
+                               y = artifficial[,12],
+                               verbose = v)
 

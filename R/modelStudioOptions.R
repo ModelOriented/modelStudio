@@ -1,4 +1,4 @@
-#' @title Modifiy options and pass them to modelStudio
+#' @title Modify options and pass them to modelStudio
 #'
 #' @description This function returns default options for \code{\link{modelStudio}}.
 #' It is possible to modify values of this list and pass it to the \code{options}
@@ -29,7 +29,7 @@
 #' }
 #' \subsection{Plot specific options:}{
 #' \code{**} is a two letter code unique to each plot, might be
-#' one of \code{[bd,sv,cp,fi,pd,ad,fd]}.\cr
+#' one of \code{[bd,sv,cp,fi,pd,ad,fd,tv,at]}.\cr
 #'
 #' \describe{
 #' \item{**_title}{Plot specific title. Default varies.}
@@ -90,14 +90,15 @@ modelStudioOptions <- function(...) {
     margin_inner = 40,
     margin_small = 5,
     margin_big = 10,
+    margin_ytitle = 40,
     w = 420,
     h = 280,
     bar_width = 16,
     line_size = 2,
-    point_size = 3,
+    point_size = 2,
     bar_color = "#46bac2",
     line_color = "#46bac2",
-    point_color = "#371ea3",
+    point_color = "#46bac2",
     positive_color = "#8bdcbe",
     negative_color = "#f05a71",
     default_color = "#371ea3",
@@ -117,10 +118,10 @@ modelStudioOptions <- function(...) {
     cp_subtitle = NULL,
     cp_bar_width = NULL,
     cp_line_size = NULL,
-    cp_point_size = NULL,
+    cp_point_size = 3,
     cp_bar_color = NULL,
     cp_line_color = NULL,
-    cp_point_color = NULL,
+    cp_point_color = "#371ea3",
     fi_title = "Feature Importance",
     fi_subtitle = NULL,
     fi_bar_width = NULL,
@@ -140,7 +141,19 @@ modelStudioOptions <- function(...) {
     fd_title = "Feature Distribution",
     fd_subtitle = NULL,
     fd_bar_width = NULL,
-    fd_bar_color = NULL
+    fd_bar_color = NULL,
+    tv_title = "Target vs ",
+    tv_subtitle = NULL,
+    tv_point_size = NULL,
+    tv_point_color = NULL,
+    at_title = "Average Target vs ",
+    at_subtitle = NULL,
+    at_bar_width = NULL,
+    at_line_size = NULL,
+    at_point_size = 3,
+    at_bar_color = NULL,
+    at_line_color = NULL,
+    at_point_color = "#371ea3"
   )
 
   # input user options

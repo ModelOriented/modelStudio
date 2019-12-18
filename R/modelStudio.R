@@ -9,6 +9,7 @@
 #'
 #' @param object An \code{explainer} created with function \code{DALEX::explain()} or a model to be explained.
 #' @param new_observation A new observation with columns that correspond to variables used in the model.
+#' @param new_observation_y True label for \code{new_observation}.
 #' @param facet_dim Dimensions of the grid. Default is \code{c(2,2)}.
 #' @param time Time in ms. Set animation length. Default is \code{500}.
 #' @param max_features Maximum number of features to be included in Break Down and SHAP Values plots. Default is \code{10}.
@@ -32,7 +33,7 @@
 #' @return An object of the \code{r2d3} class.
 #'
 #' @importFrom utils head tail setTxtProgressBar txtProgressBar installed.packages
-#' @importFrom stats aggregate predict
+#' @importFrom stats aggregate predict quantile
 #' @importFrom grDevices nclass.Sturges
 #'
 #' @references
@@ -85,6 +86,11 @@
 #' modelStudio(explain_apartments, new_apartments,
 #'             facet_dim = c(2, 3), time = 1000,
 #'             show_info = FALSE)
+#'
+#' modelStudio(explain_apartments, show_info = FALSE)
+#' modelStudio(explain_apartments, new_observation = new_apartments,
+#'                                 new_observation_y = DALEX::apartments[1:2, 1],
+#'                                 show_info = FALSE)
 #' }
 #'
 #' @export
@@ -96,7 +102,8 @@ modelStudio <- function(object, ...) {
 #' @export
 #' @rdname modelStudio
 modelStudio.explainer <- function(object,
-                                  new_observation,
+                                  new_observation = NULL,
+                                  new_observation_y = NULL,
                                   facet_dim = c(2,2),
                                   time = 500,
                                   max_features = 10,
@@ -116,6 +123,7 @@ modelStudio.explainer <- function(object,
                       predict_function = explainer$predict_function,
                       label = explainer$label,
                       new_observation = new_observation,
+                      new_observation_y = new_observation_y,
                       facet_dim = facet_dim,
                       time = time,
                       max_features = max_features,
@@ -135,7 +143,8 @@ modelStudio.default <- function(object,
                                 y,
                                 predict_function = predict,
                                 label = class(model)[1],
-                                new_observation,
+                                new_observation = NULL,
+                                new_observation_y = NULL,
                                 facet_dim = c(2,2),
                                 time = 500,
                                 max_features = 10,
@@ -148,6 +157,11 @@ modelStudio.default <- function(object,
                                 ...) {
 
   model <- object
+
+  if (is.null(new_observation)) {
+    message("`new_observation` argument is NULL. Observations needed to calculate local explanations are taken at random from the data.")
+    new_observation <- ingredients::select_sample(data, 3)
+  }
 
   ## safeguard
   new_observation <- as.data.frame(new_observation)
@@ -169,67 +183,94 @@ modelStudio.default <- function(object,
   if (show_info) pb <- txtProgressBar(0, obs_count + 5, style = 3)
 
   ## count only once
-  fi <- ingredients::feature_importance(
-        model, data, y, predict_function, variables = variable_names, B = B)
+  fi <- try_catch(
+    ingredients::feature_importance(
+        model, data, y, predict_function, variables = variable_names, B = B),
+    "ingredients::feature_importance", "", show_info)
+
   if (show_info) setTxtProgressBar(pb, 1)
 
   which_numerical <- sapply(data[,, drop = FALSE], is.numeric)
 
   ## because aggregate_profiles calculates numerical OR categorical
   if (all(which_numerical)) {
-    pd_n <- ingredients::partial_dependency(
-            model, data, predict_function, variable_type = "numerical", N = N)
+    pd_n <- try_catch(
+      ingredients::partial_dependency(
+          model, data, predict_function, variable_type = "numerical", N = N),
+      "ingredients::partial_dependency", "numerical", show_info)
     if (show_info) setTxtProgressBar(pb, 2)
     pd_c <- NULL
-    ad_n <- ingredients::accumulated_dependency(
-            model, data, predict_function, variable_type = "numerical", N = N)
+    ad_n <- try_catch(
+      ingredients::accumulated_dependency(
+          model, data, predict_function, variable_type = "numerical", N = N),
+      "ingredients::accumulated_dependency", "numerical", show_info)
     if (show_info) setTxtProgressBar(pb, 4)
     ad_c <- NULL
   } else if (all(!which_numerical)) {
     pd_n <- NULL
-    pd_c <- ingredients::partial_dependency(
-            model, data, predict_function, variable_type = "categorical", N = N)
+    pd_c <- try_catch(
+      ingredients::partial_dependency(
+          model, data, predict_function, variable_type = "categorical", N = N),
+      "ingredients::partial_dependency", "categorical", show_info)
     if (show_info) setTxtProgressBar(pb, 3)
     ad_n <- NULL
-    ad_c <- ingredients::accumulated_dependency(
-            model, data, predict_function, variable_type = "categorical", N = N)
+    ad_c <- try_catch(
+      ingredients::accumulated_dependency(
+          model, data, predict_function, variable_type = "categorical", N = N),
+      "ingredients::accumulated_dependency", "categorical", show_info)
     if (show_info) setTxtProgressBar(pb, 5)
   } else {
-    pd_n <- ingredients::partial_dependency(
-            model, data, predict_function, variable_type = "numerical", N = N)
+    pd_n <- try_catch(
+      ingredients::partial_dependency(
+        model, data, predict_function, variable_type = "numerical", N = N),
+      "ingredients::partial_dependency", "numerical", show_info)
     if (show_info) setTxtProgressBar(pb, 2)
-    pd_c <- ingredients::partial_dependency(
-            model, data, predict_function, variable_type = "categorical", N = N)
+    pd_c <- try_catch(
+      ingredients::partial_dependency(
+        model, data, predict_function, variable_type = "categorical", N = N),
+      "ingredients::partial_dependency", "categorical", show_info)
     if (show_info) setTxtProgressBar(pb, 3)
-    ad_n <- ingredients::accumulated_dependency(
-            model, data, predict_function, variable_type = "numerical", N = N)
+    ad_n <- try_catch(
+      ingredients::accumulated_dependency(
+        model, data, predict_function, variable_type = "numerical", N = N),
+      "ingredients::accumulated_dependency", "numerical", show_info)
     if (show_info) setTxtProgressBar(pb, 4)
-    ad_c <- ingredients::accumulated_dependency(
-            model, data, predict_function, variable_type = "categorical", N = N)
+    ad_c <- try_catch(
+      ingredients::accumulated_dependency(
+        model, data, predict_function, variable_type = "categorical", N = N),
+      "ingredients::accumulated_dependency", "categorical", show_info)
     if (show_info) setTxtProgressBar(pb, 5)
   }
 
-  fi_data <- prepare_feature_importance(fi, max_features)
+  fi_data <- prepare_feature_importance(fi, max_features, ...)
   pd_data <- prepare_partial_dependency(pd_n, pd_c, variables = variable_names)
   ad_data <- prepare_accumulated_dependency(ad_n, ad_c, variables = variable_names)
   fd_data <- prepare_feature_distribution(data, variables = variable_names)
+  tv_data <- prepare_target_vs(data, y, variables = variable_names)
+  at_data <- prepare_average_target(data, y, variables = variable_names)
 
   if (parallel) {
     parallelMap::parallelStart()
     parallelMap::parallelLibrary(packages = loadedNamespaces())
 
-    f <- function(i, model, data, predict_function, label, B) {
+    f <- function(i, model, data, predict_function, label, B, ...) {
       new_observation <- obs_data[i,]
 
-      bd <- iBreakDown::local_attributions(
-        model, data, predict_function, new_observation, label = label)
-      sv <- iBreakDown::shap(
-        model, data, predict_function, new_observation, label = label, B = B)
-      cp <- ingredients::ceteris_paribus(
-        model, data, predict_function, new_observation, label = label)
+      bd <- try_catch(
+        iBreakDown::local_attributions(
+          model, data, predict_function, new_observation, label = label),
+        "iBreakDown::local_attributions", i, show_info)
+      sv <- try_catch(
+        iBreakDown::shap(
+          model, data, predict_function, new_observation, label = label, B = B),
+        "iBreakDown::shap", i, show_info, FALSE)
+      cp <- try_catch(
+        ingredients::ceteris_paribus(
+          model, data, predict_function, new_observation, label = label),
+        "ingredients::ceteris_paribus", i, show_info, FALSE)
 
-      bd_data <- prepare_break_down(bd, max_features)
-      sv_data <- prepare_shap_values(sv, max_features)
+      bd_data <- prepare_break_down(bd, max_features, ...)
+      sv_data <- prepare_shap_values(sv, max_features, ...)
       cp_data <- prepare_ceteris_paribus(cp, variables = variable_names)
 
       list(bd_data, cp_data, sv_data)
@@ -241,7 +282,8 @@ modelStudio.default <- function(object,
                                            data = data,
                                            predict_function = predict_function,
                                            label = label,
-                                           B = B
+                                           B = B,
+                                           ...
                                          ))
 
     parallelMap::parallelStop()
@@ -252,17 +294,23 @@ modelStudio.default <- function(object,
     for(i in 1:obs_count){
       new_observation <- obs_data[i,]
 
-      bd <- iBreakDown::local_attributions(
-        model, data, predict_function, new_observation, label = label)
-      sv <- iBreakDown::shap(
-        model, data, predict_function, new_observation, label = label, B = B)
-      cp <- ingredients::ceteris_paribus(
-        model, data, predict_function, new_observation, label = label)
+      bd <- try_catch(
+        iBreakDown::local_attributions(
+          model, data, predict_function, new_observation, label = label),
+        "iBreakDown::local_attributions", i, show_info)
+      sv <- try_catch(
+        iBreakDown::shap(
+          model, data, predict_function, new_observation, label = label, B = B),
+        "iBreakDown::shap", i, show_info, FALSE)
+      cp <- try_catch(
+        ingredients::ceteris_paribus(
+          model, data, predict_function, new_observation, label = label),
+        "ingredients::ceteris_paribus", i, show_info, FALSE)
 
       if (show_info) setTxtProgressBar(pb, 5 + i)
 
-      bd_data <- prepare_break_down(bd, max_features)
-      sv_data <- prepare_shap_values(sv, max_features)
+      bd_data <- prepare_break_down(bd, max_features, ...)
+      sv_data <- prepare_shap_values(sv, max_features, ...)
       cp_data <- prepare_ceteris_paribus(cp, variables = variable_names)
 
       obs_list[[i]] <- list(bd_data, cp_data, sv_data)
@@ -271,6 +319,12 @@ modelStudio.default <- function(object,
 
   names(obs_list) <- rownames(obs_data)
 
+  between <- " - "
+  if (is.null(new_observation_y)) new_observation_y <- between <- ""
+  drop_down_data <- as.data.frame(cbind(rownames(obs_data),
+                                        paste0(rownames(obs_data), between, new_observation_y)))
+  colnames(drop_down_data) <- c("id", "text")
+
   footer_text <- paste0("Site built with modelStudio v", installed.packages()["modelStudio","Version"],
                         " on ", format(Sys.time(), usetz = FALSE))
 
@@ -278,10 +332,11 @@ modelStudio.default <- function(object,
                     model_name = label,
                     variable_names = variable_names,
                     facet_dim = facet_dim,
-                    footer_text = footer_text
+                    footer_text = footer_text,
+                    drop_down_data = jsonlite::toJSON(drop_down_data)
                     ), options)
 
-  temp <- jsonlite::toJSON(list(obs_list, fi_data, pd_data, ad_data, fd_data))
+  temp <- jsonlite::toJSON(list(obs_list, fi_data, pd_data, ad_data, fd_data, tv_data, at_data))
 
   sizing_policy <- r2d3::sizingPolicy(padding = 10, browser.fill = TRUE)
 
@@ -339,4 +394,28 @@ remove_file_paths <- function(text, type = NULL) {
   }
 
   text
+}
+
+#' @noRd
+#' @title try_catch
+#'
+#' @description This function evaluates expression and returns its value.
+#' It returns \code{NULL} and prints \code{warning} if an error occurred.
+#'
+#' @param expr function
+#' @param function_name string
+#' @param i iteration/type
+#' @param show_info show message about what is calculated
+#'
+#' @return Valid object or \code{NULL}
+
+try_catch <- function(expr, function_name, i = 1, show_info = TRUE, new = TRUE) {
+  tryCatch({
+    if(show_info) message(paste0(ifelse(new,"\n",""), "Function ", function_name, " is beeing calculated. (", i, ")"))
+    expr
+    },
+    error = function(e) {
+      warning(paste0("Error occurred in ", function_name, " function: ", e$message))
+      NULL
+  })
 }

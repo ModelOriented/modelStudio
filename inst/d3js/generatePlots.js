@@ -4,7 +4,7 @@
 // descriptions need to be IN plot functions because of tooltips
 
 /// initialize plots, select them if already there
-var BD, SV, CP, FI, PD, AD, FD;
+var BD, SV, CP, FI, PD, AD, FD, TV, AT;
 
 /// later plot specific plotIds
 var mapIdPlotFunction = {};
@@ -79,12 +79,34 @@ if (svg.select("#FD").empty()) {
 }
 mapIdPlotFunction.FD = featureDistribution;
 
+if (svg.select("#TV").empty()) {
+  TV = svg.append("g")
+          .attr("class","plot")
+          .attr("id","TV")
+          .style("visibility", "hidden");
+} else {
+  TV = svg.select("#TV");
+}
+mapIdPlotFunction.TV = targetVs;
+
+if (svg.select("#AT").empty()) {
+  AT = svg.append("g")
+          .attr("class","plot")
+          .attr("id","AT")
+          .style("visibility", "hidden");
+} else {
+  AT = svg.select("#AT");
+}
+mapIdPlotFunction.AT = averageTarget;
+
 /// general plot functions
 
 function breakDown() {
 
   let tObservationId = CLICKED_OBSERVATION_ID,
       tData = obsData[tObservationId];
+
+  if (tData[0].x === undefined) return null;
 
   var bdData = tData[0],
       bData = bdData.x;
@@ -201,8 +223,8 @@ function breakDown() {
 
   bars.append("rect")
       .attr("class", modelName.replace(/\s/g,''))
-      .attr("id", (d) => d.variable_name)
-      .attr("fill", function(d) {
+      .attr("id", d => d.variable_name)
+      .attr("fill", d => {
         switch (d.sign) {
           case "-1":
             return bdNegativeColor;
@@ -241,7 +263,7 @@ function breakDown() {
   ctbLabel.append("text")
           .attr("class", "axisLabel")
           .attr("x", d => {
-            switch(d.sign){
+            switch (d.sign) {
               case "X":
                 return d.contribution < 0
                        ? x(d.barStart) - 5 : x(d.barSupport) + 5;
@@ -257,7 +279,7 @@ function breakDown() {
           .duration(TIME)
           .delay((d,i) => (i+1) * TIME)
           .text(d => {
-            switch(d.variable){
+            switch (d.variable) {
               case "intercept":
               case "prediction":
                 return d.cummulative;
@@ -320,6 +342,8 @@ function shapValues() {
 
   let tObservationId = CLICKED_OBSERVATION_ID,
       tData = obsData[tObservationId];
+
+  if (tData[2].x === undefined) return null;
 
   var svData = tData[2],
       bData = svData.x,
@@ -522,6 +546,8 @@ function ceterisParibus() {
   let tObservationId = CLICKED_OBSERVATION_ID,
       tData = obsData[tObservationId];
 
+  if (tData[1].x === undefined) return null;
+
   let cpData = tData[1],
       profData = cpData.x,
       xMinMax = cpData.x_min_max_list,
@@ -544,6 +570,8 @@ function ceterisParibus() {
 }
 
 function featureImportance() {
+
+  if (fiData.x === undefined) return null;
 
   var fiBarCount = fiData.m[0],
       bData = fiData.x,
@@ -660,7 +688,7 @@ function featureImportance() {
                       ? x(d.dropout_loss) : x(fullModel))
       .attr("width", d => Math.abs(x(d.dropout_loss) - x(fullModel)));
 
-  // make line next to bars
+  // make the interceptLine
   var minimumY = Number.MAX_VALUE;
   var maximumY = Number.MIN_VALUE;
   bars.selectAll(".".concat(modelName.replace(/\s/g,''))).each(function() {
@@ -679,6 +707,33 @@ function featureImportance() {
     .attr("x2", x(fullModel))
     .attr("y2", maximumY + y.bandwidth());
 
+  // boxplots
+  // main horizontal line
+  bars.append("line")
+      .attr("class", "interceptLine")
+      .attr("x1", d => x(d.dropout_loss) < x(fullModel) ? x(d.max) : x(d.min))
+      .attr("x2", d => x(d.dropout_loss) < x(fullModel) ? x(d.max) : x(d.min))
+      .attr("y1", d => y(d.variable) + y.bandwidth()/2)
+      .attr("y2", d => y(d.variable) + y.bandwidth()/2)
+      .transition()
+      .duration(TIME)
+      .delay((d,i) => i * TIME)
+      .attr("x1", d => x(d.min))
+      .attr("x2", d => x(d.max));
+
+  // rectangle for the main box
+  bars.append("rect")
+      .attr("x", d => x(d.dropout_loss) < x(fullModel) ? x(d.q3) : x(d.q1))
+      .attr("y", d => y(d.variable) + y.bandwidth()/6)
+      .attr("height", 2*y.bandwidth()/3)
+      .style("fill", "#371ea3")
+      .transition()
+      .duration(TIME)
+      .delay((d,i) => i * TIME)
+      .attr("x", d => x(d.q1))
+      .attr("width", d => Math.abs(x(d.q3) - x(d.q1)));
+
+  // description
   var description = FI.append("g")
                       .attr("transform", "translate(" +
                             (margin.left + fiPlotWidth - 4*margin.big - margin.small)
@@ -713,6 +768,8 @@ function featureImportance() {
 
 function partialDependency() {
 
+  if (pdData.x === undefined) return null;
+
   let profData = pdData.x,
       xMinMax = pdData.x_min_max_list,
       yMinMax = pdData.y_min_max,
@@ -734,6 +791,8 @@ function partialDependency() {
 }
 
 function accumulatedDependency() {
+
+  if (adData.x === undefined) return null;
 
   let profData = adData.x,
       xMinMax = adData.x_min_max_list,
@@ -757,6 +816,8 @@ function accumulatedDependency() {
 
 function featureDistribution() {
 
+  if (fdData.x === undefined) return null;
+
   let dData = fdData.x,
       xMinMax = fdData.x_min_max_list,
       xMax = fdData.x_max_list,
@@ -771,6 +832,47 @@ function featureDistribution() {
                     nBin[tVariableName]);
   } else {
     fdCategoricalPlot(tVariableName, dData, xMax[tVariableName]);
+  }
+}
+
+function targetVs() {
+
+  if (tvData.x === undefined) return null;
+
+  let xData = tvData.x,
+      xMinMax = tvData.x_min_max_list,
+      yMinMax = tvData.y_min_max,
+      isNumeric = tvData.is_numeric;
+
+  let tVariableName = CLICKED_VARIABLE_NAME;
+
+  // scatterplot or violin?
+  if (isNumeric[tVariableName][0]) {
+    tvNumericalPlot(tVariableName, xData, xMinMax[tVariableName], yMinMax);
+  } else {
+    tvCategoricalPlot(tVariableName, xData, xMinMax[tVariableName], yMinMax);
+  }
+}
+
+function averageTarget() {
+
+  if (atData.x === undefined) return null;
+
+  let xData = atData.x,
+      xMinMax = atData.x_min_max_list,
+      yMinMax = atData.y_min_max,
+      yMean = atData.y_mean,
+      isNumeric = atData.is_numeric;
+
+  let tVariableName = CLICKED_VARIABLE_NAME;
+
+  // scatterplot or violin?
+  if (isNumeric[tVariableName][0]) {
+    atNumericalPlot(tVariableName, xData[tVariableName],
+                    xMinMax[tVariableName], yMinMax, yMean);
+  } else {
+    atCategoricalPlot(tVariableName, xData[tVariableName],
+                      xMinMax[tVariableName], yMinMax, yMean);
   }
 }
 
@@ -967,7 +1069,7 @@ function cpNumericalPlot(variableName, lData, mData, yMinMax, pData, desc) {
   CP.append("text")
     .attr("class", "axisTitle")
     .attr("transform", "rotate(-90)")
-    .attr("y", margin.left-40)
+    .attr("y", margin.left - margin.ytitle)
     .attr("x", -(margin.top + cpPlotHeight/2))
     .attr("text-anchor", "middle")
     .text("prediction");
@@ -1087,7 +1189,7 @@ function cpCategoricalPlot(variableName, bData, yMinMax, lData, desc) {
 
   // add bars
   bars.append("rect")
-      .attr("class", variableName)
+      .attr("class", variableName.replace(/\s/g,''))
       .attr("fill", cpBarColor)
       .attr("x", d => x(fullModel))
       .attr("y", d => y(d.xhat))
@@ -1104,7 +1206,7 @@ function cpCategoricalPlot(variableName, bData, yMinMax, lData, desc) {
   var minimumY = Number.MAX_VALUE;
   var maximumY = Number.MIN_VALUE;
 
-  bars.selectAll(".".concat(variableName)).each(function() {
+  bars.selectAll(".".concat(variableName.replace(/\s/g,''))).each(function() {
       if (+this.getAttribute('y') < minimumY) {
         minimumY = +this.getAttribute('y');
       }
@@ -1242,7 +1344,7 @@ function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean, desc) {
   var bisectXhat = d3.bisector(d => d.xhat).right;
 
   // show tooltip with info nearest to mouseover
-  function showTooltip(hover){
+  function showTooltip(hover) {
     var x0 = x.invert(d3.mouse(d3.event.currentTarget)[0]),
         i = bisectXhat(hover, x0),
         d0 = hover[i - 1],
@@ -1298,7 +1400,7 @@ function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean, desc) {
   PD.append("text")
     .attr("class", "axisTitle")
     .attr("transform", "rotate(-90)")
-    .attr("y", margin.left-40)
+    .attr("y", margin.left - margin.ytitle)
     .attr("x", -(margin.top + pdPlotHeight/2))
     .attr("text-anchor", "middle")
     .text("average prediction");
@@ -1418,7 +1520,7 @@ function pdCategoricalPlot(variableName, bData, yMinMax, yMean, desc) {
 
   // add bars
   bars.append("rect")
-      .attr("class", variableName)
+      .attr("class", variableName.replace(/\s/g,''))
       .attr("fill", pdBarColor)
       .attr("x", d => x(fullModel))
       .attr("y", d => y(d.xhat))
@@ -1435,7 +1537,7 @@ function pdCategoricalPlot(variableName, bData, yMinMax, yMean, desc) {
   var minimumY = Number.MAX_VALUE;
   var maximumY = Number.MIN_VALUE;
 
-  bars.selectAll(".".concat(variableName)).each(function() {
+  bars.selectAll(".".concat(variableName.replace(/\s/g,''))).each(function() {
       if (+this.getAttribute('y') < minimumY) {
         minimumY = +this.getAttribute('y');
       }
@@ -1573,7 +1675,7 @@ function adNumericalPlot(variableName, lData, mData, yMinMax, yMean, desc) {
   var bisectXhat = d3.bisector(d => d.xhat).right;
 
   // show tooltip with info nearest to mouseover
-  function showTooltip(hover){
+  function showTooltip(hover) {
     var x0 = x.invert(d3.mouse(d3.event.currentTarget)[0]),
         i = bisectXhat(hover, x0),
         d0 = hover[i - 1],
@@ -1629,7 +1731,7 @@ function adNumericalPlot(variableName, lData, mData, yMinMax, yMean, desc) {
   AD.append("text")
     .attr("class", "axisTitle")
     .attr("transform", "rotate(-90)")
-    .attr("y", margin.left-40)
+    .attr("y", margin.left - margin.ytitle)
     .attr("x", -(margin.top + adPlotHeight/2))
     .attr("text-anchor", "middle")
     .text("accumulated prediction");
@@ -1749,7 +1851,7 @@ function adCategoricalPlot(variableName, bData, yMinMax, yMean, desc) {
 
   // add bars
   bars.append("rect")
-      .attr("class", variableName)
+      .attr("class", variableName.replace(/\s/g,''))
       .attr("fill", adBarColor)
       .attr("x", d => x(fullModel))
       .attr("y", d => y(d.xhat))
@@ -1766,7 +1868,7 @@ function adCategoricalPlot(variableName, bData, yMinMax, yMean, desc) {
   var minimumY = Number.MAX_VALUE;
   var maximumY = Number.MIN_VALUE;
 
-  bars.selectAll(".".concat(variableName)).each(function() {
+  bars.selectAll(".".concat(variableName.replace(/\s/g,''))).each(function() {
       if (+this.getAttribute('y') < minimumY) {
         minimumY = +this.getAttribute('y');
       }
@@ -1842,7 +1944,7 @@ function fdNumericalPlot(variableName, dData, mData, nBin) {
   FD.append("text")
     .attr("class", "axisTitle")
     .attr("transform", "rotate(-90)")
-    .attr("y", margin.left-40)
+    .attr("y", margin.left - margin.ytitle)
     .attr("x", -(margin.top + fdPlotHeight/2))
     .attr("text-anchor", "middle")
     .text("count");
@@ -1898,14 +2000,14 @@ function fdNumericalPlot(variableName, dData, mData, nBin) {
   sliderg.attr("transform", "translate(" + (margin.left + fdPlotWidth/2 - margin.small)
                             + "," + margin.small + ")");
 
-  updateHist(nBin);
+  updateHist(+nBin);
 
   function updateHist(nbin) {
 
     var histogram = d3.histogram()
                       .value(d => d[variableName])
                       .domain(x.domain())
-                      .thresholds(x.ticks(nbin));
+                      .thresholds(nbin);
 
     var bins = histogram(dData);
 
@@ -2024,7 +2126,7 @@ function fdCategoricalPlot(variableName, dData, mData) {
 
   // add bars
   bars.append("rect")
-      .attr("class", variableName)
+      .attr("class", variableName.replace(/\s/g,''))
       .attr("fill", fdBarColor)
       .attr("x", d => x(0))
       .attr("y", d => y(d.key))
@@ -2038,7 +2140,7 @@ function fdCategoricalPlot(variableName, dData, mData) {
   var minimumY = Number.MAX_VALUE;
   var maximumY = Number.MIN_VALUE;
 
-  bars.selectAll(".".concat(variableName)).each(function() {
+  bars.selectAll(".".concat(variableName.replace(/\s/g,''))).each(function() {
       if (+this.getAttribute('y') < minimumY) {
         minimumY = +this.getAttribute('y');
       }
@@ -2063,6 +2165,413 @@ function fdCategoricalPlot(variableName, dData, mData) {
     .text("count");
 }
 
+function tvNumericalPlot(variableName, xData, xMinMax, yMinMax) {
+
+  var tvPlotHeight = h,
+      tvPlotWidth = w;
+
+  var x = d3.scaleLinear()
+            .range([margin.left + 10, margin.left + tvPlotWidth - 10])
+            .domain(xMinMax);
+
+  TV.append("text")
+    .attr("transform",
+          "translate(" + (margin.left + tvPlotWidth/2) + " ," +
+                         (margin.top + tvPlotHeight + 45) + ")")
+    .attr("class", "axisTitle")
+    .attr("text-anchor", "middle")
+    .text(variableName);
+
+  var y = d3.scaleLinear()
+            .range([margin.top + tvPlotHeight, margin.top - additionalHeight])
+            .domain(yMinMax);
+
+  TV.append("text")
+    .attr("class","smallTitle")
+    .attr("x", margin.left)
+    .attr("y", margin.top - 15)
+    .text(tvSubtitle);
+
+  TV.append("text")
+    .attr("class", "bigTitle")
+    .attr("x", margin.left)
+    .attr("y", margin.top - 40)
+    .text(tvTitle + variableName);
+
+  // find 5 nice ticks with max and min - do better than d3
+  var tickValues = getTickValues(x.domain());
+
+  var xAxis = d3.axisBottom(x)
+                .tickValues(tickValues)
+                .tickSizeInner(0)
+                .tickPadding(15);
+
+  xAxis = TV.append("g")
+            .attr("class", "axisLabel")
+            .attr("transform", "translate(0,"+ (margin.top + tvPlotHeight) + ")")
+            .call(xAxis);
+
+  var yGrid = TV.append("g")
+                .attr("class", "grid")
+                .attr("transform", "translate(" + margin.left + ",0)")
+                .call(d3.axisLeft(y)
+                        .ticks(10)
+                        .tickSize(-tvPlotWidth)
+                        .tickFormat("")
+                ).call(g => g.select(".domain").remove());
+
+  var yAxis = d3.axisLeft(y)
+                .ticks(5)
+                .tickSize(0);
+
+  yAxis = TV.append("g")
+            .attr("class", "axisLabel")
+            .attr("transform","translate(" + margin.left + ",0)")
+            .call(yAxis)
+            .call(g => g.select(".domain").remove());
+
+  TV.append("text")
+    .attr("class", "axisTitle")
+    .attr("transform", "rotate(-90)")
+    .attr("y", margin.left - margin.ytitle)
+    .attr("x", -(margin.top + tvPlotHeight/2))
+    .attr("text-anchor", "middle")
+    .text("target");
+
+  TV.selectAll()
+    .data(xData)
+    .enter()
+    .append("circle")
+    .attr("class", "point")
+    .attr("cx", d => x(d[variableName]))
+    .attr("cy", d => y(d["_target_"]))
+    .attr("r", 0)
+    .style("fill", tvPointColor)
+    .transition()
+    .duration(TIME)
+    .attr("r", tvPointSize);
+}
+
+function tvCategoricalPlot(variableName, xData, xMinMax, yMinMax) {
+
+  var tvPlotHeight = h,
+      tvPlotWidth = w;
+
+  var x = d3.scaleLinear()
+            .range([margin.left, margin.left + tvPlotWidth])
+            .domain(yMinMax);
+
+  var xAxis = d3.axisBottom(x)
+                .ticks(5)
+                .tickSize(0);
+
+  xAxis = TV.append("g")
+            .attr("class", "axisLabel")
+            .attr("transform", "translate(0," + (margin.top + tvPlotHeight) + ")")
+            .call(xAxis)
+            .call(g => g.select(".domain").remove());
+
+  var y = d3.scaleBand()
+            .rangeRound([margin.top - additionalHeight, margin.top + tvPlotHeight])
+            .padding(0.33)
+            .domain(xMinMax);
+
+  var xGrid = TV.append("g")
+                .attr("class", "grid")
+                .attr("transform", "translate(0," + (margin.top + tvPlotHeight) + ")")
+                .call(d3.axisBottom(x)
+                        .ticks(10)
+                        .tickSize(-tvPlotHeight - additionalHeight)
+                        .tickFormat("")
+                ).call(g => g.select(".domain").remove());
+
+  var yGrid = TV.append("g")
+                .attr("class", "grid")
+                .attr("transform", "translate(" + margin.left + ",0)")
+                .call(d3.axisLeft(y)
+                        .tickSize(-tvPlotWidth)
+                        .tickFormat("")
+                ).call(g => g.select(".domain").remove());
+
+  var yAxis = d3.axisLeft(y)
+                .tickSize(0);
+
+  yAxis = TV.append("g")
+            .attr("class", "axisLabel")
+            .attr("transform","translate(" + (margin.left - 10) + ",0)")
+            .call(yAxis)
+            .call(g => g.select(".domain").remove());
+
+  yAxis.selectAll("text").call(wrapText, margin.left - 15);
+
+  TV.append("text")
+    .attr("x", margin.left)
+    .attr("y", margin.top - 15)
+    .attr("class", "smallTitle")
+    .text(tvSubtitle);
+
+  TV.append("text")
+    .attr("x", margin.left)
+    .attr("y", margin.top - 40)
+    .attr("class", "bigTitle")
+    .text(tvTitle + variableName);
+
+  TV.append("text")
+    .attr("transform",
+          "translate(" + (margin.left + tvPlotWidth/2) + " ," +
+                         (margin.top + tvPlotHeight + 45) + ")")
+    .attr("class", "axisTitle")
+    .attr("text-anchor", "middle")
+    .text("target");
+
+  TV.selectAll()
+    .data(xData)
+    .enter()
+    .append("circle")
+    .attr("class", "point")
+    .attr("cx", d => x(d["_target_"]))
+    .attr("cy", d => y(d[variableName]) + y.bandwidth()
+    - (0.1 + 0.8*Math.random()) * y.bandwidth())
+    .attr("r", 0)
+    .style("fill", tvPointColor)
+    .transition()
+    .duration(TIME)
+    .attr("r", tvPointSize);
+}
+
+function atNumericalPlot(variableName, xData, xMinMax, yMinMax, yMean) {
+
+  var atPlotHeight = h,
+      atPlotWidth = w;
+
+  var x = d3.scaleLinear()
+            .range([margin.left + 10, margin.left + atPlotWidth - 10])
+            .domain(xMinMax);
+
+  AT.append("text")
+    .attr("transform",
+          "translate(" + (margin.left + atPlotWidth/2) + " ," +
+                         (margin.top + atPlotHeight + 45) + ")")
+    .attr("class", "axisTitle")
+    .attr("text-anchor", "middle")
+    .text(variableName);
+
+  var y = d3.scaleLinear()
+            .range([margin.top + atPlotHeight, margin.top - additionalHeight])
+            .domain(yMinMax);
+
+  AT.append("text")
+    .attr("class","smallTitle")
+    .attr("x", margin.left)
+    .attr("y", margin.top - 15)
+    .text(atSubtitle);
+
+  AT.append("text")
+    .attr("class", "bigTitle")
+    .attr("x", margin.left)
+    .attr("y", margin.top - 40)
+    .text(atTitle + variableName);
+
+  // find 5 nice ticks with max and min - do better than d3
+  var tickValues = getTickValues(x.domain());
+
+  var xAxis = d3.axisBottom(x)
+                .tickValues(tickValues)
+                .tickSizeInner(0)
+                .tickPadding(15);
+
+  xAxis = AT.append("g")
+            .attr("class", "axisLabel")
+            .attr("transform", "translate(0,"+ (margin.top + atPlotHeight) + ")")
+            .call(xAxis);
+
+  var yGrid = AT.append("g")
+                .attr("class", "grid")
+                .attr("transform", "translate(" + margin.left + ",0)")
+                .call(d3.axisLeft(y)
+                        .ticks(10)
+                        .tickSize(-atPlotWidth)
+                        .tickFormat("")
+                ).call(g => g.select(".domain").remove());
+
+  var yAxis = d3.axisLeft(y)
+                .ticks(5)
+                .tickSize(0);
+
+  yAxis = AT.append("g")
+            .attr("class", "axisLabel")
+            .attr("transform","translate(" + margin.left + ",0)")
+            .call(yAxis)
+            .call(g => g.select(".domain").remove());
+
+  AT.append("text")
+    .attr("class", "axisTitle")
+    .attr("transform", "rotate(-90)")
+    .attr("y", margin.left - margin.ytitle)
+    .attr("x", -(margin.top + atPlotHeight/2))
+    .attr("text-anchor", "middle")
+    .text("average target");
+
+  AT.append("line")
+    .attr("class", "interceptLine")
+    .attr("x1", x(x.domain()[0]))
+    .attr("y1", y(yMean))
+    .attr("x2", x(x.domain()[1]))
+    .attr("y2", y(yMean));
+
+  var lines = AT.selectAll()
+                .data(xData)
+                .enter()
+                .append("g");
+
+  lines.append("line")
+       .style("stroke", atLineColor)
+       .style("stroke-width", atLineSize)
+       .attr("x1", d => x(d.x0))
+       .attr("x2", d => x(d.x0))
+       .attr("y1", d => y(d.y0))
+       .attr("y2", d => y(d.y0))
+       .transition()
+       .duration(TIME/2)
+       .delay((d,i) => (i+1) * TIME/2)
+       .attr("x2", d => x(d.x1))
+       .attr("y2", d => y(d.y1))
+
+  lines.append("circle")
+       .attr("cx", d => x(d.x0))
+       .attr("cy", d => y(d.y0))
+       .attr("r", 0)
+       .style("fill", atPointColor)
+       .transition()
+       .duration(TIME/2)
+       .delay((d,i) => i * TIME/2)
+       .attr("r", atPointSize);
+
+  let lastPoint = xData.slice(-1)[0]
+
+  AT.append("circle")
+    .attr("cx", x(lastPoint.x1))
+    .attr("cy", y(lastPoint.y1))
+    .attr("r", 0)
+    .style("fill", atPointColor)
+    .transition()
+    .duration(TIME/2)
+    .delay(xData.length * TIME/2)
+    .attr("r", atPointSize);
+}
+
+function atCategoricalPlot(variableName, xData, xMinMax, yMinMax, yMean) {
+
+  var atBarCount = xData.length;
+
+  var atPlotHeight = SCALE_PLOT ? h : atBarCount*atBarWidth + (atBarCount+1)*atBarWidth/2,
+      atPlotWidth = w;
+
+  var x = d3.scaleLinear()
+            .range([margin.left, margin.left + atPlotWidth])
+            .domain(yMinMax);
+
+  var xAxis = d3.axisBottom(x)
+                .ticks(5)
+                .tickSize(0);
+
+  xAxis = AT.append("g")
+            .attr("class", "axisLabel")
+            .attr("transform", "translate(0," + (margin.top + atPlotHeight) + ")")
+            .call(xAxis)
+            .call(g => g.select(".domain").remove());
+
+  var y = d3.scaleBand()
+            .rangeRound([margin.top - additionalHeight, margin.top + atPlotHeight])
+            .padding(0.33)
+            .domain(xMinMax);
+
+  var xGrid = AT.append("g")
+                .attr("class", "grid")
+                .attr("transform", "translate(0," + (margin.top + atPlotHeight) + ")")
+                .call(d3.axisBottom(x)
+                        .ticks(10)
+                        .tickSize(-atPlotHeight - additionalHeight)
+                        .tickFormat("")
+                ).call(g => g.select(".domain").remove());
+
+  var yGrid = AT.append("g")
+                .attr("class", "grid")
+                .attr("transform", "translate(" + margin.left + ",0)")
+                .call(d3.axisLeft(y)
+                        .tickSize(-atPlotWidth)
+                        .tickFormat("")
+                ).call(g => g.select(".domain").remove());
+
+  var yAxis = d3.axisLeft(y)
+                .tickSize(0);
+
+  yAxis = AT.append("g")
+            .attr("class", "axisLabel")
+            .attr("transform","translate(" + (margin.left - 10) + ",0)")
+            .call(yAxis)
+            .call(g => g.select(".domain").remove());
+
+  yAxis.selectAll("text").call(wrapText, margin.left - 15);
+
+  AT.append("text")
+    .attr("x", margin.left)
+    .attr("y", margin.top - 15)
+    .attr("class", "smallTitle")
+    .text(atSubtitle);
+
+  AT.append("text")
+    .attr("x", margin.left)
+    .attr("y", margin.top - 40)
+    .attr("class", "bigTitle")
+    .text(atTitle + variableName);
+
+  AT.append("text")
+    .attr("transform",
+          "translate(" + (margin.left + atPlotWidth/2) + " ," +
+                         (margin.top + atPlotHeight + 45) + ")")
+    .attr("class", "axisTitle")
+    .attr("text-anchor", "middle")
+    .text("average target");
+
+  var bars = AT.selectAll()
+               .data(xData)
+               .enter()
+               .append("g");
+
+  bars.append("rect")
+      .attr("class", variableName.replace(/\s/g,''))
+      .attr("fill", atBarColor)
+      .attr("x", d => x(yMean))
+      .attr("y", d => y(d.y))
+      .attr("height", y.bandwidth())
+      .transition()
+      .duration(TIME)
+      .delay((d,i) => i * TIME)
+      .attr("x", d => d.sign == 1 ? x(yMean) : x(d.x0))
+      .attr("width", d => Math.abs(x(d.x0) - x(yMean)));
+
+  // add intercept line
+  var minimumY = Number.MAX_VALUE;
+  var maximumY = Number.MIN_VALUE;
+
+  bars.selectAll(".".concat(variableName.replace(/\s/g,''))).each(function() {
+      if (+this.getAttribute('y') < minimumY) {
+        minimumY = +this.getAttribute('y');
+      }
+      if (+this.getAttribute('y') > maximumY) {
+        maximumY = +this.getAttribute('y');
+      }
+    });
+
+  AT.append("line")
+    .attr("class", "interceptLine")
+    .attr("x1", x(yMean))
+    .attr("y1", minimumY)
+    .attr("x2", x(yMean))
+    .attr("y2", maximumY + y.bandwidth());
+}
+
 /// event plot functions
 
 function updatePlots(event, variableName, observationId, plotId) {
@@ -2080,8 +2589,8 @@ function updatePlots(event, variableName, observationId, plotId) {
       if (variableName == "prediction" || variableName == "intercept" ||
           variableName == "other") { return; }
       CLICKED_VARIABLE_NAME = variableName;
-      removePlots(["CP", "PD", "AD", "FD"]);
-      generatePlots(["CP", "PD", "AD", "FD"]);
+      removePlots(["CP", "PD", "AD", "FD", "TV", "AT"]);
+      generatePlots(["CP", "PD", "AD", "FD", "TV", "AT"]);
       break;
 
     case "chosePlot":
@@ -2091,7 +2600,7 @@ function updatePlots(event, variableName, observationId, plotId) {
 
     default:
       console.log("Unknown event in updatePlots " +
-                  [event,variableName,observationId,plotId]);
+                  [event,variableName, observationId, plotId]);
       break;
   }
 }
@@ -2103,7 +2612,7 @@ function removePlots(arrPlotId) {
       svg.select("#"+id).selectAll("*").remove();
       d3.select("body").select("#tooltip"+id).remove();
     }
-  })
+  });
 }
 
 function generatePlots(arrPlotId) {
@@ -2113,5 +2622,5 @@ function generatePlots(arrPlotId) {
       // execute plot function
       mapIdPlotFunction[id]();
     }
-  })
+  });
 }

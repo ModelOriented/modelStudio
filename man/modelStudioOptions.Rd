@@ -2,7 +2,7 @@
 % Please edit documentation in R/modelStudioOptions.R
 \name{modelStudioOptions}
 \alias{modelStudioOptions}
-\title{Modifiy options and pass them to modelStudio}
+\title{Modify options and pass them to modelStudio}
 \usage{
 modelStudioOptions(...)
 }
@@ -32,7 +32,7 @@ ignored when \code{scale_plot = TRUE}.}
 }
 \subsection{Plot specific options:}{
 \code{**} is a two letter code unique to each plot, might be
-one of \code{[bd,sv,cp,fi,pd,ad,fd]}.\cr
+one of \code{[bd,sv,cp,fi,pd,ad,fd,tv,at]}.\cr
 
 \describe{
 \item{**_title}{Plot specific title. Default varies.}

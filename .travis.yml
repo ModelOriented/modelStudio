@@ -1,14 +1,23 @@
 language: R
 sudo: false
 cache: packages
+warnings_are_errors: true
 
-env:
-  global:
-  - R_CHECK_ARGS="--timings --run-donttest"
-  
 r:
   - release
   - devel
+
+os:
+  - linux
+  - osx
+
+matrix:
+  exclude:
+    - os: osx
+      r: devel
+env:
+  global:
+  - R_CHECK_ARGS="--timings --run-donttest"
 
 notifications:
   email: false
@@ -16,8 +25,8 @@ notifications:
 r_packages:
   - covr
 
-#r_github_packages:
-#  - ModelOriented/ingredients
+r_github_packages:
+  - ModelOriented/ingredients
 #  - ModelOriented/iBreakDown
 #  - ModelOriented/DALEX
 

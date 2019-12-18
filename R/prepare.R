@@ -2,6 +2,8 @@ prepare_break_down <- function(x, max_features = 10, baseline = NA, digits = 3,
                                rounding_function = round, margin = 0.2, min_max = NA) {
   ### This function returns object needed to plot BreakDown in D3 ###
 
+  if (is.null(x)) return(NULL)
+
   m <- ifelse(nrow(x) - 2 <= max_features, nrow(x), max_features + 3)
 
   new_x <- prepare_break_down_df(x, max_features, baseline, digits, rounding_function)
@@ -19,8 +21,9 @@ prepare_break_down <- function(x, max_features = 10, baseline = NA, digits = 3,
   min_max[1] <- min_max[1] - min_max_margin
   min_max[2] <- min_max[2] + min_max_margin
 
-  desc <- iBreakDown::describe(x, display_values =  TRUE,
-                               display_numbers = TRUE)
+  desc <- try_catch(iBreakDown::describe(x, display_values =  TRUE,
+                                            display_numbers = TRUE),
+                    "iBreakDown::describe.break_down", show_info = FALSE)
 
   ret <- NULL
   ret$x <- new_x
@@ -93,6 +96,8 @@ prepare_shap_values <- function(x, max_features = 10, baseline = NA, digits = 3,
                                    rounding_function = round, margin = 0.2, min_max = NA) {
   ### This function returns object needed to plot SHAPValues in D3 ###
 
+  if (is.null(x)) return(NULL)
+
   x <- x[x$B == 0,]
   if (is.na(baseline)) baseline <- attr(x, "intercept")[[1]]
   prediction <- attr(x, "prediction")[[1]]
@@ -110,9 +115,10 @@ prepare_shap_values <- function(x, max_features = 10, baseline = NA, digits = 3,
   min_max[1] <- min_max[1] - min_max_margin
   min_max[2] <- min_max[2] + min_max_margin
 
-  desc <- iBreakDown::describe(x, display_values = TRUE,
-                               display_numbers = TRUE,
-                               display_shap = TRUE)
+  desc <- try_catch(iBreakDown::describe(x, display_values = TRUE,
+                                            display_numbers = TRUE,
+                                            display_shap = TRUE),
+                    "iBreakDown::describe.shap", show_info = FALSE)
 
   ret <- NULL
   ret$x <- new_x
@@ -171,6 +177,8 @@ prepare_shap_values_df <- function(x, max_features = 10, baseline = NA, predicti
 prepare_ceteris_paribus <- function(x, variables = NULL) {
   ### This function returns object needed to plot CeterisParibus in D3 ###
 
+  if (is.null(x)) return(NULL)
+
   # which variable is numeric?
   is_numeric <- sapply(x[, variables, drop = FALSE], is.numeric)
   names(is_numeric) <- variables
@@ -221,14 +229,14 @@ prepare_ceteris_paribus <- function(x, variables = NULL) {
       colnames(temp) <- c("xhat", "yhat", "vname")
       temp$yhat <- as.numeric(temp$yhat)
 
-      new_x[[name]] <- temp
+      new_x[[name]] <- temp[order(temp$xhat),]
     }
 
-    text <- suppressWarnings(
-      ingredients::describe(x, display_values = TRUE,
-                            display_numbers = TRUE,
-                            variables = name)
-    )
+    text <- try_catch(
+      suppressWarnings(ingredients::describe(x, display_values = TRUE,
+                                                display_numbers = TRUE,
+                                                variables = name)),
+      "ingredients::describe.ceteris_paribus", show_info = FALSE)
 
     desc[[name]] <- data.frame(type = "desc",
                                text = gsub("\n","</br>", text))
@@ -245,18 +253,39 @@ prepare_ceteris_paribus <- function(x, variables = NULL) {
   ret
 }
 
-prepare_feature_importance <- function(x, max_features = 10, margin = 0.2) {
+prepare_feature_importance <- function(x, max_features = 10, margin = 0.2,
+                                       digits = 3, rounding_function = round) {
   ### This function returns object needed to plot FeatureImportance in D3 ###
 
-  m <- dim(x)[1] - 2
+  if (is.null(x)) return(NULL)
+  permutation <- NULL
 
-  xmin <- min(x$dropout_loss)
-  xmax <- max(x[x$variable!="_baseline_",]$dropout_loss)
+  #:# change the input to save boxplot data
+  x_stats <- data.frame(
+    min = tapply(x$dropout_loss, x$variable, min, na.rm = TRUE),
+    q1 = tapply(x$dropout_loss, x$variable, quantile, 0.25, na.rm = TRUE),
+    q3 = tapply(x$dropout_loss, x$variable, quantile, 0.75, na.rm = TRUE),
+    max = tapply(x$dropout_loss, x$variable, max, na.rm = TRUE)
+  )
+
+  x_stats$min <- as.numeric(x_stats$min)
+  x_stats$q1 <- as.numeric(x_stats$q1)
+  x_stats$q3 <- as.numeric(x_stats$q3)
+  x_stats$max <- as.numeric(x_stats$max)
+
+  x_short <- merge(x[x$permutation == 0,], cbind(rownames(x_stats),x_stats), by.x = "variable", by.y = "rownames(x_stats)")
+  x_short <- subset(x_short, select = -permutation)
+  #:#
+
+  m <- dim(x_short)[1] - 2
+
+  xmin <- min(x_short$dropout_loss)
+  xmax <- max(x_short[x_short$variable!="_baseline_",]$dropout_loss)
 
   ticks_margin <- abs(xmin-xmax)*margin;
 
-  best_fits <- x[x$variable == "_full_model_",]
-  new_x <- merge(x, best_fits[,c("label", "dropout_loss")], by = "label")
+  best_fits <- x_short[x_short$variable == "_full_model_",]
+  new_x <- merge(x_short, best_fits[,c("label", "dropout_loss")], by = "label", sort = FALSE)
 
   # remove rows that starts with _
   new_x <- new_x[!(substr(new_x$variable,1,1) == "_"),]
@@ -275,12 +304,15 @@ prepare_feature_importance <- function(x, max_features = 10, margin = 0.2) {
   new_x$variable <- factor(as.character(new_x$variable), levels = perm)
   new_x <- new_x[order(new_x$variable),]
 
-  colnames(new_x) <- c("label","variable","dropout_loss", "full_model")
+  colnames(new_x)[c(3,8)] <- c("dropout_loss", "full_model")
+  new_x$dropout_loss <- rounding_function(new_x$dropout_loss, digits)
+  new_x$full_model <- rounding_function(new_x$full_model, digits)
 
-  desc <- ingredients::describe(x)
+  desc <- try_catch(ingredients::describe(x),
+                    "ingredients::describe.feature_importance", show_info = FALSE)
 
   ret <- NULL
-  ret$x <- new_x[,2:4]
+  ret$x <- new_x
   ret$m <- m
   ret$x_min_max <- c(xmin - ticks_margin, xmax + ticks_margin)
   ret$desc <- data.frame(type = "desc",
@@ -292,84 +324,7 @@ prepare_feature_importance <- function(x, max_features = 10, margin = 0.2) {
 prepare_partial_dependency <- function(x, y, variables = NULL) {
   ### This function returns object needed to plot PartialDependency in D3 ###
 
-  # which variable is numeric?
-  num <- as.character(unique(x$`_vname_`))
-  cat <- as.character(unique(y$`_vname_`))
-  is_numeric <- c(rep(TRUE, length(num)), rep(FALSE, length(cat)))
-  names(is_numeric) <- c(num, cat)
-  is_numeric <- is_numeric[variables]
-
-  # safeguard
-  is_numeric <- is_numeric[!is.na(is_numeric)]
-
-  # prepare aggregated profiles data
-  aggregated_profiles <- rbind(x,y)
-
-  aggregated_profiles <- aggregated_profiles[aggregated_profiles$`_vname_` %in% variables, ]
-  aggregated_profiles$`_vname_` <- droplevels(aggregated_profiles$`_vname_`)
-  rownames(aggregated_profiles) <- NULL
-
-  y_min_max <- range(aggregated_profiles$`_yhat_`)
-
-  # count margins
-  y_min_max_margin <- abs(y_min_max[2]-y_min_max[1])*0.1
-  y_min_max[1] <- y_min_max[1] - y_min_max_margin
-  y_min_max[2] <- y_min_max[2] + y_min_max_margin
-
-  aggregated_profiles_list <- split(aggregated_profiles, aggregated_profiles$`_vname_`)[variables]
-
-  new_x <- x_min_max_list <- desc <- list()
-  y_mean <- NULL
-
-  # line plot or bar plot?
-  for (i in 1:length(is_numeric)) {
-    temp <- aggregated_profiles_list[[i]]
-    name <- as.character(head(temp$`_vname_`,1))
-
-    if (is_numeric[i]) {
-      temp <- temp[, c('_x_', "_yhat_", "_vname_", "_label_")]
-      colnames(temp) <- c("xhat", "yhat", "vname", "label")
-      temp$xhat <- as.numeric(temp$xhat)
-      temp$yhat <- as.numeric(temp$yhat)
-
-      new_x[[name]] <- temp[order(temp$xhat),]
-      x_min_max_list[[name]] <- list(min(temp$xhat), max(temp$xhat))
-
-    } else {
-      temp <- temp[, c("_x_", "_yhat_", "_vname_", "_label_")]
-      colnames(temp) <- c("xhat", "yhat", "vname", "label")
-      temp$yhat <- as.numeric(temp$yhat)
-
-      new_x[[name]] <- temp
-    }
-
-    text <- suppressWarnings(
-      ingredients::describe(rbind(x,y),
-                            display_values = TRUE,
-                            display_numbers = TRUE,
-                            variables = name)
-    )
-
-    desc[[name]] <- data.frame(type = "desc",
-                               text = gsub("\n","</br>", text))
-  }
-
-  y_mean <- ifelse(is.null(x), round(attr(y, "mean_prediction"),3),
-                   round(attr(x, "mean_prediction"),3))
-
-  ret <- NULL
-  ret$y_mean <- y_mean
-  ret$x <- new_x
-  ret$y_min_max <- y_min_max
-  ret$x_min_max_list <- x_min_max_list
-  ret$is_numeric <- as.list(is_numeric)
-  ret$desc <- desc
-
-  ret
-}
-
-prepare_accumulated_dependency <- function(x, y, variables = NULL) {
-  ### This function returns object needed to plot AccumulatedDependency in D3 ###
+  if (is.null(x) | is.null(y)) return(NULL)
 
   # which variable is numeric?
   num <- as.character(unique(x$`_vname_`))
@@ -399,7 +354,7 @@ prepare_accumulated_dependency <- function(x, y, variables = NULL) {
 
   # safeguard
   aggregated_profiles_list <-
-    aggregated_profiles_list[!unlist(lapply(aggregated_profiles_list, is.null))]
+    aggregated_profiles_list[!sapply(aggregated_profiles_list, is.null)]
 
   new_x <- x_min_max_list <- desc <- list()
   y_mean <- NULL
@@ -426,11 +381,97 @@ prepare_accumulated_dependency <- function(x, y, variables = NULL) {
       new_x[[name]] <- temp
     }
 
-    # text <- suppressWarnings(
+    text <- try_catch(
+      suppressWarnings(ingredients::describe(rbind(x,y), display_values = TRUE,
+                                                         display_numbers = TRUE,
+                                                         variables = name)),
+      "ingredients::describe.partial_dependency", show_info = FALSE)
+
+    desc[[name]] <- data.frame(type = "desc",
+                               text = gsub("\n","</br>", text))
+  }
+
+  y_mean <- ifelse(is.null(x), round(attr(y, "mean_prediction"),3),
+                   round(attr(x, "mean_prediction"),3))
+
+  ret <- NULL
+  ret$y_mean <- y_mean
+  ret$x <- new_x
+  ret$y_min_max <- y_min_max
+  ret$x_min_max_list <- x_min_max_list
+  ret$is_numeric <- as.list(is_numeric)
+  ret$desc <- desc
+
+  ret
+}
+
+prepare_accumulated_dependency <- function(x, y, variables = NULL) {
+  ### This function returns object needed to plot AccumulatedDependency in D3 ###
+
+  if (is.null(x) | is.null(y)) return(NULL)
+
+  # which variable is numeric?
+  num <- as.character(unique(x$`_vname_`))
+  cat <- as.character(unique(y$`_vname_`))
+  is_numeric <- c(rep(TRUE, length(num)), rep(FALSE, length(cat)))
+  names(is_numeric) <- c(num, cat)
+  is_numeric <- is_numeric[variables]
+
+  # safeguard
+  is_numeric <- is_numeric[!is.na(is_numeric)]
+
+  # prepare aggregated profiles data
+  aggregated_profiles <- rbind(x,y)
+
+  aggregated_profiles <- aggregated_profiles[aggregated_profiles$`_vname_` %in% variables, ]
+  aggregated_profiles$`_vname_` <- droplevels(aggregated_profiles$`_vname_`)
+  rownames(aggregated_profiles) <- NULL
+
+  y_min_max <- range(aggregated_profiles$`_yhat_`)
+
+  # count margins
+  y_min_max_margin <- abs(y_min_max[2]-y_min_max[1])*0.1
+  y_min_max[1] <- y_min_max[1] - y_min_max_margin
+  y_min_max[2] <- y_min_max[2] + y_min_max_margin
+
+  aggregated_profiles_list <- split(aggregated_profiles, aggregated_profiles$`_vname_`)[variables]
+
+  # safeguard
+  aggregated_profiles_list <-
+    aggregated_profiles_list[!sapply(aggregated_profiles_list, is.null)]
+
+  new_x <- x_min_max_list <- desc <- list()
+  y_mean <- NULL
+
+  # line plot or bar plot?
+  for (i in 1:length(is_numeric)) {
+    temp <- aggregated_profiles_list[[i]]
+    name <- as.character(head(temp$`_vname_`,1))
+
+    if (is_numeric[i]) {
+      temp <- temp[, c('_x_', "_yhat_", "_vname_", "_label_")]
+      colnames(temp) <- c("xhat", "yhat", "vname", "label")
+      temp$xhat <- as.numeric(temp$xhat)
+      temp$yhat <- as.numeric(temp$yhat)
+
+      new_x[[name]] <- temp[order(temp$xhat),]
+      x_min_max_list[[name]] <- list(min(temp$xhat), max(temp$xhat))
+
+    } else {
+      temp <- temp[, c("_x_", "_yhat_", "_vname_", "_label_")]
+      colnames(temp) <- c("xhat", "yhat", "vname", "label")
+      temp$yhat <- as.numeric(temp$yhat)
+
+      new_x[[name]] <- temp
+    }
+
+    # text <- try_catch(
+    #   suppressWarnings(
     #   ingredients::describe(rbind(x,y),
     #                         display_values = TRUE,
     #                         display_numbers = TRUE,
-    #                         variables = name)
+    #                         variables = name)),
+    #   "ingredients::describe.accumulated_dependency"
     # )
 
     ## accumulated not still developed
@@ -439,8 +480,8 @@ prepare_accumulated_dependency <- function(x, y, variables = NULL) {
                                text = gsub("\n","</br>", text))
   }
 
-  y_mean <- ifelse(is.null(x), round(attr(y, "mean_prediction"),3),
-                   round(attr(x, "mean_prediction"),3))
+  y_mean <- 0
+  #ifelse(is.null(x), round(attr(y, "mean_prediction"),3),round(attr(x, "mean_prediction"),3))
 
   ret <- NULL
   ret$y_mean <- y_mean
@@ -466,12 +507,13 @@ prepare_feature_distribution <- function(x, variables = NULL) {
   x_min_max_list <- x_max_list <- nbin <- list()
 
   for (i in 1:length(is_numeric)) {
+    name <- names(is_numeric[i])
+    x[,name] <- sort(x[,name])
+
     if (is_numeric[i]) {
-      name <- names(is_numeric[i])
       x_min_max_list[[name]] <- range(x[,name])
-      nbin[[name]] <- nclass.Sturges(x[,name]) ## FD, scott nbin choice
+      nbin[[name]] <- nclass.Sturges(x[,name]) ## FD, scott/Sturges nbin choice
     } else {
-      name <- names(is_numeric[i])
       x_max_list[[name]] <-max(table(x[,name]))
     }
   }
@@ -485,3 +527,179 @@ prepare_feature_distribution <- function(x, variables = NULL) {
 
   ret
 }
+
+prepare_target_vs <- function(x, y, variables = NULL) {
+  ### This function returns object needed to plot TargetVs in D3 ###
+
+  # which variable is numeric?
+  is_numeric <- sapply(x[, variables, drop = FALSE], is.numeric)
+  names(is_numeric) <- variables
+
+  # safeguard
+  is_numeric <- is_numeric[!is.na(is_numeric)]
+
+  x_min_max_list <- x_max_list <- list()
+
+  for (i in 1:length(is_numeric)) {
+    name <- names(is_numeric[i])
+    if (is_numeric[i]) {
+      x_min_max_list[[name]] <- range(x[,name])
+    } else {
+      x_min_max_list[[name]] <- sort(unique(x[,name]))
+    }
+  }
+
+  X <- cbind(x[,variables], y)
+  colnames(X) <- c(variables, "_target_")
+
+  y_max <- max(y)
+  y_min <- min(y)
+  y_margin <- abs(y_max - y_min)*0.1
+
+  ret <- NULL
+  ret$x <- X
+  ret$x_min_max_list <- x_min_max_list
+  ret$y_min_max <- c(y_min - y_margin, y_max + y_margin)
+  ret$is_numeric <- as.list(is_numeric)
+
+  ret
+}
+
+prepare_average_target <- function(x, y, variables = NULL) {
+  ### This function returns object needed to plot TargetAverage in D3 ###
+
+  # which variable is numeric?
+  is_numeric <- sapply(x[, variables, drop = FALSE], is.numeric)
+  names(is_numeric) <- variables
+
+  # safeguard
+  is_numeric <- is_numeric[!is.na(is_numeric)]
+
+  x_min_max_list <- X <- list()
+
+  y_mean <- mean(y)
+
+  for (i in 1:length(is_numeric)) {
+    name <- names(is_numeric[i])
+
+    if (is_numeric[i]) {
+      x_min_max_list[[name]] <- range(x[,name])
+
+      h <- hist(x[,name], plot = FALSE)
+      variable_splits <- h$breaks
+
+      x_bin <- cut(x[,name], variable_splits, include.lowest = TRUE)
+      y_mean_aggr <- aggregate(y, by = list(x_bin), mean)
+
+      ci <- y_mean_aggr[, 1]
+      ci2 <- substr(as.character(ci), 2, nchar(as.character(ci)) - 1)
+      lb <- sapply(ci2, function(x) strsplit(x, ",")[[1]][1])
+      ub <- sapply(ci2, function(x) strsplit(x, ",")[[1]][2])
+      mid_points <- (as.numeric(lb) + as.numeric(ub)) / 2
+
+      p <- length(mid_points)
+
+      temp <- as.data.frame(cbind(mid_points[-p], mid_points[-1],
+                                  y_mean_aggr[-p, 2], y_mean_aggr[-1, 2]))
+      colnames(temp) <- c("x0", "x1", "y0", "y1")
+
+    } else {
+      x_min_max_list[[name]] <- sort(unique(x[,name]))
+
+      y_mean_aggr <- aggregate(y, by = list(x[,name]), mean)
+
+      temp <- as.data.frame(y_mean_aggr)
+      colnames(temp) <- c("y", "x0")
+      temp$sign <- ifelse(temp$x0 < y_mean, -1, 1)
+    }
+
+    X[[name]] <- temp
+  }
+
+  y_max <- max(y)
+  y_min <- min(y)
+  y_margin <- abs(y_max - y_min)*0.1
+
+  ret <- NULL
+  ret$x <- X
+  ret$x_min_max_list <- x_min_max_list
+  ret$y_min_max <- c(y_min - y_margin, y_max + y_margin)
+  ret$y_mean <- y_mean
+  ret$is_numeric <- as.list(is_numeric)
+
+  ret
+}
+
+# DEP_prepare_average_target <- function(x, y, variables = NULL) {
+#   ### This function returns object needed to plot TargetAverage in D3 ###
+#
+#   # which variable is numeric?
+#   is_numeric <- sapply(x[, variables, drop = FALSE], is.numeric)
+#   names(is_numeric) <- variables
+#
+#   # safeguard
+#   is_numeric <- is_numeric[!is.na(is_numeric)]
+#
+#   x_min_max_list <- X <- list()
+#   # y_min_max_list <- list()
+#
+#   probs <- seq(0, 1, length.out = 21)
+#   y_mean <- mean(y)
+#
+#   for (i in 1:length(is_numeric)) {
+#     name <- names(is_numeric[i])
+#
+#     if (is_numeric[i]) {
+#       x_min_max_list[[name]] <- range(x[,name])
+#
+#       variable_splits <- unique(quantile(x[,name], probs = probs))
+#
+#       x_bin <- cut(x[,name], variable_splits, include.lowest = TRUE)
+#       y_mean_aggr <- aggregate(y, by = list(x_bin), mean)
+#
+#       ci <- y_mean_aggr[, 1]
+#       ci2 <- substr(as.character(ci), 2, nchar(as.character(ci)) - 1)
+#       lb <- sapply(ci2, function(x) strsplit(x, ",")[[1]][1])
+#       ub <- sapply(ci2, function(x) strsplit(x, ",")[[1]][2])
+#       mid_points <- (as.numeric(lb) + as.numeric(ub)) / 2
+#
+#       p <- length(mid_points)
+#
+#       temp <- as.data.frame(cbind(mid_points[-p], mid_points[-1],
+#                                     y_mean_aggr[-p, 2], y_mean_aggr[-1, 2]))
+#       colnames(temp) <- c("x0", "x1", "y0", "y1")
+#
+#     } else {
+#       x_min_max_list[[name]] <- sort(unique(x[,name]))
+#
+#       y_mean_aggr <- aggregate(y, by = list(x[,name]), mean)
+#
+#       temp <- as.data.frame(y_mean_aggr)
+#       colnames(temp) <- c("y", "x0")
+#       temp$sign <- ifelse(temp$x0 < y_mean, -1, 1)
+#     }
+#
+#     # y_mean_max <- max(y_mean$y)
+#     # y_mean_min <- min(y_mean$y)
+#     # y_mean_margin <- abs(y_mean_max - y_mean_min)*0.1
+#     #
+#     # y_min_max_list[[name]] <- c(y_mean_min - y_mean_margin,
+#     #                             y_mean_max + y_mean_margin)
+#
+#     X[[name]] <- temp
+#   }
+#
+#   y_max <- max(y)
+#   y_min <- min(y)
+#   y_margin <- abs(y_max - y_min)*0.1
+#
+#   ret <- NULL
+#   ret$x <- X
+#   ret$x_min_max_list <- x_min_max_list
+#   # ret$y_min_max_list <- y_min_max_list
+#   ret$y_min_max <- c(y_min - y_margin, y_max + y_margin)
+#   ret$y_mean <- y_mean
+#   ret$is_numeric <- as.list(is_numeric)
+#
+#   ret
+# }

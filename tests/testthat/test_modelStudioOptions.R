@@ -74,7 +74,7 @@ new_options <- modelStudio::modelStudioOptions(
 )
 
 ms <- modelStudio::modelStudio(explain_rf, apartments[1:2,],
-                  facet_dim = c(2,3), N = 5, B = 2, show_info = FALSE,
+                  facet_dim = c(2,3), N = 5, B = 2, show_info = v,
                   options = new_options)
 
 testthat::test_that("options parameter", {
