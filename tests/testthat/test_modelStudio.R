@@ -143,3 +143,7 @@ testthat::test_that("parallel", {
 testthat::test_that("parallel rf", {
   testthat::expect_is(ms_parallel_rf, "r2d3")
 })
+
+testthat::test_that("show_info_and_new_observation_y", {
+  testthat::expect_is(modelStudio::modelStudio(explain_glm), "r2d3")
+})

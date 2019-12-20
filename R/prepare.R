@@ -494,7 +494,7 @@ prepare_accumulated_dependency <- function(x, y, variables = NULL) {
   ret
 }
 
-prepare_feature_distribution <- function(x, variables = NULL) {
+prepare_feature_distribution <- function(x, y, variables = NULL) {
   ### This function returns object needed to plot FeatureDistribution in D3 ###
 
   # which variable is numeric?
@@ -514,38 +514,8 @@ prepare_feature_distribution <- function(x, variables = NULL) {
       x_min_max_list[[name]] <- range(x[,name])
       nbin[[name]] <- nclass.Sturges(x[,name]) ## FD, scott/Sturges nbin choice
     } else {
-      x_max_list[[name]] <-max(table(x[,name]))
-    }
-  }
-
-  ret <- NULL
-  ret$x <- x[,variables]
-  ret$x_min_max_list <- x_min_max_list
-  ret$x_max_list <- x_max_list
-  ret$nbin <- nbin
-  ret$is_numeric <- as.list(is_numeric)
-
-  ret
-}
-
-prepare_target_vs <- function(x, y, variables = NULL) {
-  ### This function returns object needed to plot TargetVs in D3 ###
-
-  # which variable is numeric?
-  is_numeric <- sapply(x[, variables, drop = FALSE], is.numeric)
-  names(is_numeric) <- variables
-
-  # safeguard
-  is_numeric <- is_numeric[!is.na(is_numeric)]
-
-  x_min_max_list <- x_max_list <- list()
-
-  for (i in 1:length(is_numeric)) {
-    name <- names(is_numeric[i])
-    if (is_numeric[i]) {
-      x_min_max_list[[name]] <- range(x[,name])
-    } else {
       x_min_max_list[[name]] <- sort(unique(x[,name]))
+      x_max_list[[name]] <-max(table(x[,name]))
     }
   }
 
@@ -560,6 +530,8 @@ prepare_target_vs <- function(x, y, variables = NULL) {
   ret$x <- X
   ret$x_min_max_list <- x_min_max_list
   ret$y_min_max <- c(y_min - y_margin, y_max + y_margin)
+  ret$x_max_list <- x_max_list
+  ret$nbin <- nbin
   ret$is_numeric <- as.list(is_numeric)
 
   ret
@@ -575,7 +547,7 @@ prepare_average_target <- function(x, y, variables = NULL) {
   # safeguard
   is_numeric <- is_numeric[!is.na(is_numeric)]
 
-  x_min_max_list <- X <- list()
+  x_min_max_list <- y_min_max_list <- X <- list()
 
   y_mean <- mean(y)
 
@@ -585,8 +557,8 @@ prepare_average_target <- function(x, y, variables = NULL) {
     if (is_numeric[i]) {
       x_min_max_list[[name]] <- range(x[,name])
 
-      h <- hist(x[,name], plot = FALSE)
-      variable_splits <- h$breaks
+      nbins <- nclass.Sturges(x[,name])
+      variable_splits <- seq(min(x[,name]), max(x[,name]), length.out = nbins)
 
       x_bin <- cut(x[,name], variable_splits, include.lowest = TRUE)
       y_mean_aggr <- aggregate(y, by = list(x_bin), mean)
@@ -613,6 +585,11 @@ prepare_average_target <- function(x, y, variables = NULL) {
       temp$sign <- ifelse(temp$x0 < y_mean, -1, 1)
     }
 
+    y_mean_max <- max(y_mean_aggr[,2])
+    y_mean_min <- min(y_mean_aggr[,2])
+    y_mean_margin <- abs(y_mean_max - y_mean_min)*0.1
+    y_min_max_list[[name]] <- c(y_mean_min - y_mean_margin, y_mean_max + y_mean_margin)
+
     X[[name]] <- temp
   }
 
@@ -623,7 +600,7 @@ prepare_average_target <- function(x, y, variables = NULL) {
   ret <- NULL
   ret$x <- X
   ret$x_min_max_list <- x_min_max_list
-  ret$y_min_max <- c(y_min - y_margin, y_max + y_margin)
+  ret$y_min_max_list <- y_min_max_list
   ret$y_mean <- y_mean
   ret$is_numeric <- as.list(is_numeric)
 

@@ -15,7 +15,7 @@ r2d3.onResize(function() {
 var obsData = data[0],
     fiData = data[1], pdData = data[2],
     adData = data[3], fdData = data[4],
-    tvData = data[5], atData = data[6];
+    tvData = data[4], atData = data[5];
 
 /// load options
 var TIME = options.time,

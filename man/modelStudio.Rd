@@ -142,7 +142,7 @@ modelStudio(explain_apartments, new_observation = new_apartments,
 }
 \references{
 \itemize{
-  \item Wrapper for the function can be found in \href{https://modeloriented.github.io/DALEX/}{\bold{DALEX}}
+  \item Wrapper for the function is implemented in \href{https://modeloriented.github.io/DALEX/}{\bold{DALEX}}
   \item Feature Importance, Ceteris Paribus, Partial Dependency and Accumulated Dependency plots
 are implemented in \href{https://modeloriented.github.io/ingredients/}{\bold{ingredients}}
   \item Break Down and SHAP Values plots are implemented in \href{https://modeloriented.github.io/iBreakDown/}{\bold{iBreakDown}}

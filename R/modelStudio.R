@@ -39,7 +39,7 @@
 #' @references
 #'
 #' \itemize{
-#'   \item Wrapper for the function can be found in \href{https://modeloriented.github.io/DALEX/}{\bold{DALEX}}
+#'   \item Wrapper for the function is implemented in \href{https://modeloriented.github.io/DALEX/}{\bold{DALEX}}
 #'   \item Feature Importance, Ceteris Paribus, Partial Dependency and Accumulated Dependency plots
 #' are implemented in \href{https://modeloriented.github.io/ingredients/}{\bold{ingredients}}
 #'   \item Break Down and SHAP Values plots are implemented in \href{https://modeloriented.github.io/iBreakDown/}{\bold{iBreakDown}}
@@ -245,8 +245,7 @@ modelStudio.default <- function(object,
   fi_data <- prepare_feature_importance(fi, max_features, ...)
   pd_data <- prepare_partial_dependency(pd_n, pd_c, variables = variable_names)
   ad_data <- prepare_accumulated_dependency(ad_n, ad_c, variables = variable_names)
-  fd_data <- prepare_feature_distribution(data, variables = variable_names)
-  tv_data <- prepare_target_vs(data, y, variables = variable_names)
+  fd_data <- prepare_feature_distribution(data, y, variables = variable_names)
   at_data <- prepare_average_target(data, y, variables = variable_names)
 
   if (parallel) {
@@ -336,7 +335,7 @@ modelStudio.default <- function(object,
                     drop_down_data = jsonlite::toJSON(drop_down_data)
                     ), options)
 
-  temp <- jsonlite::toJSON(list(obs_list, fi_data, pd_data, ad_data, fd_data, tv_data, at_data))
+  temp <- jsonlite::toJSON(list(obs_list, fi_data, pd_data, ad_data, fd_data, at_data))
 
   sizing_policy <- r2d3::sizingPolicy(padding = 10, browser.fill = TRUE)
 

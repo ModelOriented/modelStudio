@@ -860,7 +860,7 @@ function averageTarget() {
 
   let xData = atData.x,
       xMinMax = atData.x_min_max_list,
-      yMinMax = atData.y_min_max,
+      yMinMax = atData.y_min_max_list,
       yMean = atData.y_mean,
       isNumeric = atData.is_numeric;
 
@@ -869,10 +869,10 @@ function averageTarget() {
   // scatterplot or violin?
   if (isNumeric[tVariableName][0]) {
     atNumericalPlot(tVariableName, xData[tVariableName],
-                    xMinMax[tVariableName], yMinMax, yMean);
+                    xMinMax[tVariableName], yMinMax[tVariableName], yMean);
   } else {
     atCategoricalPlot(tVariableName, xData[tVariableName],
-                      xMinMax[tVariableName], yMinMax, yMean);
+                      xMinMax[tVariableName], yMinMax[tVariableName], yMean);
   }
 }
 
