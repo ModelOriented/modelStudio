@@ -18,6 +18,11 @@ tools for EDA (Exploratory Data Analysis) to give a broad overview of the model 
 
 [See a demo](https://modeloriented.github.io/modelStudio/demo.html) &emsp; [Read the vignette: modelStudio - perks and features](https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html)  
 
+```diff
+! Please use `devtools::install_github("ModelOriented/modelStudio")` to install the latest v0.2
+! which works with the `ingredients` package v0.5. CRAN submissions are offline until Jan 6.
+```
+
 ![](images/gif3.gif)
 
 The `modelStudio` package is a part of the [DrWhy.AI](http://drwhy.ai) universe.
