@@ -18,11 +18,6 @@ tools for EDA (Exploratory Data Analysis) to give a broad overview of the model 
 
 [See a demo](https://modeloriented.github.io/modelStudio/demo.html) &emsp; [explainFIFA19](https://pbiecek.github.io/explainFIFA19/) &emsp; [More](https://github.com/ModelOriented/modelStudio#more)
 
-```diff
-! Please use `devtools::install_github("ModelOriented/modelStudio")` to install the latest v0.2
-! which works with the `ingredients` package v0.5. CRAN submissions are offline until Jan 6.
-```
-
 ![](images/gif3.gif)
 
 The `modelStudio` package is a part of the [DrWhy.AI](http://drwhy.ai) universe.
@@ -67,8 +62,6 @@ More examples [here](https://modeloriented.github.io/modelStudio/articles/vignet
 
 ![](images/gif4.gif)
 
-------------------------------------------------
-
 ## More
 
   - [Conference Poster about modelStudio](misc/MLinPL2019_modelStudio_poster.pdf)
@@ -81,18 +74,14 @@ More examples [here](https://modeloriented.github.io/modelStudio/articles/vignet
     
   - [Cheatsheet](images/cheatsheet.png)
 
-------------------------------------------------
-
 ## Save
 
-You can save `modelStudio` as a HTML file using buttons on the top of the RStudio Viewer
+Save `modelStudio` as a HTML file using buttons on the top of the RStudio Viewer
 or with the [`r2d3::save_d3_html()`](https://rstudio.github.io/r2d3/articles/publishing.html#save-as-html) function.
 
 <p align="center">
   <img src="images/controls.png">
 </p>
-
-------------------------------------------------
 
 ## Acknowledgments
 
