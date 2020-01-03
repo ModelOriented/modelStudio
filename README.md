@@ -16,7 +16,7 @@ for various local and global explanations. Tools for model exploration unite wit
 tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behaviour. 
 `modelStudio` is a fast and condensed way to get all the answers without much effort. Break down your model and look into its ingredients with only a few lines of code.
 
-[See a demo](https://modeloriented.github.io/modelStudio/demo.html) &emsp; [Read the vignette: modelStudio - perks and features](https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html)  
+[See a demo](https://modeloriented.github.io/modelStudio/demo.html) &emsp; [explainFIFA19](https://pbiecek.github.io/explainFIFA19/) &emsp; [More](https://github.com/ModelOriented/modelStudio#more)
 
 ```diff
 ! Please use `devtools::install_github("ModelOriented/modelStudio")` to install the latest v0.2
@@ -69,21 +69,28 @@ More examples [here](https://modeloriented.github.io/modelStudio/articles/vignet
 
 ------------------------------------------------
 
+## More
+
+  - [Conference Poster about modelStudio](misc/MLinPL2019_modelStudio_poster.pdf)
+
+  - [Article about modelStudio](https://joss.theoj.org/papers/10.21105/joss.01798)
+  
+  - [News](NEWS.md)
+  
+  - [Read the vignette: modelStudio - perks and features](https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html)  
+    
+  - [Cheatsheet](images/cheatsheet.png)
+
+------------------------------------------------
+
 ## Save
 
-You can save `modelStudio` using controls on the top of the RStudio Viewer
-or with [`r2d3::save_d3_html()`](https://rstudio.github.io/r2d3/articles/publishing.html#save-as-html)
-and [`r2d3::save_d3_png()`](https://rstudio.github.io/r2d3/articles/publishing.html#save_d3_png).
+You can save `modelStudio` as a HTML file using buttons on the top of the RStudio Viewer
+or with the [`r2d3::save_d3_html()`](https://rstudio.github.io/r2d3/articles/publishing.html#save-as-html) function.
 
 <p align="center">
   <img src="images/controls.png">
 </p>
-
-------------------------------------------------
-
-## Cheat Sheet
-
-![CheatSheet](images/cheatsheet.png)
 
 ------------------------------------------------
 
