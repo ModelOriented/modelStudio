@@ -1189,7 +1189,7 @@ function cpCategoricalPlot(variableName, bData, yMinMax, lData, desc) {
 
   // add bars
   bars.append("rect")
-      .attr("class", variableName.replace(/\s/g,''))
+      .attr("class", "CP-bars")
       .attr("fill", cpBarColor)
       .attr("x", d => x(fullModel))
       .attr("y", d => y(d.xhat))
@@ -1206,7 +1206,7 @@ function cpCategoricalPlot(variableName, bData, yMinMax, lData, desc) {
   var minimumY = Number.MAX_VALUE;
   var maximumY = Number.MIN_VALUE;
 
-  bars.selectAll(".".concat(variableName.replace(/\s/g,''))).each(function() {
+  bars.selectAll(".CP-bars").each(function() {
       if (+this.getAttribute('y') < minimumY) {
         minimumY = +this.getAttribute('y');
       }
@@ -1520,7 +1520,7 @@ function pdCategoricalPlot(variableName, bData, yMinMax, yMean, desc) {
 
   // add bars
   bars.append("rect")
-      .attr("class", variableName.replace(/\s/g,''))
+      .attr("class", "PD-bars")
       .attr("fill", pdBarColor)
       .attr("x", d => x(fullModel))
       .attr("y", d => y(d.xhat))
@@ -1537,7 +1537,7 @@ function pdCategoricalPlot(variableName, bData, yMinMax, yMean, desc) {
   var minimumY = Number.MAX_VALUE;
   var maximumY = Number.MIN_VALUE;
 
-  bars.selectAll(".".concat(variableName.replace(/\s/g,''))).each(function() {
+  bars.selectAll(".PD-bars").each(function() {
       if (+this.getAttribute('y') < minimumY) {
         minimumY = +this.getAttribute('y');
       }
@@ -1851,7 +1851,7 @@ function adCategoricalPlot(variableName, bData, yMinMax, yMean, desc) {
 
   // add bars
   bars.append("rect")
-      .attr("class", variableName.replace(/\s/g,''))
+      .attr("class", "AD-bars")
       .attr("fill", adBarColor)
       .attr("x", d => x(fullModel))
       .attr("y", d => y(d.xhat))
@@ -1868,7 +1868,7 @@ function adCategoricalPlot(variableName, bData, yMinMax, yMean, desc) {
   var minimumY = Number.MAX_VALUE;
   var maximumY = Number.MIN_VALUE;
 
-  bars.selectAll(".".concat(variableName.replace(/\s/g,''))).each(function() {
+  bars.selectAll(".AD-bars").each(function() {
       if (+this.getAttribute('y') < minimumY) {
         minimumY = +this.getAttribute('y');
       }
@@ -2126,7 +2126,7 @@ function fdCategoricalPlot(variableName, dData, mData) {
 
   // add bars
   bars.append("rect")
-      .attr("class", variableName.replace(/\s/g,''))
+      .attr("class", "FD-bars")
       .attr("fill", fdBarColor)
       .attr("x", d => x(0))
       .attr("y", d => y(d.key))
@@ -2140,7 +2140,7 @@ function fdCategoricalPlot(variableName, dData, mData) {
   var minimumY = Number.MAX_VALUE;
   var maximumY = Number.MIN_VALUE;
 
-  bars.selectAll(".".concat(variableName.replace(/\s/g,''))).each(function() {
+  bars.selectAll(".FD-bars").each(function() {
       if (+this.getAttribute('y') < minimumY) {
         minimumY = +this.getAttribute('y');
       }
@@ -2540,7 +2540,7 @@ function atCategoricalPlot(variableName, xData, xMinMax, yMinMax, yMean) {
                .append("g");
 
   bars.append("rect")
-      .attr("class", variableName.replace(/\s/g,''))
+      .attr("class", "AT-bars")
       .attr("fill", atBarColor)
       .attr("x", d => x(yMean))
       .attr("y", d => y(d.y))
@@ -2555,7 +2555,7 @@ function atCategoricalPlot(variableName, xData, xMinMax, yMinMax, yMean) {
   var minimumY = Number.MAX_VALUE;
   var maximumY = Number.MIN_VALUE;
 
-  bars.selectAll(".".concat(variableName.replace(/\s/g,''))).each(function() {
+  bars.selectAll(".AT-bars").each(function() {
       if (+this.getAttribute('y') < minimumY) {
         minimumY = +this.getAttribute('y');
       }
