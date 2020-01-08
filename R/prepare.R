@@ -554,6 +554,8 @@ prepare_average_target <- function(x, y, variables = NULL) {
   for (i in 1:length(is_numeric)) {
     name <- names(is_numeric[i])
 
+    if (length(unique(x[,name])) == 1) is_numeric[i] <- FALSE # issue #45
+
     if (is_numeric[i]) {
       x_min_max_list[[name]] <- range(x[,name])
 
