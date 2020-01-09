@@ -980,7 +980,7 @@ function cpNumericalPlot(variableName, lData, mData, yMinMax, pData, desc) {
 
   // add path
   var p = CP.append("path")
-            .attr("class", "line " + variableName)
+            .attr("class", "CP-lines")
             .style("fill", "none")
             .style("stroke", cpLineColor)
             .style("stroke-width", cpLineSize)
@@ -1356,11 +1356,11 @@ function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean, desc) {
 
   // add lines
   var p = PD.append("path")
-            .attr("class", "line " + variableName)
+            .attr("class", "PD-lines")
             .style("fill", "none")
             .style("stroke", pdLineColor)
             .style("stroke-width", pdLineSize)
-            .on('mouseover', function(d){
+            .on('mouseover', function(d) {
 
               // make mouseover line more visible
               d3.select(this)
@@ -1687,11 +1687,11 @@ function adNumericalPlot(variableName, lData, mData, yMinMax, yMean, desc) {
 
   // add lines
   var p = AD.append("path")
-            .attr("class", "line " + variableName)
+            .attr("class", "AD-lines")
             .style("fill", "none")
             .style("stroke", adLineColor)
             .style("stroke-width", adLineSize)
-            .on('mouseover', function(d){
+            .on('mouseover', function(d) {
 
               // make mouseover line more visible
               d3.select(this)
@@ -1704,7 +1704,7 @@ function adNumericalPlot(variableName, lData, mData, yMinMax, yMean, desc) {
               // show changed tooltip
               showTooltip(d);
             })
-            .on('mouseout', function(d){
+            .on('mouseout', function(d) {
 
               d3.select(this)
                 .style("stroke", adLineColor)
