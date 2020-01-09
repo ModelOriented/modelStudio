@@ -1373,7 +1373,7 @@ function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean, desc) {
               // show changed tooltip
               showTooltip(d);
             })
-            .on('mouseout', function(d){
+            .on('mouseout', function(d) {
 
               d3.select(this)
                 .style("stroke", pdLineColor)

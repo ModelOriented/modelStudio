@@ -332,7 +332,7 @@ prepare_feature_importance <- function(x, max_features = 10, margin = 0.2,
 prepare_partial_dependency <- function(x, y, variables = NULL) {
   ### This function returns object needed to plot PartialDependency in D3 ###
 
-  if (is.null(x) | is.null(y)) return(NULL)
+  if (is.null(x) & is.null(y)) return(NULL)
 
   # which variable is numeric?
   num <- as.character(unique(x$`_vname_`))
@@ -418,7 +418,7 @@ prepare_partial_dependency <- function(x, y, variables = NULL) {
 prepare_accumulated_dependency <- function(x, y, variables = NULL) {
   ### This function returns object needed to plot AccumulatedDependency in D3 ###
 
-  if (is.null(x) | is.null(y)) return(NULL)
+  if (is.null(x) & is.null(y)) return(NULL)
 
   # which variable is numeric?
   num <- as.character(unique(x$`_vname_`))
