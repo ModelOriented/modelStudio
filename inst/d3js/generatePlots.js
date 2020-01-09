@@ -222,7 +222,7 @@ function breakDown() {
                .append("g");
 
   bars.append("rect")
-      .attr("class", modelName.replace(/\s/g,''))
+      .attr("class", "BD-bars")
       .attr("id", d => d.variable_name)
       .attr("fill", d => {
         switch (d.sign) {
@@ -438,7 +438,7 @@ function shapValues() {
                .append("g");
 
   bars.append("rect")
-      .attr("class", modelName.replace(/\s/g,''))
+      .attr("class", "SV-bars")
       .attr("id", (d) => d.variable_name)
       .attr("fill", function(d) {
         switch (d.sign) {
@@ -654,7 +654,7 @@ function featureImportance() {
                   .attr("id", "tooltipFI")
                   .html(d => d.type === "desc"
                              ? descTooltipHtml(d)
-                             : fiStaticTooltipHtml(d, modelName));
+                             : fiStaticTooltipHtml(d));
   FI.call(tooltip);
 
   // bars
@@ -667,7 +667,7 @@ function featureImportance() {
   var fullModel = bData[0].full_model;
 
   bars.append("rect")
-      .attr("class", modelName.replace(/\s/g,''))
+      .attr("class", "FI-bars")
       .attr("fill", fiBarColor)
       .attr("x", d => x(fullModel))
       .attr("y", d => y(d.variable))
@@ -691,7 +691,7 @@ function featureImportance() {
   // make the interceptLine
   var minimumY = Number.MAX_VALUE;
   var maximumY = Number.MIN_VALUE;
-  bars.selectAll(".".concat(modelName.replace(/\s/g,''))).each(function() {
+  bars.selectAll(".FI-bars").each(function() {
     if (+this.getAttribute('y') < minimumY) {
       minimumY = +this.getAttribute('y');
     }

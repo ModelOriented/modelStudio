@@ -41,12 +41,10 @@ function cpChangedTooltipHtml(d, addData) {
   return temp;
 }
 
-function fiStaticTooltipHtml(d, modelName) {
+function fiStaticTooltipHtml(d) {
     let sign;
     if (d.dropout_loss > d.full_model) sign = "+"; else sign = "";
-    var temp = "<center>" + "model: " + modelName
-      + "</br>" + "<center>" +
-       "model loss after feature " + d.variable
+    var temp =  "<center>" + "model loss after feature " + d.variable
       + "</br>" + "<center>" +
       " is permuted: " +  Math.round(d.dropout_loss * 1000)/1000
       + "</br>" + "<center>" + "drop-out loss change: " +
