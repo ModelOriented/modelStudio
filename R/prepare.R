@@ -25,6 +25,8 @@ prepare_break_down <- function(x, max_features = 10, baseline = NA, digits = 3,
                                             display_numbers = TRUE),
                     "iBreakDown::describe.break_down", show_info = FALSE)
 
+  if (is.null(desc)) desc <- "iBreakDown::describe.break_down"
+
   ret <- NULL
   ret$x <- new_x
   ret$m <- m
@@ -119,6 +121,8 @@ prepare_shap_values <- function(x, max_features = 10, baseline = NA, digits = 3,
                                             display_numbers = TRUE,
                                             display_shap = TRUE),
                     "iBreakDown::describe.shap", show_info = FALSE)
+
+  if (is.null(desc)) desc <- "iBreakDown::describe.shap"
 
   ret <- NULL
   ret$x <- new_x
@@ -238,6 +242,8 @@ prepare_ceteris_paribus <- function(x, variables = NULL) {
                                                 variables = name)),
       "ingredients::describe.ceteris_paribus", show_info = FALSE)
 
+    if (is.null(text)) text <- "error in ingredients::describe.ceteris_paribus"
+
     desc[[name]] <- data.frame(type = "desc",
                                text = gsub("\n","</br>", text))
   }
@@ -310,6 +316,8 @@ prepare_feature_importance <- function(x, max_features = 10, margin = 0.2,
 
   desc <- try_catch(ingredients::describe(x),
                     "ingredients::describe.feature_importance", show_info = FALSE)
+
+  if (is.null(desc)) desc <- "ingredients::describe.feature_importance"
 
   ret <- NULL
   ret$x <- new_x
@@ -386,6 +394,8 @@ prepare_partial_dependency <- function(x, y, variables = NULL) {
                                                          display_numbers = TRUE,
                                                          variables = name)),
       "ingredients::describe.partial_dependency", show_info = FALSE)
+
+    if (is.null(text)) text <- "ingredients::describe.partial_dependency"
 
     desc[[name]] <- data.frame(type = "desc",
                                text = gsub("\n","</br>", text))
@@ -473,6 +483,7 @@ prepare_accumulated_dependency <- function(x, y, variables = NULL) {
     #                         variables = name)),
     #   "ingredients::describe.accumulated_dependency"
     # )
+    # if (is.null(text)) text <- "ingredients::describe.accumulated_dependency"
 
     ## accumulated not still developed
     text <- "Under development"
@@ -496,6 +507,8 @@ prepare_accumulated_dependency <- function(x, y, variables = NULL) {
 
 prepare_feature_distribution <- function(x, y, variables = NULL) {
   ### This function returns object needed to plot FeatureDistribution in D3 ###
+
+  if (is.null(x) | is.null(y)) return(NULL)
 
   # which variable is numeric?
   is_numeric <- sapply(x[, variables, drop = FALSE], is.numeric)
@@ -539,6 +552,8 @@ prepare_feature_distribution <- function(x, y, variables = NULL) {
 
 prepare_average_target <- function(x, y, variables = NULL) {
   ### This function returns object needed to plot TargetAverage in D3 ###
+
+  if (is.null(x) | is.null(y)) return(NULL)
 
   # which variable is numeric?
   is_numeric <- sapply(x[, variables, drop = FALSE], is.numeric)
