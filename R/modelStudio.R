@@ -410,7 +410,7 @@ remove_file_paths <- function(text, type = NULL) {
 
 try_catch <- function(expr, function_name, i = 1, show_info = TRUE, new = TRUE) {
   tryCatch({
-    if (show_info) message(paste0(ifelse(new,"\n",""), "Function ", function_name, " is beeing calculated. (", i, ")"))
+    if (show_info) message(paste0(ifelse(new,"\n",""), "Function ", function_name, " is being calculated. (", i, ")"))
     expr
     },
     error = function(e) {
