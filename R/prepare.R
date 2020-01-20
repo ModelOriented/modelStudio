@@ -521,7 +521,6 @@ prepare_feature_distribution <- function(x, y, variables = NULL) {
 
   for (i in 1:length(is_numeric)) {
     name <- names(is_numeric[i])
-    x[,name] <- sort(x[,name])
 
     if (is_numeric[i]) {
       x_min_max_list[[name]] <- range(x[,name])

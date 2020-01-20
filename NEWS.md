@@ -1,3 +1,6 @@
+# modelStudio 0.2.1
+* fix `TV` plot (X had columns sorted while y was the same)
+
 # modelStudio 0.2.0
 * new plot: `Target vs Feature [EDA]` (#38)
 * new plot: `Average Target vs Feature [EDA]` (#41)
