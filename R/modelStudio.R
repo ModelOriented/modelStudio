@@ -5,7 +5,7 @@
 #' and global explanations. It generates plots and descriptions in the form
 #' of the serverless HTML site, that supports animations and interactivity made with D3.js.
 #'
-#' Find more details about plots in \href{https://pbiecek.github.io/PM_VEE/}{Predictive Models: Explore, Explain, and Debug}
+#' Find more details about plots in \href{https://github.com/pbiecek/ema}{Explanatory Model Analysis:Explore, Explain and Examine Predictive Models}
 #'
 #' @param object An \code{explainer} created with function \code{DALEX::explain()} or a model to be explained.
 #' @param new_observation A new observation with columns that correspond to variables used in the model.
