@@ -78,7 +78,7 @@ rownames(new_observations) <- c("Lucas", "James", "Thomas", "Nancy")
 modelStudio(explainer, new_observations)
 ```
 
-![Examplary HTML output layout.](images/demo.png)
+![Exemplary HTML output layout.](images/demo.png)
 
 # Key Features
 
