@@ -16,7 +16,7 @@ for various local and global explanations. Tools for model exploration unite wit
 tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior. 
 `modelStudio` is a fast and condensed way to get all the answers without much effort. Break down your model and look into its ingredients with only a few lines of code.
 
-[See a demo](https://modeloriented.github.io/modelStudio/demo.html) &emsp; [explainFIFA19](https://pbiecek.github.io/explainFIFA19/) &emsp;
+[See a demo](https://modeloriented.github.io/modelStudio/demo.html) &emsp; [explain FIFA19](https://pbiecek.github.io/explainFIFA19/) &emsp; [explain FIFA20](https://pbiecek.github.io/explainFIFA20/) &emsp;
 [explain Lung Cancer](https://github.com/hbaniecki/transparent_xai/) &emsp;
 [More](https://github.com/ModelOriented/modelStudio#more)
 
