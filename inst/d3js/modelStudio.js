@@ -27,6 +27,7 @@ var TIME = options.time,
     SCALE_PLOT = options.scale_plot,
     SHOW_SUBTITLE = options.show_subtitle,
     subTitle = options.subtitle || modelName,
+    msTitle = options.ms_title,
     barWidth = options.bar_width,
     lineSize = options.line_size,
     pointSize = options.point_size,
@@ -166,7 +167,7 @@ function initializeStudio() {
        .attr("class", "mainTitle")
        .attr("x", 15)
        .attr("y", 30)
-       .text("Interactive Model Studio");
+       .text(msTitle);
 
   TOP_G.append("line")
        .attr("class", "mainLine")

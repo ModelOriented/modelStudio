@@ -17,6 +17,7 @@ modelStudioOptions(...)
 \item{scale_plot}{\code{TRUE} Makes every plot the same height, ignores \code{bar_width}.}
 \item{show_subtitle}{\code{TRUE} Should the subtitle be displayed?}
 \item{subtitle}{\code{label} parameter from \code{explainer}.}
+\item{ms_title}{Title of the dashboard.}
 \item{margin_*}{Plot margins. Change \code{margin_left} for longer/shorter axis labels.}
 \item{w}{\code{420} in px. Inner plot width.}
 \item{h}{\code{280} in px. Inner plot height.}

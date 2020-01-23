@@ -32,7 +32,7 @@
 #'
 #' @return An object of the \code{r2d3} class.
 #'
-#' @importFrom utils head tail setTxtProgressBar txtProgressBar installed.packages
+#' @importFrom utils head tail setTxtProgressBar txtProgressBar packageVersion
 #' @importFrom stats aggregate predict quantile
 #' @importFrom grDevices nclass.Sturges
 #'
@@ -324,7 +324,7 @@ modelStudio.default <- function(object,
                                         paste0(rownames(obs_data), between, new_observation_y)))
   colnames(drop_down_data) <- c("id", "text")
 
-  footer_text <- paste0("Site built with modelStudio v", installed.packages()["modelStudio","Version"],
+  footer_text <- paste0("Site built with modelStudio v", packageVersion("modelStudio"),
                         " on ", format(Sys.time(), usetz = FALSE))
 
   options <- c(list(time = time,

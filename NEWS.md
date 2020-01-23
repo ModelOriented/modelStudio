@@ -1,18 +1,20 @@
 # modelStudio 0.2.1
 * fix `TV` plot (X had columns sorted while y was the same)
+* add `ms_title` argument to `modelStudioOptions()`
+* `modelStudio` footer is generated faster 
 
 # modelStudio 0.2.0
 * new plot: `Target vs Feature [EDA]` (#38)
 * new plot: `Average Target vs Feature [EDA]` (#41)
 * add boxplots to `FI` plot [ingredients/72](https://github.com/ModelOriented/ingredients/issues/72)
-* add `new_observation_y` argument to `modelStudio` (#39)
+* add `new_observation_y` argument to `modelStudio()` (#39)
 * pass `...` to `prepare_*` functions (e.g. allows to round numbers)
-* add `margin_ytitle` argument to `modelStudioOptions`
+* add `margin_ytitle` argument to `modelStudioOptions()`
 * by default: observations to calculate local explanations are taken at random from the `data` (#25)
 * by default: first plot is selected as `BD` and second is `clicked` (#37)
 * nicer histogram when few unique values
 * all categorical plots now have the same bar order [ingredients/82](https://github.com/ModelOriented/ingredients/issues/82)
-* `try_catch` blocks added - errors in `ingredients` or `iBreakDown` functions are
+* `try-catch` blocks added - errors in `ingredients` or `iBreakDown` functions are
 now treated as warnings and do not stop the `modelStudio` computation (#35)
 * `show_info` adds messages saying what is currently calculated (#40)
 * add `spellcheck` to tests (#36)
