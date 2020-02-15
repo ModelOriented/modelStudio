@@ -1,3 +1,7 @@
+# modelStudio 0.3.0
+* this version requires `iBreakDown v1.0.0` 
+* change `cummulative` to `cumulative` in code
+
 # modelStudio 0.2.1
 * fix `TV` plot (X had columns sorted while y was the same)
 * add `ms_title` argument to `modelStudioOptions()`
@@ -21,7 +25,7 @@ now treated as warnings and do not stop the `modelStudio` computation (#35)
 * Travis-CI now checks OSX
 
 # modelStudio 0.1.9
-* this version requires `DALEX 0.4.9` and `ingredients 0.4.0`
+* this version requires `DALEX v0.4.9` and `ingredients v0.4.0`
 
 # modelStudio 0.1.8
 * change `Shapley Values` to `SHAP Values`

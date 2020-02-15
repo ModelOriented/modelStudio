@@ -10,9 +10,9 @@ prepare_break_down <- function(x, max_features = 10, baseline = NA, digits = 3,
 
   if (any(is.na(min_max))) {
     if (is.na(baseline)) {
-      min_max <- range(new_x[,'cummulative'])
+      min_max <- range(new_x[,'cumulative'])
     } else {
-      min_max <- range(new_x[,'cummulative'], baseline)
+      min_max <- range(new_x[,'cumulative'], baseline)
     }
   }
 
@@ -55,7 +55,7 @@ prepare_break_down_df <- function(x, max_features = 10, baseline = NA, digits = 
     new_x <- x[1:last_row,]
     new_x[last_row,'variable'] <- "+ all other factors"
     new_x[last_row,'contribution'] <- sum(x[last_row:nrow(x),'contribution'])
-    new_x[last_row,'cummulative'] <- x[nrow(x),'cummulative']
+    new_x[last_row,'cumulative'] <- x[nrow(x),'cumulative']
     new_x[last_row,'sign'] <- ifelse(new_x[last_row,'contribution'] > 0,1,-1)
     new_x[last_row,'variable_name'] <- "other"
 
@@ -65,7 +65,7 @@ prepare_break_down_df <- function(x, max_features = 10, baseline = NA, digits = 
   x <- rbind(temp[1,], x, temp[2,])
 
   if (is.na(baseline)) {
-    baseline <- x[1,"cummulative"]
+    baseline <- x[1,"cumulative"]
   }
 
   # fix contribution and sign
@@ -74,19 +74,19 @@ prepare_break_down_df <- function(x, max_features = 10, baseline = NA, digits = 
   x[c(1,nrow(x)),"sign"] <- ifelse(x[c(1,nrow(x)),"contribution"] > 0,1,ifelse(x[c(1,nrow(x)),"contribution"] < 0,-1,0))
 
   # use for bars
-  x[,'barStart'] <- ifelse(x[,'sign'] == "1", x[,'cummulative'] - x[,'contribution'], x[,'cummulative'])
-  x[,'barSupport'] <- ifelse(x[,'sign'] == "1", x[,'cummulative'], x[,'cummulative'] - x[,'contribution'])
+  x[,'barStart'] <- ifelse(x[,'sign'] == "1", x[,'cumulative'] - x[,'contribution'], x[,'cumulative'])
+  x[,'barSupport'] <- ifelse(x[,'sign'] == "1", x[,'cumulative'], x[,'cumulative'] - x[,'contribution'])
 
   # use for text label and tooltip
   x[,'contribution'] <- rounding_function(x['contribution'], digits)
-  x[,'cummulative'] <- rounding_function(x['cummulative'], digits)
+  x[,'cumulative'] <- rounding_function(x['cumulative'], digits)
 
   # use for color
   x[c(1,nrow(x)),"sign"] <- "X"
 
-  x[,'tooltipText'] <- ifelse(x[,'sign'] == "X", paste0("Average response: ",x[1,'cummulative'],
+  x[,'tooltipText'] <- ifelse(x[,'sign'] == "X", paste0("Average response: ",x[1,'cumulative'],
                                                         "<br>", "Prediction: ",
-                                                        x[nrow(x),'cummulative']),
+                                                        x[nrow(x),'cumulative']),
                               paste0(substr(x[,'variable'], 1, 25),
                                      "<br>", ifelse(x[,'contribution'] > 0, "increases", "decreases"),
                                      " average response <br>by ", abs(x[,'contribution'])))

@@ -282,7 +282,7 @@ function breakDown() {
             switch (d.variable) {
               case "intercept":
               case "prediction":
-                return d.cummulative;
+                return d.cumulative;
               default:
                 return d.sign === "-1" ? d.contribution : "+"+d.contribution;
             }
