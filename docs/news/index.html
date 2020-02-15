@@ -80,7 +80,7 @@
         <div class="info">
           <span class="partof">part of the <a href="https://github.com/ModelOriented/DrWhy">DrWhy.AI</a>
            developed by the <a href="https://mi2.mini.pw.edu.pl/">MI^2 DataLab</a> </span>
-          <span class="version version-default">0.2.1</span>
+          <span class="version version-default">0.3.0</span>
         </div>
       </div>
     </div>
@@ -133,12 +133,26 @@
       <small>Source: <a href='https://github.com/ModelOriented/modelStudio/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="modelstudio-030" class="section level1">
+<h1 class="page-header">
+<a href="#modelstudio-030" class="anchor"></a>modelStudio 0.3.0<small> Unreleased </small>
+</h1>
+<ul>
+<li>this version requires <code>iBreakDown v1.0.0</code>
+</li>
+<li>change <code>cummulative</code> to <code>cumulative</code> in code</li>
+</ul>
+</div>
     <div id="modelstudio-021" class="section level1">
 <h1 class="page-header">
-<a href="#modelstudio-021" class="anchor"></a>modelStudio 0.2.1<small> Unreleased </small>
+<a href="#modelstudio-021" class="anchor"></a>modelStudio 0.2.1<small> 2020-01-21 </small>
 </h1>
 <ul>
 <li>fix <code>TV</code> plot (X had columns sorted while y was the same)</li>
+<li>add <code>ms_title</code> argument to <code><a href="../reference/modelStudioOptions.html">modelStudioOptions()</a></code>
+</li>
+<li>
+<code>modelStudio</code> footer is generated faster</li>
 </ul>
 </div>
     <div id="modelstudio-020" class="section level1">
@@ -150,9 +164,9 @@
 <li>new plot: <code>Average Target vs Feature [EDA]</code> (<a href='https://github.com/ModelOriented/modelStudio/issues/41'>#41</a>)</li>
 <li>add boxplots to <code>FI</code> plot <a href="https://github.com/ModelOriented/ingredients/issues/72">ingredients/72</a>
 </li>
-<li>add <code>new_observation_y</code> argument to <code>modelStudio</code> (<a href='https://github.com/ModelOriented/modelStudio/issues/39'>#39</a>)</li>
+<li>add <code>new_observation_y</code> argument to <code><a href="../reference/modelStudio.html">modelStudio()</a></code> (<a href='https://github.com/ModelOriented/modelStudio/issues/39'>#39</a>)</li>
 <li>pass <code>...</code> to <code>prepare_*</code> functions (e.g. allows to round numbers)</li>
-<li>add <code>margin_ytitle</code> argument to <code>modelStudioOptions</code>
+<li>add <code>margin_ytitle</code> argument to <code><a href="../reference/modelStudioOptions.html">modelStudioOptions()</a></code>
 </li>
 <li>by default: observations to calculate local explanations are taken at random from the <code>data</code> (<a href='https://github.com/ModelOriented/modelStudio/issues/25'>#25</a>)</li>
 <li>by default: first plot is selected as <code>BD</code> and second is <code>clicked</code> (<a href='https://github.com/ModelOriented/modelStudio/issues/37'>#37</a>)</li>
@@ -160,7 +174,7 @@
 <li>all categorical plots now have the same bar order <a href="https://github.com/ModelOriented/ingredients/issues/82">ingredients/82</a>
 </li>
 <li>
-<code>try_catch</code> blocks added - errors in <code>ingredients</code> or <code>iBreakDown</code> functions are now treated as warnings and do not stop the <code>modelStudio</code> computation (<a href='https://github.com/ModelOriented/modelStudio/issues/35'>#35</a>)</li>
+<code>try-catch</code> blocks added - errors in <code>ingredients</code> or <code>iBreakDown</code> functions are now treated as warnings and do not stop the <code>modelStudio</code> computation (<a href='https://github.com/ModelOriented/modelStudio/issues/35'>#35</a>)</li>
 <li>
 <code>show_info</code> adds messages saying what is currently calculated (<a href='https://github.com/ModelOriented/modelStudio/issues/40'>#40</a>)</li>
 <li>add <code>spellcheck</code> to tests (<a href='https://github.com/ModelOriented/modelStudio/issues/36'>#36</a>)</li>
@@ -172,7 +186,7 @@
 <a href="#modelstudio-019" class="anchor"></a>modelStudio 0.1.9<small> 2019-11-03 </small>
 </h1>
 <ul>
-<li>this version requires <code>DALEX 0.4.9</code> and <code>ingredients 0.4.0</code>
+<li>this version requires <code>DALEX v0.4.9</code> and <code>ingredients v0.4.0</code>
 </li>
 </ul>
 </div>
@@ -282,6 +296,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#modelstudio-030">0.3.0</a></li>
         <li><a href="#modelstudio-021">0.2.1</a></li>
         <li><a href="#modelstudio-020">0.2.0</a></li>
         <li><a href="#modelstudio-019">0.1.9</a></li>

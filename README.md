@@ -9,16 +9,16 @@
 
 ## Overview
 
-The `modelStudio` package automates the explanation of machine learning predictive models. This package generates advanced interactive and animated model explanations in the form of a serverless HTML site.
+The `modelStudio` package **automates the explanation of machine learning predictive models**. Generate advanced interactive and animated model explanations in the form of a **serverless HTML site** with only one line of code.
 
-It combines **R** with **D3.js** to produce plots and descriptions
-for various local and global explanations. Tools for model exploration unite with
-tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior. 
-`modelStudio` is a fast and condensed way to get all the answers without much effort. Break down your model and look into its ingredients with only a few lines of code.
+The main `modelStudio()` function computes various (instance and dataset level) model explanations and produces an **interactive, customisable dashboard made with D3.js**. It consists of multiple panels for plots with their short descriptions. Easily **save and share** the dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.
 
-[See a demo](https://modeloriented.github.io/modelStudio/demo.html) &emsp; [explain FIFA19](https://pbiecek.github.io/explainFIFA19/) &emsp; [explain FIFA20](https://pbiecek.github.io/explainFIFA20/) &emsp;
+[Demo Dashboard](https://modeloriented.github.io/modelStudio/demo.html) &emsp; 
+[explain FIFA19](https://pbiecek.github.io/explainFIFA19/) &emsp; 
+[**explain FIFA20**](https://pbiecek.github.io/explainFIFA20/) &emsp;
 [explain Lung Cancer](https://github.com/hbaniecki/transparent_xai/) &emsp;
-[More](https://github.com/ModelOriented/modelStudio#more)
+[**Python Example**](https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#python-scikit-learn-model) &emsp;
+[**More Resources**](https://modeloriented.github.io/modelStudio/#more)
 
 ![](images/gif3.gif)
 
@@ -60,11 +60,9 @@ rownames(new_observations) <- c("Lucas", "James", "Thomas", "Nancy")
 modelStudio(explainer, new_observations)
 ```
 
-More examples [here](https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html).
-
 ![](images/gif4.gif)
 
-## More
+## More Resources
 
   - [Conference Poster about modelStudio](misc/MLinPL2019_modelStudio_poster.pdf)
 
@@ -74,9 +72,9 @@ More examples [here](https://modeloriented.github.io/modelStudio/articles/vignet
   
   - [Read the vignette: modelStudio - perks and features](https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html)  
     
-  - [Cheatsheet](images/cheatsheet.png)
-
-## Save
+  - [Explanatory Model Analysis. Explore, Explain and Examine Predictive Models.](https://pbiecek.github.io/ema)
+  
+## Save and Share
 
 Save `modelStudio` as a HTML file using buttons on the top of the RStudio Viewer
 or with the [`r2d3::save_d3_html()`](https://rstudio.github.io/r2d3/articles/publishing.html#save-as-html) function.
