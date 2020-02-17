@@ -2,7 +2,8 @@
 * this version requires `iBreakDown v1.0.0` and `ingredients v1.0.0` 
 * change `cummulative` to `cumulative` in code
 * change `dependency` to `dependence` in code
-* change title and description
+* update package title and description
+* change LICENSE to GPL-3 
 
 # modelStudio 0.2.1
 * fix `TV` plot (X had columns sorted while y was the same)
@@ -30,7 +31,6 @@ now treated as warnings and do not stop the `modelStudio` computation (#35)
 * this version requires `DALEX v0.4.9` and `ingredients v0.4.0`
 
 # modelStudio 0.1.8
-* change `Shapley Values` to `SHAP Values`
 * lower `B` default value from 25 to 15, `N` default value from 500 to 400
 
 # modelStudio 0.1.7

@@ -13,9 +13,9 @@
 #' @param new_observation_y True label for \code{new_observation}.
 #' @param facet_dim Dimensions of the grid. Default is \code{c(2,2)}.
 #' @param time Time in ms. Set animation length. Default is \code{500}.
-#' @param max_features Maximum number of features to be included in Break Down and SHAP Values plots. Default is \code{10}.
+#' @param max_features Maximum number of features to be included in Break Down and Shapley Values plots. Default is \code{10}.
 #' @param N Number of observations used for calculation of partial dependence profiles. Default is \code{400}.
-#' @param B Number of random paths used for calculation of SHAP values. Default is \code{15}.
+#' @param B Number of random paths used for calculation of Shapley values. Default is \code{15}.
 #' @param show_info Verbose progress bar on the console. Default is \code{TRUE}.
 #' @param parallel Speed up the computation using \code{parallelMap::parallelMap()}.
 #' See \href{https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#parallel-computation}{\bold{vignette}}.
@@ -43,7 +43,7 @@
 #'   \item Wrapper for the function is implemented in \href{https://modeloriented.github.io/DALEX/}{\bold{DALEX}}
 #'   \item Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence plots
 #' are implemented in \href{https://modeloriented.github.io/ingredients/}{\bold{ingredients}}
-#'   \item Break Down and SHAP Values plots are implemented in \href{https://modeloriented.github.io/iBreakDown/}{\bold{iBreakDown}}
+#'   \item Break Down and Shapley Values plots are implemented in \href{https://modeloriented.github.io/iBreakDown/}{\bold{iBreakDown}}
 #' }
 #'
 #' @seealso
@@ -270,7 +270,7 @@ modelStudio.default <- function(object,
         "ingredients::ceteris_paribus", i, show_info, FALSE)
 
       bd_data <- prepare_break_down(bd, max_features, ...)
-      sv_data <- prepare_shap_values(sv, max_features, ...)
+      sv_data <- prepare_shapley_values(sv, max_features, ...)
       cp_data <- prepare_ceteris_paribus(cp, variables = variable_names)
 
       list(bd_data, cp_data, sv_data)
@@ -310,7 +310,7 @@ modelStudio.default <- function(object,
       if (show_info) setTxtProgressBar(pb, 5 + i)
 
       bd_data <- prepare_break_down(bd, max_features, ...)
-      sv_data <- prepare_shap_values(sv, max_features, ...)
+      sv_data <- prepare_shapley_values(sv, max_features, ...)
       cp_data <- prepare_ceteris_paribus(cp, variables = variable_names)
 
       obs_list[[i]] <- list(bd_data, cp_data, sv_data)

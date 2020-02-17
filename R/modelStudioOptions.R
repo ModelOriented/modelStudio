@@ -24,8 +24,8 @@
 #' \item{line_size}{\code{2} in px. Default width of lines for all plots.}
 #' \item{point_size}{\code{3} in px. Default point radius for all plots.}
 #' \item{[bar,line,point]_color}{\code{[#46bac2,#46bac2,#371ea3]}}
-#' \item{positive_color}{\code{#8bdcbe} for Break Down and SHAP Values bars.}
-#' \item{negative_color}{\code{#f05a71} for Break Down and SHAP Values bars.}
+#' \item{positive_color}{\code{#8bdcbe} for Break Down and Shapley Values bars.}
+#' \item{negative_color}{\code{#f05a71} for Break Down and Shapley Values bars.}
 #' \item{default_color}{\code{#371ea3} for Break Down bar and highlighted line.}
 #' }
 #' }
@@ -111,7 +111,7 @@ modelStudioOptions <- function(...) {
     bd_positive_color = NULL,
     bd_negative_color = NULL,
     bd_default_color = NULL,
-    sv_title = "SHAP Values",
+    sv_title = "Shapley Values",
     sv_subtitle = NULL,
     sv_bar_width = NULL,
     sv_positive_color = NULL,

@@ -18,9 +18,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-`modelStudio::modelStudio` uses your model, data and new observations, to provide local
-and global explanations. It generates plots and descriptions in the form
-of the serverless HTML site, that supports animations and interactivity made with D3.js.
+`modelStudio::modelStudio` computes various (instance and dataset level) model explanations and produces an interactive, customisable dashboard made with D3.js. It consists of multiple panels for plots with their short descriptions. Easily save and share the dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.
 
 Let's use `DALEX::HR` dataset to explore `modelStudio` parameters:
 
@@ -65,7 +63,7 @@ library("modelStudio")
 ### local explanations
 
 You can pass data points to `new_observation` parameter for local explanations
-such as Break Down, SHAP Values and Ceteris Paribus Profiles.
+such as Break Down, Shapley Values and Ceteris Paribus Profiles.
 
 ```{r eval = FALSE}
 new_observations <- test[1:3,]
@@ -101,8 +99,8 @@ modelStudio(explainer, new_observation = test[1:2,], time = 0)
 
 ### more calculations means more time
 
-`N` is a number of observations used for calculation of partial dependency profiles.
-`B` is a number of random paths used for calculation of SHAP values.
+`N` is a number of observations used for calculation of partial and accumulated dependence profiles.
+`B` is a number of random paths used for calculation of shapley values profiles.
 You can decrease `N` and `B` parameters to lower computation time or increase
 them to get more accurate empirical results.
 
@@ -242,7 +240,7 @@ making those [here](https://modeloriented.github.io/DALEXtra/reference/).
 ## References
 
 * Wrapper for the function is implemented in [DALEX](https://modeloriented.github.io/DALEX/)
-* Feature Importance, Ceteris Paribus, Partial Dependency and Accumulated Dependency plots 
+* Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence plots 
 are implemented in [ingredients](https://modeloriented.github.io/ingredients/)
-* Break Down and SHAP Values plots are implemented in [iBreakDown](https://modeloriented.github.io/iBreakDown/)
+* Break Down and Shapley Values plots are implemented in [iBreakDown](https://modeloriented.github.io/iBreakDown/)
 * Python wrappers and more can be found in [DALEXtra](https://modeloriented.github.io/DALEXtra/)

@@ -77,7 +77,7 @@ modelStudio(explainer, new_observations)
 ## Save and Share
 
 Save `modelStudio` as a HTML file using buttons on the top of the RStudio Viewer
-or with the [`r2d3::save_d3_html()`](https://rstudio.github.io/r2d3/articles/publishing.html#save-as-html) function.
+or with [`r2d3::save_d3_html()`](https://rstudio.github.io/r2d3/articles/publishing.html#save-as-html)
 
 <p align="center">
   <img src="images/controls.png">

@@ -129,15 +129,15 @@ if (!SHOW_SUBTITLE) {
 }
 
 /// for plot chosing
-var notVisiblePlots = [{id:"BD", text:"Break Down [Local]"},
-                       {id:"SV", text:"SHAP Values [Local]"},
-                       {id:"CP", text:"Ceteris Paribus [Local]"},
-                       {id:"FI", text:"Feature Importance [Global]"},
-                       {id:"PD", text:"Partial Dependence [Global]"},
-                       {id:"AD", text:"Accumulated Dependence [Global]"},
-                       {id:"FD", text:"Feature Distribution [EDA]"},
-                       {id:"TV", text:"Target vs Feature [EDA]"},
-                       {id:"AT", text:"Average Target vs Feature [EDA]"}];
+var notVisiblePlots = [{id:"BD", text: bdTitle + " [Local]"},
+                       {id:"SV", text: svTitle + " [Local]"},
+                       {id:"CP", text: cpTitle + " [Local]"},
+                       {id:"FI", text: fiTitle + " [Global]"},
+                       {id:"PD", text: pdTitle + " [Global]"},
+                       {id:"AD", text: adTitle + " [Global]"},
+                       {id:"FD", text: fdTitle + " [EDA]"},
+                       {id:"TV", text: tvTitle + " [EDA]"},
+                       {id:"AT", text: atTitle + " [EDA]"}];
 
 var visiblePlots = [];
 
