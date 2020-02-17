@@ -85,7 +85,7 @@ modelStudioOptions <- function(...) {
     scale_plot = TRUE,
     show_subtitle = FALSE,
     subtitle = NULL,
-    ms_title = "Interactive Model Studio",
+    ms_title = NULL,
     margin_top = 50,
     margin_right = 20,
     margin_bottom = 70,

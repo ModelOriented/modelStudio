@@ -328,6 +328,8 @@ modelStudio.default <- function(object,
   footer_text <- paste0("Site built with modelStudio v", packageVersion("modelStudio"),
                         " on ", format(Sys.time(), usetz = FALSE))
 
+  if (is.null(options$ms_title)) options$ms_title <- paste0("Interactive Studio for ", label, " Model")
+
   options <- c(list(time = time,
                     model_name = label,
                     variable_names = variable_names,
