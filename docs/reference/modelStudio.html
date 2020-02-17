@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generate Interactive Studio with Explanations for the Model — modelStudio • modelStudio</title>
+<title>Generate Interactive Studio for Explanatory Model Analysis — modelStudio • modelStudio</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -35,12 +35,13 @@
 
 
 
-<meta property="og:title" content="Generate Interactive Studio with Explanations for the Model — modelStudio" />
+<meta property="og:title" content="Generate Interactive Studio for Explanatory Model Analysis — modelStudio" />
 
-<meta property="og:description" content="This tool uses your model, data and new observations, to provide local
-and global explanations. It generates plots and descriptions in the form
-of the serverless HTML site, that supports animations and interactivity made with D3.js.
-Find more details about plots in Explanatory Model Analysis: Explore, Explain and Examine Predictive Models" />
+<meta property="og:description" content="This function computes various (instance and dataset level) model explanations and produces an interactive,
+customisable dashboard made with D3.js. It consists of multiple panels for plots with their short descriptions.
+Easily save and share the dashboard with others. Tools for model exploration unite with tools for EDA
+(Exploratory Data Analysis) to give a broad overview of the model behavior.
+Find more details about the plots in Explanatory Model Analysis: Explore, Explain and Examine Predictive Models" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -134,17 +135,18 @@ Find more details about plots in Explanatory Model Analysis: Explore, Explain an
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Generate Interactive Studio with Explanations for the Model</h1>
+    <h1>Generate Interactive Studio for Explanatory Model Analysis</h1>
     <small class="dont-index">Source: <a href='https://github.com/ModelOriented/modelStudio/blob/master/R/modelStudio.R'><code>R/modelStudio.R</code></a></small>
     <div class="hidden name"><code>modelStudio.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This tool uses your model, data and new observations, to provide local
-and global explanations. It generates plots and descriptions in the form
-of the serverless HTML site, that supports animations and interactivity made with D3.js.</p>
-<p>Find more details about plots in <a href='https://github.com/pbiecek/ema'>Explanatory Model Analysis: Explore, Explain and Examine Predictive Models</a></p>
+    <p>This function computes various (instance and dataset level) model explanations and produces an interactive,
+customisable dashboard made with D3.js. It consists of multiple panels for plots with their short descriptions.
+Easily save and share the dashboard with others. Tools for model exploration unite with tools for EDA
+(Exploratory Data Analysis) to give a broad overview of the model behavior.</p>
+<p>Find more details about the plots in <a href='https://github.com/pbiecek/ema'>Explanatory Model Analysis: Explore, Explain and Examine Predictive Models</a></p>
     
     </div>
 
@@ -173,7 +175,7 @@ of the serverless HTML site, that supports animations and interactivity made wit
   <span class='no'>data</span>,
   <span class='no'>y</span>,
   <span class='kw'>predict_function</span> <span class='kw'>=</span> <span class='no'>predict</span>,
-  <span class='kw'>label</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='no'>model</span>)[<span class='fl'>1</span>],
+  <span class='kw'>label</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='no'>object</span>)[<span class='fl'>1</span>],
   <span class='kw'>new_observation</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>new_observation_y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>2</span>),
@@ -221,7 +223,7 @@ of the serverless HTML site, that supports animations and interactivity made wit
     </tr>
     <tr>
       <th>N</th>
-      <td><p>Number of observations used for calculation of partial dependency profiles. Default is <code>400</code>.</p></td>
+      <td><p>Number of observations used for calculation of partial dependence profiles. Default is <code>400</code>.</p></td>
     </tr>
     <tr>
       <th>B</th>
@@ -275,7 +277,7 @@ NOTE: It is best when target variable is not present in the <code>data</code>.</
     
 <ul>
 <li><p>Wrapper for the function is implemented in <a href='https://modeloriented.github.io/DALEX/'><b>DALEX</b></a></p></li>
-<li><p>Feature Importance, Ceteris Paribus, Partial Dependency and Accumulated Dependency plots
+<li><p>Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence plots
 are implemented in <a href='https://modeloriented.github.io/ingredients/'><b>ingredients</b></a></p></li>
 <li><p>Break Down and SHAP Values plots are implemented in <a href='https://modeloriented.github.io/iBreakDown/'><b>iBreakDown</b></a></p></li>
 </ul>

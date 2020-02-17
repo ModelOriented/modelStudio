@@ -1,6 +1,7 @@
 #' @title Modify options and pass them to modelStudio
 #'
-#' @description This function returns default options for \code{\link{modelStudio}}.
+#' @description
+#' This function returns default options for \code{\link{modelStudio}}.
 #' It is possible to modify values of this list and pass it to the \code{options}
 #' parameter in the main function. \strong{WARNING: Editing default options may cause
 #' unintended behavior.}
@@ -128,13 +129,13 @@ modelStudioOptions <- function(...) {
     fi_subtitle = NULL,
     fi_bar_width = NULL,
     fi_bar_color = NULL,
-    pd_title = "Partial Dependency",
+    pd_title = "Partial Dependence",
     pd_subtitle = NULL,
     pd_bar_width = NULL,
     pd_line_size = NULL,
     pd_bar_color = NULL,
     pd_line_color = NULL,
-    ad_title = "Accumulated Dependency",
+    ad_title = "Accumulated Dependence",
     ad_subtitle = NULL,
     ad_bar_width = NULL,
     ad_line_size = NULL,

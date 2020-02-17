@@ -1,4 +1,4 @@
-# Interactive Studio with Explanations for ML Predictive Models <img src="man/figures/logo.png" align="right" width="150"/>
+# Interactive Studio for Explanatory Model Analysis <img src="man/figures/logo.png" align="right" width="150"/>
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/modelStudio)](https://cran.r-project.org/package=modelStudio)

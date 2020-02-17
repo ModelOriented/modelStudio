@@ -1,6 +1,8 @@
 # modelStudio 0.3.0
-* this version requires `iBreakDown v1.0.0` 
+* this version requires `iBreakDown v1.0.0` and `ingredients v1.0.0` 
 * change `cummulative` to `cumulative` in code
+* change `dependency` to `dependence` in code
+* change title and description
 
 # modelStudio 0.2.1
 * fix `TV` plot (X had columns sorted while y was the same)

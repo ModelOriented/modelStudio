@@ -1,11 +1,12 @@
-#' @title Generate Interactive Studio with Explanations for the Model
+#' @title Generate Interactive Studio for Explanatory Model Analysis
 #'
 #' @description
-#' This tool uses your model, data and new observations, to provide local
-#' and global explanations. It generates plots and descriptions in the form
-#' of the serverless HTML site, that supports animations and interactivity made with D3.js.
+#' This function computes various (instance and dataset level) model explanations and produces an interactive,
+#' customisable dashboard made with D3.js. It consists of multiple panels for plots with their short descriptions.
+#' Easily save and share the dashboard with others. Tools for model exploration unite with tools for EDA
+#' (Exploratory Data Analysis) to give a broad overview of the model behavior.
 #'
-#' Find more details about plots in \href{https://github.com/pbiecek/ema}{Explanatory Model Analysis: Explore, Explain and Examine Predictive Models}
+#' Find more details about the plots in \href{https://github.com/pbiecek/ema}{Explanatory Model Analysis: Explore, Explain and Examine Predictive Models}
 #'
 #' @param object An \code{explainer} created with function \code{DALEX::explain()} or a model to be explained.
 #' @param new_observation A new observation with columns that correspond to variables used in the model.
@@ -13,7 +14,7 @@
 #' @param facet_dim Dimensions of the grid. Default is \code{c(2,2)}.
 #' @param time Time in ms. Set animation length. Default is \code{500}.
 #' @param max_features Maximum number of features to be included in Break Down and SHAP Values plots. Default is \code{10}.
-#' @param N Number of observations used for calculation of partial dependency profiles. Default is \code{400}.
+#' @param N Number of observations used for calculation of partial dependence profiles. Default is \code{400}.
 #' @param B Number of random paths used for calculation of SHAP values. Default is \code{15}.
 #' @param show_info Verbose progress bar on the console. Default is \code{TRUE}.
 #' @param parallel Speed up the computation using \code{parallelMap::parallelMap()}.
@@ -40,7 +41,7 @@
 #'
 #' \itemize{
 #'   \item Wrapper for the function is implemented in \href{https://modeloriented.github.io/DALEX/}{\bold{DALEX}}
-#'   \item Feature Importance, Ceteris Paribus, Partial Dependency and Accumulated Dependency plots
+#'   \item Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence plots
 #' are implemented in \href{https://modeloriented.github.io/ingredients/}{\bold{ingredients}}
 #'   \item Break Down and SHAP Values plots are implemented in \href{https://modeloriented.github.io/iBreakDown/}{\bold{iBreakDown}}
 #' }
@@ -142,7 +143,7 @@ modelStudio.default <- function(object,
                                 data,
                                 y,
                                 predict_function = predict,
-                                label = class(model)[1],
+                                label = class(object)[1],
                                 new_observation = NULL,
                                 new_observation_y = NULL,
                                 facet_dim = c(2,2),
@@ -195,56 +196,56 @@ modelStudio.default <- function(object,
   ## because aggregate_profiles calculates numerical OR categorical
   if (all(which_numerical)) {
     pd_n <- try_catch(
-      ingredients::partial_dependency(
+      ingredients::partial_dependence(
           model, data, predict_function, variable_type = "numerical", N = N),
-      "ingredients::partial_dependency", "numerical", show_info)
+      "ingredients::partial_dependence", "numerical", show_info)
     if (show_info) setTxtProgressBar(pb, 2)
     pd_c <- NULL
     ad_n <- try_catch(
-      ingredients::accumulated_dependency(
+      ingredients::accumulated_dependence(
           model, data, predict_function, variable_type = "numerical", N = N),
-      "ingredients::accumulated_dependency", "numerical", show_info)
+      "ingredients::accumulated_dependence", "numerical", show_info)
     if (show_info) setTxtProgressBar(pb, 4)
     ad_c <- NULL
   } else if (all(!which_numerical)) {
     pd_n <- NULL
     pd_c <- try_catch(
-      ingredients::partial_dependency(
+      ingredients::partial_dependence(
           model, data, predict_function, variable_type = "categorical", N = N),
-      "ingredients::partial_dependency", "categorical", show_info)
+      "ingredients::partial_dependence", "categorical", show_info)
     if (show_info) setTxtProgressBar(pb, 3)
     ad_n <- NULL
     ad_c <- try_catch(
-      ingredients::accumulated_dependency(
+      ingredients::accumulated_dependence(
           model, data, predict_function, variable_type = "categorical", N = N),
-      "ingredients::accumulated_dependency", "categorical", show_info)
+      "ingredients::accumulated_dependence", "categorical", show_info)
     if (show_info) setTxtProgressBar(pb, 5)
   } else {
     pd_n <- try_catch(
-      ingredients::partial_dependency(
+      ingredients::partial_dependence(
         model, data, predict_function, variable_type = "numerical", N = N),
-      "ingredients::partial_dependency", "numerical", show_info)
+      "ingredients::partial_dependence", "numerical", show_info)
     if (show_info) setTxtProgressBar(pb, 2)
     pd_c <- try_catch(
-      ingredients::partial_dependency(
+      ingredients::partial_dependence(
         model, data, predict_function, variable_type = "categorical", N = N),
-      "ingredients::partial_dependency", "categorical", show_info)
+      "ingredients::partial_dependence", "categorical", show_info)
     if (show_info) setTxtProgressBar(pb, 3)
     ad_n <- try_catch(
-      ingredients::accumulated_dependency(
+      ingredients::accumulated_dependence(
         model, data, predict_function, variable_type = "numerical", N = N),
-      "ingredients::accumulated_dependency", "numerical", show_info)
+      "ingredients::accumulated_dependence", "numerical", show_info)
     if (show_info) setTxtProgressBar(pb, 4)
     ad_c <- try_catch(
-      ingredients::accumulated_dependency(
+      ingredients::accumulated_dependence(
         model, data, predict_function, variable_type = "categorical", N = N),
-      "ingredients::accumulated_dependency", "categorical", show_info)
+      "ingredients::accumulated_dependence", "categorical", show_info)
     if (show_info) setTxtProgressBar(pb, 5)
   }
 
   fi_data <- prepare_feature_importance(fi, max_features, ...)
-  pd_data <- prepare_partial_dependency(pd_n, pd_c, variables = variable_names)
-  ad_data <- prepare_accumulated_dependency(ad_n, ad_c, variables = variable_names)
+  pd_data <- prepare_partial_dependence(pd_n, pd_c, variables = variable_names)
+  ad_data <- prepare_accumulated_dependence(ad_n, ad_c, variables = variable_names)
   fd_data <- prepare_feature_distribution(data, y, variables = variable_names)
   at_data <- prepare_average_target(data, y, variables = variable_names)
 
@@ -410,7 +411,7 @@ remove_file_paths <- function(text, type = NULL) {
 
 try_catch <- function(expr, function_name, i = 1, show_info = TRUE, new = TRUE) {
   tryCatch({
-    if (show_info) message(paste0(ifelse(new,"\n",""), "Function ", function_name, " is being calculated. (", i, ")"))
+    if (show_info) message(paste0(ifelse(new,"\n",""), "Calculate ", function_name, " (", i, ")"))
     expr
     },
     error = function(e) {

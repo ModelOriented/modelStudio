@@ -329,8 +329,8 @@ prepare_feature_importance <- function(x, max_features = 10, margin = 0.2,
   ret
 }
 
-prepare_partial_dependency <- function(x, y, variables = NULL) {
-  ### This function returns object needed to plot PartialDependency in D3 ###
+prepare_partial_dependence <- function(x, y, variables = NULL) {
+  ### This function returns object needed to plot PartialDependence in D3 ###
 
   if (is.null(x) & is.null(y)) return(NULL)
 
@@ -393,9 +393,9 @@ prepare_partial_dependency <- function(x, y, variables = NULL) {
       suppressWarnings(ingredients::describe(rbind(x,y), display_values = TRUE,
                                                          display_numbers = TRUE,
                                                          variables = name)),
-      "ingredients::describe.partial_dependency", show_info = FALSE)
+      "ingredients::describe.partial_dependence", show_info = FALSE)
 
-    if (is.null(text)) text <- "error in ingredients::describe.partial_dependency"
+    if (is.null(text)) text <- "error in ingredients::describe.partial_dependence"
 
     desc[[name]] <- data.frame(type = "desc",
                                text = gsub("\n","</br>", text))
@@ -415,8 +415,8 @@ prepare_partial_dependency <- function(x, y, variables = NULL) {
   ret
 }
 
-prepare_accumulated_dependency <- function(x, y, variables = NULL) {
-  ### This function returns object needed to plot AccumulatedDependency in D3 ###
+prepare_accumulated_dependence <- function(x, y, variables = NULL) {
+  ### This function returns object needed to plot AccumulatedDependence in D3 ###
 
   if (is.null(x) & is.null(y)) return(NULL)
 
@@ -481,9 +481,9 @@ prepare_accumulated_dependency <- function(x, y, variables = NULL) {
     #                         display_values = TRUE,
     #                         display_numbers = TRUE,
     #                         variables = name)),
-    #   "ingredients::describe.accumulated_dependency"
+    #   "ingredients::describe.accumulated_dependence"
     # )
-    # if (is.null(text)) text <- "ingredients::describe.accumulated_dependency"
+    # if (is.null(text)) text <- "ingredients::describe.accumulated_dependence"
 
     ## accumulated not still developed
     text <- "Under development"

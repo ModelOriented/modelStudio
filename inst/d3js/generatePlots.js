@@ -57,7 +57,7 @@ if (svg.select("#PD").empty()) {
 } else {
   PD = svg.select("#PD");
 }
-mapIdPlotFunction.PD = partialDependency;
+mapIdPlotFunction.PD = partialDependence;
 
 if (svg.select("#AD").empty()) {
   AD = svg.append("g")
@@ -67,7 +67,7 @@ if (svg.select("#AD").empty()) {
 } else {
   AD = svg.select("#AD");
 }
-mapIdPlotFunction.AD = accumulatedDependency;
+mapIdPlotFunction.AD = accumulatedDependence;
 
 if (svg.select("#FD").empty()) {
   FD = svg.append("g")
@@ -766,7 +766,7 @@ function featureImportance() {
              .on('mouseout', tooltip.hide);
 }
 
-function partialDependency() {
+function partialDependence() {
 
   if (pdData.x === undefined) return null;
 
@@ -790,7 +790,7 @@ function partialDependency() {
   }
 }
 
-function accumulatedDependency() {
+function accumulatedDependence() {
 
   if (adData.x === undefined) return null;
 

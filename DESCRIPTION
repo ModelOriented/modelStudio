@@ -1,5 +1,5 @@
 Package: modelStudio
-Title: Interactive Studio with Explanations for ML Predictive Models
+Title: Interactive Studio for Explanatory Model Analysis
 Version: 0.3.0
 Authors@R:
     c(person("Hubert", "Baniecki", role = c("aut", "cre"),

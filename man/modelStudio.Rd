@@ -4,7 +4,7 @@
 \alias{modelStudio}
 \alias{modelStudio.explainer}
 \alias{modelStudio.default}
-\title{Generate Interactive Studio with Explanations for the Model}
+\title{Generate Interactive Studio for Explanatory Model Analysis}
 \usage{
 modelStudio(object, ...)
 
@@ -29,7 +29,7 @@ modelStudio(object, ...)
   data,
   y,
   predict_function = predict,
-  label = class(model)[1],
+  label = class(object)[1],
   new_observation = NULL,
   new_observation_y = NULL,
   facet_dim = c(2, 2),
@@ -59,7 +59,7 @@ modelStudio(object, ...)
 
 \item{max_features}{Maximum number of features to be included in Break Down and SHAP Values plots. Default is \code{10}.}
 
-\item{N}{Number of observations used for calculation of partial dependency profiles. Default is \code{400}.}
+\item{N}{Number of observations used for calculation of partial dependence profiles. Default is \code{400}.}
 
 \item{B}{Number of random paths used for calculation of SHAP values. Default is \code{15}.}
 
@@ -88,11 +88,12 @@ NOTE: It is best when target variable is not present in the \code{data}.}
 An object of the \code{r2d3} class.
 }
 \description{
-This tool uses your model, data and new observations, to provide local
-and global explanations. It generates plots and descriptions in the form
-of the serverless HTML site, that supports animations and interactivity made with D3.js.
+This function computes various (instance and dataset level) model explanations and produces an interactive,
+customisable dashboard made with D3.js. It consists of multiple panels for plots with their short descriptions.
+Easily save and share the dashboard with others. Tools for model exploration unite with tools for EDA
+(Exploratory Data Analysis) to give a broad overview of the model behavior.
 
-Find more details about plots in \href{https://github.com/pbiecek/ema}{Explanatory Model Analysis: Explore, Explain and Examine Predictive Models}
+Find more details about the plots in \href{https://github.com/pbiecek/ema}{Explanatory Model Analysis: Explore, Explain and Examine Predictive Models}
 }
 \examples{
 library("modelStudio")
@@ -143,7 +144,7 @@ modelStudio(explain_apartments, new_observation = new_apartments,
 \references{
 \itemize{
   \item Wrapper for the function is implemented in \href{https://modeloriented.github.io/DALEX/}{\bold{DALEX}}
-  \item Feature Importance, Ceteris Paribus, Partial Dependency and Accumulated Dependency plots
+  \item Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence plots
 are implemented in \href{https://modeloriented.github.io/ingredients/}{\bold{ingredients}}
   \item Break Down and SHAP Values plots are implemented in \href{https://modeloriented.github.io/iBreakDown/}{\bold{iBreakDown}}
 }
