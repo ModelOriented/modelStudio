@@ -99,14 +99,36 @@ prepare_shapley_values <- function(x, max_features = 10, baseline = NA, digits =
   ### This function returns object needed to plot ShapleyValues in D3 ###
 
   if (is.null(x)) return(NULL)
+  B <- NULL
 
-  x <- x[x$B == 0,]
   if (is.na(baseline)) baseline <- attr(x, "intercept")[[1]]
   prediction <- attr(x, "prediction")[[1]]
 
-  m <- ifelse(nrow(x) <= max_features, nrow(x), max_features + 1)
+  df <- as.data.frame(x)
 
-  new_x <- prepare_shapley_values_df(x, max_features, baseline, prediction, digits, rounding_function)
+  #:# change the input to save boxplot data
+  result <- data.frame(
+    min = tapply(df$contribution, x$variable_name, min, na.rm = TRUE),
+    q1 = tapply(df$contribution, x$variable_name, quantile, 0.25, na.rm = TRUE),
+    q3 = tapply(df$contribution, x$variable_name, quantile, 0.75, na.rm = TRUE),
+    max = tapply(df$contribution, x$variable_name, max, na.rm = TRUE)
+  )
+
+  result$min <- as.numeric(result$min) + baseline
+  result$q1 <- as.numeric(result$q1) + baseline
+  result$q3 <- as.numeric(result$q3) + baseline
+  result$max <- as.numeric(result$max) + baseline
+
+  df <- df[df$B == 0, ]
+  #:#
+
+  m <- ifelse(nrow(df) <= max_features, nrow(df), max_features) # max_features + 1
+  new_x <- prepare_shapley_values_df(df, max_features, baseline, prediction, digits, rounding_function)
+
+  #:#
+  new_x <- merge(new_x, cbind(rownames(result), result), by.x = "variable_name", by.y = "rownames(result)")
+  new_x <- subset(new_x, select = -B)
+  #:#
 
   if (any(is.na(min_max))) {
     min_max <- range(new_x[,"barStart"], new_x[,"barSupport"])
@@ -117,6 +139,7 @@ prepare_shapley_values <- function(x, max_features = 10, baseline = NA, digits =
   min_max[1] <- min_max[1] - min_max_margin
   min_max[2] <- min_max[2] + min_max_margin
 
+  # describe cuts df to B=0 anyway
   desc <- try_catch(iBreakDown::describe(x, display_values = TRUE,
                                             display_numbers = TRUE,
                                             display_shap = TRUE),
@@ -149,12 +172,13 @@ prepare_shapley_values_df <- function(x, max_features = 10, baseline = NA, predi
   x[,'variable_name'] <- as.character(x[,'variable_name'])
 
   if (nrow(x) > max_features) {
-    last_row <- max_features + 1
-    new_x <- x[1:last_row,]
-    new_x[last_row,'variable'] <- "+ all other factors"
-    new_x[last_row,'contribution'] <- sum(x[last_row:nrow(x),'contribution'])
-    new_x[last_row,'sign'] <- ifelse(new_x[last_row,'contribution'] > 0,1,-1)
+    # last_row <- max_features + 1
+    # new_x <- x[1:last_row,]
+    # new_x[last_row,'variable'] <- "+ all other factors"
+    # new_x[last_row,'contribution'] <- sum(x[last_row:nrow(x),'contribution'])
+    # new_x[last_row,'sign'] <- ifelse(new_x[last_row,'contribution'] > 0,1,-1)
 
+    new_x <- x[1:max_features,]
     x <- new_x
   }
 
@@ -622,77 +646,3 @@ prepare_average_target <- function(x, y, variables = NULL) {
 
   ret
 }
-
-# DEP_prepare_average_target <- function(x, y, variables = NULL) {
-#   ### This function returns object needed to plot TargetAverage in D3 ###
-#
-#   # which variable is numeric?
-#   is_numeric <- sapply(x[, variables, drop = FALSE], is.numeric)
-#   names(is_numeric) <- variables
-#
-#   # safeguard
-#   is_numeric <- is_numeric[!is.na(is_numeric)]
-#
-#   x_min_max_list <- X <- list()
-#   # y_min_max_list <- list()
-#
-#   probs <- seq(0, 1, length.out = 21)
-#   y_mean <- mean(y)
-#
-#   for (i in 1:length(is_numeric)) {
-#     name <- names(is_numeric[i])
-#
-#     if (is_numeric[i]) {
-#       x_min_max_list[[name]] <- range(x[,name])
-#
-#       variable_splits <- unique(quantile(x[,name], probs = probs))
-#
-#       x_bin <- cut(x[,name], variable_splits, include.lowest = TRUE)
-#       y_mean_aggr <- aggregate(y, by = list(x_bin), mean)
-#
-#       ci <- y_mean_aggr[, 1]
-#       ci2 <- substr(as.character(ci), 2, nchar(as.character(ci)) - 1)
-#       lb <- sapply(ci2, function(x) strsplit(x, ",")[[1]][1])
-#       ub <- sapply(ci2, function(x) strsplit(x, ",")[[1]][2])
-#       mid_points <- (as.numeric(lb) + as.numeric(ub)) / 2
-#
-#       p <- length(mid_points)
-#
-#       temp <- as.data.frame(cbind(mid_points[-p], mid_points[-1],
-#                                     y_mean_aggr[-p, 2], y_mean_aggr[-1, 2]))
-#       colnames(temp) <- c("x0", "x1", "y0", "y1")
-#
-#     } else {
-#       x_min_max_list[[name]] <- sort(unique(x[,name]))
-#
-#       y_mean_aggr <- aggregate(y, by = list(x[,name]), mean)
-#
-#       temp <- as.data.frame(y_mean_aggr)
-#       colnames(temp) <- c("y", "x0")
-#       temp$sign <- ifelse(temp$x0 < y_mean, -1, 1)
-#     }
-#
-#     # y_mean_max <- max(y_mean$y)
-#     # y_mean_min <- min(y_mean$y)
-#     # y_mean_margin <- abs(y_mean_max - y_mean_min)*0.1
-#     #
-#     # y_min_max_list[[name]] <- c(y_mean_min - y_mean_margin,
-#     #                             y_mean_max + y_mean_margin)
-#
-#     X[[name]] <- temp
-#   }
-#
-#   y_max <- max(y)
-#   y_min <- min(y)
-#   y_margin <- abs(y_max - y_min)*0.1
-#
-#   ret <- NULL
-#   ret$x <- X
-#   ret$x_min_max_list <- x_min_max_list
-#   # ret$y_min_max_list <- y_min_max_list
-#   ret$y_min_max <- c(y_min - y_margin, y_max + y_margin)
-#   ret$y_mean <- y_mean
-#   ret$is_numeric <- as.list(is_numeric)
-#
-#   ret
-# }

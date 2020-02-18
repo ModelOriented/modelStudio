@@ -2,7 +2,7 @@
 % Please edit documentation in R/modelStudioOptions.R
 \name{modelStudioOptions}
 \alias{modelStudioOptions}
-\title{Modify options and pass them to modelStudio}
+\title{Modify default options and pass them to modelStudio}
 \usage{
 modelStudioOptions(...)
 }
@@ -53,21 +53,24 @@ parameter in the main function. \strong{WARNING: Editing default options may cau
 unintended behavior.}
 }
 \examples{
+library("DALEX")
 library("modelStudio")
 
-apartments <- DALEX::apartments
-
+# Create a model
 model_apartments <- glm(m2.price ~. ,
                         data = apartments)
 
+# Wrap it into an explainer
 explain_apartments <- DALEX::explain(model_apartments,
                                      data = apartments[,-1],
                                      y = apartments[,1],
                                      verbose = FALSE)
 
+# Pick some data points
 new_apartments <- apartments[1:2,]
 rownames(new_apartments) <- c("ap1","ap2")
 
+# Modify default options
 op <- modelStudioOptions(
   show_subtitle = TRUE,
   bd_subtitle = "Hello World",
@@ -79,8 +82,9 @@ op <- modelStudioOptions(
   bd_negative_color = "orange"
 )
 
+# Make a studio for the model with modified option
 modelStudio(explain_apartments, new_apartments,
-            facet_dim = c(1,2), N = 100, B = 10, show_info = FALSE,
-            options = op)
+            N = 100, B = 10, options = op,
+            show_info = FALSE)
 
 }

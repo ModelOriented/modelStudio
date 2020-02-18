@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Modify options and pass them to modelStudio — modelStudioOptions • modelStudio</title>
+<title>Modify default options and pass them to modelStudio — modelStudioOptions • modelStudio</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -35,7 +35,7 @@
 
 
 
-<meta property="og:title" content="Modify options and pass them to modelStudio — modelStudioOptions" />
+<meta property="og:title" content="Modify default options and pass them to modelStudio — modelStudioOptions" />
 
 <meta property="og:description" content="This function returns default options for modelStudio.
 It is possible to modify values of this list and pass it to the options
@@ -134,7 +134,7 @@ unintended behavior." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Modify options and pass them to modelStudio</h1>
+    <h1>Modify default options and pass them to modelStudio</h1>
     <small class="dont-index">Source: <a href='https://github.com/ModelOriented/modelStudio/blob/master/R/modelStudioOptions.R'><code>R/modelStudioOptions.R</code></a></small>
     <div class="hidden name"><code>modelStudioOptions.Rd</code></div>
     </div>
@@ -201,21 +201,24 @@ ignored when <code>scale_plot = TRUE</code>.</p></dd>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"modelStudio"</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"DALEX"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"modelStudio"</span>)
 
-<span class='no'>apartments</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>DALEX</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/DALEX/man/apartments.html'>apartments</a></span>
-
+<span class='co'># Create a model</span>
 <span class='no'>model_apartments</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>m2.price</span> ~<span class='no'>.</span> ,
                         <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>)
 
+<span class='co'># Wrap it into an explainer</span>
 <span class='no'>explain_apartments</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>DALEX</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='no'>model_apartments</span>,
                                      <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>[,-<span class='fl'>1</span>],
                                      <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>apartments</span>[,<span class='fl'>1</span>],
                                      <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
+<span class='co'># Pick some data points</span>
 <span class='no'>new_apartments</span> <span class='kw'>&lt;-</span> <span class='no'>apartments</span>[<span class='fl'>1</span>:<span class='fl'>2</span>,]
 <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>new_apartments</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ap1"</span>,<span class='st'>"ap2"</span>)
 
+<span class='co'># Modify default options</span>
 <span class='no'>op</span> <span class='kw'>&lt;-</span> <span class='fu'>modelStudioOptions</span>(
   <span class='kw'>show_subtitle</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>bd_subtitle</span> <span class='kw'>=</span> <span class='st'>"Hello World"</span>,
@@ -227,9 +230,10 @@ ignored when <code>scale_plot = TRUE</code>.</p></dd>
   <span class='kw'>bd_negative_color</span> <span class='kw'>=</span> <span class='st'>"orange"</span>
 )
 
+<span class='co'># Make a studio for the model with modified option</span>
 <span class='fu'><a href='modelStudio.html'>modelStudio</a></span>(<span class='no'>explain_apartments</span>, <span class='no'>new_apartments</span>,
-            <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>), <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-            <span class='kw'>options</span> <span class='kw'>=</span> <span class='no'>op</span>)</div></pre>
+            <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>options</span> <span class='kw'>=</span> <span class='no'>op</span>,
+            <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

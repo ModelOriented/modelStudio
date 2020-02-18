@@ -150,11 +150,11 @@ Easily save and share the dashboard with others. Tools for model exploration uni
     
     </div>
 
-    <pre class="usage"><span class='fu'>modelStudio</span>(<span class='no'>object</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>modelStudio</span>(<span class='no'>explainer</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for explainer</span>
 <span class='fu'>modelStudio</span>(
-  <span class='no'>object</span>,
+  <span class='no'>explainer</span>,
   <span class='kw'>new_observation</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>new_observation_y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>2</span>),
@@ -162,27 +162,7 @@ Easily save and share the dashboard with others. Tools for model exploration uni
   <span class='kw'>max_features</span> <span class='kw'>=</span> <span class='fl'>10</span>,
   <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>400</span>,
   <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>15</span>,
-  <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>options</span> <span class='kw'>=</span> <span class='fu'><a href='modelStudioOptions.html'>modelStudioOptions</a></span>(),
-  <span class='kw'>viewer</span> <span class='kw'>=</span> <span class='st'>"external"</span>,
-  <span class='no'>...</span>
-)
-
-<span class='co'># S3 method for default</span>
-<span class='fu'>modelStudio</span>(
-  <span class='no'>object</span>,
-  <span class='no'>data</span>,
-  <span class='no'>y</span>,
-  <span class='kw'>predict_function</span> <span class='kw'>=</span> <span class='no'>predict</span>,
-  <span class='kw'>label</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='no'>object</span>)[<span class='fl'>1</span>],
-  <span class='kw'>new_observation</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>new_observation_y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>2</span>),
-  <span class='kw'>time</span> <span class='kw'>=</span> <span class='fl'>500</span>,
-  <span class='kw'>max_features</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>400</span>,
-  <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>15</span>,
+  <span class='kw'>eda</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>options</span> <span class='kw'>=</span> <span class='fu'><a href='modelStudioOptions.html'>modelStudioOptions</a></span>(),
@@ -194,8 +174,8 @@ Easily save and share the dashboard with others. Tools for model exploration uni
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>object</th>
-      <td><p>An <code>explainer</code> created with function <code><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>DALEX::explain()</a></code> or a model to be explained.</p></td>
+      <th>explainer</th>
+      <td><p>An <code>explainer</code> created with function <code><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>DALEX::explain()</a></code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -207,7 +187,7 @@ Easily save and share the dashboard with others. Tools for model exploration uni
     </tr>
     <tr>
       <th>new_observation_y</th>
-      <td><p>True label for <code>new_observation</code>.</p></td>
+      <td><p>True label for <code>new_observation</code> (optional).</p></td>
     </tr>
     <tr>
       <th>facet_dim</th>
@@ -230,6 +210,10 @@ Easily save and share the dashboard with others. Tools for model exploration uni
       <td><p>Number of random paths used for calculation of Shapley values. Default is <code>15</code>.</p></td>
     </tr>
     <tr>
+      <th>eda</th>
+      <td><p>Compute EDA plots. Default is <code>TRUE</code>.</p></td>
+    </tr>
+    <tr>
       <th>show_info</th>
       <td><p>Verbose progress bar on the console. Default is <code>TRUE</code>.</p></td>
     </tr>
@@ -248,23 +232,6 @@ See <a href='https://modeloriented.github.io/modelStudio/articles/vignette_model
       <td><p>Default is <code>external</code> to display in an external RStudio window.
 Use <code>browser</code> to display in an external browser or
 <code>internal</code> to use the RStudio internal viewer pane for output.</p></td>
-    </tr>
-    <tr>
-      <th>data</th>
-      <td><p>Validation dataset, will be extracted from <code>object</code> if it is an explainer.
-NOTE: It is best when target variable is not present in the <code>data</code>.</p></td>
-    </tr>
-    <tr>
-      <th>y</th>
-      <td><p>True labels for <code>data</code>, will be extracted from <code>object</code> if it is an <code>explainer</code>.</p></td>
-    </tr>
-    <tr>
-      <th>predict_function</th>
-      <td><p>Predict function, will be extracted from <code>object</code> if it is an <code>explainer</code>.</p></td>
-    </tr>
-    <tr>
-      <th>label</th>
-      <td><p>A name of the model, will be extracted from <code>object</code> if it is an <code>explainer</code>.</p></td>
     </tr>
     </table>
     
@@ -289,48 +256,60 @@ are implemented in <a href='https://modeloriented.github.io/ingredients/'><b>ing
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"modelStudio"</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"DALEX"</span>)</div><div class='output co'>#&gt; <span class='message'>Welcome to DALEX (version: 0.9.4).</span>
+#&gt; <span class='message'>Find examples and detailed introduction at: https://pbiecek.github.io/ema/</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"modelStudio"</span>)
 
-<span class='co'># ex1 classification</span>
+<span class='co'>#:# ex1 classification on 'titanic_imputed' dataset</span>
 
-<span class='no'>model_titanic_glm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>survived</span> ~<span class='no'>.</span>,
-                         <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw pkg'>DALEX</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/DALEX/man/titanic.html'>titanic_imputed</a></span>,
-                         <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>)
+<span class='co'># Create a model</span>
+<span class='no'>model_titanic</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>survived</span> ~<span class='no'>.</span>,
+                     <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>titanic_imputed</span>,
+                     <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>)
 
-<span class='no'>explain_titanic_glm</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>DALEX</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='no'>model_titanic_glm</span>,
-                                      <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw pkg'>DALEX</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/DALEX/man/titanic.html'>titanic_imputed</a></span>[,-<span class='fl'>8</span>],
-                                      <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw pkg'>DALEX</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/DALEX/man/titanic.html'>titanic_imputed</a></span>[,<span class='fl'>8</span>],
-                                      <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"glm"</span>,
-                                      <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='co'># Wrap it into an explainer</span>
+<span class='no'>explain_titanic</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='no'>model_titanic</span>,
+                           <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>titanic_imputed</span>[,-<span class='fl'>8</span>],
+                           <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>titanic_imputed</span>[,<span class='fl'>8</span>],
+                           <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"glm"</span>,
+                           <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='no'>new_observations</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>DALEX</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/DALEX/man/titanic.html'>titanic_imputed</a></span>[<span class='fl'>1</span>:<span class='fl'>2</span>,]
+<span class='co'># Pick some data points</span>
+<span class='no'>new_observations</span> <span class='kw'>&lt;-</span> <span class='no'>titanic_imputed</span>[<span class='fl'>1</span>:<span class='fl'>2</span>,]
 <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>new_observations</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Lucas"</span>,<span class='st'>"James"</span>)
 
-<span class='fu'>modelStudio</span>(<span class='no'>explain_titanic_glm</span>, <span class='no'>new_observations</span>,
+<span class='co'># Make a studio for the model</span>
+<span class='fu'>modelStudio</span>(<span class='no'>explain_titanic</span>, <span class='no'>new_observations</span>,
             <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># \donttest{</span>
-<span class='co'># ex2 regression</span>
+<span class='co'>#:# ex2 regression on 'apartments' dataset</span>
 
-<span class='no'>model_apartments</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>m2.price</span> ~<span class='no'>.</span> ,
-                        <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw pkg'>DALEX</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/DALEX/man/apartments.html'>apartments</a></span>)
+<span class='no'>model_apartments</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>randomForest</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/randomForest/man/randomForest.html'>randomForest</a></span>(<span class='no'>m2.price</span> ~<span class='no'>.</span> ,
+                                               <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>)
 
-<span class='no'>explain_apartments</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>DALEX</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='no'>model_apartments</span>,
-                                     <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw pkg'>DALEX</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/DALEX/man/apartments.html'>apartments</a></span>[,-<span class='fl'>1</span>],
-                                     <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw pkg'>DALEX</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/DALEX/man/apartments.html'>apartments</a></span>[,<span class='fl'>1</span>],
-                                     <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='no'>explain_apartments</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='no'>model_apartments</span>,
+                              <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>[,-<span class='fl'>1</span>],
+                              <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>apartments</span>[,<span class='fl'>1</span>],
+                              <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='no'>new_apartments</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>DALEX</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/DALEX/man/apartments.html'>apartments</a></span>[<span class='fl'>1</span>:<span class='fl'>2</span>,]
+<span class='no'>new_apartments</span> <span class='kw'>&lt;-</span> <span class='no'>apartments</span>[<span class='fl'>1</span>:<span class='fl'>2</span>,]
 <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>new_apartments</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ap1"</span>,<span class='st'>"ap2"</span>)
 
+<span class='co'># change dashboard dimensions and animation length</span>
 <span class='fu'>modelStudio</span>(<span class='no'>explain_apartments</span>, <span class='no'>new_apartments</span>,
-            <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>3</span>), <span class='kw'>time</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
+            <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>3</span>), <span class='kw'>time</span> <span class='kw'>=</span> <span class='fl'>800</span>,
             <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='fu'>modelStudio</span>(<span class='no'>explain_apartments</span>, <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>`new_observation` argument is NULL. Observations needed to calculate local explanations are taken at random from the data.</span></div><div class='input'><span class='fu'>modelStudio</span>(<span class='no'>explain_apartments</span>, <span class='kw'>new_observation</span> <span class='kw'>=</span> <span class='no'>new_apartments</span>,
-                                <span class='kw'>new_observation_y</span> <span class='kw'>=</span> <span class='kw pkg'>DALEX</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/DALEX/man/apartments.html'>apartments</a></span>[<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='fl'>1</span>],
+<span class='co'># add information about true labels</span>
+<span class='fu'>modelStudio</span>(<span class='no'>explain_apartments</span>, <span class='no'>new_apartments</span>,
+                                <span class='kw'>new_observation_y</span> <span class='kw'>=</span> <span class='no'>apartments</span>[<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='fl'>1</span>],
                                 <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='co'># }</span></div></pre>
+
+<span class='co'># don't compute EDA plots</span>
+<span class='fu'>modelStudio</span>(<span class='no'>explain_apartments</span>, <span class='kw'>eda</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+            <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>`new_observation` argument is NULL. Observations needed to calculate local explanations are taken at random from the data.</span></div><div class='input'># }
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

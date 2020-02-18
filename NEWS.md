@@ -1,13 +1,16 @@
 # modelStudio 0.3.0
+* **`modelStudio()` now only works on `explainer` class object made with `DALEX::explain()`**
 * this version requires `iBreakDown v1.0.0` and `ingredients v1.0.0` 
-* change `cummulative` to `cumulative` in code
-* change `dependency` to `dependence` in code
+* change `cummulative` to `cumulative` in code (#49)
+* change `dependency` to `dependence` in code (#52)
 * update package title and description
-* change LICENSE to GPL-3 
+* change LICENSE to GPL-3 (#55)
+* add boxplots to `SV` plot (#50)
+* add `eda` argument to `modelStudio()`
 
 # modelStudio 0.2.1
 * fix `TV` plot (X had columns sorted while y was the same)
-* add `ms_title` argument to `modelStudioOptions()`
+* add `ms_title` argument to `modelStudioOptions()` (#46)
 * `modelStudio` footer is generated faster 
 
 # modelStudio 0.2.0

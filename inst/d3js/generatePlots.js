@@ -478,15 +478,15 @@ function shapleyValues() {
 
   ctbLabel.append("text")
           .attr("class", "axisLabel")
-          .attr("x", d => d.contribution < 0
+          .attr("x", d => d.contribution > 0
                           ? x(d.barStart) - 5 : x(d.barSupport) + 5)
           .attr("y", d => y(d.variable) + y.bandwidth()/2)
           .attr("dy", "0.4em")
-          .attr("text-anchor", d => d.sign == "-1" ? "end" : "start")
+          .attr("text-anchor", d => d.sign == "1" ? "end" : "start")
           .transition()
           .duration(TIME)
           .delay((d,i) => (i+1) * TIME)
-          .text(d => d.sign === "-1" ? d.contribution : "+"+d.contribution);
+          .text(d => d.sign == "-1" ? d.contribution : "+"+d.contribution);
 
   // add lines to bars
   var lines = SV.selectAll()
@@ -508,7 +508,33 @@ function shapleyValues() {
                              : y(d.variable) + y.bandwidth()*2.5);
 
 
+  // boxplots
+  // main horizontal line
+  bars.append("line")
+      .attr("class", "interceptLine")
+      .attr("x1", d => d.contribution < 0 ? x(d.max) : x(d.min))
+      .attr("x2", d => d.contribution < 0 ? x(d.max) : x(d.min))
+      .attr("y1", d => y(d.variable) + y.bandwidth()/2)
+      .attr("y2", d => y(d.variable) + y.bandwidth()/2)
+      .transition()
+      .duration(TIME)
+      .delay((d,i) => i * TIME)
+      .attr("x1", d => x(d.min))
+      .attr("x2", d => x(d.max));
 
+  // rectangle for the main box
+  bars.append("rect")
+      .attr("x", d => d.contribution < 0 ? x(d.q3) : x(d.q1))
+      .attr("y", d => y(d.variable) + y.bandwidth()/6)
+      .attr("height", 2*y.bandwidth()/3)
+      .style("fill", "#371ea3")
+      .transition()
+      .duration(TIME)
+      .delay((d,i) => i * TIME)
+      .attr("x", d => x(d.q1))
+      .attr("width", d => Math.abs(x(d.q3) - x(d.q1)));
+
+  // description
   var description = SV.append("g")
                       .attr("transform", "translate(" +
                             (margin.left + svPlotWidth - 4*margin.big - margin.small)

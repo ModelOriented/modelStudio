@@ -24,6 +24,7 @@ var TIME = options.time,
     dim = options.facet_dim,
     footerText = options.footer_text,
     dropDownData = options.drop_down_data,
+    EDA = options.eda,
     SCALE_PLOT = options.scale_plot,
     SHOW_SUBTITLE = options.show_subtitle,
     subTitle = options.subtitle || modelName,
@@ -129,7 +130,8 @@ if (!SHOW_SUBTITLE) {
 }
 
 /// for plot chosing
-var notVisiblePlots = [{id:"BD", text: bdTitle + " [Local]"},
+var notVisiblePlots = EDA ?
+                       [{id:"BD", text: bdTitle + " [Local]"},
                        {id:"SV", text: svTitle + " [Local]"},
                        {id:"CP", text: cpTitle + " [Local]"},
                        {id:"FI", text: fiTitle + " [Global]"},
@@ -137,7 +139,13 @@ var notVisiblePlots = [{id:"BD", text: bdTitle + " [Local]"},
                        {id:"AD", text: adTitle + " [Global]"},
                        {id:"FD", text: fdTitle + " [EDA]"},
                        {id:"TV", text: tvTitle + " [EDA]"},
-                       {id:"AT", text: atTitle + " [EDA]"}];
+                       {id:"AT", text: atTitle + " [EDA]"}] :
+                       [{id:"BD", text: bdTitle + " [Local]"},
+                       {id:"SV", text: svTitle + " [Local]"},
+                       {id:"CP", text: cpTitle + " [Local]"},
+                       {id:"FI", text: fiTitle + " [Global]"},
+                       {id:"PD", text: pdTitle + " [Global]"},
+                       {id:"AD", text: adTitle + " [Global]"}];
 
 var visiblePlots = [];
 

@@ -138,12 +138,16 @@
 <a href="#modelstudio-030" class="anchor"></a>modelStudio 0.3.0<small> Unreleased </small>
 </h1>
 <ul>
+<li><strong><code><a href="../reference/modelStudio.html">modelStudio()</a></code> now only works on <code>explainer</code> class object made with <code><a href="https://rdrr.io/pkg/DALEX/man/explain.html">DALEX::explain()</a></code></strong></li>
 <li>this version requires <code>iBreakDown v1.0.0</code> and <code>ingredients v1.0.0</code>
 </li>
-<li>change <code>cummulative</code> to <code>cumulative</code> in code</li>
-<li>change <code>dependency</code> to <code>dependence</code> in code</li>
+<li>change <code>cummulative</code> to <code>cumulative</code> in code (<a href='https://github.com/ModelOriented/modelStudio/issues/49'>#49</a>)</li>
+<li>change <code>dependency</code> to <code>dependence</code> in code (<a href='https://github.com/ModelOriented/modelStudio/issues/52'>#52</a>)</li>
 <li>update package title and description</li>
-<li>change LICENSE to GPL-3</li>
+<li>change LICENSE to GPL-3 (<a href='https://github.com/ModelOriented/modelStudio/issues/55'>#55</a>)</li>
+<li>add boxplots to <code>SV</code> plot (<a href='https://github.com/ModelOriented/modelStudio/issues/50'>#50</a>)</li>
+<li>add <code>eda</code> argument to <code><a href="../reference/modelStudio.html">modelStudio()</a></code>
+</li>
 </ul>
 </div>
     <div id="modelstudio-021" class="section level1">
@@ -152,8 +156,7 @@
 </h1>
 <ul>
 <li>fix <code>TV</code> plot (X had columns sorted while y was the same)</li>
-<li>add <code>ms_title</code> argument to <code><a href="../reference/modelStudioOptions.html">modelStudioOptions()</a></code>
-</li>
+<li>add <code>ms_title</code> argument to <code><a href="../reference/modelStudioOptions.html">modelStudioOptions()</a></code> (<a href='https://github.com/ModelOriented/modelStudio/issues/46'>#46</a>)</li>
 <li>
 <code>modelStudio</code> footer is generated faster</li>
 </ul>
