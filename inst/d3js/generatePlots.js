@@ -509,30 +509,32 @@ function shapleyValues() {
 
 
   // boxplots
-  // main horizontal line
-  bars.append("line")
-      .attr("class", "interceptLine")
-      .attr("x1", d => d.contribution < 0 ? x(d.max) : x(d.min))
-      .attr("x2", d => d.contribution < 0 ? x(d.max) : x(d.min))
-      .attr("y1", d => y(d.variable) + y.bandwidth()/2)
-      .attr("y2", d => y(d.variable) + y.bandwidth()/2)
-      .transition()
-      .duration(TIME)
-      .delay((d,i) => i * TIME)
-      .attr("x1", d => x(d.min))
-      .attr("x2", d => x(d.max));
+  if (SHOW_BOXPLOT) {
+    // main horizontal line
+    bars.append("line")
+        .attr("class", "interceptLine")
+        .attr("x1", d => d.contribution < 0 ? x(d.max) : x(d.min))
+        .attr("x2", d => d.contribution < 0 ? x(d.max) : x(d.min))
+        .attr("y1", d => y(d.variable) + y.bandwidth()/2)
+        .attr("y2", d => y(d.variable) + y.bandwidth()/2)
+        .transition()
+        .duration(TIME)
+        .delay((d,i) => i * TIME)
+        .attr("x1", d => x(d.min))
+        .attr("x2", d => x(d.max));
 
-  // rectangle for the main box
-  bars.append("rect")
-      .attr("x", d => d.contribution < 0 ? x(d.q3) : x(d.q1))
-      .attr("y", d => y(d.variable) + y.bandwidth()/6)
-      .attr("height", 2*y.bandwidth()/3)
-      .style("fill", "#371ea3")
-      .transition()
-      .duration(TIME)
-      .delay((d,i) => i * TIME)
-      .attr("x", d => x(d.q1))
-      .attr("width", d => Math.abs(x(d.q3) - x(d.q1)));
+    // rectangle for the main box
+    bars.append("rect")
+        .attr("x", d => d.contribution < 0 ? x(d.q3) : x(d.q1))
+        .attr("y", d => y(d.variable) + y.bandwidth()/6)
+        .attr("height", 2*y.bandwidth()/3)
+        .style("fill", "#371ea3")
+        .transition()
+        .duration(TIME)
+        .delay((d,i) => i * TIME)
+        .attr("x", d => x(d.q1))
+        .attr("width", d => Math.abs(x(d.q3) - x(d.q1)));
+  }
 
   // description
   var description = SV.append("g")
@@ -734,30 +736,32 @@ function featureImportance() {
     .attr("y2", maximumY + y.bandwidth());
 
   // boxplots
-  // main horizontal line
-  bars.append("line")
-      .attr("class", "interceptLine")
-      .attr("x1", d => x(d.dropout_loss) < x(fullModel) ? x(d.max) : x(d.min))
-      .attr("x2", d => x(d.dropout_loss) < x(fullModel) ? x(d.max) : x(d.min))
-      .attr("y1", d => y(d.variable) + y.bandwidth()/2)
-      .attr("y2", d => y(d.variable) + y.bandwidth()/2)
-      .transition()
-      .duration(TIME)
-      .delay((d,i) => i * TIME)
-      .attr("x1", d => x(d.min))
-      .attr("x2", d => x(d.max));
+  if (SHOW_BOXPLOTS) {
+    // main horizontal line
+    bars.append("line")
+        .attr("class", "interceptLine")
+        .attr("x1", d => x(d.dropout_loss) < x(fullModel) ? x(d.max) : x(d.min))
+        .attr("x2", d => x(d.dropout_loss) < x(fullModel) ? x(d.max) : x(d.min))
+        .attr("y1", d => y(d.variable) + y.bandwidth()/2)
+        .attr("y2", d => y(d.variable) + y.bandwidth()/2)
+        .transition()
+        .duration(TIME)
+        .delay((d,i) => i * TIME)
+        .attr("x1", d => x(d.min))
+        .attr("x2", d => x(d.max));
 
-  // rectangle for the main box
-  bars.append("rect")
-      .attr("x", d => x(d.dropout_loss) < x(fullModel) ? x(d.q3) : x(d.q1))
-      .attr("y", d => y(d.variable) + y.bandwidth()/6)
-      .attr("height", 2*y.bandwidth()/3)
-      .style("fill", "#371ea3")
-      .transition()
-      .duration(TIME)
-      .delay((d,i) => i * TIME)
-      .attr("x", d => x(d.q1))
-      .attr("width", d => Math.abs(x(d.q3) - x(d.q1)));
+    // rectangle for the main box
+    bars.append("rect")
+        .attr("x", d => x(d.dropout_loss) < x(fullModel) ? x(d.q3) : x(d.q1))
+        .attr("y", d => y(d.variable) + y.bandwidth()/6)
+        .attr("height", 2*y.bandwidth()/3)
+        .style("fill", "#371ea3")
+        .transition()
+        .duration(TIME)
+        .delay((d,i) => i * TIME)
+        .attr("x", d => x(d.q1))
+        .attr("width", d => Math.abs(x(d.q3) - x(d.q1)));
+  }
 
   // description
   var description = FI.append("g")

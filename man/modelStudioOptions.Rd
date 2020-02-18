@@ -15,6 +15,7 @@ modelStudioOptions(...)
 \subsection{Main options:}{
 \describe{
 \item{scale_plot}{\code{TRUE} Makes every plot the same height, ignores \code{bar_width}.}
+\item{show_boxplot}{\code{TRUE} Display boxplots in Feature Importance and Shapley Values plots.}
 \item{show_subtitle}{\code{TRUE} Should the subtitle be displayed?}
 \item{subtitle}{\code{label} parameter from \code{explainer}.}
 \item{ms_title}{Title of the dashboard.}

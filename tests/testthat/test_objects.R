@@ -85,19 +85,23 @@ y <- titanic_small[,6]== "yes"
 
 explain_both_without_target <- DALEX::explain(model_titanic_glm,
                                               data = x,
-                                              y = y)
+                                              y = y,
+                                              verbose = v)
 
 explain_both_full <- DALEX::explain(model_titanic_glm,
                                     data = z,
-                                    y = y)
+                                    y = y,
+                                    verbose = v)
 
 explain_obs_without_target_data_full <- DALEX::explain(model_titanic_glm,
                                                data = z,
-                                               y = y)
+                                               y = y,
+                                               verbose = v)
 
 explain_obs_full_data_without_target <- DALEX::explain(model_titanic_glm,
                                                        data = x,
-                                                       y = y)
+                                                       y = y,
+                                                       verbose = v)
 ### more than 10 features
 
 n <- 50
