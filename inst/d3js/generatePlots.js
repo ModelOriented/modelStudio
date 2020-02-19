@@ -526,8 +526,8 @@ function shapleyValues() {
     // rectangle for the main box
     bars.append("rect")
         .attr("x", d => d.contribution < 0 ? x(d.q3) : x(d.q1))
-        .attr("y", d => y(d.variable) + y.bandwidth()/4)
-        .attr("height", y.bandwidth()/2)
+        .attr("y", d => y(d.variable) + y.bandwidth()/3)
+        .attr("height", y.bandwidth()/3)
         .style("fill", "#371ea3")
         .transition()
         .duration(TIME)
@@ -754,8 +754,8 @@ function featureImportance() {
     // rectangle for the main box
     bars.append("rect")
         .attr("x", d => x(d.dropout_loss) < x(fullModel) ? x(d.q3) : x(d.q1))
-        .attr("y", d => y(d.variable) + y.bandwidth()/4)
-        .attr("height", y.bandwidth()/2)
+        .attr("y", d => y(d.variable) + y.bandwidth()/3)
+        .attr("height", y.bandwidth()/3)
         .style("fill", "#371ea3")
         .transition()
         .duration(TIME)
@@ -2227,7 +2227,7 @@ function tvNumericalPlot(variableName, xData, xMinMax, yMinMax) {
     .attr("class", "bigTitle")
     .attr("x", margin.left)
     .attr("y", margin.top - 40)
-    .text(tvTitle + variableName);
+    .text(tvTitle);
 
   // find 5 nice ticks with max and min - do better than d3
   var tickValues = getTickValues(x.domain());
@@ -2345,7 +2345,7 @@ function tvCategoricalPlot(variableName, xData, xMinMax, yMinMax) {
     .attr("x", margin.left)
     .attr("y", margin.top - 40)
     .attr("class", "bigTitle")
-    .text(tvTitle + variableName);
+    .text(tvTitle);
 
   TV.append("text")
     .attr("transform",
@@ -2401,7 +2401,7 @@ function atNumericalPlot(variableName, xData, xMinMax, yMinMax, yMean) {
     .attr("class", "bigTitle")
     .attr("x", margin.left)
     .attr("y", margin.top - 40)
-    .text(atTitle + variableName);
+    .text(atTitle);
 
   // find 5 nice ticks with max and min - do better than d3
   var tickValues = getTickValues(x.domain());
@@ -2555,7 +2555,7 @@ function atCategoricalPlot(variableName, xData, xMinMax, yMinMax, yMean) {
     .attr("x", margin.left)
     .attr("y", margin.top - 40)
     .attr("class", "bigTitle")
-    .text(atTitle + variableName);
+    .text(atTitle);
 
   AT.append("text")
     .attr("transform",

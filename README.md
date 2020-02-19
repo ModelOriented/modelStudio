@@ -39,21 +39,22 @@ devtools::install_github("ModelOriented/modelStudio")
 This package bases on `DALEX` explainers created with `DALEX::explain()`.
 
 ```r
+library("DALEX")
 library("modelStudio")
 
 # Create a model
 model <- glm(survived ~.,
-             data = DALEX::titanic_imputed,
+             data = titanic_imputed,
              family = "binomial")
-                 
+
 # Wrap it into an explainer        
-explainer <- DALEX::explain(model,
-                            data = DALEX::titanic_imputed[,-8],
-                            y = DALEX::titanic_imputed[,8],
-                            label = "glm")
-                   
+explainer <- explain(model,
+                     data = titanic_imputed[,-8],
+                     y = titanic_imputed[,8],
+                     label = "Titanic GLM")
+
 # Pick some data points
-new_observations <- DALEX::titanic_imputed[1:4,]
+new_observations <- titanic_imputed[1:4,]
 rownames(new_observations) <- c("Lucas", "James", "Thomas", "Nancy")
 
 # Make a studio for the model

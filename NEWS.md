@@ -7,7 +7,7 @@
 * change LICENSE to GPL-3 (#55)
 * add boxplots to `SV` plot (#50)
 * add `eda` argument to `modelStudio()`
-* add `show_boxplots` argument to `modelStudioOptions()`
+* add `show_boxplot` argument to `modelStudioOptions()`
 
 # modelStudio 0.2.1
 * fix `TV` plot (X had columns sorted while y was the same)
