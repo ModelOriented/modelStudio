@@ -18,9 +18,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-`modelStudio::modelStudio` uses your model, data and new observations, to provide local
-and global explanations. It generates plots and descriptions in the form
-of the serverless HTML site, that supports animations and interactivity made with D3.js.
+`modelStudio::modelStudio` computes various (instance and dataset level) model explanations and produces an interactive, customisable dashboard made with D3.js. It consists of multiple panels for plots with their short descriptions. Easily save and share the dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.
 
 Let's use `DALEX::HR` dataset to explore `modelStudio` parameters:
 
@@ -62,77 +60,88 @@ library("modelStudio")
 
 ## modelStudio parameters
 
-### local explanations
+### instance explanations
 
-You can pass data points to `new_observation` parameter for local explanations
-such as Break Down, SHAP Values and Ceteris Paribus Profiles.
+Pass data points to `new_observation` parameter for instance explanations
+such as Break Down, Shapley Values and Ceteris Paribus Profiles. Use `new_observation_y`
+to show their true labels.
 
 ```{r eval = FALSE}
-new_observations <- test[1:3,]
-rownames(new_observations) <- c("John Snow", "Arya Stark", "Samwell Tarly")
+new_observation <- test[1:3,]
+rownames(new_observation) <- c("John Snow", "Arya Stark", "Samwell Tarly")
+true_labels <- test[1:3,6]
 
-modelStudio(explainer, new_observation = new_observations)
+modelStudio(explainer, new_observation = new_observation,
+                       new_observation_y  = true_labels)
 ```
 
 ### grid size
 
-You can achieve bigger or smaller `modelStudio` grid with `facet_dim` parameter.
+Achieve bigger or smaller `modelStudio` grid with `facet_dim` parameter.
 
 ```{r eval = FALSE}
 # small dashboard with 2 panels
-modelStudio(explainer, new_observation = test[1:2,], facet_dim = c(1,2))
+modelStudio(explainer, new_observation, facet_dim = c(1,2))
 
 # large dashboard with 9 panels
-modelStudio(explainer, new_observation = test[1:2,], facet_dim = c(3,3))
+modelStudio(explainer, new_observation, facet_dim = c(3,3))
 ```
 
 ### animations
 
-You can manipulate `time` parameter to set animation length. Value 0 will make 
+Manipulate `time` parameter to set animation length. Value 0 will make 
 them invisible.
 
 ```{r eval = FALSE}
 # slow down animations
-modelStudio(explainer, new_observation = test[1:2,], time = 1000)
+modelStudio(explainer, new_observation, time = 1000)
 
 # turn off animations
-modelStudio(explainer, new_observation = test[1:2,], time = 0)
+modelStudio(explainer, new_observation, time = 0)
 ```
 
 ### more calculations means more time
 
-`N` is a number of observations used for calculation of partial dependency profiles.
-`B` is a number of random paths used for calculation of SHAP values.
-You can decrease `N` and `B` parameters to lower computation time or increase
+`N` is a number of observations used for calculation of partial and accumulated dependence profiles.
+`B` is a number of random paths used for calculation of shapley values profiles.
+Decrease `N` and `B` parameters to lower computation time or increase
 them to get more accurate empirical results.
 
 ```{r eval = FALSE}
-modelStudio(explainer, new_observation = test[1:2,], N = 100, B = 10)
+modelStudio(explainer, new_observation, N = 100, B = 10)
 
-modelStudio(explainer, new_observation = test[1:2,], N = 1000, B = 50)
+modelStudio(explainer, new_observation, N = 1000, B = 50)
+```
+
+### no EDA mode
+
+Don't compute the EDA plots if they are not needed. Set the `eda` parameter to `FALSE`.
+
+```{r eval = FALSE}
+modelStudio(explainer, new_observation, eda = FALSE)
 ```
 
 ### progress bar
 
-You can hide computation progress bar messages with `show_info` parameter.
+Hide computation progress bar messages with `show_info` parameter.
 
 ```{r eval = FALSE}
-modelStudio(explainer, new_observation = test[1:2,], show_info = FALSE)
+modelStudio(explainer, new_observation, show_info = FALSE)
 ```
 
 ### viewer or browser?
 
-You can change `viewer` parameter to set where to display `modelStudio`. Best described here: [`r2d3 viewer argument`](https://rstudio.github.io/r2d3/articles/visualization_options.html#viewer).
+Change `viewer` parameter to set where to display `modelStudio`. Best described here: [`r2d3 viewer argument`](https://rstudio.github.io/r2d3/articles/visualization_options.html#viewer).
 
 ```{r eval = FALSE}
-modelStudio(explainer, new_observation = test[1:2,], viewer = "browser")
+modelStudio(explainer, new_observation, viewer = "browser")
 ```
 
 -------------------------------------------------------------------
 
 ## parallel computation
 
-You can speed up `modelStudio` computation by setting `parallel` parameter to `TRUE`. 
+Speed up `modelStudio` computation by setting `parallel` parameter to `TRUE`. 
 It uses [`parallelMap`](https://www.rdocumentation.org/packages/parallelMap) package
 to calculate local explainers faster. It is really useful when using `modelStudio` with
 complicated models, vast datasets or simply many observations are being processed. 
@@ -156,7 +165,7 @@ modelStudio(explainer, new_observation = test[1:16,], parallel = TRUE)
 
 ## plot options
 
-You can customize some of `modelStudio` looks by overwriting default options returned
+Customize some of `modelStudio` looks by overwriting default options returned
 by `modelStudioOptions()`.
 
 ```{r eval = FALSE}
@@ -172,14 +181,14 @@ new_options <- modelStudioOptions(
   bd_negative_color = "orange" 
 )
 
-modelStudio(explainer, new_observation = test[1,], options = new_options)
+modelStudio(explainer, new_observation, options = new_options)
 ```
 
 -------------------------------------------------------------------
 
 ## R mlr model 
 
-You can use `DALEXtra::explain_*()` functions to explain various models.
+Use `DALEXtra::explain_*()` functions to explain various models.
 Bellow basic example of making `modelStudio` for mlr model using `DALEXtra::explain_mlr()`
 
 ```{r eval = FALSE}
@@ -198,11 +207,11 @@ learner <- mlr::makeLearner("regr.randomForest",
 model <- mlr::train(learner, task)
 
 # create an explainer for mlr model
-explainer_mlr <- explain_mlr(model, data = test[,-6], y = test[,6])
+explainer_mlr <- explain_mlr(model, data = test[,-6], y = test[,6], label = "mlr")
 
 # call model studio for mlr model
 modelStudio(explainer_mlr,
-            new_observation = test[1:4,],
+            new_observation,
             N = 100, B = 10)
 ```
 
@@ -210,8 +219,9 @@ modelStudio(explainer_mlr,
 
 ## Python scikit-learn model
 
-Bellow basic example of making `modelStudio` for scikit-learn model using `DALEXtra::explain_scikitlearn()`
-and **Python Anaconda**.
+Bellow basic example of making `modelStudio` for **scikit-learn** model using `DALEXtra::explain_scikitlearn()`
+and **Python Anaconda**. Save your Python model as a `.pkl` file and explain it in **R** with few lines of code.
+Here we use a demo model saved in `DALEXtra` package.
 
 ```{r eval = FALSE}
 library(DALEXtra)
@@ -228,7 +238,8 @@ pkl_SGDC <- "SGDC.pkl"
 explainer_scikit <- explain_scikitlearn(pkl_gbm,
                                         yml = yml,
                                         data = titanic_test[,1:17],
-                                        y = titanic_test[,18])
+                                        y = titanic_test[,18],
+                                        label = "python-gbm")
 
 # start model studio
 modelStudio(explainer_scikit,
@@ -242,7 +253,7 @@ making those [here](https://modeloriented.github.io/DALEXtra/reference/).
 ## References
 
 * Wrapper for the function is implemented in [DALEX](https://modeloriented.github.io/DALEX/)
-* Feature Importance, Ceteris Paribus, Partial Dependency and Accumulated Dependency plots 
+* Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence plots 
 are implemented in [ingredients](https://modeloriented.github.io/ingredients/)
-* Break Down and SHAP Values plots are implemented in [iBreakDown](https://modeloriented.github.io/iBreakDown/)
+* Break Down and Shapley Values plots are implemented in [iBreakDown](https://modeloriented.github.io/iBreakDown/)
 * Python wrappers and more can be found in [DALEXtra](https://modeloriented.github.io/DALEXtra/)

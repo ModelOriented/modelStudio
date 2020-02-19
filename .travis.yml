@@ -25,10 +25,10 @@ notifications:
 r_packages:
   - covr
 
-#r_github_packages:
-#  - ModelOriented/ingredients
-#  - ModelOriented/iBreakDown
-#  - ModelOriented/DALEX
+r_github_packages:
+  - ModelOriented/ingredients
+  - ModelOriented/iBreakDown
+  - ModelOriented/DALEX
 
 after_success:
 - Rscript -e 'library(covr); codecov()'

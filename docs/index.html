@@ -5,19 +5,20 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Interactive Studio with Explanations for ML Predictive Models • modelStudio</title>
+<title>Interactive Studio for Explanatory Model Analysis • modelStudio</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="dalexverse.css" rel="stylesheet">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="dalexverse-2.css" rel="stylesheet">
 <link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Interactive Studio with Explanations for ML Predictive Models">
-<meta property="og:description" content="Automate explanation of machine learning predictive models.
-  This package generates advanced interactive and animated model explanations in the form
-  of a serverless HTML site. It combines R with D3.js to produce plots and descriptions
-  for various local and global explanations. Tools for model exploration unite with
-  tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behaviour.
-  modelStudio is a fast and condensed way to get all the answers without much effort. 
-  Break down your model and look into its ingredients with only a few lines of code.">
+<script src="pkgdown.js"></script><meta property="og:title" content="Interactive Studio for Explanatory Model Analysis">
+<meta property="og:description" content="Automate the explanation of machine learning predictive models.
+    This package generates advanced interactive and animated model explanations
+    in the form of a serverless HTML site with only one line of code. 
+    The main function computes various (instance and dataset level) model explanations
+    and produces an interactive, customisable dashboard made with D3.js. It consists
+    of multiple panels for plots with their short descriptions. Easily save and share 
+    the dashboard with others. Tools for model exploration unite with tools for EDA 
+    (Exploratory Data Analysis) to give a broad overview of the model behavior.">
 <meta property="og:image" content="/logo.png">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
@@ -48,7 +49,7 @@
         <div class="info">
           <span class="partof">part of the <a href="https://github.com/ModelOriented/DrWhy">DrWhy.AI</a>
            developed by the <a href="https://mi2.mini.pw.edu.pl/">MI^2 DataLab</a> </span>
-          <span class="version version-default">0.2.1</span>
+          <span class="version version-default">0.3.0</span>
         </div>
       </div>
     </div>
@@ -96,19 +97,20 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="interactive-studio-with-explanations-for-ml-predictive-models-" class="section level1">
+<div id="interactive-studio-for-explanatory-model-analysis-" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#interactive-studio-with-explanations-for-ml-predictive-models-" class="anchor"></a>Interactive Studio with Explanations for ML Predictive Models <img src="reference/figures/logo.png" align="right" width="150">
+<a href="#interactive-studio-for-explanatory-model-analysis-" class="anchor"></a>Interactive Studio for Explanatory Model Analysis <img src="reference/figures/logo.png" align="right" width="150">
 </h1></div>
 
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
-<p>The <code>modelStudio</code> package automates the explanation of machine learning predictive models. This package generates advanced interactive and animated model explanations in the form of a serverless HTML site.</p>
-<p>It combines <strong>R</strong> with <strong>D3.js</strong> to produce plots and descriptions for various local and global explanations. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior. <code>modelStudio</code> is a fast and condensed way to get all the answers without much effort. Break down your model and look into its ingredients with only a few lines of code.</p>
-<p><a href="https://modeloriented.github.io/modelStudio/demo.html">See a demo</a>   <a href="https://pbiecek.github.io/explainFIFA19/">explainFIFA19</a>   <a href="https://github.com/hbaniecki/transparent_xai/">explain Lung Cancer</a>   <a href="https://github.com/ModelOriented/modelStudio#more">More</a></p>
+<p>The <code>modelStudio</code> package <strong>automates the explanation of machine learning predictive models</strong>. Generate advanced interactive and animated model explanations in the form of a <strong>serverless HTML site</strong> with only one line of code.</p>
+<p>The main <code><a href="reference/modelStudio.html">modelStudio()</a></code> function computes various (instance and dataset level) model explanations and produces an <strong>interactive, customisable dashboard made with D3.js</strong>. It consists of multiple panels for plots with their short descriptions. Easily <strong>save and share</strong> the dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.</p>
+<!--- [explain FIFA19](https://pbiecek.github.io/explainFIFA19/) &emsp; --->
+<p><a href="https://pbiecek.github.io/explainFIFA20/"><strong>explain FIFA20</strong></a>   <a href="https://github.com/hbaniecki/transparent_xai/">explain Lung Cancer</a>   <a href="https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#python-scikit-learn-model"><strong>explain Python model</strong></a>   <a href="https://modeloriented.github.io/modelStudio/#more">More Resources</a>   <a href="https://github.com/ModelOriented/modelStudio/issues/54"><strong>FAQ &amp; Troubleshooting</strong></a></p>
 <p><img src="images/gif3.gif"></p>
-<p>The <code>modelStudio</code> package is a part of the <a href="http://drwhy.ai">DrWhy.AI</a> universe.</p>
+<p>The <code>modelStudio</code> package is a part of the <a href="http://drwhy.ai"><strong>DrWhy.AI</strong></a> universe.</p>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
@@ -142,24 +144,24 @@
 <a class="sourceLine" id="cb2-17" title="17"></a>
 <a class="sourceLine" id="cb2-18" title="18"><span class="co"># Make a studio for the model</span></a>
 <a class="sourceLine" id="cb2-19" title="19"><span class="kw"><a href="reference/modelStudio.html">modelStudio</a></span>(explainer, new_observations)</a></code></pre></div>
-<p>More examples <a href="https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html">here</a>.</p>
+<p>Saved output in the form of a HTML file - <a href="https://modeloriented.github.io/modelStudio/demo.html"><strong>Demo Dashboard</strong></a>.</p>
 <p><img src="images/gif4.gif"></p>
 </div>
-<div id="more" class="section level2">
+<div id="more-resources" class="section level2">
 <h2 class="hasAnchor">
-<a href="#more" class="anchor"></a>More</h2>
+<a href="#more-resources" class="anchor"></a>More Resources</h2>
 <ul>
+<li><p><a href="https://pbiecek.github.io/ema">Explanatory Model Analysis. Explore, Explain and Examine Predictive Models.</a></p></li>
 <li><p><a href="misc/MLinPL2019_modelStudio_poster.pdf">Conference Poster about modelStudio</a></p></li>
 <li><p><a href="https://joss.theoj.org/papers/10.21105/joss.01798">Article about modelStudio</a></p></li>
 <li><p><a href="NEWS.html">News</a></p></li>
 <li><p><a href="https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html">Read the vignette: modelStudio - perks and features</a></p></li>
-<li><p><a href="images/cheatsheet.png">Cheatsheet</a></p></li>
 </ul>
 </div>
-<div id="save" class="section level2">
+<div id="save-and-share" class="section level2">
 <h2 class="hasAnchor">
-<a href="#save" class="anchor"></a>Save</h2>
-<p>Save <code>modelStudio</code> as a HTML file using buttons on the top of the RStudio Viewer or with the <a href="https://rstudio.github.io/r2d3/articles/publishing.html#save-as-html"><code><a href="https://rdrr.io/pkg/r2d3/man/save_d3_html.html">r2d3::save_d3_html()</a></code></a> function.</p>
+<a href="#save-and-share" class="anchor"></a>Save and Share</h2>
+<p>Save <code>modelStudio</code> as a HTML file using buttons on the top of the RStudio Viewer or with <a href="https://rstudio.github.io/r2d3/articles/publishing.html#save-as-html"><code><a href="https://rdrr.io/pkg/r2d3/man/save_d3_html.html">r2d3::save_d3_html()</a></code></a>.</p>
 <p align="center">
   <img src="images/controls.png"></p>
 </div>
@@ -186,7 +188,7 @@
 <div class="license">
 <h2>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.r-project.org/Licenses/GPL-2">GPL-2</a></li>
+<li><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></li>
 </ul>
 </div>
 <div class="community">

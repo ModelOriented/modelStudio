@@ -1,6 +1,7 @@
-#' @title Modify options and pass them to modelStudio
+#' @title Modify default options and pass them to modelStudio
 #'
-#' @description This function returns default options for \code{\link{modelStudio}}.
+#' @description
+#' This function returns default options for \code{\link{modelStudio}}.
 #' It is possible to modify values of this list and pass it to the \code{options}
 #' parameter in the main function. \strong{WARNING: Editing default options may cause
 #' unintended behavior.}
@@ -12,8 +13,10 @@
 #' \subsection{Main options:}{
 #' \describe{
 #' \item{scale_plot}{\code{TRUE} Makes every plot the same height, ignores \code{bar_width}.}
+#' \item{show_boxplot}{\code{TRUE} Display boxplots in Feature Importance and Shapley Values plots.}
 #' \item{show_subtitle}{\code{TRUE} Should the subtitle be displayed?}
 #' \item{subtitle}{\code{label} parameter from \code{explainer}.}
+#' \item{ms_title}{Title of the dashboard.}
 #' \item{margin_*}{Plot margins. Change \code{margin_left} for longer/shorter axis labels.}
 #' \item{w}{\code{420} in px. Inner plot width.}
 #' \item{h}{\code{280} in px. Inner plot height.}
@@ -22,8 +25,8 @@
 #' \item{line_size}{\code{2} in px. Default width of lines for all plots.}
 #' \item{point_size}{\code{3} in px. Default point radius for all plots.}
 #' \item{[bar,line,point]_color}{\code{[#46bac2,#46bac2,#371ea3]}}
-#' \item{positive_color}{\code{#8bdcbe} for Break Down and SHAP Values bars.}
-#' \item{negative_color}{\code{#f05a71} for Break Down and SHAP Values bars.}
+#' \item{positive_color}{\code{#8bdcbe} for Break Down and Shapley Values bars.}
+#' \item{negative_color}{\code{#f05a71} for Break Down and Shapley Values bars.}
 #' \item{default_color}{\code{#371ea3} for Break Down bar and highlighted line.}
 #' }
 #' }
@@ -44,21 +47,24 @@
 #'
 #'
 #' @examples
+#' library("DALEX")
 #' library("modelStudio")
 #'
-#' apartments <- DALEX::apartments
-#'
+#' # Create a model
 #' model_apartments <- glm(m2.price ~. ,
 #'                         data = apartments)
 #'
+#' # Wrap it into an explainer
 #' explain_apartments <- DALEX::explain(model_apartments,
 #'                                      data = apartments[,-1],
 #'                                      y = apartments[,1],
 #'                                      verbose = FALSE)
 #'
+#' # Pick some data points
 #' new_apartments <- apartments[1:2,]
 #' rownames(new_apartments) <- c("ap1","ap2")
 #'
+#' # Modify default options
 #' op <- modelStudioOptions(
 #'   show_subtitle = TRUE,
 #'   bd_subtitle = "Hello World",
@@ -70,9 +76,10 @@
 #'   bd_negative_color = "orange"
 #' )
 #'
+#' # Make a studio for the model with modified option
 #' modelStudio(explain_apartments, new_apartments,
-#'             facet_dim = c(1,2), N = 100, B = 10, show_info = FALSE,
-#'             options = op)
+#'             N = 100, B = 10, options = op,
+#'             show_info = FALSE)
 #'
 #' @export
 #' @rdname modelStudioOptions
@@ -81,8 +88,10 @@ modelStudioOptions <- function(...) {
   # prepare default options
   default_options <- list(
     scale_plot = TRUE,
+    show_boxplot = TRUE,
     show_subtitle = FALSE,
     subtitle = NULL,
+    ms_title = NULL,
     margin_top = 50,
     margin_right = 20,
     margin_bottom = 70,
@@ -108,7 +117,7 @@ modelStudioOptions <- function(...) {
     bd_positive_color = NULL,
     bd_negative_color = NULL,
     bd_default_color = NULL,
-    sv_title = "SHAP Values",
+    sv_title = "Shapley Values",
     sv_subtitle = NULL,
     sv_bar_width = NULL,
     sv_positive_color = NULL,
@@ -126,13 +135,13 @@ modelStudioOptions <- function(...) {
     fi_subtitle = NULL,
     fi_bar_width = NULL,
     fi_bar_color = NULL,
-    pd_title = "Partial Dependency",
+    pd_title = "Partial Dependence",
     pd_subtitle = NULL,
     pd_bar_width = NULL,
     pd_line_size = NULL,
     pd_bar_color = NULL,
     pd_line_color = NULL,
-    ad_title = "Accumulated Dependency",
+    ad_title = "Accumulated Dependence",
     ad_subtitle = NULL,
     ad_bar_width = NULL,
     ad_line_size = NULL,

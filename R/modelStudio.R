@@ -1,20 +1,22 @@
-#' @title Generate Interactive Studio with Explanations for the Model
+#' @title Generate Interactive Studio for Explanatory Model Analysis
 #'
 #' @description
-#' This tool uses your model, data and new observations, to provide local
-#' and global explanations. It generates plots and descriptions in the form
-#' of the serverless HTML site, that supports animations and interactivity made with D3.js.
+#' This function computes various (instance and dataset level) model explanations and produces an interactive,
+#' customisable dashboard made with D3.js. It consists of multiple panels for plots with their short descriptions.
+#' Easily save and share the dashboard with others. Tools for model exploration unite with tools for EDA
+#' (Exploratory Data Analysis) to give a broad overview of the model behavior.
 #'
-#' Find more details about plots in \href{https://github.com/pbiecek/ema}{Explanatory Model Analysis: Explore, Explain and Examine Predictive Models}
+#' Find more details about the plots in \href{https://github.com/pbiecek/ema}{Explanatory Model Analysis: Explore, Explain and Examine Predictive Models}
 #'
-#' @param object An \code{explainer} created with function \code{DALEX::explain()} or a model to be explained.
+#' @param explainer An \code{explainer} created with function \code{DALEX::explain()}.
 #' @param new_observation A new observation with columns that correspond to variables used in the model.
-#' @param new_observation_y True label for \code{new_observation}.
+#' @param new_observation_y True label for \code{new_observation} (optional).
 #' @param facet_dim Dimensions of the grid. Default is \code{c(2,2)}.
 #' @param time Time in ms. Set animation length. Default is \code{500}.
-#' @param max_features Maximum number of features to be included in Break Down and SHAP Values plots. Default is \code{10}.
-#' @param N Number of observations used for calculation of partial dependency profiles. Default is \code{400}.
-#' @param B Number of random paths used for calculation of SHAP values. Default is \code{15}.
+#' @param max_features Maximum number of features to be included in Break Down and Shapley Values plots. Default is \code{10}.
+#' @param N Number of observations used for calculation of partial dependence profiles. Default is \code{400}.
+#' @param B Number of random paths used for calculation of Shapley values. Default is \code{15}.
+#' @param eda Compute EDA plots. Default is \code{TRUE}.
 #' @param show_info Verbose progress bar on the console. Default is \code{TRUE}.
 #' @param parallel Speed up the computation using \code{parallelMap::parallelMap()}.
 #' See \href{https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#parallel-computation}{\bold{vignette}}.
@@ -24,15 +26,10 @@
 #' @param options Customize \code{modelStudio}. See \code{\link{modelStudioOptions}} and
 #' \href{https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#plot-options}{\bold{vignette}}.
 #' @param ... Other parameters.
-#' @param data Validation dataset, will be extracted from \code{object} if it is an explainer.
-#' NOTE: It is best when target variable is not present in the \code{data}.
-#' @param y True labels for \code{data}, will be extracted from \code{object} if it is an \code{explainer}.
-#' @param predict_function Predict function, will be extracted from \code{object} if it is an \code{explainer}.
-#' @param label A name of the model, will be extracted from \code{object} if it is an \code{explainer}.
 #'
 #' @return An object of the \code{r2d3} class.
 #'
-#' @importFrom utils head tail setTxtProgressBar txtProgressBar installed.packages
+#' @importFrom utils head tail setTxtProgressBar txtProgressBar packageVersion
 #' @importFrom stats aggregate predict quantile
 #' @importFrom grDevices nclass.Sturges
 #'
@@ -40,68 +37,78 @@
 #'
 #' \itemize{
 #'   \item Wrapper for the function is implemented in \href{https://modeloriented.github.io/DALEX/}{\bold{DALEX}}
-#'   \item Feature Importance, Ceteris Paribus, Partial Dependency and Accumulated Dependency plots
+#'   \item Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence plots
 #' are implemented in \href{https://modeloriented.github.io/ingredients/}{\bold{ingredients}}
-#'   \item Break Down and SHAP Values plots are implemented in \href{https://modeloriented.github.io/iBreakDown/}{\bold{iBreakDown}}
+#'   \item Break Down and Shapley Values plots are implemented in \href{https://modeloriented.github.io/iBreakDown/}{\bold{iBreakDown}}
 #' }
 #'
 #' @seealso
 #' Python wrappers and more can be found in \href{https://modeloriented.github.io/DALEXtra/}{\bold{DALEXtra}}
 #'
 #' @examples
+#' library("DALEX")
 #' library("modelStudio")
 #'
-#' # ex1 classification
+#' #:# ex1 classification on 'titanic_imputed' dataset
 #'
-#' model_titanic_glm <- glm(survived ~.,
-#'                          data = DALEX::titanic_imputed,
-#'                          family = "binomial")
+#' # Create a model
+#' model_titanic <- glm(survived ~.,
+#'                      data = titanic_imputed,
+#'                      family = "binomial")
 #'
-#' explain_titanic_glm <- DALEX::explain(model_titanic_glm,
-#'                                       data = DALEX::titanic_imputed[,-8],
-#'                                       y = DALEX::titanic_imputed[,8],
-#'                                       label = "glm",
-#'                                       verbose = FALSE)
+#' # Wrap it into an explainer
+#' explain_titanic <- explain(model_titanic,
+#'                            data = titanic_imputed[,-8],
+#'                            y = titanic_imputed[,8],
+#'                            label = "glm",
+#'                            verbose = FALSE)
 #'
-#' new_observations <- DALEX::titanic_imputed[1:2,]
+#' # Pick some data points
+#' new_observations <- titanic_imputed[1:2,]
 #' rownames(new_observations) <- c("Lucas","James")
 #'
-#' modelStudio(explain_titanic_glm, new_observations,
+#' # Make a studio for the model
+#' modelStudio(explain_titanic, new_observations,
 #'             N = 100, B = 10, show_info = FALSE)
 #'
 #' \donttest{
-#' # ex2 regression
+#' #:# ex2 regression on 'apartments' dataset
 #'
-#' model_apartments <- glm(m2.price ~. ,
-#'                         data = DALEX::apartments)
+#' model_apartments <- randomForest::randomForest(m2.price ~. ,
+#'                                                data = apartments)
 #'
-#' explain_apartments <- DALEX::explain(model_apartments,
-#'                                      data = DALEX::apartments[,-1],
-#'                                      y = DALEX::apartments[,1],
-#'                                      verbose = FALSE)
+#' explain_apartments <- explain(model_apartments,
+#'                               data = apartments[,-1],
+#'                               y = apartments[,1],
+#'                               verbose = FALSE)
 #'
-#' new_apartments <- DALEX::apartments[1:2,]
+#' new_apartments <- apartments[1:2,]
 #' rownames(new_apartments) <- c("ap1","ap2")
 #'
+#' # change dashboard dimensions and animation length
 #' modelStudio(explain_apartments, new_apartments,
-#'             facet_dim = c(2, 3), time = 1000,
+#'             facet_dim = c(2, 3), time = 800,
 #'             show_info = FALSE)
 #'
-#' modelStudio(explain_apartments, show_info = FALSE)
-#' modelStudio(explain_apartments, new_observation = new_apartments,
-#'                                 new_observation_y = DALEX::apartments[1:2, 1],
+#' # add information about true labels
+#' modelStudio(explain_apartments, new_apartments,
+#'                                 new_observation_y = apartments[1:2, 1],
 #'                                 show_info = FALSE)
+#'
+#' # don't compute EDA plots
+#' modelStudio(explain_apartments, eda = FALSE,
+#'             show_info = FALSE)
 #' }
 #'
 #' @export
 #' @rdname modelStudio
-modelStudio <- function(object, ...) {
+modelStudio <- function(explainer, ...) {
   UseMethod("modelStudio")
 }
 
 #' @export
 #' @rdname modelStudio
-modelStudio.explainer <- function(object,
+modelStudio.explainer <- function(explainer,
                                   new_observation = NULL,
                                   new_observation_y = NULL,
                                   facet_dim = c(2,2),
@@ -109,54 +116,18 @@ modelStudio.explainer <- function(object,
                                   max_features = 10,
                                   N = 400,
                                   B = 15,
+                                  eda = TRUE,
                                   show_info = TRUE,
                                   parallel = FALSE,
                                   options = modelStudioOptions(),
                                   viewer = "external",
                                   ...) {
 
-  explainer <- object
-
-  modelStudio.default(object = explainer$model,
-                      data = explainer$data,
-                      y = explainer$y,
-                      predict_function = explainer$predict_function,
-                      label = explainer$label,
-                      new_observation = new_observation,
-                      new_observation_y = new_observation_y,
-                      facet_dim = facet_dim,
-                      time = time,
-                      max_features = max_features,
-                      N = N,
-                      B = B,
-                      show_info = show_info,
-                      parallel = parallel,
-                      options = options,
-                      viewer = viewer,
-                      ...)
-}
-
-#' @export
-#' @rdname modelStudio
-modelStudio.default <- function(object,
-                                data,
-                                y,
-                                predict_function = predict,
-                                label = class(model)[1],
-                                new_observation = NULL,
-                                new_observation_y = NULL,
-                                facet_dim = c(2,2),
-                                time = 500,
-                                max_features = 10,
-                                N = 400,
-                                B = 15,
-                                show_info = TRUE,
-                                parallel = FALSE,
-                                options = modelStudioOptions(),
-                                viewer = "external",
-                                ...) {
-
-  model <- object
+  model <- explainer$model
+  data <- explainer$data
+  y <- explainer$y
+  predict_function <- explainer$predict_function
+  label <- explainer$label
 
   if (is.null(new_observation)) {
     message("`new_observation` argument is NULL. Observations needed to calculate local explanations are taken at random from the data.")
@@ -195,64 +166,69 @@ modelStudio.default <- function(object,
   ## because aggregate_profiles calculates numerical OR categorical
   if (all(which_numerical)) {
     pd_n <- try_catch(
-      ingredients::partial_dependency(
+      ingredients::partial_dependence(
           model, data, predict_function, variable_type = "numerical", N = N),
-      "ingredients::partial_dependency", "numerical", show_info)
+      "ingredients::partial_dependence", "numerical", show_info)
     if (show_info) setTxtProgressBar(pb, 2)
     pd_c <- NULL
     ad_n <- try_catch(
-      ingredients::accumulated_dependency(
+      ingredients::accumulated_dependence(
           model, data, predict_function, variable_type = "numerical", N = N),
-      "ingredients::accumulated_dependency", "numerical", show_info)
+      "ingredients::accumulated_dependence", "numerical", show_info)
     if (show_info) setTxtProgressBar(pb, 4)
     ad_c <- NULL
   } else if (all(!which_numerical)) {
     pd_n <- NULL
     pd_c <- try_catch(
-      ingredients::partial_dependency(
+      ingredients::partial_dependence(
           model, data, predict_function, variable_type = "categorical", N = N),
-      "ingredients::partial_dependency", "categorical", show_info)
+      "ingredients::partial_dependence", "categorical", show_info)
     if (show_info) setTxtProgressBar(pb, 3)
     ad_n <- NULL
     ad_c <- try_catch(
-      ingredients::accumulated_dependency(
+      ingredients::accumulated_dependence(
           model, data, predict_function, variable_type = "categorical", N = N),
-      "ingredients::accumulated_dependency", "categorical", show_info)
+      "ingredients::accumulated_dependence", "categorical", show_info)
     if (show_info) setTxtProgressBar(pb, 5)
   } else {
     pd_n <- try_catch(
-      ingredients::partial_dependency(
+      ingredients::partial_dependence(
         model, data, predict_function, variable_type = "numerical", N = N),
-      "ingredients::partial_dependency", "numerical", show_info)
+      "ingredients::partial_dependence", "numerical", show_info)
     if (show_info) setTxtProgressBar(pb, 2)
     pd_c <- try_catch(
-      ingredients::partial_dependency(
+      ingredients::partial_dependence(
         model, data, predict_function, variable_type = "categorical", N = N),
-      "ingredients::partial_dependency", "categorical", show_info)
+      "ingredients::partial_dependence", "categorical", show_info)
     if (show_info) setTxtProgressBar(pb, 3)
     ad_n <- try_catch(
-      ingredients::accumulated_dependency(
+      ingredients::accumulated_dependence(
         model, data, predict_function, variable_type = "numerical", N = N),
-      "ingredients::accumulated_dependency", "numerical", show_info)
+      "ingredients::accumulated_dependence", "numerical", show_info)
     if (show_info) setTxtProgressBar(pb, 4)
     ad_c <- try_catch(
-      ingredients::accumulated_dependency(
+      ingredients::accumulated_dependence(
         model, data, predict_function, variable_type = "categorical", N = N),
-      "ingredients::accumulated_dependency", "categorical", show_info)
+      "ingredients::accumulated_dependence", "categorical", show_info)
     if (show_info) setTxtProgressBar(pb, 5)
   }
 
-  fi_data <- prepare_feature_importance(fi, max_features, ...)
-  pd_data <- prepare_partial_dependency(pd_n, pd_c, variables = variable_names)
-  ad_data <- prepare_accumulated_dependency(ad_n, ad_c, variables = variable_names)
-  fd_data <- prepare_feature_distribution(data, y, variables = variable_names)
-  at_data <- prepare_average_target(data, y, variables = variable_names)
+  fi_data <- prepare_feature_importance(fi, max_features, options$show_boxplot, ...)
+  pd_data <- prepare_partial_dependence(pd_n, pd_c, variables = variable_names)
+  ad_data <- prepare_accumulated_dependence(ad_n, ad_c, variables = variable_names)
+
+  if (eda) {
+    fd_data <- prepare_feature_distribution(data, y, variables = variable_names)
+    at_data <- prepare_average_target(data, y, variables = variable_names)
+  } else {
+    fd_data <- at_data <- NULL
+  }
 
   if (parallel) {
     parallelMap::parallelStart()
     parallelMap::parallelLibrary(packages = loadedNamespaces())
 
-    f <- function(i, model, data, predict_function, label, B, ...) {
+    f <- function(i, model, data, predict_function, label, B, show_boxplot, ...) {
       new_observation <- obs_data[i,]
 
       bd <- try_catch(
@@ -269,7 +245,7 @@ modelStudio.default <- function(object,
         "ingredients::ceteris_paribus", i, show_info, FALSE)
 
       bd_data <- prepare_break_down(bd, max_features, ...)
-      sv_data <- prepare_shap_values(sv, max_features, ...)
+      sv_data <- prepare_shapley_values(sv, max_features, show_boxplot, ...)
       cp_data <- prepare_ceteris_paribus(cp, variables = variable_names)
 
       list(bd_data, cp_data, sv_data)
@@ -282,6 +258,7 @@ modelStudio.default <- function(object,
                                            predict_function = predict_function,
                                            label = label,
                                            B = B,
+                                           show_boxplot = options$show_boxplot,
                                            ...
                                          ))
 
@@ -309,7 +286,7 @@ modelStudio.default <- function(object,
       if (show_info) setTxtProgressBar(pb, 5 + i)
 
       bd_data <- prepare_break_down(bd, max_features, ...)
-      sv_data <- prepare_shap_values(sv, max_features, ...)
+      sv_data <- prepare_shapley_values(sv, max_features, options$show_boxplot, ...)
       cp_data <- prepare_ceteris_paribus(cp, variables = variable_names)
 
       obs_list[[i]] <- list(bd_data, cp_data, sv_data)
@@ -324,15 +301,18 @@ modelStudio.default <- function(object,
                                         paste0(rownames(obs_data), between, new_observation_y)))
   colnames(drop_down_data) <- c("id", "text")
 
-  footer_text <- paste0("Site built with modelStudio v", installed.packages()["modelStudio","Version"],
+  footer_text <- paste0("Site built with modelStudio v", packageVersion("modelStudio"),
                         " on ", format(Sys.time(), usetz = FALSE))
+
+  if (is.null(options$ms_title)) options$ms_title <- paste0("Interactive Studio for ", label, " Model")
 
   options <- c(list(time = time,
                     model_name = label,
                     variable_names = variable_names,
                     facet_dim = facet_dim,
                     footer_text = footer_text,
-                    drop_down_data = jsonlite::toJSON(drop_down_data)
+                    drop_down_data = jsonlite::toJSON(drop_down_data),
+                    eda = eda
                     ), options)
 
   temp <- jsonlite::toJSON(list(obs_list, fi_data, pd_data, ad_data, fd_data, at_data))
@@ -410,7 +390,7 @@ remove_file_paths <- function(text, type = NULL) {
 
 try_catch <- function(expr, function_name, i = 1, show_info = TRUE, new = TRUE) {
   tryCatch({
-    if (show_info) message(paste0(ifelse(new,"\n",""), "Function ", function_name, " is being calculated. (", i, ")"))
+    if (show_info) message(paste0(ifelse(new,"\n",""), "Calculate ", function_name, " (", i, ")"))
     expr
     },
     error = function(e) {

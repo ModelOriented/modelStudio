@@ -24,9 +24,12 @@ var TIME = options.time,
     dim = options.facet_dim,
     footerText = options.footer_text,
     dropDownData = options.drop_down_data,
+    EDA = options.eda,
     SCALE_PLOT = options.scale_plot,
+    SHOW_BOXPLOT = options.show_boxplot,
     SHOW_SUBTITLE = options.show_subtitle,
     subTitle = options.subtitle || modelName,
+    msTitle = options.ms_title,
     barWidth = options.bar_width,
     lineSize = options.line_size,
     pointSize = options.point_size,
@@ -128,15 +131,22 @@ if (!SHOW_SUBTITLE) {
 }
 
 /// for plot chosing
-var notVisiblePlots = [{id:"BD", text:"Break Down [Local]"},
-                       {id:"SV", text:"SHAP Values [Local]"},
-                       {id:"CP", text:"Ceteris Paribus [Local]"},
-                       {id:"FI", text:"Feature Importance [Global]"},
-                       {id:"PD", text:"Partial Dependency [Global]"},
-                       {id:"AD", text:"Accumulated Dependency [Global]"},
-                       {id:"FD", text:"Feature Distribution [EDA]"},
-                       {id:"TV", text:"Target vs Feature [EDA]"},
-                       {id:"AT", text:"Average Target vs Feature [EDA]"}];
+var notVisiblePlots = EDA ?
+                       [{id:"BD", text: bdTitle + " [Local]"},
+                       {id:"SV", text: svTitle + " [Local]"},
+                       {id:"CP", text: cpTitle + " [Local]"},
+                       {id:"FI", text: fiTitle + " [Global]"},
+                       {id:"PD", text: pdTitle + " [Global]"},
+                       {id:"AD", text: adTitle + " [Global]"},
+                       {id:"FD", text: fdTitle + " [EDA]"},
+                       {id:"TV", text: tvTitle + " [EDA]"},
+                       {id:"AT", text: atTitle + " [EDA]"}] :
+                       [{id:"BD", text: bdTitle + " [Local]"},
+                       {id:"SV", text: svTitle + " [Local]"},
+                       {id:"CP", text: cpTitle + " [Local]"},
+                       {id:"FI", text: fiTitle + " [Global]"},
+                       {id:"PD", text: pdTitle + " [Global]"},
+                       {id:"AD", text: adTitle + " [Global]"}];
 
 var visiblePlots = [];
 
@@ -166,7 +176,7 @@ function initializeStudio() {
        .attr("class", "mainTitle")
        .attr("x", 15)
        .attr("y", 30)
-       .text("Interactive Model Studio");
+       .text(msTitle);
 
   TOP_G.append("line")
        .attr("class", "mainLine")
