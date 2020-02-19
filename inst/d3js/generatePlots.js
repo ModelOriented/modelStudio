@@ -526,8 +526,8 @@ function shapleyValues() {
     // rectangle for the main box
     bars.append("rect")
         .attr("x", d => d.contribution < 0 ? x(d.q3) : x(d.q1))
-        .attr("y", d => y(d.variable) + y.bandwidth()/6)
-        .attr("height", 2*y.bandwidth()/3)
+        .attr("y", d => y(d.variable) + y.bandwidth()/4)
+        .attr("height", y.bandwidth()/2)
         .style("fill", "#371ea3")
         .transition()
         .duration(TIME)
@@ -632,7 +632,7 @@ function featureImportance() {
             .call(g => g.select(".domain").remove());
 
   var y = d3.scaleBand()
-            .rangeRound([margin.top + fiPlotHeight, margin.top - additionalHeight])
+            .rangeRound([margin.top - additionalHeight, margin.top + fiPlotHeight])
             .padding(0.33)
             .domain(bData.map(d => d.variable));
 
@@ -736,7 +736,8 @@ function featureImportance() {
     .attr("y2", maximumY + y.bandwidth());
 
   // boxplots
-  if (SHOW_BOXPLOTS) {
+  if (SHOW_BOXPLOT) {
+
     // main horizontal line
     bars.append("line")
         .attr("class", "interceptLine")
@@ -753,8 +754,8 @@ function featureImportance() {
     // rectangle for the main box
     bars.append("rect")
         .attr("x", d => x(d.dropout_loss) < x(fullModel) ? x(d.q3) : x(d.q1))
-        .attr("y", d => y(d.variable) + y.bandwidth()/6)
-        .attr("height", 2*y.bandwidth()/3)
+        .attr("y", d => y(d.variable) + y.bandwidth()/4)
+        .attr("height", y.bandwidth()/2)
         .style("fill", "#371ea3")
         .transition()
         .duration(TIME)

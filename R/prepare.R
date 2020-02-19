@@ -1,5 +1,5 @@
 prepare_break_down <- function(x, max_features = 10, baseline = NA, digits = 3,
-                               rounding_function = round, margin = 0.2, min_max = NA) {
+                               rounding_function = round, margin = 0.2) {
   ### This function returns object needed to plot BreakDown in D3 ###
 
   if (is.null(x)) return(NULL)
@@ -8,12 +8,10 @@ prepare_break_down <- function(x, max_features = 10, baseline = NA, digits = 3,
 
   new_x <- prepare_break_down_df(x, max_features, baseline, digits, rounding_function)
 
-  if (any(is.na(min_max))) {
-    if (is.na(baseline)) {
-      min_max <- range(new_x[,'cumulative'])
-    } else {
-      min_max <- range(new_x[,'cumulative'], baseline)
-    }
+  if (is.na(baseline)) {
+    min_max <- range(new_x[,'cumulative'])
+  } else {
+    min_max <- range(new_x[,'cumulative'], baseline)
   }
 
   # count margins
@@ -94,8 +92,8 @@ prepare_break_down_df <- function(x, max_features = 10, baseline = NA, digits = 
   x
 }
 
-prepare_shapley_values <- function(x, max_features = 10, baseline = NA, digits = 3,
-                                   rounding_function = round, margin = 0.2, min_max = NA) {
+prepare_shapley_values <- function(x, max_features = 10, show_boxplot = TRUE, baseline = NA,
+                                   digits = 3, rounding_function = round, margin = 0.15) {
   ### This function returns object needed to plot ShapleyValues in D3 ###
 
   if (is.null(x)) return(NULL)
@@ -104,34 +102,34 @@ prepare_shapley_values <- function(x, max_features = 10, baseline = NA, digits =
   if (is.na(baseline)) baseline <- attr(x, "intercept")[[1]]
   prediction <- attr(x, "prediction")[[1]]
 
-  df <- as.data.frame(x)
+  x_df <- as.data.frame(x)
 
-  #:# change the input to save boxplot data
-  result <- data.frame(
-    min = tapply(df$contribution, x$variable_name, min, na.rm = TRUE),
-    q1 = tapply(df$contribution, x$variable_name, quantile, 0.25, na.rm = TRUE),
-    q3 = tapply(df$contribution, x$variable_name, quantile, 0.75, na.rm = TRUE),
-    max = tapply(df$contribution, x$variable_name, max, na.rm = TRUE)
-  )
+  x_df_short <- subset(x_df[x_df$B == 0, ], select = -B)
 
-  result$min <- as.numeric(result$min) + baseline
-  result$q1 <- as.numeric(result$q1) + baseline
-  result$q3 <- as.numeric(result$q3) + baseline
-  result$max <- as.numeric(result$max) + baseline
+  m <- ifelse(nrow(x_df_short) <= max_features, nrow(x_df_short), max_features) # max_features + 1
+  new_x <- prepare_shapley_values_df(x_df_short, max_features, baseline, prediction, digits, rounding_function)
 
-  df <- df[df$B == 0, ]
-  #:#
+  if (show_boxplot) {
+    #:# change the input to save boxplot data
+    result <- data.frame(
+      min = tapply(x_df$contribution, x_df$variable_name, min, na.rm = TRUE),
+      q1 = tapply(x_df$contribution, x_df$variable_name, quantile, 0.25, na.rm = TRUE),
+      q3 = tapply(x_df$contribution, x_df$variable_name, quantile, 0.75, na.rm = TRUE),
+      max = tapply(x_df$contribution, x_df$variable_name, max, na.rm = TRUE)
+    )
 
-  m <- ifelse(nrow(df) <= max_features, nrow(df), max_features) # max_features + 1
-  new_x <- prepare_shapley_values_df(df, max_features, baseline, prediction, digits, rounding_function)
+    result$min <- as.numeric(result$min) + baseline
+    result$q1 <- as.numeric(result$q1) + baseline
+    result$q3 <- as.numeric(result$q3) + baseline
+    result$max <- as.numeric(result$max) + baseline
 
-  #:#
-  new_x <- merge(new_x, cbind(rownames(result), result), by.x = "variable_name", by.y = "rownames(result)")
-  new_x <- subset(new_x, select = -B)
-  #:#
+    new_x <- merge(new_x, cbind(rownames(result), result), by.x = "variable_name", by.y = "rownames(result)", sort = FALSE)
+    #:#
 
-  if (any(is.na(min_max))) {
+    min_max <- range(new_x[,"q1"], new_x[,"q3"], new_x[,"barStart"], new_x[,"barSupport"])
+  } else {
     min_max <- range(new_x[,"barStart"], new_x[,"barSupport"])
+    margin <- 0.2
   }
 
   # count margins
@@ -158,7 +156,7 @@ prepare_shapley_values <- function(x, max_features = 10, baseline = NA, digits =
 }
 
 prepare_shapley_values_df <- function(x, max_features = 10, baseline = NA, prediction,
-                                   digits = 3, rounding_function = round) {
+                                      digits = 3, rounding_function = round) {
   ### This function returns data as DF needed to plot ShapleyValues in D3 ###
 
   x <- as.data.frame(x)
@@ -283,60 +281,64 @@ prepare_ceteris_paribus <- function(x, variables = NULL) {
   ret
 }
 
-prepare_feature_importance <- function(x, max_features = 10, margin = 0.2,
-                                       digits = 3, rounding_function = round) {
+prepare_feature_importance <- function(x, max_features = 10, show_boxplot = TRUE,
+                                       margin = 0.15, digits = 3, rounding_function = round) {
   ### This function returns object needed to plot FeatureImportance in D3 ###
 
   if (is.null(x)) return(NULL)
   permutation <- NULL
 
-  #:# change the input to save boxplot data
-  x_stats <- data.frame(
-    min = tapply(x$dropout_loss, x$variable, min, na.rm = TRUE),
-    q1 = tapply(x$dropout_loss, x$variable, quantile, 0.25, na.rm = TRUE),
-    q3 = tapply(x$dropout_loss, x$variable, quantile, 0.75, na.rm = TRUE),
-    max = tapply(x$dropout_loss, x$variable, max, na.rm = TRUE)
-  )
+  x_df <- as.data.frame(x)
 
-  x_stats$min <- as.numeric(x_stats$min)
-  x_stats$q1 <- as.numeric(x_stats$q1)
-  x_stats$q3 <- as.numeric(x_stats$q3)
-  x_stats$max <- as.numeric(x_stats$max)
+  x_df_short <- subset(x_df[x_df$permutation == 0,], select = -permutation)
+  m <- dim(x_df_short)[1] - 2
 
-  x_short <- merge(x[x$permutation == 0,], cbind(rownames(x_stats),x_stats), by.x = "variable", by.y = "rownames(x_stats)")
-  x_short <- subset(x_short, select = -permutation)
-  #:#
-
-  m <- dim(x_short)[1] - 2
-
-  xmin <- min(x_short$dropout_loss)
-  xmax <- max(x_short[x_short$variable!="_baseline_",]$dropout_loss)
-
-  ticks_margin <- abs(xmin-xmax)*margin;
-
-  best_fits <- x_short[x_short$variable == "_full_model_",]
-  new_x <- merge(x_short, best_fits[,c("label", "dropout_loss")], by = "label", sort = FALSE)
+  best_fits <- x_df_short[x_df_short$variable %in% "_full_model_", ]
+  new_x <- merge(x_df_short, best_fits[,c("label", "dropout_loss")], by = "label", sort = FALSE)
 
   # remove rows that starts with _
-  new_x <- new_x[!(substr(new_x$variable,1,1) == "_"),]
+  new_x <- new_x[!new_x$variable %in% c("_full_model_", "_baseline_"), ]
 
-  perm <- aggregate(new_x$dropout_loss.x,
-                    by = list(Category = new_x$variable), FUN = mean)
+  # order bars
+  new_x <- new_x[order(-abs(new_x$dropout_loss.x)),]
 
-
-  if (!is.null(max_features) && max_features < m) {
+  if (max_features < m) {
     m <- max_features
-    new_x <- new_x[tail(order(new_x$dropout_loss.x), max_features),]
+    new_x <- new_x[1:max_features,]
   }
 
-  # sorting bars in groups
-  perm <- as.character(perm$Category[order(perm$x)])
-  new_x$variable <- factor(as.character(new_x$variable), levels = perm)
-  new_x <- new_x[order(new_x$variable),]
-
-  colnames(new_x)[c(3,8)] <- c("dropout_loss", "full_model")
+  colnames(new_x)[3:4] <- c("dropout_loss", "full_model")
   new_x$dropout_loss <- rounding_function(new_x$dropout_loss, digits)
   new_x$full_model <- rounding_function(new_x$full_model, digits)
+
+  if (show_boxplot) {
+    #:# change the input to save boxplot data
+    x_stats <- data.frame(
+      min = tapply(x_df$dropout_loss, x_df$variable, min, na.rm = TRUE),
+      q1 = tapply(x_df$dropout_loss, x_df$variable, quantile, 0.25, na.rm = TRUE),
+      q3 = tapply(x_df$dropout_loss, x_df$variable, quantile, 0.75, na.rm = TRUE),
+      max = tapply(x_df$dropout_loss, x_df$variable, max, na.rm = TRUE)
+    )
+
+    x_stats$min <- as.numeric(x_stats$min)
+    x_stats$q1 <- as.numeric(x_stats$q1)
+    x_stats$q3 <- as.numeric(x_stats$q3)
+    x_stats$max <- as.numeric(x_stats$max)
+
+    new_x <- merge(new_x, cbind(rownames(x_stats), x_stats),
+                   by.x = "variable", by.y = "rownames(x_stats)", sort = FALSE)
+    #:#
+
+    min_max <- range(new_x[,"q1"], new_x[,"q3"], new_x[,"dropout_loss"], new_x[1,"full_model"])
+  } else {
+    min_max <- range(new_x[,"dropout_loss"], new_x[1,"full_model"])
+    margin <- 0.2
+  }
+
+  # count margins
+  min_max_margin <- abs(min_max[2]-min_max[1])*margin
+  min_max[1] <- min_max[1] - min_max_margin
+  min_max[2] <- min_max[2] + min_max_margin
 
   desc <- try_catch(ingredients::describe(x),
                     "ingredients::describe.feature_importance", show_info = FALSE)
@@ -346,7 +348,7 @@ prepare_feature_importance <- function(x, max_features = 10, margin = 0.2,
   ret <- NULL
   ret$x <- new_x
   ret$m <- m
-  ret$x_min_max <- c(xmin - ticks_margin, xmax + ticks_margin)
+  ret$x_min_max <- min_max
   ret$desc <- data.frame(type = "desc",
                          text = gsub("\n","</br>", desc))
 

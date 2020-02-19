@@ -213,7 +213,7 @@ modelStudio.explainer <- function(explainer,
     if (show_info) setTxtProgressBar(pb, 5)
   }
 
-  fi_data <- prepare_feature_importance(fi, max_features, ...)
+  fi_data <- prepare_feature_importance(fi, max_features, options$show_boxplot, ...)
   pd_data <- prepare_partial_dependence(pd_n, pd_c, variables = variable_names)
   ad_data <- prepare_accumulated_dependence(ad_n, ad_c, variables = variable_names)
 
@@ -228,7 +228,7 @@ modelStudio.explainer <- function(explainer,
     parallelMap::parallelStart()
     parallelMap::parallelLibrary(packages = loadedNamespaces())
 
-    f <- function(i, model, data, predict_function, label, B, ...) {
+    f <- function(i, model, data, predict_function, label, B, show_boxplot, ...) {
       new_observation <- obs_data[i,]
 
       bd <- try_catch(
@@ -245,7 +245,7 @@ modelStudio.explainer <- function(explainer,
         "ingredients::ceteris_paribus", i, show_info, FALSE)
 
       bd_data <- prepare_break_down(bd, max_features, ...)
-      sv_data <- prepare_shapley_values(sv, max_features, ...)
+      sv_data <- prepare_shapley_values(sv, max_features, show_boxplot, ...)
       cp_data <- prepare_ceteris_paribus(cp, variables = variable_names)
 
       list(bd_data, cp_data, sv_data)
@@ -258,6 +258,7 @@ modelStudio.explainer <- function(explainer,
                                            predict_function = predict_function,
                                            label = label,
                                            B = B,
+                                           show_boxplot = options$show_boxplot,
                                            ...
                                          ))
 
@@ -285,7 +286,7 @@ modelStudio.explainer <- function(explainer,
       if (show_info) setTxtProgressBar(pb, 5 + i)
 
       bd_data <- prepare_break_down(bd, max_features, ...)
-      sv_data <- prepare_shapley_values(sv, max_features, ...)
+      sv_data <- prepare_shapley_values(sv, max_features, options$show_boxplot, ...)
       cp_data <- prepare_ceteris_paribus(cp, variables = variable_names)
 
       obs_list[[i]] <- list(bd_data, cp_data, sv_data)
