@@ -7,7 +7,7 @@ Authors@R:
              comment = c(ORCID = "0000-0001-6661-5364")),
       person("Przemyslaw", "Biecek", role = c("aut"), 
              comment = c(ORCID = "0000-0001-8423-1823")))
-Description: Automate the explanation of machine learning predictive models.
+Description: Automate the explanatory analysis of machine learning predictive models.
     This package generates advanced interactive and animated model explanations
     in the form of a serverless HTML site with only one line of code. 
     The main function computes various (instance and dataset level) model explanations
