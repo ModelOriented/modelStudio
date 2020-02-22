@@ -553,7 +553,7 @@ prepare_feature_distribution <- function(x, y, variables = NULL) {
       nbin[[name]] <- nclass.Sturges(x[,name]) ## FD, scott/Sturges nbin choice
     } else {
       x_min_max_list[[name]] <- sort(unique(x[,name]))
-      x_max_list[[name]] <-max(table(x[,name]))
+      x_max_list[[name]] <- max(table(x[,name]))
     }
   }
 

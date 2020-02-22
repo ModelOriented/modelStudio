@@ -862,7 +862,8 @@ function featureDistribution() {
     fdNumericalPlot(tVariableName, dData, xMinMax[tVariableName],
                     nBin[tVariableName]);
   } else {
-    fdCategoricalPlot(tVariableName, dData, xMax[tVariableName]);
+    fdCategoricalPlot(tVariableName, dData, xMinMax[tVariableName],
+                      xMax[tVariableName]);
   }
 }
 
@@ -2078,13 +2079,18 @@ function fdNumericalPlot(variableName, dData, mData, nBin) {
   }
 }
 
-function fdCategoricalPlot(variableName, dData, mData) {
+function fdCategoricalPlot(variableName, dData, xMinMax, mData) {
 
   // equivalent of R table function
   var tableData = d3.nest()
                     .key(d => d[variableName])
                     .rollup(v => v.length)
                     .entries(dData);
+  // sort tableData
+  var tableDataSorted = [];
+  tableData.forEach(e => {
+    tableDataSorted[xMinMax.indexOf(e.key)] = e;
+  });
 
   var fdBarCount = tableData.map(d => d.key).length;
 
@@ -2108,7 +2114,7 @@ function fdCategoricalPlot(variableName, dData, mData) {
   var y = d3.scaleBand()
             .rangeRound([margin.top - additionalHeight, margin.top + fdPlotHeight])
             .padding(0.33)
-            .domain(tableData.map(d => d.key));
+            .domain(xMinMax);
 
   var xGrid = FD.append("g")
                 .attr("class", "grid")
@@ -2151,7 +2157,7 @@ function fdCategoricalPlot(variableName, dData, mData) {
     .text(fdTitle);
 
   var bars = FD.selectAll()
-               .data(tableData)
+               .data(tableDataSorted)
                .enter()
                .append("g");
 
