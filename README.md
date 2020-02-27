@@ -20,7 +20,7 @@ The main `modelStudio()` function computes various (instance and dataset level) 
 [More Resources](https://modeloriented.github.io/modelStudio/#more) &emsp;
 [**FAQ & Troubleshooting**](https://github.com/ModelOriented/modelStudio/issues/54)
 
-![](images/gif3.gif)
+![](images/short.gif)
 
 The `modelStudio` package is a part of the [**DrWhy.AI**](http://drwhy.ai) universe.
 
@@ -63,7 +63,7 @@ modelStudio(explainer, new_observations)
 
 Saved output in the form of a HTML file - [**Demo Dashboard**](https://modeloriented.github.io/modelStudio/demo.html).
 
-![](images/gif4.gif)
+![](images/long.gif)
 
 ## More Resources
   
