@@ -146,3 +146,7 @@ testthat::test_that("show_info_and_new_observation_y", {
 testthat::test_that("eda = FALSE", {
   testthat::expect_is(modelStudio::modelStudio(explain_glm, eda = FALSE), "r2d3")
 })
+
+testthat::test_that("xgboost matrix", {
+  testthat::expect_is(modelStudio::modelStudio(explainer_xgb), "r2d3")
+})

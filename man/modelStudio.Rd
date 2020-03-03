@@ -80,47 +80,68 @@ model_titanic <- glm(survived ~.,
                      family = "binomial")
 
 # Wrap it into an explainer
-explain_titanic <- explain(model_titanic,
-                           data = titanic_imputed[,-8],
-                           y = titanic_imputed[,8],
-                           label = "glm",
-                           verbose = FALSE)
+explainer_titanic <- explain(model_titanic,
+                             data = titanic_imputed[,-8],
+                             y = titanic_imputed[,8],
+                             label = "glm",
+                             verbose = FALSE)
 
 # Pick some data points
 new_observations <- titanic_imputed[1:2,]
 rownames(new_observations) <- c("Lucas","James")
 
 # Make a studio for the model
-modelStudio(explain_titanic, new_observations,
+modelStudio(explainer_titanic, new_observations,
             N = 100, B = 10, show_info = FALSE)
 
 \donttest{
+
 #:# ex2 regression on 'apartments' dataset
+library("randomForest")
 
-model_apartments <- randomForest::randomForest(m2.price ~. ,
-                                               data = apartments)
+model_apartments <- randomForest(m2.price ~. ,data = apartments)
 
-explain_apartments <- explain(model_apartments,
-                              data = apartments[,-1],
-                              y = apartments[,1],
-                              verbose = FALSE)
+explainer_apartments <- explain(model_apartments,
+                                data = apartments[,-1],
+                                y = apartments[,1],
+                                verbose = FALSE)
 
 new_apartments <- apartments[1:2,]
 rownames(new_apartments) <- c("ap1","ap2")
 
 # change dashboard dimensions and animation length
-modelStudio(explain_apartments, new_apartments,
+modelStudio(explainer_apartments, new_apartments,
             facet_dim = c(2, 3), time = 800,
             show_info = FALSE)
 
 # add information about true labels
-modelStudio(explain_apartments, new_apartments,
+modelStudio(explainer_apartments, new_apartments,
                                 new_observation_y = apartments[1:2, 1],
                                 show_info = FALSE)
 
 # don't compute EDA plots
-modelStudio(explain_apartments, eda = FALSE,
+modelStudio(explainer_apartments, eda = FALSE,
             show_info = FALSE)
+
+
+#:# ex3 xgboost model on 'HR' dataset
+library("xgboost")
+
+model_matrix <- model.matrix(status == "fired" ~ . -1, HR)
+data <- xgb.DMatrix(model_matrix, label = HR$status == "fired")
+
+params <- list(max_depth = 2, eta = 1, silent = 1, nthread = 2,
+               objective = "binary:logistic", eval_metric = "auc")
+
+model_HR <- xgb.train(params, data, nrounds = 50)
+
+explainer_HR <- explain(model_HR,
+                        data = model_matrix,
+                        y = HR$status == "fired",
+                        verbose = FALSE)
+
+modelStudio(explainer_HR, show_info = FALSE)
+
 }
 
 }

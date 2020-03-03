@@ -127,3 +127,13 @@ explain_artifficial <- DALEX::explain(model_artifficial,
                                y = artifficial[,12],
                                verbose = v)
 
+### xgboost matrix
+model_matrix_train <- model.matrix(status == "fired" ~ . -1, DALEX::HR)
+data_train <- xgboost::xgb.DMatrix(model_matrix_train, label = DALEX::HR$status == "fired")
+
+param <- list(max_depth = 2, eta = 1, silent = 1, nthread = 2,
+              objective = "binary:logistic", eval_metric = "auc")
+HR_xgb_model <- xgboost::xgb.train(param, data_train, nrounds = 50)
+
+explainer_xgb <- DALEX::explain(HR_xgb_model, data = model_matrix_train,
+                         y = DALEX::HR$status == "fired", label = "xgboost")

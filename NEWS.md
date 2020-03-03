@@ -1,3 +1,7 @@
+# modelStudio 1.0
+* comply with `R v4.0` changes
+* add support for matrix-like `data` with `xgboost` working example
+
 # modelStudio 0.3.0
 * **`modelStudio()` now only works on `explainer` class object made with `DALEX::explain()`**
 * this version requires `iBreakDown v1.0.0` and `ingredients v1.0.0` 

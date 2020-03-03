@@ -55,10 +55,10 @@
 #'                         data = apartments)
 #'
 #' # Wrap it into an explainer
-#' explain_apartments <- DALEX::explain(model_apartments,
-#'                                      data = apartments[,-1],
-#'                                      y = apartments[,1],
-#'                                      verbose = FALSE)
+#' explainer_apartments <- DALEX::explain(model_apartments,
+#'                                        data = apartments[,-1],
+#'                                        y = apartments[,1],
+#'                                        verbose = FALSE)
 #'
 #' # Pick some data points
 #' new_apartments <- apartments[1:2,]
@@ -77,7 +77,7 @@
 #' )
 #'
 #' # Make a studio for the model with modified option
-#' modelStudio(explain_apartments, new_apartments,
+#' modelStudio(explainer_apartments, new_apartments,
 #'             N = 100, B = 10, options = op,
 #'             show_info = FALSE)
 #'

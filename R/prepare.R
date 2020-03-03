@@ -206,7 +206,7 @@ prepare_ceteris_paribus <- function(x, variables = NULL) {
   if (is.null(x)) return(NULL)
 
   # which variable is numeric?
-  is_numeric <- sapply(x[, variables, drop = FALSE], is.numeric)
+  is_numeric <- apply(x[, variables, drop = FALSE], 2, is.numeric)
   names(is_numeric) <- variables
 
   # safeguard
@@ -534,7 +534,7 @@ prepare_feature_distribution <- function(x, y, variables = NULL) {
   if (is.null(x) | is.null(y)) return(NULL)
 
   # which variable is numeric?
-  is_numeric <- sapply(x[, variables, drop = FALSE], is.numeric)
+  is_numeric <- apply(x[, variables, drop = FALSE], 2, is.numeric)
   names(is_numeric) <- variables
 
   # safeguard
@@ -578,7 +578,7 @@ prepare_average_target <- function(x, y, variables = NULL) {
   if (is.null(x) | is.null(y)) return(NULL)
 
   # which variable is numeric?
-  is_numeric <- sapply(x[, variables, drop = FALSE], is.numeric)
+  is_numeric <- apply(x[, variables, drop = FALSE], 2, is.numeric)
   names(is_numeric) <- variables
 
   # safeguard
