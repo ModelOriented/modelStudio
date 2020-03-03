@@ -150,19 +150,29 @@ modelStudio.explainer <- function(explainer,
   predict_function <- explainer$predict_function
   label <- explainer$label
 
-  if (is.null(new_observation)) {
-    if (show_info) message("`new_observation` argument is NULL.\nObservations needed to calculate local explanations are taken at random from the data.")
-    new_observation <- ingredients::select_sample(data, 3)
-  }
-
-  ## safeguard
-  if (is.null(dim(new_observation))) {
-    warning("`new_observation` argument is not a data.frame nor a matrix, coerced to data.frame")
-    new_observation <- as.data.frame(new_observation)
-  }
+  #:# checks
   if (is.null(rownames(data))) {
     rownames(data) <- 1:nrow(data)
   }
+
+  if (is.null(new_observation)) {
+    if (show_info) message("`new_observation` argument is NULL.\n",
+                           "Observations needed to calculate local explanations are taken at random from the data.\n")
+    new_observation <- ingredients::select_sample(data, 3)
+
+  } else if (is.null(dim(new_observation))) {
+    warning("`new_observation` argument is not a data.frame nor a matrix, coerced to data.frame\n")
+    new_observation <- as.data.frame(new_observation)
+
+  } else if (is.null(rownames(new_observation))) {
+    rownames(new_observation) <- 1:nrow(new_observation)
+  }
+
+  check_single_prediction <- try(predict_function(model, new_observation[1,, drop = FALSE]), silent = TRUE)
+  if (class(check_single_prediction)[1] == "try-error") {
+    stop("`predict_function` returns an error when executed on `new_observation[1,, drop = FALSE]` \n")
+  }
+  #:#
 
   ## get proper names of features that arent target
   is_y <- is_y_in_data(data, y)
@@ -254,7 +264,7 @@ modelStudio.explainer <- function(explainer,
     parallelMap::parallelLibrary(packages = loadedNamespaces())
 
     f <- function(i, model, data, predict_function, label, B, show_boxplot, ...) {
-      new_observation <- obs_data[i, , drop = FALSE]
+      new_observation <- obs_data[i,, drop = FALSE]
 
       bd <- try_catch(
         iBreakDown::local_attributions(
@@ -293,7 +303,7 @@ modelStudio.explainer <- function(explainer,
   } else {
     ## count once per observation
     for(i in 1:obs_count){
-      new_observation <- obs_data[i, , drop = FALSE]
+      new_observation <- obs_data[i,, drop = FALSE]
 
       bd <- try_catch(
         iBreakDown::local_attributions(

@@ -5,18 +5,20 @@ v <- FALSE
 
 ### README DEMO
 
-titanic_small <- titanic[sample(1:nrow(titanic), 500), c(1,2,3,6,7,9)]
+# Create a model
+model_titanic_glm <- glm(survived ~.,
+             data = titanic_imputed,
+             family = "binomial")
 
-model_titanic_glm <- glm(survived == "yes" ~ gender + age + fare + class + sibsp,
-                         data = titanic_small, family = "binomial")
+# Wrap it into an explainer
+explain_titanic_glm <- explain(model_titanic_glm,
+                     data = titanic_imputed[,-8],
+                     y = titanic_imputed[,8],
+                     label = "Titanic GLM",
+                     verbose = v)
 
-explain_titanic_glm <- DALEX::explain(model_titanic_glm,
-                               data = titanic_small[,-6],
-                               y = titanic_small$survived == "yes",
-                               label = "glm",
-                               verbose = v)
-
-new_observations <- titanic_small[1:4,-6]
+# Pick some data points
+new_observations <- titanic_imputed[1:4,]
 rownames(new_observations) <- c("Lucas", "James", "Thomas", "Nancy")
 
 
@@ -72,8 +74,9 @@ explain_rf <- DALEX::explain(model_rf,
 
 ### data/new_observation permutations
 
-x <- titanic_small[,-6]
-nx <- titanic_small[1,-6]
+titanic_small <- titanic_imputed[1:500,]
+x <- titanic_small[,-8]
+nx <- titanic_small[1,-8]
 
 z <- titanic_small[,]
 nz <- titanic_small[1,]
@@ -81,7 +84,7 @@ nz <- titanic_small[1,]
 w <- titanic_small[,1:3]
 nw <- titanic_small[1,1:3]
 
-y <- titanic_small[,6]== "yes"
+y <- titanic_small[,8]
 
 explain_both_without_target <- DALEX::explain(model_titanic_glm,
                                               data = x,
@@ -123,9 +126,9 @@ model_artifficial <- glm(y ~.,
                          family = "binomial")
 
 explain_artifficial <- DALEX::explain(model_artifficial,
-                               data = artifficial[,-12],
-                               y = artifficial[,12],
-                               verbose = v)
+                                      data = artifficial[,-12],
+                                      y = artifficial[,12],
+                                      verbose = v)
 
 ### xgboost matrix
 model_matrix_train <- model.matrix(status == "fired" ~ . -1, DALEX::HR)
@@ -136,4 +139,5 @@ param <- list(max_depth = 2, eta = 1, silent = 1, nthread = 2,
 HR_xgb_model <- xgboost::xgb.train(param, data_train, nrounds = 50)
 
 explainer_xgb <- DALEX::explain(HR_xgb_model, data = model_matrix_train,
-                         y = DALEX::HR$status == "fired", label = "xgboost")
+                                y = DALEX::HR$status == "fired", label = "xgboost",
+                                verbose = v)
