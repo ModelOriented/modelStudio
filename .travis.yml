@@ -19,14 +19,16 @@ env:
   global:
   - R_CHECK_ARGS="--timings --run-donttest"
 
+r_check_args: --as-cran --run-donttest
+
 notifications:
   email: false
 
 r_packages:
   - covr
 
-#r_github_packages:
-#  - ModelOriented/ingredients
+r_github_packages:
+  - ModelOriented/ingredients
 #  - ModelOriented/iBreakDown
 #  - ModelOriented/DALEX
 
