@@ -222,7 +222,6 @@ prepare_ceteris_paribus <- function(x, variables = NULL) {
 
   # prepare profiles data
   all_profiles <- x[x$`_vname_` %in% variables, ]
-  all_profiles$`_vname_` <- droplevels(all_profiles$`_vname_`)
   rownames(all_profiles) <- NULL
 
   y_min_max <- range(all_profiles$`_yhat_`)
@@ -232,7 +231,7 @@ prepare_ceteris_paribus <- function(x, variables = NULL) {
   y_min_max[1] <- y_min_max[1] - y_min_max_margin
   y_min_max[2] <- y_min_max[2] + y_min_max_margin
 
-  all_profiles_list <- split(all_profiles, all_profiles$`_vname_`)[variables]
+  all_profiles_list <- split(all_profiles, all_profiles$`_vname_`, drop = TRUE)
 
   new_x <- x_min_max_list <- desc <- list()
 
@@ -374,7 +373,6 @@ prepare_partial_dependence <- function(x, y, variables = NULL) {
   aggregated_profiles <- rbind(x,y)
 
   aggregated_profiles <- aggregated_profiles[aggregated_profiles$`_vname_` %in% variables, ]
-  aggregated_profiles$`_vname_` <- droplevels(aggregated_profiles$`_vname_`)
   rownames(aggregated_profiles) <- NULL
 
   y_min_max <- range(aggregated_profiles$`_yhat_`)
@@ -384,7 +382,7 @@ prepare_partial_dependence <- function(x, y, variables = NULL) {
   y_min_max[1] <- y_min_max[1] - y_min_max_margin
   y_min_max[2] <- y_min_max[2] + y_min_max_margin
 
-  aggregated_profiles_list <- split(aggregated_profiles, aggregated_profiles$`_vname_`)[variables]
+  aggregated_profiles_list <- split(aggregated_profiles, aggregated_profiles$`_vname_`, drop = TRUE)
 
   # safeguard
   aggregated_profiles_list <-
@@ -460,7 +458,6 @@ prepare_accumulated_dependence <- function(x, y, variables = NULL) {
   aggregated_profiles <- rbind(x,y)
 
   aggregated_profiles <- aggregated_profiles[aggregated_profiles$`_vname_` %in% variables, ]
-  aggregated_profiles$`_vname_` <- droplevels(aggregated_profiles$`_vname_`)
   rownames(aggregated_profiles) <- NULL
 
   y_min_max <- range(aggregated_profiles$`_yhat_`)
@@ -470,7 +467,7 @@ prepare_accumulated_dependence <- function(x, y, variables = NULL) {
   y_min_max[1] <- y_min_max[1] - y_min_max_margin
   y_min_max[2] <- y_min_max[2] + y_min_max_margin
 
-  aggregated_profiles_list <- split(aggregated_profiles, aggregated_profiles$`_vname_`)[variables]
+  aggregated_profiles_list <- split(aggregated_profiles, aggregated_profiles$`_vname_`, drop = TRUE)
 
   # safeguard
   aggregated_profiles_list <-
