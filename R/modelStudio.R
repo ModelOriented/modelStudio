@@ -129,22 +129,26 @@ modelStudio.explainer <- function(explainer,
   predict_function <- explainer$predict_function
   label <- explainer$label
 
-  if (is.null(new_observation)) {
+  if (is.null(new_observation) & show_info) {
     message("`new_observation` argument is NULL. Observations needed to calculate local explanations are taken at random from the data.")
     new_observation <- ingredients::select_sample(data, 3)
   }
 
   ## safeguard
-  new_observation <- as.data.frame(new_observation)
-  data <- as.data.frame(data)
+  #new_observation <- as.data.frame(new_observation)
+  #data <- as.data.frame(data)
+
+  if (is.null(dim(new_observation))) {
+    warning("`new_observation` argument is not a data.frame nor a matrix, coerced to data.frame")
+    new_observation <- as.data.frame(new_observation)
+  }
 
   ## get proper names of features that arent target
-  is_y <- sapply(data, function(x) identical(x, y))
+  is_y <- is_y_in_data(data, y)
   potential_variable_names <- names(is_y[!is_y])
   variable_names <- intersect(potential_variable_names, colnames(new_observation))
   ## get rid of target in data
   data <- data[!is_y]
-
 
   obs_count <- dim(new_observation)[1]
   obs_data <- new_observation
@@ -396,5 +400,12 @@ try_catch <- function(expr, function_name, i = 1, show_info = TRUE, new = TRUE) 
     error = function(e) {
       warning(paste0("Error occurred in ", function_name, " function: ", e$message))
       NULL
+  })
+}
+
+# returns the vector of logical: TRUE for variables identical with the target
+is_y_in_data <- function(data, y) {
+  apply(data, 2, function(x) {
+    all(as.character(x) == as.character(y))
   })
 }
