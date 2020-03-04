@@ -30,7 +30,7 @@
 #' @return An object of the \code{r2d3} class.
 #'
 #' @importFrom utils head tail setTxtProgressBar txtProgressBar packageVersion
-#' @importFrom stats aggregate predict quantile
+#' @importFrom stats aggregate predict quantile IQR
 #' @importFrom grDevices nclass.Sturges
 #'
 #' @references
@@ -57,47 +57,68 @@
 #'                      family = "binomial")
 #'
 #' # Wrap it into an explainer
-#' explain_titanic <- explain(model_titanic,
-#'                            data = titanic_imputed[,-8],
-#'                            y = titanic_imputed[,8],
-#'                            label = "glm",
-#'                            verbose = FALSE)
+#' explainer_titanic <- explain(model_titanic,
+#'                              data = titanic_imputed[,-8],
+#'                              y = titanic_imputed[,8],
+#'                              label = "glm",
+#'                              verbose = FALSE)
 #'
 #' # Pick some data points
 #' new_observations <- titanic_imputed[1:2,]
 #' rownames(new_observations) <- c("Lucas","James")
 #'
 #' # Make a studio for the model
-#' modelStudio(explain_titanic, new_observations,
+#' modelStudio(explainer_titanic, new_observations,
 #'             N = 100, B = 10, show_info = FALSE)
 #'
 #' \donttest{
+#'
 #' #:# ex2 regression on 'apartments' dataset
+#' library("randomForest")
 #'
-#' model_apartments <- randomForest::randomForest(m2.price ~. ,
-#'                                                data = apartments)
+#' model_apartments <- randomForest(m2.price ~. ,data = apartments)
 #'
-#' explain_apartments <- explain(model_apartments,
-#'                               data = apartments[,-1],
-#'                               y = apartments[,1],
-#'                               verbose = FALSE)
+#' explainer_apartments <- explain(model_apartments,
+#'                                 data = apartments[,-1],
+#'                                 y = apartments[,1],
+#'                                 verbose = FALSE)
 #'
 #' new_apartments <- apartments[1:2,]
 #' rownames(new_apartments) <- c("ap1","ap2")
 #'
 #' # change dashboard dimensions and animation length
-#' modelStudio(explain_apartments, new_apartments,
+#' modelStudio(explainer_apartments, new_apartments,
 #'             facet_dim = c(2, 3), time = 800,
 #'             show_info = FALSE)
 #'
 #' # add information about true labels
-#' modelStudio(explain_apartments, new_apartments,
+#' modelStudio(explainer_apartments, new_apartments,
 #'                                 new_observation_y = apartments[1:2, 1],
 #'                                 show_info = FALSE)
 #'
 #' # don't compute EDA plots
-#' modelStudio(explain_apartments, eda = FALSE,
+#' modelStudio(explainer_apartments, eda = FALSE,
 #'             show_info = FALSE)
+#'
+#'
+#' #:# ex3 xgboost model on 'HR' dataset
+#' library("xgboost")
+#'
+#' model_matrix <- model.matrix(status == "fired" ~ . -1, HR)
+#' data <- xgb.DMatrix(model_matrix, label = HR$status == "fired")
+#'
+#' params <- list(max_depth = 2, eta = 1, silent = 1, nthread = 2,
+#'                objective = "binary:logistic", eval_metric = "auc")
+#'
+#' model_HR <- xgb.train(params, data, nrounds = 50)
+#'
+#' explainer_HR <- explain(model_HR,
+#'                         data = model_matrix,
+#'                         y = HR$status == "fired",
+#'                         verbose = FALSE)
+#'
+#' modelStudio(explainer_HR, show_info = FALSE)
+#'
 #' }
 #'
 #' @export
@@ -129,22 +150,36 @@ modelStudio.explainer <- function(explainer,
   predict_function <- explainer$predict_function
   label <- explainer$label
 
-  if (is.null(new_observation)) {
-    message("`new_observation` argument is NULL. Observations needed to calculate local explanations are taken at random from the data.")
-    new_observation <- ingredients::select_sample(data, 3)
+  #:# checks
+  if (is.null(rownames(data))) {
+    rownames(data) <- 1:nrow(data)
   }
 
-  ## safeguard
-  new_observation <- as.data.frame(new_observation)
-  data <- as.data.frame(data)
+  if (is.null(new_observation)) {
+    if (show_info) message("`new_observation` argument is NULL.\n",
+                           "Observations needed to calculate local explanations are taken at random from the data.\n")
+    new_observation <- ingredients::select_sample(data, 3)
+
+  } else if (is.null(dim(new_observation))) {
+    warning("`new_observation` argument is not a data.frame nor a matrix, coerced to data.frame\n")
+    new_observation <- as.data.frame(new_observation)
+
+  } else if (is.null(rownames(new_observation))) {
+    rownames(new_observation) <- 1:nrow(new_observation)
+  }
+
+  check_single_prediction <- try(predict_function(model, new_observation[1,, drop = FALSE]), silent = TRUE)
+  if (class(check_single_prediction)[1] == "try-error") {
+    stop("`predict_function` returns an error when executed on `new_observation[1,, drop = FALSE]` \n")
+  }
+  #:#
 
   ## get proper names of features that arent target
-  is_y <- sapply(data, function(x) identical(x, y))
+  is_y <- is_y_in_data(data, y)
   potential_variable_names <- names(is_y[!is_y])
   variable_names <- intersect(potential_variable_names, colnames(new_observation))
   ## get rid of target in data
-  data <- data[!is_y]
-
+  data <- data[,!is_y]
 
   obs_count <- dim(new_observation)[1]
   obs_data <- new_observation
@@ -161,7 +196,7 @@ modelStudio.explainer <- function(explainer,
 
   if (show_info) setTxtProgressBar(pb, 1)
 
-  which_numerical <- sapply(data[,, drop = FALSE], is.numeric)
+  which_numerical <- which_variables_are_numeric(data)
 
   ## because aggregate_profiles calculates numerical OR categorical
   if (all(which_numerical)) {
@@ -229,7 +264,7 @@ modelStudio.explainer <- function(explainer,
     parallelMap::parallelLibrary(packages = loadedNamespaces())
 
     f <- function(i, model, data, predict_function, label, B, show_boxplot, ...) {
-      new_observation <- obs_data[i,]
+      new_observation <- obs_data[i,, drop = FALSE]
 
       bd <- try_catch(
         iBreakDown::local_attributions(
@@ -268,7 +303,7 @@ modelStudio.explainer <- function(explainer,
   } else {
     ## count once per observation
     for(i in 1:obs_count){
-      new_observation <- obs_data[i,]
+      new_observation <- obs_data[i,, drop = FALSE]
 
       bd <- try_catch(
         iBreakDown::local_attributions(
@@ -397,4 +432,21 @@ try_catch <- function(expr, function_name, i = 1, show_info = TRUE, new = TRUE) 
       warning(paste0("Error occurred in ", function_name, " function: ", e$message))
       NULL
   })
+}
+
+# returns the vector of logical: TRUE for variables identical with the target
+is_y_in_data <- function(data, y) {
+  apply(data, 2, function(x) {
+    all(as.character(x) == as.character(y))
+  })
+}
+
+# check for numeric columns (works for data.frame AND matrix)
+# sapply, lapply doesnt work for matrix and apply doesnt work for data.frame
+which_variables_are_numeric <- function(data) {
+  if (is.matrix(data)) {
+    apply(data[,, drop = FALSE], 2, is.numeric)
+  } else {
+    sapply(data[,, drop = FALSE], is.numeric)
+  }
 }

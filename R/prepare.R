@@ -111,19 +111,22 @@ prepare_shapley_values <- function(x, max_features = 10, show_boxplot = TRUE, ba
 
   if (show_boxplot) {
     #:# change the input to save boxplot data
-    result <- data.frame(
-      min = tapply(x_df$contribution, x_df$variable_name, min, na.rm = TRUE),
-      q1 = tapply(x_df$contribution, x_df$variable_name, quantile, 0.25, na.rm = TRUE),
-      q3 = tapply(x_df$contribution, x_df$variable_name, quantile, 0.75, na.rm = TRUE),
-      max = tapply(x_df$contribution, x_df$variable_name, max, na.rm = TRUE)
+    x_stats <- data.frame(
+      variable_name = levels(as.factor(x_df$variable_name)),
+      min = as.numeric(tapply(x_df$contribution, x_df$variable_name, min, na.rm = TRUE)),
+      q1 = as.numeric(tapply(x_df$contribution, x_df$variable_name, quantile, 0.25, na.rm = TRUE)),
+      q3 = as.numeric(tapply(x_df$contribution, x_df$variable_name, quantile, 0.75, na.rm = TRUE)),
+      max = as.numeric(tapply(x_df$contribution, x_df$variable_name, max, na.rm = TRUE)),
+      iqr = as.numeric(tapply(x_df$contribution, x_df$variable_name, IQR, na.rm = TRUE))
     )
 
-    result$min <- as.numeric(result$min) + baseline
-    result$q1 <- as.numeric(result$q1) + baseline
-    result$q3 <- as.numeric(result$q3) + baseline
-    result$max <- as.numeric(result$max) + baseline
+    x_stats$min <- pmax(x_stats$min, x_stats$q1 - 1.5*x_stats$iqr) + baseline
+    x_stats$max <- pmin(x_stats$max, x_stats$q3 + 1.5*x_stats$iqr) + baseline
+    x_stats$q1 <- x_stats$q1 + baseline
+    x_stats$q3 <- x_stats$q3 + baseline
+    x_stats$iqr <- NULL
 
-    new_x <- merge(new_x, cbind(rownames(result), result), by.x = "variable_name", by.y = "rownames(result)", sort = FALSE)
+    new_x <- merge(new_x, x_stats, by = "variable_name", sort = FALSE)
     #:#
 
     min_max <- range(new_x[,"q1"], new_x[,"q3"], new_x[,"barStart"], new_x[,"barSupport"])
@@ -206,7 +209,7 @@ prepare_ceteris_paribus <- function(x, variables = NULL) {
   if (is.null(x)) return(NULL)
 
   # which variable is numeric?
-  is_numeric <- sapply(x[, variables, drop = FALSE], is.numeric)
+  is_numeric <- which_variables_are_numeric(x[, variables, drop = FALSE])
   names(is_numeric) <- variables
 
   # safeguard
@@ -222,7 +225,6 @@ prepare_ceteris_paribus <- function(x, variables = NULL) {
 
   # prepare profiles data
   all_profiles <- x[x$`_vname_` %in% variables, ]
-  all_profiles$`_vname_` <- droplevels(all_profiles$`_vname_`)
   rownames(all_profiles) <- NULL
 
   y_min_max <- range(all_profiles$`_yhat_`)
@@ -232,16 +234,15 @@ prepare_ceteris_paribus <- function(x, variables = NULL) {
   y_min_max[1] <- y_min_max[1] - y_min_max_margin
   y_min_max[2] <- y_min_max[2] + y_min_max_margin
 
-  all_profiles_list <- split(all_profiles, all_profiles$`_vname_`)[variables]
+  all_profiles_list <- split(all_profiles, all_profiles$`_vname_`, drop = TRUE)
 
   new_x <- x_min_max_list <- desc <- list()
 
   # line plot or bar plot?
-  for (i in 1:length(is_numeric)) {
-    temp <- all_profiles_list[[i]]
-    name <- as.character(head(temp$`_vname_`,1))
+  for (name in names(is_numeric)) {
+    temp <- all_profiles_list[[name]]
 
-    if (is_numeric[i]) {
+    if (is_numeric[name]) {
       temp <- temp[, c(name, "_yhat_", "_ids_", "_vname_")]
       colnames(temp) <- c("xhat", "yhat", "id", "vname")
       temp$xhat <- as.numeric(temp$xhat)
@@ -314,19 +315,19 @@ prepare_feature_importance <- function(x, max_features = 10, show_boxplot = TRUE
   if (show_boxplot) {
     #:# change the input to save boxplot data
     x_stats <- data.frame(
-      min = tapply(x_df$dropout_loss, x_df$variable, min, na.rm = TRUE),
-      q1 = tapply(x_df$dropout_loss, x_df$variable, quantile, 0.25, na.rm = TRUE),
-      q3 = tapply(x_df$dropout_loss, x_df$variable, quantile, 0.75, na.rm = TRUE),
-      max = tapply(x_df$dropout_loss, x_df$variable, max, na.rm = TRUE)
+      variable = levels(as.factor(x_df$variable)),
+      min = as.numeric(tapply(x_df$dropout_loss, x_df$variable, min, na.rm = TRUE)),
+      q1 = as.numeric(tapply(x_df$dropout_loss, x_df$variable, quantile, 0.25, na.rm = TRUE)),
+      q3 = as.numeric(tapply(x_df$dropout_loss, x_df$variable, quantile, 0.75, na.rm = TRUE)),
+      max = as.numeric(tapply(x_df$dropout_loss, x_df$variable, max, na.rm = TRUE)),
+      iqr = as.numeric(tapply(x_df$dropout_loss, x_df$variable, IQR, na.rm = TRUE))
     )
 
-    x_stats$min <- as.numeric(x_stats$min)
-    x_stats$q1 <- as.numeric(x_stats$q1)
-    x_stats$q3 <- as.numeric(x_stats$q3)
-    x_stats$max <- as.numeric(x_stats$max)
+    x_stats$min <- pmax(x_stats$min, x_stats$q1 - 1.5*x_stats$iqr)
+    x_stats$max <- pmin(x_stats$max, x_stats$q3 + 1.5*x_stats$iqr)
+    x_stats$iqr <- NULL
 
-    new_x <- merge(new_x, cbind(rownames(x_stats), x_stats),
-                   by.x = "variable", by.y = "rownames(x_stats)", sort = FALSE)
+    new_x <- merge(new_x, x_stats, by = "variable", sort = FALSE)
     #:#
 
     min_max <- range(new_x[,"q1"], new_x[,"q3"], new_x[,"dropout_loss"], new_x[1,"full_model"])
@@ -374,7 +375,6 @@ prepare_partial_dependence <- function(x, y, variables = NULL) {
   aggregated_profiles <- rbind(x,y)
 
   aggregated_profiles <- aggregated_profiles[aggregated_profiles$`_vname_` %in% variables, ]
-  aggregated_profiles$`_vname_` <- droplevels(aggregated_profiles$`_vname_`)
   rownames(aggregated_profiles) <- NULL
 
   y_min_max <- range(aggregated_profiles$`_yhat_`)
@@ -384,7 +384,7 @@ prepare_partial_dependence <- function(x, y, variables = NULL) {
   y_min_max[1] <- y_min_max[1] - y_min_max_margin
   y_min_max[2] <- y_min_max[2] + y_min_max_margin
 
-  aggregated_profiles_list <- split(aggregated_profiles, aggregated_profiles$`_vname_`)[variables]
+  aggregated_profiles_list <- split(aggregated_profiles, aggregated_profiles$`_vname_`, drop = TRUE)
 
   # safeguard
   aggregated_profiles_list <-
@@ -394,11 +394,10 @@ prepare_partial_dependence <- function(x, y, variables = NULL) {
   y_mean <- NULL
 
   # line plot or bar plot?
-  for (i in 1:length(is_numeric)) {
-    temp <- aggregated_profiles_list[[i]]
-    name <- as.character(head(temp$`_vname_`,1))
+  for (name in names(is_numeric)) {
+    temp <- aggregated_profiles_list[[name]]
 
-    if (is_numeric[i]) {
+    if (is_numeric[name]) {
       temp <- temp[, c('_x_', "_yhat_", "_vname_", "_label_")]
       colnames(temp) <- c("xhat", "yhat", "vname", "label")
       temp$xhat <- as.numeric(temp$xhat)
@@ -460,7 +459,6 @@ prepare_accumulated_dependence <- function(x, y, variables = NULL) {
   aggregated_profiles <- rbind(x,y)
 
   aggregated_profiles <- aggregated_profiles[aggregated_profiles$`_vname_` %in% variables, ]
-  aggregated_profiles$`_vname_` <- droplevels(aggregated_profiles$`_vname_`)
   rownames(aggregated_profiles) <- NULL
 
   y_min_max <- range(aggregated_profiles$`_yhat_`)
@@ -470,7 +468,7 @@ prepare_accumulated_dependence <- function(x, y, variables = NULL) {
   y_min_max[1] <- y_min_max[1] - y_min_max_margin
   y_min_max[2] <- y_min_max[2] + y_min_max_margin
 
-  aggregated_profiles_list <- split(aggregated_profiles, aggregated_profiles$`_vname_`)[variables]
+  aggregated_profiles_list <- split(aggregated_profiles, aggregated_profiles$`_vname_`, drop = TRUE)
 
   # safeguard
   aggregated_profiles_list <-
@@ -480,11 +478,10 @@ prepare_accumulated_dependence <- function(x, y, variables = NULL) {
   y_mean <- NULL
 
   # line plot or bar plot?
-  for (i in 1:length(is_numeric)) {
-    temp <- aggregated_profiles_list[[i]]
-    name <- as.character(head(temp$`_vname_`,1))
+  for (name in names(is_numeric)) {
+    temp <- aggregated_profiles_list[[name]]
 
-    if (is_numeric[i]) {
+    if (is_numeric[name]) {
       temp <- temp[, c('_x_', "_yhat_", "_vname_", "_label_")]
       colnames(temp) <- c("xhat", "yhat", "vname", "label")
       temp$xhat <- as.numeric(temp$xhat)
@@ -537,7 +534,7 @@ prepare_feature_distribution <- function(x, y, variables = NULL) {
   if (is.null(x) | is.null(y)) return(NULL)
 
   # which variable is numeric?
-  is_numeric <- sapply(x[, variables, drop = FALSE], is.numeric)
+  is_numeric <- which_variables_are_numeric(x[, variables, drop = FALSE])
   names(is_numeric) <- variables
 
   # safeguard
@@ -545,12 +542,12 @@ prepare_feature_distribution <- function(x, y, variables = NULL) {
 
   x_min_max_list <- x_max_list <- nbin <- list()
 
-  for (i in 1:length(is_numeric)) {
-    name <- names(is_numeric[i])
+  for (name in names(is_numeric)) {
 
-    if (is_numeric[i]) {
+    if (is_numeric[name]) {
       x_min_max_list[[name]] <- range(x[,name])
       nbin[[name]] <- nclass.Sturges(x[,name]) ## FD, scott/Sturges nbin choice
+
     } else {
       x_min_max_list[[name]] <- sort(unique(x[,name]))
       x_max_list[[name]] <- max(table(x[,name]))
@@ -581,7 +578,7 @@ prepare_average_target <- function(x, y, variables = NULL) {
   if (is.null(x) | is.null(y)) return(NULL)
 
   # which variable is numeric?
-  is_numeric <- sapply(x[, variables, drop = FALSE], is.numeric)
+  is_numeric <- which_variables_are_numeric(x[, variables, drop = FALSE])
   names(is_numeric) <- variables
 
   # safeguard
@@ -591,12 +588,11 @@ prepare_average_target <- function(x, y, variables = NULL) {
 
   y_mean <- mean(y)
 
-  for (i in 1:length(is_numeric)) {
-    name <- names(is_numeric[i])
+  for (name in names(is_numeric)) {
 
-    if (length(unique(x[,name])) == 1) is_numeric[i] <- FALSE # issue #45
+    if (length(unique(x[,name])) == 1) is_numeric[name] <- FALSE # issue #45
 
-    if (is_numeric[i]) {
+    if (is_numeric[name]) {
       x_min_max_list[[name]] <- range(x[,name])
 
       nbins <- nclass.Sturges(x[,name])
