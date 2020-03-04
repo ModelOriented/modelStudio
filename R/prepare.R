@@ -236,11 +236,10 @@ prepare_ceteris_paribus <- function(x, variables = NULL) {
   new_x <- x_min_max_list <- desc <- list()
 
   # line plot or bar plot?
-  for (i in 1:length(is_numeric)) {
-    temp <- all_profiles_list[[i]]
-    name <- as.character(head(temp$`_vname_`,1))
+  for (name in names(is_numeric)) {
+    temp <- all_profiles_list[[name]]
 
-    if (is_numeric[i]) {
+    if (is_numeric[name]) {
       temp <- temp[, c(name, "_yhat_", "_ids_", "_vname_")]
       colnames(temp) <- c("xhat", "yhat", "id", "vname")
       temp$xhat <- as.numeric(temp$xhat)
@@ -392,11 +391,10 @@ prepare_partial_dependence <- function(x, y, variables = NULL) {
   y_mean <- NULL
 
   # line plot or bar plot?
-  for (i in 1:length(is_numeric)) {
-    temp <- aggregated_profiles_list[[i]]
-    name <- as.character(head(temp$`_vname_`,1))
+  for (name in names(is_numeric)) {
+    temp <- aggregated_profiles_list[[name]]
 
-    if (is_numeric[i]) {
+    if (is_numeric[name]) {
       temp <- temp[, c('_x_', "_yhat_", "_vname_", "_label_")]
       colnames(temp) <- c("xhat", "yhat", "vname", "label")
       temp$xhat <- as.numeric(temp$xhat)
@@ -477,11 +475,10 @@ prepare_accumulated_dependence <- function(x, y, variables = NULL) {
   y_mean <- NULL
 
   # line plot or bar plot?
-  for (i in 1:length(is_numeric)) {
-    temp <- aggregated_profiles_list[[i]]
-    name <- as.character(head(temp$`_vname_`,1))
+  for (name in names(is_numeric)) {
+    temp <- aggregated_profiles_list[[name]]
 
-    if (is_numeric[i]) {
+    if (is_numeric[name]) {
       temp <- temp[, c('_x_', "_yhat_", "_vname_", "_label_")]
       colnames(temp) <- c("xhat", "yhat", "vname", "label")
       temp$xhat <- as.numeric(temp$xhat)
@@ -542,12 +539,12 @@ prepare_feature_distribution <- function(x, y, variables = NULL) {
 
   x_min_max_list <- x_max_list <- nbin <- list()
 
-  for (i in 1:length(is_numeric)) {
-    name <- names(is_numeric[i])
+  for (name in names(is_numeric)) {
 
-    if (is_numeric[i]) {
+    if (is_numeric[name]) {
       x_min_max_list[[name]] <- range(x[,name])
       nbin[[name]] <- nclass.Sturges(x[,name]) ## FD, scott/Sturges nbin choice
+
     } else {
       x_min_max_list[[name]] <- sort(unique(x[,name]))
       x_max_list[[name]] <- max(table(x[,name]))
@@ -588,12 +585,11 @@ prepare_average_target <- function(x, y, variables = NULL) {
 
   y_mean <- mean(y)
 
-  for (i in 1:length(is_numeric)) {
-    name <- names(is_numeric[i])
+  for (name in names(is_numeric)) {
 
-    if (length(unique(x[,name])) == 1) is_numeric[i] <- FALSE # issue #45
+    if (length(unique(x[,name])) == 1) is_numeric[name] <- FALSE # issue #45
 
-    if (is_numeric[i]) {
+    if (is_numeric[name]) {
       x_min_max_list[[name]] <- range(x[,name])
 
       nbins <- nclass.Sturges(x[,name])
