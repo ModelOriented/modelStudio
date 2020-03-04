@@ -30,7 +30,7 @@
 #' @return An object of the \code{r2d3} class.
 #'
 #' @importFrom utils head tail setTxtProgressBar txtProgressBar packageVersion
-#' @importFrom stats aggregate predict quantile
+#' @importFrom stats aggregate predict quantile IQR
 #' @importFrom grDevices nclass.Sturges
 #'
 #' @references

@@ -111,19 +111,22 @@ prepare_shapley_values <- function(x, max_features = 10, show_boxplot = TRUE, ba
 
   if (show_boxplot) {
     #:# change the input to save boxplot data
-    result <- data.frame(
-      min = tapply(x_df$contribution, x_df$variable_name, min, na.rm = TRUE),
-      q1 = tapply(x_df$contribution, x_df$variable_name, quantile, 0.25, na.rm = TRUE),
-      q3 = tapply(x_df$contribution, x_df$variable_name, quantile, 0.75, na.rm = TRUE),
-      max = tapply(x_df$contribution, x_df$variable_name, max, na.rm = TRUE)
+    x_stats <- data.frame(
+      variable_name = levels(as.factor(x_df$variable_name)),
+      min = as.numeric(tapply(x_df$contribution, x_df$variable_name, min, na.rm = TRUE)),
+      q1 = as.numeric(tapply(x_df$contribution, x_df$variable_name, quantile, 0.25, na.rm = TRUE)),
+      q3 = as.numeric(tapply(x_df$contribution, x_df$variable_name, quantile, 0.75, na.rm = TRUE)),
+      max = as.numeric(tapply(x_df$contribution, x_df$variable_name, max, na.rm = TRUE)),
+      iqr = as.numeric(tapply(x_df$contribution, x_df$variable_name, IQR, na.rm = TRUE))
     )
 
-    result$min <- as.numeric(result$min) + baseline
-    result$q1 <- as.numeric(result$q1) + baseline
-    result$q3 <- as.numeric(result$q3) + baseline
-    result$max <- as.numeric(result$max) + baseline
+    x_stats$min <- pmax(x_stats$min, x_stats$q1 - 1.5*x_stats$iqr) + baseline
+    x_stats$max <- pmin(x_stats$max, x_stats$q3 + 1.5*x_stats$iqr) + baseline
+    x_stats$q1 <- x_stats$q1 + baseline
+    x_stats$q3 <- x_stats$q3 + baseline
+    x_stats$iqr <- NULL
 
-    new_x <- merge(new_x, cbind(rownames(result), result), by.x = "variable_name", by.y = "rownames(result)", sort = FALSE)
+    new_x <- merge(new_x, x_stats, by = "variable_name", sort = FALSE)
     #:#
 
     min_max <- range(new_x[,"q1"], new_x[,"q3"], new_x[,"barStart"], new_x[,"barSupport"])
@@ -312,19 +315,19 @@ prepare_feature_importance <- function(x, max_features = 10, show_boxplot = TRUE
   if (show_boxplot) {
     #:# change the input to save boxplot data
     x_stats <- data.frame(
-      min = tapply(x_df$dropout_loss, x_df$variable, min, na.rm = TRUE),
-      q1 = tapply(x_df$dropout_loss, x_df$variable, quantile, 0.25, na.rm = TRUE),
-      q3 = tapply(x_df$dropout_loss, x_df$variable, quantile, 0.75, na.rm = TRUE),
-      max = tapply(x_df$dropout_loss, x_df$variable, max, na.rm = TRUE)
+      variable = levels(as.factor(x_df$variable)),
+      min = as.numeric(tapply(x_df$dropout_loss, x_df$variable, min, na.rm = TRUE)),
+      q1 = as.numeric(tapply(x_df$dropout_loss, x_df$variable, quantile, 0.25, na.rm = TRUE)),
+      q3 = as.numeric(tapply(x_df$dropout_loss, x_df$variable, quantile, 0.75, na.rm = TRUE)),
+      max = as.numeric(tapply(x_df$dropout_loss, x_df$variable, max, na.rm = TRUE)),
+      iqr = as.numeric(tapply(x_df$dropout_loss, x_df$variable, IQR, na.rm = TRUE))
     )
 
-    x_stats$min <- as.numeric(x_stats$min)
-    x_stats$q1 <- as.numeric(x_stats$q1)
-    x_stats$q3 <- as.numeric(x_stats$q3)
-    x_stats$max <- as.numeric(x_stats$max)
+    x_stats$min <- pmax(x_stats$min, x_stats$q1 - 1.5*x_stats$iqr)
+    x_stats$max <- pmin(x_stats$max, x_stats$q3 + 1.5*x_stats$iqr)
+    x_stats$iqr <- NULL
 
-    new_x <- merge(new_x, cbind(rownames(x_stats), x_stats),
-                   by.x = "variable", by.y = "rownames(x_stats)", sort = FALSE)
+    new_x <- merge(new_x, x_stats, by = "variable", sort = FALSE)
     #:#
 
     min_max <- range(new_x[,"q1"], new_x[,"q3"], new_x[,"dropout_loss"], new_x[1,"full_model"])
