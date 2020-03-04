@@ -196,7 +196,7 @@ modelStudio.explainer <- function(explainer,
 
   if (show_info) setTxtProgressBar(pb, 1)
 
-  which_numerical <- apply(data[,, drop = FALSE], 2, is.numeric)
+  which_numerical <- which_variables_are_numeric(data)
 
   ## because aggregate_profiles calculates numerical OR categorical
   if (all(which_numerical)) {
@@ -439,4 +439,14 @@ is_y_in_data <- function(data, y) {
   apply(data, 2, function(x) {
     all(as.character(x) == as.character(y))
   })
+}
+
+# check for numeric columns (works for data.frame AND matrix)
+# sapply, lapply doesnt work for matrix and apply doesnt work for data.frame
+which_variables_are_numeric <- function(data) {
+  if (is.matrix(data)) {
+    apply(data[,, drop = FALSE], 2, is.numeric)
+  } else {
+    sapply(data[,, drop = FALSE], is.numeric)
+  }
 }

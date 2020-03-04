@@ -1,4 +1,5 @@
-# modelStudio 1.0
+# modelStudio 1.0.0
+* stable release after fixing minor issues
 * comply with `R v4.0` changes
 * add support for matrix-like `data` with `xgboost` working example
 
