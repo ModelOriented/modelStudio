@@ -19,7 +19,8 @@ prepare_break_down <- function(x, max_features = 10, baseline = NA, digits = 3,
   min_max[1] <- min_max[1] - min_max_margin
   min_max[2] <- min_max[2] + min_max_margin
 
-  desc <- try_catch(iBreakDown::describe(x, display_values =  TRUE,
+  desc <- calculate(NULL,
+                    iBreakDown::describe(x, display_values =  TRUE,
                                             display_numbers = TRUE),
                     "iBreakDown::describe.break_down", show_info = FALSE)
 
@@ -141,7 +142,8 @@ prepare_shapley_values <- function(x, max_features = 10, show_boxplot = TRUE, ba
   min_max[2] <- min_max[2] + min_max_margin
 
   # describe cuts df to B=0 anyway
-  desc <- try_catch(iBreakDown::describe(x, display_values = TRUE,
+  desc <- calculate(NULL,
+                    iBreakDown::describe(x, display_values = TRUE,
                                             display_numbers = TRUE,
                                             display_shap = TRUE),
                     "iBreakDown::describe.shap", show_info = FALSE)
@@ -259,7 +261,7 @@ prepare_ceteris_paribus <- function(x, variables = NULL) {
       new_x[[name]] <- temp[order(temp$xhat),]
     }
 
-    text <- try_catch(
+    text <- calculate(NULL,
       suppressWarnings(ingredients::describe(x, display_values = TRUE,
                                                 display_numbers = TRUE,
                                                 variables = name)),
@@ -341,7 +343,8 @@ prepare_feature_importance <- function(x, max_features = 10, show_boxplot = TRUE
   min_max[1] <- min_max[1] - min_max_margin
   min_max[2] <- min_max[2] + min_max_margin
 
-  desc <- try_catch(ingredients::describe(x),
+  desc <- calculate(NULL,
+                    ingredients::describe(x),
                     "ingredients::describe.feature_importance", show_info = FALSE)
 
   if (is.null(desc)) desc <- "error in ingredients::describe.feature_importance"
@@ -414,7 +417,7 @@ prepare_partial_dependence <- function(x, y, variables = NULL) {
       new_x[[name]] <- temp
     }
 
-    text <- try_catch(
+    text <- calculate(NULL,
       suppressWarnings(ingredients::describe(rbind(x,y), display_values = TRUE,
                                                          display_numbers = TRUE,
                                                          variables = name)),
@@ -498,7 +501,7 @@ prepare_accumulated_dependence <- function(x, y, variables = NULL) {
       new_x[[name]] <- temp
     }
 
-    # text <- try_catch(
+    # text <- calculate(NULL,
     #   suppressWarnings(
     #   ingredients::describe(rbind(x,y),
     #                         display_values = TRUE,

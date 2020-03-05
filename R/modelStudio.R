@@ -32,6 +32,7 @@
 #' @importFrom utils head tail setTxtProgressBar txtProgressBar packageVersion
 #' @importFrom stats aggregate predict quantile IQR
 #' @importFrom grDevices nclass.Sturges
+#' @import progress
 #'
 #' @references
 #'
@@ -186,66 +187,63 @@ modelStudio.explainer <- function(explainer,
   obs_list <- list()
 
   ## later update progress bar after all explanation functions
-  if (show_info) pb <- txtProgressBar(0, obs_count + 5, style = 3)
+  if (show_info) {
+    pb <- progress_bar$new(
+      format = "  Calculating :what [:bar] :percent  ETA::eta",
+      total = 3*obs_count + 5
+    )
+    pb$tick(0)
+    Sys.sleep(1/5)
+  }
 
   ## count only once
-  fi <- try_catch(
+  fi <- calculate(pb,
     ingredients::feature_importance(
         model, data, y, predict_function, variables = variable_names, B = B),
     "ingredients::feature_importance", "", show_info)
-
-  if (show_info) setTxtProgressBar(pb, 1)
 
   which_numerical <- which_variables_are_numeric(data)
 
   ## because aggregate_profiles calculates numerical OR categorical
   if (all(which_numerical)) {
-    pd_n <- try_catch(
+    pd_n <- calculate(pb,
       ingredients::partial_dependence(
           model, data, predict_function, variable_type = "numerical", N = N),
       "ingredients::partial_dependence", "numerical", show_info)
-    if (show_info) setTxtProgressBar(pb, 2)
     pd_c <- NULL
-    ad_n <- try_catch(
+    ad_n <- calculate(pb,
       ingredients::accumulated_dependence(
           model, data, predict_function, variable_type = "numerical", N = N),
       "ingredients::accumulated_dependence", "numerical", show_info)
-    if (show_info) setTxtProgressBar(pb, 4)
     ad_c <- NULL
   } else if (all(!which_numerical)) {
     pd_n <- NULL
-    pd_c <- try_catch(
+    pd_c <- calculate(pb,
       ingredients::partial_dependence(
           model, data, predict_function, variable_type = "categorical", N = N),
       "ingredients::partial_dependence", "categorical", show_info)
-    if (show_info) setTxtProgressBar(pb, 3)
     ad_n <- NULL
-    ad_c <- try_catch(
+    ad_c <- calculate(pb,
       ingredients::accumulated_dependence(
           model, data, predict_function, variable_type = "categorical", N = N),
       "ingredients::accumulated_dependence", "categorical", show_info)
-    if (show_info) setTxtProgressBar(pb, 5)
   } else {
-    pd_n <- try_catch(
+    pd_n <- calculate(pb,
       ingredients::partial_dependence(
         model, data, predict_function, variable_type = "numerical", N = N),
       "ingredients::partial_dependence", "numerical", show_info)
-    if (show_info) setTxtProgressBar(pb, 2)
-    pd_c <- try_catch(
+    pd_c <- calculate(pb,
       ingredients::partial_dependence(
         model, data, predict_function, variable_type = "categorical", N = N),
       "ingredients::partial_dependence", "categorical", show_info)
-    if (show_info) setTxtProgressBar(pb, 3)
-    ad_n <- try_catch(
+    ad_n <- calculate(pb,
       ingredients::accumulated_dependence(
         model, data, predict_function, variable_type = "numerical", N = N),
       "ingredients::accumulated_dependence", "numerical", show_info)
-    if (show_info) setTxtProgressBar(pb, 4)
-    ad_c <- try_catch(
+    ad_c <- calculate(pb,
       ingredients::accumulated_dependence(
         model, data, predict_function, variable_type = "categorical", N = N),
       "ingredients::accumulated_dependence", "categorical", show_info)
-    if (show_info) setTxtProgressBar(pb, 5)
   }
 
   fi_data <- prepare_feature_importance(fi, max_features, options$show_boxplot, ...)
@@ -266,18 +264,18 @@ modelStudio.explainer <- function(explainer,
     f <- function(i, model, data, predict_function, label, B, show_boxplot, ...) {
       new_observation <- obs_data[i,, drop = FALSE]
 
-      bd <- try_catch(
+      bd <- calculate(pb,
         iBreakDown::local_attributions(
           model, data, predict_function, new_observation, label = label),
         "iBreakDown::local_attributions", i, show_info)
-      sv <- try_catch(
+      sv <- calculate(pb,
         iBreakDown::shap(
           model, data, predict_function, new_observation, label = label, B = B),
-        "iBreakDown::shap", i, show_info, FALSE)
-      cp <- try_catch(
+        "iBreakDown::shap", i, show_info)
+      cp <- calculate(pb,
         ingredients::ceteris_paribus(
           model, data, predict_function, new_observation, label = label),
-        "ingredients::ceteris_paribus", i, show_info, FALSE)
+        "ingredients::ceteris_paribus", i, show_info)
 
       bd_data <- prepare_break_down(bd, max_features, ...)
       sv_data <- prepare_shapley_values(sv, max_features, show_boxplot, ...)
@@ -299,26 +297,23 @@ modelStudio.explainer <- function(explainer,
 
     parallelMap::parallelStop()
 
-    if (show_info) setTxtProgressBar(pb, 5 + obs_count)
   } else {
     ## count once per observation
-    for(i in 1:obs_count){
+    for(i in 1:obs_count) {
       new_observation <- obs_data[i,, drop = FALSE]
 
-      bd <- try_catch(
+      bd <- calculate(pb,
         iBreakDown::local_attributions(
           model, data, predict_function, new_observation, label = label),
         "iBreakDown::local_attributions", i, show_info)
-      sv <- try_catch(
+      sv <- calculate(pb,
         iBreakDown::shap(
           model, data, predict_function, new_observation, label = label, B = B),
-        "iBreakDown::shap", i, show_info, FALSE)
-      cp <- try_catch(
+        "iBreakDown::shap", i, show_info)
+      cp <- calculate(pb,
         ingredients::ceteris_paribus(
           model, data, predict_function, new_observation, label = label),
-        "ingredients::ceteris_paribus", i, show_info, FALSE)
-
-      if (show_info) setTxtProgressBar(pb, 5 + i)
+        "ingredients::ceteris_paribus", i, show_info)
 
       bd_data <- prepare_break_down(bd, max_features, ...)
       sv_data <- prepare_shapley_values(sv, max_features, options$show_boxplot, ...)
@@ -411,11 +406,13 @@ remove_file_paths <- function(text, type = NULL) {
 }
 
 #' @noRd
-#' @title try_catch
+#' @title calculate
 #'
 #' @description This function evaluates expression and returns its value.
 #' It returns \code{NULL} and prints \code{warning} if an error occurred.
+#' It also updates the \code{progress_bar} from the \code{progress} package.
 #'
+#' @param pb progress_bar
 #' @param expr function
 #' @param function_name string
 #' @param i iteration/type
@@ -423,9 +420,11 @@ remove_file_paths <- function(text, type = NULL) {
 #'
 #' @return Valid object or \code{NULL}
 
-try_catch <- function(expr, function_name, i = 1, show_info = TRUE, new = TRUE) {
+calculate <- function(pb, expr, function_name, i = 1, show_info = TRUE) {
+
+  if (show_info) pb$tick(tokens = list(what = paste0(function_name, " (", i, ")")))
+
   tryCatch({
-    if (show_info) message(paste0(ifelse(new,"\n",""), "Calculate ", function_name, " (", i, ")"))
     expr
     },
     error = function(e) {

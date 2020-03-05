@@ -24,7 +24,8 @@ Imports:
     iBreakDown (>= 1.0),
     ingredients (>= 1.0),
     r2d3,
-    jsonlite
+    jsonlite,
+    progress
 Suggests:
     DALEX (>= 0.4.9),
     parallelMap,
