@@ -17,9 +17,10 @@
 #' @param N Number of observations used for calculation of partial dependence profiles. Default is \code{400}.
 #' @param B Number of random paths used for calculation of Shapley values. Default is \code{15}.
 #' @param eda Compute EDA plots. Default is \code{TRUE}.
-#' @param show_info Verbose progress bar on the console. Default is \code{TRUE}.
+#' @param show_info Verbose progress on the console. Default is \code{TRUE}.
 #' @param parallel Speed up the computation using \code{parallelMap::parallelMap()}.
 #' See \href{https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#parallel-computation}{\bold{vignette}}.
+#' This might interfere with showing progress using \code{show_info}.
 #' @param viewer Default is \code{external} to display in an external RStudio window.
 #' Use \code{browser} to display in an external browser or
 #' \code{internal} to use the RStudio internal viewer pane for output.
@@ -189,61 +190,61 @@ modelStudio.explainer <- function(explainer,
   ## later update progress bar after all explanation functions
   if (show_info) {
     pb <- progress_bar$new(
-      format = "  Calculating :what [:bar] :percent  ETA::eta",
-      total = 3*obs_count + 5
+      format = "  Calculating :what :elapsedfull ETA::eta", # :percent  [:bar]
+      total = (4*B + 8 + 1)*obs_count + (4*B + 2*B + B),
+      show_after = 0
     )
     pb$tick(0)
-    Sys.sleep(1/5)
   }
 
   ## count only once
-  fi <- calculate(pb,
+  fi <- calculate(
     ingredients::feature_importance(
         model, data, y, predict_function, variables = variable_names, B = B),
-    "ingredients::feature_importance", "", show_info)
+    "ingredients::feature_importance", show_info, pb, 4*B)
 
   which_numerical <- which_variables_are_numeric(data)
 
   ## because aggregate_profiles calculates numerical OR categorical
   if (all(which_numerical)) {
-    pd_n <- calculate(pb,
+    pd_n <- calculate(
       ingredients::partial_dependence(
           model, data, predict_function, variable_type = "numerical", N = N),
-      "ingredients::partial_dependence", "numerical", show_info)
+      "ingredients::partial_dependence (numerical)", show_info, pb, B)
     pd_c <- NULL
-    ad_n <- calculate(pb,
+    ad_n <- calculate(
       ingredients::accumulated_dependence(
           model, data, predict_function, variable_type = "numerical", N = N),
-      "ingredients::accumulated_dependence", "numerical", show_info)
+      "ingredients::accumulated_dependence (numerical)", show_info, pb, 2*B)
     ad_c <- NULL
   } else if (all(!which_numerical)) {
     pd_n <- NULL
-    pd_c <- calculate(pb,
+    pd_c <- calculate(
       ingredients::partial_dependence(
           model, data, predict_function, variable_type = "categorical", N = N),
-      "ingredients::partial_dependence", "categorical", show_info)
+      "ingredients::partial_dependence (categorical)", show_info, pb, B)
     ad_n <- NULL
-    ad_c <- calculate(pb,
+    ad_c <- calculate(
       ingredients::accumulated_dependence(
           model, data, predict_function, variable_type = "categorical", N = N),
-      "ingredients::accumulated_dependence", "categorical", show_info)
+      "ingredients::accumulated_dependence (categorical)", show_info, pb, 2*B)
   } else {
-    pd_n <- calculate(pb,
+    pd_n <- calculate(
       ingredients::partial_dependence(
         model, data, predict_function, variable_type = "numerical", N = N),
-      "ingredients::partial_dependence", "numerical", show_info)
-    pd_c <- calculate(pb,
+      "ingredients::partial_dependence (numerical)", show_info, pb, B/2)
+    pd_c <- calculate(
       ingredients::partial_dependence(
         model, data, predict_function, variable_type = "categorical", N = N),
-      "ingredients::partial_dependence", "categorical", show_info)
-    ad_n <- calculate(pb,
+      "ingredients::partial_dependence (categorical)", show_info, pb, B/2)
+    ad_n <- calculate(
       ingredients::accumulated_dependence(
         model, data, predict_function, variable_type = "numerical", N = N),
-      "ingredients::accumulated_dependence", "numerical", show_info)
-    ad_c <- calculate(pb,
+      "ingredients::accumulated_dependence (numerical)", show_info, pb, B)
+    ad_c <- calculate(
       ingredients::accumulated_dependence(
         model, data, predict_function, variable_type = "categorical", N = N),
-      "ingredients::accumulated_dependence", "categorical", show_info)
+      "ingredients::accumulated_dependence (categorical)", show_info, pb, B)
   }
 
   fi_data <- prepare_feature_importance(fi, max_features, options$show_boxplot, ...)
@@ -264,18 +265,18 @@ modelStudio.explainer <- function(explainer,
     f <- function(i, model, data, predict_function, label, B, show_boxplot, ...) {
       new_observation <- obs_data[i,, drop = FALSE]
 
-      bd <- calculate(pb,
+      bd <- calculate(
         iBreakDown::local_attributions(
           model, data, predict_function, new_observation, label = label),
-        "iBreakDown::local_attributions", i, show_info)
-      sv <- calculate(pb,
+        paste0("iBreakDown::local_attributions (", i, ")"), show_info, pb, 8)
+      sv <- calculate(
         iBreakDown::shap(
           model, data, predict_function, new_observation, label = label, B = B),
-        "iBreakDown::shap", i, show_info)
-      cp <- calculate(pb,
+        paste0("iBreakDown::shap (", i, ")"), show_info, pb, 4*B)
+      cp <- calculate(
         ingredients::ceteris_paribus(
           model, data, predict_function, new_observation, label = label),
-        "ingredients::ceteris_paribus", i, show_info)
+        paste0("ingredients::ceteris_paribus (", i, ")"), show_info, pb, 1)
 
       bd_data <- prepare_break_down(bd, max_features, ...)
       sv_data <- prepare_shapley_values(sv, max_features, show_boxplot, ...)
@@ -302,18 +303,18 @@ modelStudio.explainer <- function(explainer,
     for(i in 1:obs_count) {
       new_observation <- obs_data[i,, drop = FALSE]
 
-      bd <- calculate(pb,
+      bd <- calculate(
         iBreakDown::local_attributions(
           model, data, predict_function, new_observation, label = label),
-        "iBreakDown::local_attributions", i, show_info)
-      sv <- calculate(pb,
+        paste0("iBreakDown::local_attributions (", i, ")"), show_info, pb, 8)
+      sv <- calculate(
         iBreakDown::shap(
           model, data, predict_function, new_observation, label = label, B = B),
-        "iBreakDown::shap", i, show_info)
-      cp <- calculate(pb,
+        paste0("iBreakDown::shap (", i, ")"), show_info, pb, 4*B)
+      cp <- calculate(
         ingredients::ceteris_paribus(
           model, data, predict_function, new_observation, label = label),
-        "ingredients::ceteris_paribus", i, show_info)
+        paste0("ingredients::ceteris_paribus (", i, ")"), show_info, pb, 1)
 
       bd_data <- prepare_break_down(bd, max_features, ...)
       sv_data <- prepare_shapley_values(sv, max_features, options$show_boxplot, ...)
@@ -412,17 +413,17 @@ remove_file_paths <- function(text, type = NULL) {
 #' It returns \code{NULL} and prints \code{warning} if an error occurred.
 #' It also updates the \code{progress_bar} from the \code{progress} package.
 #'
-#' @param pb progress_bar
 #' @param expr function
 #' @param function_name string
-#' @param i iteration/type
 #' @param show_info show message about what is calculated
+#' @param pb progress_bar
+#' @param ticks number of ticks
 #'
 #' @return Valid object or \code{NULL}
 
-calculate <- function(pb, expr, function_name, i = 1, show_info = TRUE) {
+calculate <- function(expr, function_name, show_info = FALSE, pb = NULL, ticks = NULL) {
 
-  if (show_info) pb$tick(tokens = list(what = paste0(function_name, " (", i, ")")))
+  if (show_info) pb$tick(ticks, tokens = list(what = function_name))
 
   tryCatch({
     expr

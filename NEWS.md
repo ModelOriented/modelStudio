@@ -3,6 +3,7 @@
 * comply with `R v4.0` changes
 * add support for matrix-like `data` with `xgboost` working example
 * boxplot whiskers end in `max(min, q1 - 1.5*iqr)` and `min(max, q3 + 1.5*iqr)` 
+* upgrade `show_info` with `progress` package
 
 # modelStudio 0.3.0
 * **`modelStudio()` now only works on `explainer` class object made with `DALEX::explain()`**

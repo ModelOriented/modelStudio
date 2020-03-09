@@ -225,6 +225,7 @@ Here we use a demo model saved in `DALEXtra` package.
 
 ```{r eval = FALSE}
 library(DALEXtra)
+library(modelStudio)
 
 titanic_test <- read.csv(system.file("extdata", "titanic_test.csv", package = "DALEXtra")) 
 titanic_train <- read.csv(system.file("extdata", "titanic_train.csv", package = "DALEXtra"))
@@ -242,9 +243,13 @@ explainer_scikit <- explain_scikitlearn(pkl_gbm,
                                         label = "python-gbm")
 
 # start model studio
-modelStudio(explainer_scikit,
-            new_observation = titanic_test[1:4,1:17],
-            N = 100, B = 10, options = modelStudioOptions(margin_left = 160))
+ms <- modelStudio(explainer_scikit,
+                  new_observation = titanic_test[1:4,1:17],
+                  options = modelStudioOptions(margin_left = 160))
+
+ms
+
+r2d3::save_d3_html(ms, "ms.html")
 ```
 
 `modelStudio` should work with any `explainer` class object. Find more about 

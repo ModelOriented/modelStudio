@@ -45,10 +45,11 @@ modelStudio(explainer, ...)
 
 \item{eda}{Compute EDA plots. Default is \code{TRUE}.}
 
-\item{show_info}{Verbose progress bar on the console. Default is \code{TRUE}.}
+\item{show_info}{Verbose progress on the console. Default is \code{TRUE}.}
 
 \item{parallel}{Speed up the computation using \code{parallelMap::parallelMap()}.
-See \href{https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#parallel-computation}{\bold{vignette}}.}
+See \href{https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#parallel-computation}{\bold{vignette}}.
+This might interfere with showing progress using \code{show_info}.}
 
 \item{options}{Customize \code{modelStudio}. See \code{\link{modelStudioOptions}} and
 \href{https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#plot-options}{\bold{vignette}}.}

@@ -19,10 +19,9 @@ prepare_break_down <- function(x, max_features = 10, baseline = NA, digits = 3,
   min_max[1] <- min_max[1] - min_max_margin
   min_max[2] <- min_max[2] + min_max_margin
 
-  desc <- calculate(NULL,
-                    iBreakDown::describe(x, display_values =  TRUE,
+  desc <- calculate(iBreakDown::describe(x, display_values =  TRUE,
                                             display_numbers = TRUE),
-                    "iBreakDown::describe.break_down", show_info = FALSE)
+                    "iBreakDown::describe.break_down")
 
   if (is.null(desc)) desc <- "error in iBreakDown::describe.break_down"
 
@@ -142,11 +141,10 @@ prepare_shapley_values <- function(x, max_features = 10, show_boxplot = TRUE, ba
   min_max[2] <- min_max[2] + min_max_margin
 
   # describe cuts df to B=0 anyway
-  desc <- calculate(NULL,
-                    iBreakDown::describe(x, display_values = TRUE,
+  desc <- calculate(iBreakDown::describe(x, display_values = TRUE,
                                             display_numbers = TRUE,
                                             display_shap = TRUE),
-                    "iBreakDown::describe.shap", show_info = FALSE)
+                    "iBreakDown::describe.shap")
 
   if (is.null(desc)) desc <- "error in iBreakDown::describe.shap"
 
@@ -261,11 +259,11 @@ prepare_ceteris_paribus <- function(x, variables = NULL) {
       new_x[[name]] <- temp[order(temp$xhat),]
     }
 
-    text <- calculate(NULL,
+    text <- calculate(
       suppressWarnings(ingredients::describe(x, display_values = TRUE,
                                                 display_numbers = TRUE,
                                                 variables = name)),
-      "ingredients::describe.ceteris_paribus", show_info = FALSE)
+      "ingredients::describe.ceteris_paribus")
 
     if (is.null(text)) text <- "error in ingredients::describe.ceteris_paribus"
 
@@ -343,9 +341,8 @@ prepare_feature_importance <- function(x, max_features = 10, show_boxplot = TRUE
   min_max[1] <- min_max[1] - min_max_margin
   min_max[2] <- min_max[2] + min_max_margin
 
-  desc <- calculate(NULL,
-                    ingredients::describe(x),
-                    "ingredients::describe.feature_importance", show_info = FALSE)
+  desc <- calculate(ingredients::describe(x),
+                    "ingredients::describe.feature_importance")
 
   if (is.null(desc)) desc <- "error in ingredients::describe.feature_importance"
 
@@ -417,11 +414,11 @@ prepare_partial_dependence <- function(x, y, variables = NULL) {
       new_x[[name]] <- temp
     }
 
-    text <- calculate(NULL,
+    text <- calculate(
       suppressWarnings(ingredients::describe(rbind(x,y), display_values = TRUE,
                                                          display_numbers = TRUE,
                                                          variables = name)),
-      "ingredients::describe.partial_dependence", show_info = FALSE)
+      "ingredients::describe.partial_dependence")
 
     if (is.null(text)) text <- "error in ingredients::describe.partial_dependence"
 
@@ -501,7 +498,7 @@ prepare_accumulated_dependence <- function(x, y, variables = NULL) {
       new_x[[name]] <- temp
     }
 
-    # text <- calculate(NULL,
+    # text <- calculate(
     #   suppressWarnings(
     #   ingredients::describe(rbind(x,y),
     #                         display_values = TRUE,
@@ -517,8 +514,8 @@ prepare_accumulated_dependence <- function(x, y, variables = NULL) {
                                text = gsub("\n","</br>", text))
   }
 
-  y_mean <- 0
-  #ifelse(is.null(x), round(attr(y, "mean_prediction"),3),round(attr(x, "mean_prediction"),3))
+  y_mean <- ifelse(is.null(x), round(attr(y, "mean_prediction"),3),
+                   round(attr(x, "mean_prediction"),3))
 
   ret <- NULL
   ret$y_mean <- y_mean
