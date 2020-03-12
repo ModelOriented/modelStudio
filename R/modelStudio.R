@@ -190,11 +190,11 @@ modelStudio.explainer <- function(explainer,
   ## later update progress bar after all explanation functions
   if (show_info) {
     pb <- progress_bar$new(
-      format = "  Calculating :what :elapsedfull ETA::eta", # :percent  [:bar]
-      total = (4*B + 8 + 1)*obs_count + (4*B + 2*B + B),
+      format = "  Calculating :what \n    Elapsed time: :elapsedfull ETA::eta", # :percent  [:bar]
+      total = (2*B + 8 + 1)*obs_count + (4*B + 3*B + B) + 1,
       show_after = 0
     )
-    pb$tick(0)
+    pb$tick(0, tokens = list(what = "..."))
   }
 
   ## count only once
@@ -215,7 +215,7 @@ modelStudio.explainer <- function(explainer,
     ad_n <- calculate(
       ingredients::accumulated_dependence(
           model, data, predict_function, variable_type = "numerical", N = N),
-      "ingredients::accumulated_dependence (numerical)", show_info, pb, 2*B)
+      "ingredients::accumulated_dependence (numerical)", show_info, pb, 3*B)
     ad_c <- NULL
   } else if (all(!which_numerical)) {
     pd_n <- NULL
@@ -227,7 +227,7 @@ modelStudio.explainer <- function(explainer,
     ad_c <- calculate(
       ingredients::accumulated_dependence(
           model, data, predict_function, variable_type = "categorical", N = N),
-      "ingredients::accumulated_dependence (categorical)", show_info, pb, 2*B)
+      "ingredients::accumulated_dependence (categorical)", show_info, pb, 3*B)
   } else {
     pd_n <- calculate(
       ingredients::partial_dependence(
@@ -240,7 +240,7 @@ modelStudio.explainer <- function(explainer,
     ad_n <- calculate(
       ingredients::accumulated_dependence(
         model, data, predict_function, variable_type = "numerical", N = N),
-      "ingredients::accumulated_dependence (numerical)", show_info, pb, B)
+      "ingredients::accumulated_dependence (numerical)", show_info, pb, 2*B)
     ad_c <- calculate(
       ingredients::accumulated_dependence(
         model, data, predict_function, variable_type = "categorical", N = N),
@@ -272,7 +272,7 @@ modelStudio.explainer <- function(explainer,
       sv <- calculate(
         iBreakDown::shap(
           model, data, predict_function, new_observation, label = label, B = B),
-        paste0("iBreakDown::shap (", i, ")"), show_info, pb, 4*B)
+        paste0("iBreakDown::shap (", i, ")"), show_info, pb, 2*B)
       cp <- calculate(
         ingredients::ceteris_paribus(
           model, data, predict_function, new_observation, label = label),
@@ -310,7 +310,7 @@ modelStudio.explainer <- function(explainer,
       sv <- calculate(
         iBreakDown::shap(
           model, data, predict_function, new_observation, label = label, B = B),
-        paste0("iBreakDown::shap (", i, ")"), show_info, pb, 4*B)
+        paste0("iBreakDown::shap (", i, ")"), show_info, pb, 2*B)
       cp <- calculate(
         ingredients::ceteris_paribus(
           model, data, predict_function, new_observation, label = label),
