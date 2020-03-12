@@ -249,7 +249,7 @@ ms <- modelStudio(explainer_scikit,
 
 ms
 
-r2d3::save_d3_html(ms, "ms.html")
+r2d3::save_d3_html(ms, "modelStudio-python-gbm.html")
 ```
 
 `modelStudio` should work with any `explainer` class object. Find more about 

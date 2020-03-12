@@ -71,7 +71,7 @@ Saved output in the form of a HTML file - [**Demo Dashboard**](https://modelorie
   
   - [Conference Poster about modelStudio](misc/MLinPL2019_modelStudio_poster.pdf)
 
-  - [Article about modelStudio](https://joss.theoj.org/papers/10.21105/joss.01798)
+<!--  - [Article about modelStudio](https://joss.theoj.org/papers/10.21105/joss.01798) -->
   
   - [News](NEWS.md)
   
