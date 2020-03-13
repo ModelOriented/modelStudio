@@ -21,11 +21,11 @@
 #' @param parallel Speed up the computation using \code{parallelMap::parallelMap()}.
 #' See \href{https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#parallel-computation}{\bold{vignette}}.
 #' This might interfere with showing progress using \code{show_info}.
+#' @param options Customize \code{modelStudio}. See \code{\link{modelStudioOptions}} and
+#' \href{https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#plot-options}{\bold{vignette}}.
 #' @param viewer Default is \code{external} to display in an external RStudio window.
 #' Use \code{browser} to display in an external browser or
 #' \code{internal} to use the RStudio internal viewer pane for output.
-#' @param options Customize \code{modelStudio}. See \code{\link{modelStudioOptions}} and
-#' \href{https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#plot-options}{\bold{vignette}}.
 #' @param ... Other parameters.
 #'
 #' @return An object of the \code{r2d3} class.

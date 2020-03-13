@@ -1,3 +1,5 @@
+context("Objects for tests")
+
 titanic <- na.omit(DALEX::titanic)
 apartments <- DALEX::apartments
 set.seed(1313)
@@ -7,15 +9,15 @@ v <- FALSE
 
 # Create a model
 model_titanic_glm <- glm(survived ~.,
-             data = titanic_imputed,
+             data = DALEX::titanic_imputed,
              family = "binomial")
 
 # Wrap it into an explainer
-explain_titanic_glm <- explain(model_titanic_glm,
-                     data = titanic_imputed[,-8],
-                     y = titanic_imputed[,8],
-                     label = "Titanic GLM",
-                     verbose = v)
+explain_titanic_glm <- DALEX::explain(model_titanic_glm,
+                                      data = DALEX::titanic_imputed[,-8],
+                                      y = DALEX::titanic_imputed[,8],
+                                      label = "Titanic GLM",
+                                      verbose = v)
 
 # Pick some data points
 new_observations <- titanic_imputed[1:4,]

@@ -1,3 +1,6 @@
+# modelStudio 1.0.1
+* fix `devel-fedora` tests for cran
+
 # modelStudio 1.0.0
 * stable release after fixing minor issues
 * comply with `R v4.0` changes
