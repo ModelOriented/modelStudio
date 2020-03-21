@@ -13,79 +13,88 @@
  *
  */
 
-html, body {
-  height: 100%;
-}
+ html, body {
+   height: 100%;
+ }
 
-body > .container .row {
-  flex: 1 0 auto;
-}
+ body {
+   position: relative;
+ }
 
-footer {
-  margin-top: 45px;
-  padding: 35px 0 36px;
-  border-top: 1px solid #e5e5e5;
-  color: #666;
-  display: flex;
-  flex-shrink: 0;
-}
-footer p {
-  margin-bottom: 0;
-}
-footer div {
-  flex: 1;
-}
-footer .pkgdown {
-  text-align: right;
-}
-footer p {
-  margin-bottom: 0;
-}
+ body > .container {
+   display: flex;
+   height: 100%;
+   flex-direction: column;
+ }
 
-img.icon {
-  float: right;
-}
+ body > .container .row {
+   flex: 1 0 auto;
+ }
 
-img {
-  max-width: 100%;
-}
+ footer {
+   margin-top: 45px;
+   padding: 35px 0 36px;
+   border-top: 1px solid #e5e5e5;
+   color: #666;
+   display: flex;
+   flex-shrink: 0;
+ }
+ footer p {
+   margin-bottom: 0;
+ }
+ footer div {
+   flex: 1;
+ }
+ footer .pkgdown {
+   text-align: right;
+ }
+ footer p {
+   margin-bottom: 0;
+ }
 
-/* Fix bug in bootstrap (only seen in firefox) */
-summary {
-  display: list-item;
-}
+ img.icon {
+   float: right;
+ }
 
-/* Typographic tweaking ---------------------------------*/
+ img {
+   max-width: 100%;
+ }
 
-.contents .page-header {
-  margin-top: calc(-60px + 1em);
-}
+ /* Fix bug in bootstrap (only seen in firefox) */
+ summary {
+   display: list-item;
+ }
 
-/* Section anchors ---------------------------------*/
+ /* Typographic tweaking ---------------------------------*/
 
-a.anchor {
-  margin-left: -30px;
-  display:inline-block;
-  width: 30px;
-  height: 30px;
-  visibility: hidden;
+ .contents .page-header {
+   margin-top: calc(-60px + 1em);
+ }
 
-  background-image: url(./link.svg);
-  background-repeat: no-repeat;
-  background-size: 20px 20px;
-  background-position: center center;
-}
+ /* Section anchors ---------------------------------*/
 
-.hasAnchor:hover a.anchor {
-  visibility: visible;
-}
+ a.anchor {
+   margin-left: -30px;
+   display:inline-block;
+   width: 30px;
+   height: 30px;
+   visibility: hidden;
 
-@media (max-width: 767px) {
-  .hasAnchor:hover a.anchor {
-    visibility: hidden;
-  }
-}
+   background-image: url(./link.svg);
+   background-repeat: no-repeat;
+   background-size: 20px 20px;
+   background-position: center center;
+ }
 
+ .hasAnchor:hover a.anchor {
+   visibility: visible;
+ }
+
+ @media (max-width: 767px) {
+   .hasAnchor:hover a.anchor {
+     visibility: hidden;
+   }
+ }
 
 /* Fixes for fixed navbar --------------------------*/
 
@@ -102,6 +111,7 @@ a.anchor {
   position: sticky;
   top: 70px;
 }
+
 #sidebar h2 {
   font-size: 1.5em;
   margin-top: 1em;
@@ -127,8 +137,64 @@ a.anchor {
 	color: #fff;
 }
 
+/* bootstrap-toc tweaks ------------------------------------------------------*/
+
+/* All levels of nav */
+
+nav[data-toggle='toc'] .nav > li > a {
+  padding: 4px 20px 4px 6px;
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: inherit;
+}
+
+nav[data-toggle='toc'] .nav > li > a:hover,
+nav[data-toggle='toc'] .nav > li > a:focus {
+  padding-left: 5px;
+  color: inherit;
+  border-left: 1px solid #878787;
+}
+
+nav[data-toggle='toc'] .nav > .active > a,
+nav[data-toggle='toc'] .nav > .active:hover > a,
+nav[data-toggle='toc'] .nav > .active:focus > a {
+  padding-left: 5px;
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: inherit;
+  border-left: 2px solid #878787;
+}
+
+/* Nav: second level (shown on .active) */
+
+nav[data-toggle='toc'] .nav .nav {
+  display: none; /* Hide by default, but at >768px, show it */
+  padding-bottom: 10px;
+}
+
+nav[data-toggle='toc'] .nav .nav > li > a {
+  padding-left: 16px;
+  font-size: 1.35rem;
+}
+
+nav[data-toggle='toc'] .nav .nav > li > a:hover,
+nav[data-toggle='toc'] .nav .nav > li > a:focus {
+  padding-left: 15px;
+}
+
+nav[data-toggle='toc'] .nav .nav > .active > a,
+nav[data-toggle='toc'] .nav .nav > .active:hover > a,
+nav[data-toggle='toc'] .nav .nav > .active:focus > a {
+  padding-left: 15px;
+  font-weight: 500;
+  font-size: 1.35rem;
+}
+
+/* orcid ------------------------------------------------------------------- */
+
 .orcid {
   height: 16px;
+  color: #A6CE39;
   /* margins are required by official ORCID trademark and display guidelines */
   margin-left:4px;
   margin-right:4px;
@@ -245,4 +311,12 @@ mark {
 /* vertical spacing after htmlwidgets */
 .html-widget {
   margin-bottom: 10px;
+}
+
+/* don't display links in code chunks when printing */
+/* source: https://stackoverflow.com/a/10781533 */
+@media print {
+  code a:link:after, code a:visited:after {
+    content: "";
+  }
 }
