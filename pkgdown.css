@@ -103,7 +103,7 @@
   margin-top: -60px;
 }
 
-/* Sidebar --------------------------*/
+/* Sidebar old--------------------------*/
 
 #sidebar {
   margin-top: 30px;
@@ -133,6 +133,39 @@
     background-color: #370f54 !important;
 }
 #sidebar .nav nav-pills .nav-stacked > li > a, .nav-pills > li > a{
+  background-color: #4a3c89 !important;
+	color: #fff;
+}
+
+/* Sidebar new--------------------------*/
+#pkgdown-sidebar {
+  margin-top: 30px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 70px;
+}
+
+#pkgdown-sidebar h2 {
+  font-size: 1.5em;
+  margin-top: 1em;
+}
+
+#pkgdown-sidebar h2:first-child {
+  margin-top: 0;
+}
+
+#pkgdown-sidebar .list-unstyled li {
+  margin-bottom: 0.5em;
+}
+
+#pkgdown-sidebar .nav nav-pills .nav-stacked > li > a:focus, .nav-pills > li > a:focus {
+  background-color: #4a3c89 !important;
+	color: #fff;
+}
+#pkgdown-sidebar .nav nav-pills .nav-stacked > li.active > a, .nav-pills > li.active > a{
+    background-color: #370f54 !important;
+}
+#pkgdown-sidebar .nav nav-pills .nav-stacked > li > a, .nav-pills > li > a{
   background-color: #4a3c89 !important;
 	color: #fff;
 }
