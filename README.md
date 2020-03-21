@@ -20,7 +20,7 @@ The main `modelStudio()` function computes various (instance and dataset level) 
 [More Resources](https://modeloriented.github.io/modelStudio/#more) &emsp;
 [**FAQ & Troubleshooting**](https://github.com/ModelOriented/modelStudio/issues/54)
 
-![](images/short.gif)
+![](man/figures/short.gif)
 
 The `modelStudio` package is a part of the [**DrWhy.AI**](http://drwhy.ai) universe.
 
@@ -63,7 +63,7 @@ modelStudio(explainer, new_observations)
 
 Saved output in the form of a HTML file - [**Demo Dashboard**](https://modeloriented.github.io/modelStudio/demo.html).
 
-![](images/long.gif)
+![](man/figures/long.gif)
 
 ## More Resources
   
@@ -84,7 +84,7 @@ Save `modelStudio` as a HTML file using buttons on the top of the RStudio Viewer
 or with [`r2d3::save_d3_html()`](https://rstudio.github.io/r2d3/articles/publishing.html#save-as-html).
 
 <p align="center">
-  <img src="images/controls.png">
+  <img src="man/figures/controls.png">
 </p>
 
 ## Acknowledgments

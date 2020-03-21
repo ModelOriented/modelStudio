@@ -1,6 +1,0 @@
-pandoc: '2.6'
-pkgdown: 1.4.1
-pkgdown_sha: ~
-articles:
-  vignette_modelStudio: vignette_modelStudio.html
-
