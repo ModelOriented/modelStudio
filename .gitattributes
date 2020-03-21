@@ -3,4 +3,5 @@ inst/d3js/modelStudio.js linguist-vendored=false
 docs/* linguist-documentation
 man/* linguist-documentation
 misc/* linguist-documentation
+pkgdown/* linguist-documentation
 tests/testthat/test_warnings_and_errors.R linguist-documentation
