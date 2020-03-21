@@ -100,7 +100,7 @@ footer .author {
   text-align: left;
 }
 
-/* sidebar ------------------------------------------------ */
+/* sidebar old ------------------------------------------------ */
 
 #sidebar h2 {
   font-size: 1.6em;
@@ -137,6 +137,33 @@ footer .author {
   background-color: transparent;
   text-decoration: underline;
 }*/
+
+/* sidebar new ------------------------------------------------ */
+
+#pkgdown-sidebar h2 {
+  font-size: 1.6em;
+  margin-top: 1em;
+  margin-bottom: 0.25em;
+}
+
+#pkgdown-sidebar .list-unstyled li {
+  margin-bottom: 0.5em;
+  line-height: 1.4;
+}
+
+#pkgdown-sidebar small {
+  color: #777;
+}
+
+#pkgdown-sidebar .nav {
+  padding-left: 0px;
+  list-style-type: none;
+  color: #5a9ddb;
+}
+
+#pkgdown-sidebar .nav > li.active {
+  background-position: left -240px;
+}
 
 /* ---- *\/*----------------------------------*\
 
