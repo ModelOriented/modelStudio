@@ -42,3 +42,4 @@ vignettes/*.pdf
 rsconnect/
 
 modelStudio.Rproj
+*.html
