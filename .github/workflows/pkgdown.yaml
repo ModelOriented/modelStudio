@@ -31,8 +31,7 @@ jobs:
         run: |
           install.packages("remotes")
           remotes::install_deps(dependencies = TRUE)
-          # since remotes::install_version doesnt work
-          remotes::install_url('https://cran.rstudio.com/src/contrib/pkgdown_1.4.1.tar.gz')
+          remotes::install_dev("pkgdown")
           remotes::install_github("ModelOriented/DrWhyTemplate")
         shell: Rscript {0}
 
