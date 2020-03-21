@@ -17,3 +17,4 @@ modelStudio_my_test.R
 ^pkgdown.*$
 ^LICENSE$
 ^CONTRIBUTING.md
+^\.github$

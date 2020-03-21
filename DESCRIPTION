@@ -34,7 +34,8 @@ Suggests:
     knitr,
     rmarkdown,
     testthat,
-    spelling
+    spelling,
+    covr
 VignetteBuilder: knitr
 URL: https://ModelOriented.github.io/modelStudio/, https://github.com/ModelOriented/modelStudio
 BugReports: https://github.com/ModelOriented/modelStudio/issues
