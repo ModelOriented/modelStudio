@@ -114,8 +114,8 @@ d3.tip = function() {
     }
 
     nodel.classed(tdir, true)
-          .style('top', (ttop + poffset[0] + scrollTop) + 'px')
-          .style('left', (tleft + poffset[1] + scrollLeft) + 'px')
+          .style('top', (ttop + poffset[0]) + 'px')
+          .style('left', (tleft + poffset[1]) + 'px')
           .style('padding', tpdd);
 
     ////////////////////////////////::::::::://///////////////////////////////
