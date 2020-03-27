@@ -1,6 +1,6 @@
 Package: modelStudio
 Title: Interactive Studio for Explanatory Model Analysis
-Version: 1.0.1
+Version: 1.0.2
 Authors@R:
     c(person("Hubert", "Baniecki", role = c("aut", "cre"),
              email = "hbaniecki@gmail.com",
@@ -9,7 +9,8 @@ Authors@R:
              comment = c(ORCID = "0000-0001-8423-1823")))
 Description: Automate the explanatory analysis of machine learning predictive models.
     This package generates advanced interactive and animated model explanations
-    in the form of a serverless HTML site with only one line of code. 
+    in the form of a serverless HTML site with only one line of code. It is compatibile
+    with most of the black box predictive models and frameworks.
     The main function computes various (instance and dataset level) model explanations
     and produces an interactive, customisable dashboard made with 'D3.js'. It consists
     of multiple panels for plots with their short descriptions. Easily save and share 
@@ -19,7 +20,7 @@ Depends: R (>= 3.5)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 Imports:
     iBreakDown (>= 1.0),
     ingredients (>= 1.0),

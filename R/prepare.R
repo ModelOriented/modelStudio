@@ -554,7 +554,7 @@ prepare_feature_distribution <- function(x, y, variables = NULL) {
     }
   }
 
-  X <- cbind(x[,variables], y)
+  X <- as.data.frame(cbind(x[,variables], y))
   colnames(X) <- c(variables, "_target_")
 
   y_max <- max(y)
