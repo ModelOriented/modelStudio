@@ -1,0 +1,55 @@
+---
+title: "modelStudio - Python & R examples"
+author: "Hubert Baniecki"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{modelStudio - Python & R examples}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = FALSE,
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+
+## test
+
+```{r}
+library("DALEX")
+library("modelStudio")
+
+#:# ex1 classification on 'titanic_imputed' dataset
+
+# Create a model
+model_titanic <- glm(survived ~.,
+                     data = titanic_imputed,
+                     family = "binomial")
+
+# Wrap it into an explainer
+explainer_titanic <- explain(model_titanic,
+                             data = titanic_imputed[,-8],
+                             y = titanic_imputed[,8],
+                             label = "glm",
+                             verbose = FALSE)
+
+# Pick some data points
+new_observations <- titanic_imputed[1:2,]
+rownames(new_observations) <- c("Lucas","James")
+
+# Make a studio for the model
+modelStudio(explainer_titanic, new_observations,
+            N = 100, B = 10, show_info = FALSE)
+```
+
+## test2
+
+```{r}
+
+```
