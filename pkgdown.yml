@@ -1,7 +1,8 @@
 pandoc: 2.7.3
-pkgdown: 1.4.1.9000
-pkgdown_sha: d098208b9a35288e26fc0f5ea5c1724e244c845d
+pkgdown: 1.5.0.9000
+pkgdown_sha: 2254f318a4c1cb12419e27155cce74307bd844ea
 articles:
+  vignette_examples: vignette_examples.html
   vignette_modelStudio: vignette_modelStudio.html
-last_built: 2020-03-21T22:13Z
+last_built: 2020-03-28T01:36Z
 
