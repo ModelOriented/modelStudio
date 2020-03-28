@@ -324,14 +324,19 @@ modelStudio.explainer <- function(explainer,
     }
   }
 
+  # pack explanation data to json and make hash for htmlwidget
   names(obs_list) <- rownames(obs_data)
+  temp <- jsonlite::toJSON(list(obs_list, fi_data, pd_data, ad_data, fd_data, at_data))
+  widget_id <- paste0("widget-", digest::digest(temp))
 
+  # prepare observation data for drop down
   between <- " - "
   if (is.null(new_observation_y)) new_observation_y <- between <- ""
   drop_down_data <- as.data.frame(cbind(rownames(obs_data),
                                         paste0(rownames(obs_data), between, new_observation_y)))
   colnames(drop_down_data) <- c("id", "text")
 
+  # prepare footer text and ms title
   footer_text <- paste0("Site built with modelStudio v", packageVersion("modelStudio"),
                         " on ", format(Sys.time(), usetz = FALSE))
 
@@ -343,12 +348,13 @@ modelStudio.explainer <- function(explainer,
                     facet_dim = facet_dim,
                     footer_text = footer_text,
                     drop_down_data = jsonlite::toJSON(drop_down_data),
-                    eda = eda
+                    eda = eda,
+                    widget_id = widget_id
                     ), options)
 
-  temp <- jsonlite::toJSON(list(obs_list, fi_data, pd_data, ad_data, fd_data, at_data))
-
   sizing_policy <- r2d3::sizingPolicy(padding = 10, browser.fill = TRUE)
+
+  options("r2d3.shadow" = FALSE) # set this option to avoid using shadow-root
 
   model_studio <- r2d3::r2d3(
                     data = temp,
@@ -367,6 +373,7 @@ modelStudio.explainer <- function(explainer,
                     d3_version = "4",
                     viewer = viewer,
                     sizing = sizing_policy,
+                    elementId = widget_id,
                     width = facet_dim[2]*(options$w + options$margin_left + options$margin_right),
                     height = 100 + facet_dim[1]*(options$h + options$margin_top + options$margin_bottom)
                   )

@@ -1,6 +1,6 @@
 Package: modelStudio
 Title: Interactive Studio for Explanatory Model Analysis
-Version: 1.0.1
+Version: 1.0.2
 Authors@R:
     c(person("Hubert", "Baniecki", role = c("aut", "cre"),
              email = "hbaniecki@gmail.com",
@@ -19,13 +19,14 @@ Depends: R (>= 3.5)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 Imports:
     iBreakDown (>= 1.0),
     ingredients (>= 1.0),
     r2d3,
     jsonlite,
-    progress
+    progress,
+    digest
 Suggests:
     DALEX (>= 0.4.9),
     parallelMap,
@@ -39,3 +40,4 @@ Suggests:
 VignetteBuilder: knitr
 URL: https://ModelOriented.github.io/modelStudio/, https://github.com/ModelOriented/modelStudio
 BugReports: https://github.com/ModelOriented/modelStudio/issues
+Language: en-US

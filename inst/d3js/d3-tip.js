@@ -7,7 +7,7 @@ d3.functor = function functor(v) {
   };
 };
 
-d3.tip = function() {
+d3.tip = function(widget_id) {
 
   var direction = d3_tip_direction,
       offset    = d3_tip_offset,
@@ -15,12 +15,13 @@ d3.tip = function() {
       node      = initNode(),
       svg       = null,
       point     = null,
-      target    = null;
+      target    = null,
+      widget_id = widget_id;
 
   function tip(vis) {
     svg = getSVGNode(vis)
     point = svg.createSVGPoint()
-    document.body.appendChild(node)
+    document.getElementById(widget_id).appendChild(node)
   }
 
   // Public - show the tooltip on the screen
@@ -48,7 +49,7 @@ d3.tip = function() {
 
     // do not move this code V
     nodel.html(content)
-          .style('position', 'absolute')
+          .style('position', 'fixed')
           .style('opacity', .8)
           .style('pointer-events', 'all')
     // do not move this code ^
@@ -59,7 +60,7 @@ d3.tip = function() {
         svgDim = svg.getBBox();
 
     // 20 is for 2x r2d3 margin and 7 was added empiricaly
-    var sh = 20 + svgDim.height;// + 7; // this is modelSTudio plotHeight
+    var sh = 20 + svgDim.height;// + 7; // this is modelStudio plotHeight
     var sw = 20 + svgDim.width;
     var dh = divDim.height;
     var dw = divDim.width;
@@ -114,8 +115,8 @@ d3.tip = function() {
     }
 
     nodel.classed(tdir, true)
-          .style('top', (ttop + poffset[0]) + 'px')
-          .style('left', (tleft + poffset[1]) + 'px')
+          .style('top', (ttop - scrollTop) + 'px')
+          .style('left', (tleft - scrollLeft) + 'px')
           .style('padding', tpdd);
 
     ////////////////////////////////::::::::://///////////////////////////////
@@ -311,12 +312,12 @@ d3.tip = function() {
   function initNode() {
     var node = d3.select(document.createElement('div'))
     node
-      .style('position', 'absolute')
+      .style('position', 'fixed')
       .style('top', 0)
       .style('opacity', 0)
       .style('pointer-events', 'none')
       .style('box-sizing', 'border-box')
-      .style('line-heigh', 1.1)
+      .style('line-height', 1.1)
       .style('background', "#000000")
       .style('color', '#fff')
       .style('font-size', '14px')
@@ -338,7 +339,7 @@ d3.tip = function() {
     if(node === null) {
       node = initNode();
       // re-add node to DOM
-      document.body.appendChild(node);
+      document.getElementById(widget_id).appendChild(node);
     };
     return d3.select(node);
   }

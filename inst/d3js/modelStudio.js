@@ -25,6 +25,7 @@ var TIME = options.time,
     footerText = options.footer_text,
     dropDownData = options.drop_down_data,
     EDA = options.eda,
+    WIDGET_ID = options.widget_id,
     SCALE_PLOT = options.scale_plot,
     SHOW_BOXPLOT = options.show_boxplot,
     SHOW_SUBTITLE = options.show_subtitle,
@@ -186,24 +187,24 @@ function initializeStudio() {
        .attr("y2", studioMargin.top - margin.big);
 
   ///:\\\ add select observation input
-  // to make input appear on top
-  d3.select(".r2d3.html-widget.html-widget-static-bound")
-    .style("position","absolute");
-
   let tempW = calculateTextWidth(dropDownData.map(e => e.text))*1.6 + 18; // 15px bold 600
 
-  var inputDiv = d3.select("#htmlwidget_container")
-                   .append("div")
-                   .style("position", "absolute")
-                   .style("display", "inline-grid")
-                   .style("left", (studioWidth - margin.big - tempW)+"px")
-                   .style("top", -studioHeight + 180);
+  // center the ms
+  d3.select("#" + WIDGET_ID)
+    .style('position', 'absolute')
+    .style('left', 0)
+    .style('right', 0)
+    .style('margin', 'auto');
 
-  var input = inputDiv.append("select")
-                      .attr("id","input")
-                      .style("font-size", "15px")
-                      .style("font-weight", 600)
-                      .style("color", "#371ea3");
+  var input = d3.select("#" + WIDGET_ID)
+                .append("select")
+                .attr("id","input")
+                .style("position", "absolute") // to make input appear on top
+                .style("left", (studioWidth - margin.big - tempW)+"px")
+                .style("top", -studioHeight + 180)
+                .style("font-size", "15px")
+                .style("font-weight", 600)
+                .style("color", "#371ea3");
 
   input.selectAll()
        .data(dropDownData)

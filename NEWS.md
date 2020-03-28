@@ -1,3 +1,7 @@
+# modelStudio 1.0.2 (development)
+* center `modelStudio` position  
+* `modelStudio` now renders properly from `.Rmd` to `.html`
+
 # modelStudio 1.0.1
 * fix `devel-fedora` tests for cran
 
