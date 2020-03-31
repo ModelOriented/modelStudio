@@ -8,9 +8,9 @@ Authors@R:
       person("Przemyslaw", "Biecek", role = c("aut"), 
              comment = c(ORCID = "0000-0001-8423-1823")))
 Description: Automate the explanatory analysis of machine learning predictive models.
-    This package generates advanced interactive and animated model explanations
-    in the form of a serverless HTML site with only one line of code. It is compatibile
-    with most of the black box predictive models and frameworks.
+    Generate advanced interactive and animated model explanations in the form of
+    a serverless HTML site with only one line of code. This tool is model agnostic,
+    therefore compatibile with most of the black box predictive models and frameworks.
     The main function computes various (instance and dataset level) model explanations
     and produces an interactive, customisable dashboard made with 'D3.js'. It consists
     of multiple panels for plots with their short descriptions. Easily save and share 
@@ -28,7 +28,7 @@ Imports:
     jsonlite,
     progress
 Suggests:
-    DALEX (>= 0.4.9),
+    DALEX (>= 1.0),
     parallelMap,
     randomForest,
     xgboost,
@@ -38,5 +38,5 @@ Suggests:
     spelling,
     covr
 VignetteBuilder: knitr
-URL: https://ModelOriented.github.io/modelStudio/, https://github.com/ModelOriented/modelStudio
+URL: https://modelstudio.drwhy.ai, https://github.com/ModelOriented/modelStudio
 BugReports: https://github.com/ModelOriented/modelStudio/issues

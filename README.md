@@ -8,7 +8,7 @@
 
 ## Overview
 
-The `modelStudio` package **automates the Explanatory Analysis of Machine Learning predictive models**. Generate advanced interactive and animated model explanations in the form of a **serverless HTML site** with only one line of code. This tool is compatibile with most of the black box predictive models and frameworks (e.g. `xgboost`, `caret`, `mlr/mlr3`, `h2o`, `scikit-learn`, `lightGBM`, `tensorflow`).
+The `modelStudio` package **automates the Explanatory Analysis of Machine Learning predictive models**. Generate advanced interactive and animated model explanations in the form of a **serverless HTML site** with only one line of code. This tool is model agnostic, therefore compatibile with most of the black box predictive models and frameworks (e.g. `xgboost`, `caret`, `mlr/mlr3`, `h2o`, `scikit-learn`, `lightGBM`, `tensorflow/keras`). See examples below.
 
 The main `modelStudio()` function computes various (instance and dataset level) model explanations and produces an **interactive, customisable dashboard made with D3.js**. It consists of multiple panels for plots with their short descriptions. Easily **save and share** the dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.
 
@@ -26,16 +26,16 @@ The `modelStudio` package is a part of the [**DrWhy.AI**](http://drwhy.ai) unive
 ## Installation
 
 ```r
-# Install from CRAN: 
+# Install from CRAN:
 install.packages("modelStudio")
 
 # Install the development version from GitHub:
 devtools::install_github("ModelOriented/modelStudio")
 ```
 
-## Demo
+## Simple Demo
 
-This package bases on `DALEX` explainers created with `DALEX::explain()`.
+This package bases on `DALEX` explainers created with `DALEX::explain()`. 
 
 ```r
 library("DALEX")
@@ -64,9 +64,9 @@ Saved output in the form of a HTML file - [**Demo Dashboard**](https://modelorie
 
 ![](man/figures/long.gif)
 
-## Examples
+## R & Python Examples
 
-```{r}
+```r
 # update main dependencies
 install.packages("ingredients")
 install.packages("iBreakDown")
@@ -76,9 +76,9 @@ install.packages("DALEX")
 devtools::install_github("ModelOriented/DALEXtra")
 ```
 
-### xgboost
+### xgboost [dashboard](https://modeloriented.github.io/modelStudio/xgboost.html)
 
-```{r}
+```r
 # load packages and data
 library(xgboost)
 library(DALEX)
@@ -116,11 +116,9 @@ modelStudio(explainer,
             options = modelStudioOptions(margin_left = 140))
 ```
 
-[xgboost dashboard](https://modeloriented.github.io/modelStudio/xgboost.html)
-
 ### caret
 
-```{r}
+```r
 # load packages and data
 library(caret)
 library(DALEX)
@@ -163,7 +161,7 @@ modelStudio(explainer,
 
 ### mlr/mlr3
 
-```{r}
+```r
 # load packages and data
 library(mlr)
 library(DALEXtra)
@@ -204,7 +202,7 @@ modelStudio(explainer,
             new_observation)
 ```
 
-```{r}
+```r
 # load packages and data
 library(mlr3)
 library(mlr3learners)
@@ -248,34 +246,118 @@ modelStudio(explainer,
 
 ### h2o
 
-```{r}
+```r
 library(DALEXtra)
 
 explain_h2o()
 
 ```
 
-### scikit-learn
+### scikit-learn [dashboard](https://modeloriented.github.io/modelStudio/scikit-learn.html)
 
-```{r}
-library(DALEXtra)
+Use `pickle` Python module and `reticulate` R package to easily produce modelStudio for scikit-learn model.
 
-explain_scikit()
+In this example we fit a Pipeline MLPClassifier on the titanic data. First install the `dalex` package.
 
+```bash
+pip3 install dalex --force
+```
+
+Make an explainer object in Python:
+
+```python
+# import modules
+import dalex as dx
+from dalex import datasets
+
+from sklearn.neural_network import MLPClassifier
+from sklearn.preprocessing import StandardScaler, LabelEncoder, OneHotEncoder
+from sklearn.impute import SimpleImputer
+from sklearn.pipeline import Pipeline
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.compose import ColumnTransformer
+
+# load the data
+data = datasets.load_titanic()
+X = data.drop(columns='survived')
+y = data.survived
+
+# make a pipeline model
+numeric_features = ['age', 'fare', 'sibsp', 'parch']
+numeric_transformer = Pipeline(steps=[
+    ('imputer', SimpleImputer(strategy='median')),
+    ('scaler', StandardScaler())])
+
+categorical_features = ['gender', 'class', 'embarked']
+categorical_transformer = Pipeline(steps=[
+    ('imputer', SimpleImputer(strategy='constant', fill_value='missing')),
+    ('onehot', OneHotEncoder(handle_unknown='ignore'))])
+
+preprocessor = ColumnTransformer(
+    transformers=[
+        ('num', numeric_transformer, numeric_features),
+        ('cat', categorical_transformer, categorical_features)])
+
+
+clf = Pipeline(steps=[('preprocessor', preprocessor),
+                      ('classifier', MLPClassifier(hidden_layer_sizes=(150,100,50),
+                                                   max_iter=500, random_state=0))])
+
+clf.fit(X, y)
+
+# make an explainer
+explainer = dx.Explainer(clf, X, y)
+
+# remove these functions before dump
+explainer.residual_function = None
+explainer.predict_function = None
+
+# pack the explainer into a pickle file
+import pickle        
+pickle_out = open("explainer_titanic.pickle","wb")
+pickle.dump(explainer, pickle_out)
+pickle_out.close()     
+```
+
+Then use modelStudio in R:
+
+```r
+# use reticulate to load the explainer from a pickle file
+library(reticulate)
+explainer <- py_load_object('explainer_titanic.pickle')
+
+# make a predict_function
+predict_function <- function(model, data) {
+  if ("predict_proba" %in% names(model)) {
+    pred <- model$predict_proba(data)
+  } else {
+    pred <- model$predict(data)
+  }
+  pred
+}
+
+# adjust the explainer
+explainer$predict_function <- predict_function
+explainer$label <- 'scikit-learn'
+class(explainer) <- c(class(explainer), 'explainer')
+
+# make a modelStudio
+library(modelStudio)
+modelStudio(explainer)
 ```
 
 ### lightGBM
 
-```{r}
+```r
 library(DALEXtra)
 
 explain_scikit()
 
 ```
 
-### tensorflow
+### tensorflow/keras
 
-```{r}
+```r
 library(DALEXtra)
 
 explain_keras()
@@ -284,19 +366,19 @@ explain_keras()
 
 
 ## More Resources
-  
+
   - [Explanatory Model Analysis. Explore, Explain and Examine Predictive Models.](https://pbiecek.github.io/ema)
-  
+
   - [Read the vignette: modelStudio - perks and features](https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html)  
-  
+
   - [Conference Poster about modelStudio](misc/MLinPL2019_modelStudio_poster.pdf)
 
 <!--  - [Article about modelStudio](https://joss.theoj.org/papers/10.21105/joss.01798) -->
-  
+
   - [News](NEWS.md)
-  
-    
-  
+
+
+
 ## Save and Share
 
 Save `modelStudio` as a HTML file using buttons on the top of the RStudio Viewer
