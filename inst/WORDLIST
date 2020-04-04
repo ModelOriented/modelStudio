@@ -23,3 +23,11 @@ serverless
 SHAP
 suppressWarnings
 updateModelStudio
+xgboost
+tensorflow
+Shapley
+cran
+CRAN
+MLPCLassifier
+keras
+lightGBM

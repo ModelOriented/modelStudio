@@ -19,12 +19,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-
 # R & Python Examples
 
 The `modelStudio()` function takes `DALEX` explainers created with `DALEX::explain()` function as an input. 
 
-```{r}
+```{r eval = FALSE}
 # update main dependencies
 install.packages("ingredients")
 install.packages("iBreakDown")
@@ -36,92 +35,9 @@ install.packages("ModelOriented/DALEXtra")
 
 ## R
 
-### xgboost [dashboard](https://modeloriented.github.io/modelStudio/xgboost.html)
+### mlr [dashboard](https://modeloriented.github.io/modelStudio/mlr.html)
 
-```{r}
-# load packages and data
-library(xgboost)
-library(DALEX)
-library(modelStudio)
-
-data <- DALEX::titanic_imputed
-
-# split the data
-index <- sample(1:nrow(data), 0.8*nrow(data))
-train <- data[index, ]
-test <- data[-index, ]
-
-train_matrix <- model.matrix(survived ~.-1, train)
-test_matrix <- model.matrix(survived ~.-1, test)
-
-# prepare the model
-xgb_matrix <- xgb.DMatrix(train_matrix, label = train$survived)
-params <- list(eta = 0.01, subsample = 0.6, max_depth = 7, min_child_weight = 3,
-               objective = "binary:logistic", eval_metric = "auc")
-model <- xgb.train(params, xgb_matrix, nrounds = 1000)
-
-# create an explainer for the model
-explainer <- explain(model,
-                     data = test_matrix,
-                     y = test$survived,
-                     label = "xgboost")
-
-# pick observations
-new_observation <- test_matrix[1:2,,drop=FALSE]
-rownames(new_observation) <- c("id1", "id2")
-
-# make a studio for the model
-modelStudio(explainer,
-            new_observation,
-            options = modelStudioOptions(margin_left = 140))
-```
-
-### caret
-
-```{r}
-# load packages and data
-library(caret)
-library(DALEX)
-library(modelStudio)
-
-data <- DALEX::titanic_imputed
-
-# split the data
-index <- sample(1:nrow(data), 0.8*nrow(data))
-train <- data[index, ]
-test <- data[-index, ]
-
-# caret train takes target as factor
-train$survived <- as.factor(train$survived)
-
-# prepare the model
-cv <- trainControl(method = "repeatedcv",
-                   number = 3,
-                   repeats = 10)
-
-model <- train(survived ~ ., data = train,
-               method = "gbm",
-               trControl = cv,
-               verbose = FALSE)
-
-# create an explainer for the model
-explainer <- explain(model,
-                     data = test,
-                     y = test$survived,
-                     label = "caret")
-
-# pick observations
-new_observation <- test[1:2,]
-rownames(new_observation) <- c("id1", "id2")
-
-# make a studio for the model
-modelStudio(explainer,
-            new_observation)
-```
-
-### mlr [dashboard](https://modeloriented.github.io/modelStudio/xgboost.html)
-
-```{r}
+```{r eval = FALSE}
 # load packages and data
 library(mlr)
 library(DALEXtra)
@@ -162,9 +78,9 @@ modelStudio(explainer,
             new_observation)
 ```
 
-### mlr3
+### mlr3 [dashboard](https://modeloriented.github.io/modelStudio/mlr3.html)
 
-```{r}
+```{r eval = FALSE}
 # load packages and data
 library(mlr3)
 library(mlr3learners)
@@ -206,11 +122,94 @@ modelStudio(explainer,
             new_observation)
 ```
 
+### xgboost [dashboard](https://modeloriented.github.io/modelStudio/xgboost.html)
+
+```{r eval = FALSE}
+# load packages and data
+library(xgboost)
+library(DALEX)
+library(modelStudio)
+
+data <- DALEX::titanic_imputed
+
+# split the data
+index <- sample(1:nrow(data), 0.8*nrow(data))
+train <- data[index, ]
+test <- data[-index, ]
+
+train_matrix <- model.matrix(survived ~.-1, train)
+test_matrix <- model.matrix(survived ~.-1, test)
+
+# prepare the model
+xgb_matrix <- xgb.DMatrix(train_matrix, label = train$survived)
+params <- list(eta = 0.01, subsample = 0.6, max_depth = 7, min_child_weight = 3,
+               objective = "binary:logistic", eval_metric = "auc")
+model <- xgb.train(params, xgb_matrix, nrounds = 1000)
+
+# create an explainer for the model
+explainer <- explain(model,
+                     data = test_matrix,
+                     y = test$survived,
+                     label = "xgboost")
+
+# pick observations
+new_observation <- test_matrix[1:2,,drop=FALSE]
+rownames(new_observation) <- c("id1", "id2")
+
+# make a studio for the model
+modelStudio(explainer,
+            new_observation,
+            options = modelStudioOptions(margin_left = 140))
+```
+
+### caret [dashboard](https://modeloriented.github.io/modelStudio/caret.html)
+
+```{r eval = FALSE}
+# load packages and data
+library(caret)
+library(DALEX)
+library(modelStudio)
+
+data <- DALEX::titanic_imputed
+
+# split the data
+index <- sample(1:nrow(data), 0.8*nrow(data))
+train <- data[index, ]
+test <- data[-index, ]
+
+# caret train takes target as factor
+train$survived <- as.factor(train$survived)
+
+# prepare the model
+cv <- trainControl(method = "repeatedcv",
+                   number = 3,
+                   repeats = 10)
+
+model <- train(survived ~ ., data = train,
+               method = "gbm",
+               trControl = cv,
+               verbose = FALSE)
+
+# create an explainer for the model
+explainer <- explain(model,
+                     data = test,
+                     y = test$survived,
+                     label = "caret")
+
+# pick observations
+new_observation <- test[1:2,]
+rownames(new_observation) <- c("id1", "id2")
+
+# make a studio for the model
+modelStudio(explainer,
+            new_observation)
+```
+
 ### h2o
 
 TBD
 
-```{r}
+```{r eval = FALSE}
 library(DALEXtra)
 
 explain_h2o()
@@ -225,13 +224,13 @@ Use `pickle` Python module and `reticulate` R package to easily produce modelStu
 
 In this example we fit a Pipeline MLPClassifier on the titanic data. First install the `dalex` package.
 
-```{bash}
+```{bash, eval=FALSE, engine="sh"}
 pip3 install dalex --force
 ```
 
 Make an explainer object in Python:
 
-```{python}
+```{r eval = FALSE}
 # import modules
 import dalex as dx
 from dalex import datasets
@@ -287,7 +286,7 @@ pickle_out.close()
 
 Then use modelStudio in R:
 
-```{r}
+```{r eval = FALSE}
 # use reticulate to load the explainer from a pickle file
 library(reticulate)
 explainer <- py_load_object('explainer_titanic.pickle')
@@ -296,6 +295,9 @@ explainer <- py_load_object('explainer_titanic.pickle')
 predict_function <- function(model, data) {
   if ("predict_proba" %in% names(model)) {
     pred <- model$predict_proba(data)
+    if (ncol(pred) == 2) {
+      pred <- pred[,2]
+    }
   } else {
     pred <- model$predict(data)
   }
@@ -316,7 +318,7 @@ modelStudio(explainer)
 
 TBD
 
-```r
+```{r eval = FALSE}
 library(DALEXtra)
 
 explain_scikit()
@@ -327,7 +329,7 @@ explain_scikit()
 
 TBD
 
-```r
+```{r eval = FALSE}
 library(DALEXtra)
 
 explain_keras()

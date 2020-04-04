@@ -2,7 +2,7 @@
 #'
 #' @description
 #' This function computes various (instance and dataset level) model explanations and produces an interactive,
-#' customisable dashboard made with D3.js. It consists of multiple panels for plots with their short descriptions.
+#' customizable dashboard made with D3.js. It consists of multiple panels for plots with their short descriptions.
 #' Easily save and share the dashboard with others. Tools for model exploration unite with tools for EDA
 #' (Exploratory Data Analysis) to give a broad overview of the model behavior.
 #'

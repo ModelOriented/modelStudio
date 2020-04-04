@@ -1,6 +1,6 @@
 # modelStudio 1.0.2 (development)
 * fix `FD` plot on matrix-like data 
-* center `modelStudio` position  
+* center `modelStudio` position in HTML
 * `modelStudio` now renders properly from `.Rmd` to `.html`
 
 # modelStudio 1.0.1

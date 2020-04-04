@@ -103,7 +103,7 @@ modelStudio(explainer, new_observation, time = 0)
 ### more calculations means more time
 
 `N` is a number of observations used for calculation of partial and accumulated dependence profiles.
-`B` is a number of random paths used for calculation of shapley values profiles.
+`B` is a number of random paths used for calculation of Shapley Values profiles.
 Decrease `N` and `B` parameters to lower computation time or increase
 them to get more accurate empirical results.
 
