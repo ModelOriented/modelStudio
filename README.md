@@ -76,7 +76,7 @@ install.packages("DALEX")
 devtools::install_github("ModelOriented/DALEXtra")
 ```
 
-### mlr [dashboard](https://modeloriented.github.io/modelStudio/xgboost.html)
+### mlr [dashboard](https://modeloriented.github.io/modelStudio/mlr.html)
 
 ```r
 # load packages and data
