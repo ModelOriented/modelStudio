@@ -23,9 +23,9 @@
 <meta property="og:description" content="Automate the explanatory analysis of machine learning predictive models.
     Generate advanced interactive and animated model explanations in the form of
     a serverless HTML site with only one line of code. This tool is model agnostic,
-    therefore compatibile with most of the black box predictive models and frameworks.
+    therefore compatible with most of the black box predictive models and frameworks.
     The main function computes various (instance and dataset level) model explanations
-    and produces an interactive, customisable dashboard made with D3.js. It consists
+    and produces an interactive, customizable dashboard made with D3.js. It consists
     of multiple panels for plots with their short descriptions. Easily save and share 
     the dashboard with others. Tools for model exploration unite with tools for EDA 
     (Exploratory Data Analysis) to give a broad overview of the model behavior.">
@@ -82,7 +82,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/vignette_examples.html">modelStudio - Python &amp; R examples</a>
+      <a href="articles/vignette_examples.html">modelStudio - R &amp; Python examples</a>
     </li>
     <li>
       <a href="articles/vignette_modelStudio.html">modelStudio - perks and features</a>
@@ -118,10 +118,10 @@
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
-<p>The <code>modelStudio</code> package <strong>automates the Explanatory Analysis of Machine Learning predictive models</strong>. Generate advanced interactive and animated model explanations in the form of a <strong>serverless HTML site</strong> with only one line of code. This tool is model agnostic, therefore compatibile with most of the black box predictive models and frameworks (e.g.Â <code>xgboost</code>, <code>caret</code>, <code>mlr/mlr3</code>, <code>h2o</code>, <code>scikit-learn</code>, <code>lightGBM</code>, <code>tensorflow/keras</code>). See examples below.</p>
+<p>The <code>modelStudio</code> package <strong>automates the Explanatory Analysis of Machine Learning predictive models</strong>. Generate advanced interactive and animated model explanations in the form of a <strong>serverless HTML site</strong> with only one line of code. This tool is model agnostic, therefore compatible with most of the black box predictive models and frameworks (e.g.Â <code>mlr/mlr3</code>, <code>xgboost</code>, <code>caret</code>, <code>h2o</code>, <code>scikit-learn</code>, <code>lightGBM</code>, <code>tensorflow/keras</code>).</p>
 <p>The main <code><a href="reference/modelStudio.html">modelStudio()</a></code> function computes various (instance and dataset level) model explanations and produces an <strong>interactive, customisable dashboard made with D3.js</strong>. It consists of multiple panels for plots with their short descriptions. Easily <strong>save and share</strong> the dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.</p>
 <!--- [explain FIFA19](https://pbiecek.github.io/explainFIFA19/) &emsp; --->
-<p><a href="https://pbiecek.github.io/explainFIFA20/"><strong>explain FIFA20</strong></a> â <a href="https://github.com/hbaniecki/transparent_xai/">explain Lung Cancer</a> â <a href="https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#python-scikit-learn-model"><strong>explain Python model</strong></a> â <a href="https://modeloriented.github.io/modelStudio/#more">More Resources</a> â <a href="https://github.com/ModelOriented/modelStudio/issues/54"><strong>FAQ &amp; Troubleshooting</strong></a></p>
+<p><a href="https://pbiecek.github.io/explainFIFA20/"><strong>explain FIFA20</strong></a> â <a href="https://github.com/hbaniecki/transparent_xai/">explain Lung Cancer</a> â <a href="http://modelstudio.drwhy.ai/articles/vignette_examples.html"><strong>R &amp; Python examples</strong></a> â <a href="https://modeloriented.github.io/modelStudio/#more">More Resources</a> â <a href="https://github.com/ModelOriented/modelStudio/issues/54"><strong>FAQ &amp; Troubleshooting</strong></a></p>
 <p><img src="reference/figures/short.gif"></p>
 <p>The <code>modelStudio</code> package is a part of the <a href="http://drwhy.ai"><strong>DrWhy.AI</strong></a> universe.</p>
 </div>
@@ -161,9 +161,10 @@
 <p>Saved output in the form of a HTML file - <a href="https://modeloriented.github.io/modelStudio/demo.html"><strong>Demo Dashboard</strong></a>.</p>
 <p><img src="reference/figures/long.gif"></p>
 </div>
-<div id="r--python-examples" class="section level2">
+<div id="r--python-examples-more" class="section level2">
 <h2 class="hasAnchor">
-<a href="#r--python-examples" class="anchor"></a>R &amp; Python Examples</h2>
+<a href="#r--python-examples-more" class="anchor"></a>R &amp; Python Examples <a href="http://modelstudio.drwhy.ai/articles/vignette_examples.html">more</a>
+</h2>
 <div class="sourceCode" id="cb3"><pre class="r"><span class="co"># update main dependencies</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"ingredients"</span>)
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"iBreakDown"</span>)
@@ -171,92 +172,11 @@
 <span class="co"># packages for explainer objects</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"DALEX"</span>)
 <span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu">install_github</span>(<span class="st">"ModelOriented/DALEXtra"</span>)</pre></div>
-<div id="xgboost-dashboard" class="section level3">
+<div id="mlr-dashboard" class="section level3">
 <h3 class="hasAnchor">
-<a href="#xgboost-dashboard" class="anchor"></a>xgboost <a href="https://modeloriented.github.io/modelStudio/xgboost.html">dashboard</a>
+<a href="#mlr-dashboard" class="anchor"></a>mlr <a href="https://modeloriented.github.io/modelStudio/mlr.html">dashboard</a>
 </h3>
 <div class="sourceCode" id="cb4"><pre class="r"><span class="co"># load packages and data</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">xgboost</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DALEX</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">modelStudio</span>)
-
-<span class="no">data</span> <span class="kw">&lt;-</span> <span class="kw pkg">DALEX</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/DALEX/man/titanic.html">titanic_imputed</a></span>
-
-<span class="co"># split the data</span>
-<span class="no">index</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="fl">1</span>:<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">data</span>), <span class="fl">0.8</span>*<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">data</span>))
-<span class="no">train</span> <span class="kw">&lt;-</span> <span class="no">data</span>[<span class="no">index</span>, ]
-<span class="no">test</span> <span class="kw">&lt;-</span> <span class="no">data</span>[-<span class="no">index</span>, ]
-
-<span class="no">train_matrix</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix</a></span>(<span class="no">survived</span> ~<span class="no">.</span>-<span class="fl">1</span>, <span class="no">train</span>)
-<span class="no">test_matrix</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix</a></span>(<span class="no">survived</span> ~<span class="no">.</span>-<span class="fl">1</span>, <span class="no">test</span>)
-
-<span class="co"># prepare the model</span>
-<span class="no">xgb_matrix</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xgboost/man/xgb.DMatrix.html">xgb.DMatrix</a></span>(<span class="no">train_matrix</span>, <span class="kw">label</span> <span class="kw">=</span> <span class="no">train</span>$<span class="no">survived</span>)
-<span class="no">params</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">eta</span> <span class="kw">=</span> <span class="fl">0.01</span>, <span class="kw">subsample</span> <span class="kw">=</span> <span class="fl">0.6</span>, <span class="kw">max_depth</span> <span class="kw">=</span> <span class="fl">7</span>, <span class="kw">min_child_weight</span> <span class="kw">=</span> <span class="fl">3</span>,
-               <span class="kw">objective</span> <span class="kw">=</span> <span class="st">"binary:logistic"</span>, <span class="kw">eval_metric</span> <span class="kw">=</span> <span class="st">"auc"</span>)
-<span class="no">model</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xgboost/man/xgb.train.html">xgb.train</a></span>(<span class="no">params</span>, <span class="no">xgb_matrix</span>, <span class="kw">nrounds</span> <span class="kw">=</span> <span class="fl">1000</span>)
-
-<span class="co"># create an explainer for the model</span>
-<span class="no">explainer</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DALEX/man/explain.html">explain</a></span>(<span class="no">model</span>,
-                     <span class="kw">data</span> <span class="kw">=</span> <span class="no">test_matrix</span>,
-                     <span class="kw">y</span> <span class="kw">=</span> <span class="no">test</span>$<span class="no">survived</span>,
-                     <span class="kw">label</span> <span class="kw">=</span> <span class="st">"xgboost"</span>)
-
-<span class="co"># pick observations</span>
-<span class="no">new_observation</span> <span class="kw">&lt;-</span> <span class="no">test_matrix</span>[<span class="fl">1</span>:<span class="fl">2</span>,,<span class="kw">drop</span><span class="kw">=</span><span class="fl">FALSE</span>]
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">new_observation</span>) <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"id1"</span>, <span class="st">"id2"</span>)
-
-<span class="co"># make a studio for the model</span>
-<span class="fu"><a href="reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer</span>,
-            <span class="no">new_observation</span>,
-            <span class="kw">options</span> <span class="kw">=</span> <span class="fu"><a href="reference/modelStudioOptions.html">modelStudioOptions</a></span>(<span class="kw">margin_left</span> <span class="kw">=</span> <span class="fl">140</span>))</pre></div>
-</div>
-<div id="caret" class="section level3">
-<h3 class="hasAnchor">
-<a href="#caret" class="anchor"></a>caret</h3>
-<div class="sourceCode" id="cb5"><pre class="r"><span class="co"># load packages and data</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">caret</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DALEX</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">modelStudio</span>)
-
-<span class="no">data</span> <span class="kw">&lt;-</span> <span class="kw pkg">DALEX</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/DALEX/man/titanic.html">titanic_imputed</a></span>
-
-<span class="co"># split the data</span>
-<span class="no">index</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="fl">1</span>:<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">data</span>), <span class="fl">0.8</span>*<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">data</span>))
-<span class="no">train</span> <span class="kw">&lt;-</span> <span class="no">data</span>[<span class="no">index</span>, ]
-<span class="no">test</span> <span class="kw">&lt;-</span> <span class="no">data</span>[-<span class="no">index</span>, ]
-
-<span class="co"># caret train takes target as factor</span>
-<span class="no">train</span>$<span class="no">survived</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(<span class="no">train</span>$<span class="no">survived</span>)
-
-<span class="co"># prepare the model</span>
-<span class="no">cv</span> <span class="kw">&lt;-</span> <span class="fu">trainControl</span>(<span class="kw">method</span> <span class="kw">=</span> <span class="st">"repeatedcv"</span>,
-                   <span class="kw">number</span> <span class="kw">=</span> <span class="fl">3</span>,
-                   <span class="kw">repeats</span> <span class="kw">=</span> <span class="fl">10</span>)
-
-<span class="no">model</span> <span class="kw">&lt;-</span> <span class="fu">train</span>(<span class="no">survived</span> ~ <span class="no">.</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">train</span>,
-               <span class="kw">method</span> <span class="kw">=</span> <span class="st">"gbm"</span>,
-               <span class="kw">trControl</span> <span class="kw">=</span> <span class="no">cv</span>,
-               <span class="kw">verbose</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
-
-<span class="co"># create an explainer for the model</span>
-<span class="no">explainer</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DALEX/man/explain.html">explain</a></span>(<span class="no">model</span>,
-                     <span class="kw">data</span> <span class="kw">=</span> <span class="no">test</span>,
-                     <span class="kw">y</span> <span class="kw">=</span> <span class="no">test</span>$<span class="no">survived</span>,
-                     <span class="kw">label</span> <span class="kw">=</span> <span class="st">"caret"</span>)
-
-<span class="co"># pick observations</span>
-<span class="no">new_observation</span> <span class="kw">&lt;-</span> <span class="no">test</span>[<span class="fl">1</span>:<span class="fl">2</span>,]
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">new_observation</span>) <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"id1"</span>, <span class="st">"id2"</span>)
-
-<span class="co"># make a studio for the model</span>
-<span class="fu"><a href="reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer</span>,
-            <span class="no">new_observation</span>)</pre></div>
-</div>
-<div id="mlrmlr3" class="section level3">
-<h3 class="hasAnchor">
-<a href="#mlrmlr3" class="anchor"></a>mlr/mlr3</h3>
-<div class="sourceCode" id="cb6"><pre class="r"><span class="co"># load packages and data</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">mlr</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DALEXtra</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">modelStudio</span>)
@@ -294,10 +214,14 @@
 <span class="co"># make a studio for the model</span>
 <span class="fu"><a href="reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer</span>,
             <span class="no">new_observation</span>)</pre></div>
-<div class="sourceCode" id="cb7"><pre class="r"><span class="co"># load packages and data</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">mlr3</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">mlr3learners</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DALEXtra</span>)
+</div>
+<div id="xgboost-dashboard" class="section level3">
+<h3 class="hasAnchor">
+<a href="#xgboost-dashboard" class="anchor"></a>xgboost <a href="https://modeloriented.github.io/modelStudio/xgboost.html">dashboard</a>
+</h3>
+<div class="sourceCode" id="cb5"><pre class="r"><span class="co"># load packages and data</span>
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">xgboost</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DALEX</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">modelStudio</span>)
 
 <span class="no">data</span> <span class="kw">&lt;-</span> <span class="kw pkg">DALEX</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/DALEX/man/titanic.html">titanic_imputed</a></span>
@@ -307,39 +231,29 @@
 <span class="no">train</span> <span class="kw">&lt;-</span> <span class="no">data</span>[<span class="no">index</span>, ]
 <span class="no">test</span> <span class="kw">&lt;-</span> <span class="no">data</span>[-<span class="no">index</span>, ]
 
-<span class="co"># mlr3 TaskClassif takes target as factor</span>
-<span class="no">train</span>$<span class="no">survived</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(<span class="no">train</span>$<span class="no">survived</span>)
+<span class="no">train_matrix</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix</a></span>(<span class="no">survived</span> ~<span class="no">.</span>-<span class="fl">1</span>, <span class="no">train</span>)
+<span class="no">test_matrix</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix</a></span>(<span class="no">survived</span> ~<span class="no">.</span>-<span class="fl">1</span>, <span class="no">test</span>)
 
 <span class="co"># prepare the model</span>
-<span class="no">task</span> <span class="kw">&lt;-</span> <span class="no">TaskClassif</span>$<span class="fu">new</span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"titanic"</span>,
-                        <span class="kw">backend</span> <span class="kw">=</span> <span class="no">train</span>,
-                        <span class="kw">target</span> <span class="kw">=</span> <span class="st">"survived"</span>)
-
-<span class="no">learner</span> <span class="kw">&lt;-</span> <span class="fu">lrn</span>(<span class="st">"classif.ranger"</span>,
-               <span class="kw">predict_type</span> <span class="kw">=</span> <span class="st">"prob"</span>)
-
-<span class="no">learner</span>$<span class="fu">train</span>(<span class="no">task</span>)
+<span class="no">xgb_matrix</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xgboost/man/xgb.DMatrix.html">xgb.DMatrix</a></span>(<span class="no">train_matrix</span>, <span class="kw">label</span> <span class="kw">=</span> <span class="no">train</span>$<span class="no">survived</span>)
+<span class="no">params</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">eta</span> <span class="kw">=</span> <span class="fl">0.01</span>, <span class="kw">subsample</span> <span class="kw">=</span> <span class="fl">0.6</span>, <span class="kw">max_depth</span> <span class="kw">=</span> <span class="fl">7</span>, <span class="kw">min_child_weight</span> <span class="kw">=</span> <span class="fl">3</span>,
+               <span class="kw">objective</span> <span class="kw">=</span> <span class="st">"binary:logistic"</span>, <span class="kw">eval_metric</span> <span class="kw">=</span> <span class="st">"auc"</span>)
+<span class="no">model</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xgboost/man/xgb.train.html">xgb.train</a></span>(<span class="no">params</span>, <span class="no">xgb_matrix</span>, <span class="kw">nrounds</span> <span class="kw">=</span> <span class="fl">1000</span>)
 
 <span class="co"># create an explainer for the model</span>
-<span class="no">explainer</span> <span class="kw">&lt;-</span> <span class="fu">explain_mlr3</span>(<span class="no">learner</span>,
-                          <span class="kw">data</span> <span class="kw">=</span> <span class="no">test</span>,
-                          <span class="kw">y</span> <span class="kw">=</span> <span class="no">test</span>$<span class="no">survived</span>,
-                          <span class="kw">label</span> <span class="kw">=</span> <span class="st">"mlr3"</span>)
+<span class="no">explainer</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DALEX/man/explain.html">explain</a></span>(<span class="no">model</span>,
+                     <span class="kw">data</span> <span class="kw">=</span> <span class="no">test_matrix</span>,
+                     <span class="kw">y</span> <span class="kw">=</span> <span class="no">test</span>$<span class="no">survived</span>,
+                     <span class="kw">label</span> <span class="kw">=</span> <span class="st">"xgboost"</span>)
 
 <span class="co"># pick observations</span>
-<span class="no">new_observation</span> <span class="kw">&lt;-</span> <span class="no">test</span>[<span class="fl">1</span>:<span class="fl">2</span>, ]
+<span class="no">new_observation</span> <span class="kw">&lt;-</span> <span class="no">test_matrix</span>[<span class="fl">1</span>:<span class="fl">2</span>,,<span class="kw">drop</span><span class="kw">=</span><span class="fl">FALSE</span>]
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">new_observation</span>) <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"id1"</span>, <span class="st">"id2"</span>)
 
 <span class="co"># make a studio for the model</span>
 <span class="fu"><a href="reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer</span>,
-            <span class="no">new_observation</span>)</pre></div>
-</div>
-<div id="h2o" class="section level3">
-<h3 class="hasAnchor">
-<a href="#h2o" class="anchor"></a>h2o</h3>
-<div class="sourceCode" id="cb8"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DALEXtra</span>)
-
-<span class="fu">explain_h2o</span>()</pre></div>
+            <span class="no">new_observation</span>,
+            <span class="kw">options</span> <span class="kw">=</span> <span class="fu"><a href="reference/modelStudioOptions.html">modelStudioOptions</a></span>(<span class="kw">margin_left</span> <span class="kw">=</span> <span class="fl">140</span>))</pre></div>
 </div>
 <div id="scikit-learn-dashboard" class="section level3">
 <h3 class="hasAnchor">
@@ -347,61 +261,61 @@
 </h3>
 <p>Use <code>pickle</code> Python module and <code>reticulate</code> R package to easily produce modelStudio for scikit-learn model.</p>
 <p>In this example we fit a Pipeline MLPClassifier on the titanic data. First install the <code>dalex</code> package.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1"></a><span class="ex">pip3</span> install dalex --force</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="ex">pip3</span> install dalex --force</span></code></pre></div>
 <p>Make an explainer object in Python:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># import modules</span></span>
-<span id="cb10-2"><a href="#cb10-2"></a><span class="im">import</span> dalex <span class="im">as</span> dx</span>
-<span id="cb10-3"><a href="#cb10-3"></a><span class="im">from</span> dalex <span class="im">import</span> datasets</span>
-<span id="cb10-4"><a href="#cb10-4"></a></span>
-<span id="cb10-5"><a href="#cb10-5"></a><span class="im">from</span> sklearn.neural_network <span class="im">import</span> MLPClassifier</span>
-<span id="cb10-6"><a href="#cb10-6"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler, LabelEncoder, OneHotEncoder</span>
-<span id="cb10-7"><a href="#cb10-7"></a><span class="im">from</span> sklearn.impute <span class="im">import</span> SimpleImputer</span>
-<span id="cb10-8"><a href="#cb10-8"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
-<span id="cb10-9"><a href="#cb10-9"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeRegressor</span>
-<span id="cb10-10"><a href="#cb10-10"></a><span class="im">from</span> sklearn.compose <span class="im">import</span> ColumnTransformer</span>
-<span id="cb10-11"><a href="#cb10-11"></a></span>
-<span id="cb10-12"><a href="#cb10-12"></a><span class="co"># load the data</span></span>
-<span id="cb10-13"><a href="#cb10-13"></a>data <span class="op">=</span> datasets.load_titanic()</span>
-<span id="cb10-14"><a href="#cb10-14"></a>X <span class="op">=</span> data.drop(columns<span class="op">=</span><span class="st">'survived'</span>)</span>
-<span id="cb10-15"><a href="#cb10-15"></a>y <span class="op">=</span> data.survived</span>
-<span id="cb10-16"><a href="#cb10-16"></a></span>
-<span id="cb10-17"><a href="#cb10-17"></a><span class="co"># make a pipeline model</span></span>
-<span id="cb10-18"><a href="#cb10-18"></a>numeric_features <span class="op">=</span> [<span class="st">'age'</span>, <span class="st">'fare'</span>, <span class="st">'sibsp'</span>, <span class="st">'parch'</span>]</span>
-<span id="cb10-19"><a href="#cb10-19"></a>numeric_transformer <span class="op">=</span> Pipeline(steps<span class="op">=</span>[</span>
-<span id="cb10-20"><a href="#cb10-20"></a>    (<span class="st">'imputer'</span>, SimpleImputer(strategy<span class="op">=</span><span class="st">'median'</span>)),</span>
-<span id="cb10-21"><a href="#cb10-21"></a>    (<span class="st">'scaler'</span>, StandardScaler())])</span>
-<span id="cb10-22"><a href="#cb10-22"></a></span>
-<span id="cb10-23"><a href="#cb10-23"></a>categorical_features <span class="op">=</span> [<span class="st">'gender'</span>, <span class="st">'class'</span>, <span class="st">'embarked'</span>]</span>
-<span id="cb10-24"><a href="#cb10-24"></a>categorical_transformer <span class="op">=</span> Pipeline(steps<span class="op">=</span>[</span>
-<span id="cb10-25"><a href="#cb10-25"></a>    (<span class="st">'imputer'</span>, SimpleImputer(strategy<span class="op">=</span><span class="st">'constant'</span>, fill_value<span class="op">=</span><span class="st">'missing'</span>)),</span>
-<span id="cb10-26"><a href="#cb10-26"></a>    (<span class="st">'onehot'</span>, OneHotEncoder(handle_unknown<span class="op">=</span><span class="st">'ignore'</span>))])</span>
-<span id="cb10-27"><a href="#cb10-27"></a></span>
-<span id="cb10-28"><a href="#cb10-28"></a>preprocessor <span class="op">=</span> ColumnTransformer(</span>
-<span id="cb10-29"><a href="#cb10-29"></a>    transformers<span class="op">=</span>[</span>
-<span id="cb10-30"><a href="#cb10-30"></a>        (<span class="st">'num'</span>, numeric_transformer, numeric_features),</span>
-<span id="cb10-31"><a href="#cb10-31"></a>        (<span class="st">'cat'</span>, categorical_transformer, categorical_features)])</span>
-<span id="cb10-32"><a href="#cb10-32"></a></span>
-<span id="cb10-33"><a href="#cb10-33"></a></span>
-<span id="cb10-34"><a href="#cb10-34"></a>clf <span class="op">=</span> Pipeline(steps<span class="op">=</span>[(<span class="st">'preprocessor'</span>, preprocessor),</span>
-<span id="cb10-35"><a href="#cb10-35"></a>                      (<span class="st">'classifier'</span>, MLPClassifier(hidden_layer_sizes<span class="op">=</span>(<span class="dv">150</span>,<span class="dv">100</span>,<span class="dv">50</span>),</span>
-<span id="cb10-36"><a href="#cb10-36"></a>                                                   max_iter<span class="op">=</span><span class="dv">500</span>, random_state<span class="op">=</span><span class="dv">0</span>))])</span>
-<span id="cb10-37"><a href="#cb10-37"></a></span>
-<span id="cb10-38"><a href="#cb10-38"></a>clf.fit(X, y)</span>
-<span id="cb10-39"><a href="#cb10-39"></a></span>
-<span id="cb10-40"><a href="#cb10-40"></a><span class="co"># make an explainer</span></span>
-<span id="cb10-41"><a href="#cb10-41"></a>explainer <span class="op">=</span> dx.Explainer(clf, X, y)</span>
-<span id="cb10-42"><a href="#cb10-42"></a></span>
-<span id="cb10-43"><a href="#cb10-43"></a><span class="co"># remove these functions before dump</span></span>
-<span id="cb10-44"><a href="#cb10-44"></a>explainer.residual_function <span class="op">=</span> <span class="va">None</span></span>
-<span id="cb10-45"><a href="#cb10-45"></a>explainer.predict_function <span class="op">=</span> <span class="va">None</span></span>
-<span id="cb10-46"><a href="#cb10-46"></a></span>
-<span id="cb10-47"><a href="#cb10-47"></a><span class="co"># pack the explainer into a pickle file</span></span>
-<span id="cb10-48"><a href="#cb10-48"></a><span class="im">import</span> pickle        </span>
-<span id="cb10-49"><a href="#cb10-49"></a>pickle_out <span class="op">=</span> <span class="bu">open</span>(<span class="st">"explainer_titanic.pickle"</span>,<span class="st">"wb"</span>)</span>
-<span id="cb10-50"><a href="#cb10-50"></a>pickle.dump(explainer, pickle_out)</span>
-<span id="cb10-51"><a href="#cb10-51"></a>pickle_out.close()     </span></code></pre></div>
-<p>Then use modelStudio in R:</p>
-<div class="sourceCode" id="cb11"><pre class="r"><span class="co"># use reticulate to load the explainer from a pickle file</span>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># import modules</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="im">import</span> dalex <span class="im">as</span> dx</span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="im">from</span> dalex <span class="im">import</span> datasets</span>
+<span id="cb7-4"><a href="#cb7-4"></a></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="im">from</span> sklearn.neural_network <span class="im">import</span> MLPClassifier</span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler, LabelEncoder, OneHotEncoder</span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="im">from</span> sklearn.impute <span class="im">import</span> SimpleImputer</span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
+<span id="cb7-9"><a href="#cb7-9"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeRegressor</span>
+<span id="cb7-10"><a href="#cb7-10"></a><span class="im">from</span> sklearn.compose <span class="im">import</span> ColumnTransformer</span>
+<span id="cb7-11"><a href="#cb7-11"></a></span>
+<span id="cb7-12"><a href="#cb7-12"></a><span class="co"># load the data</span></span>
+<span id="cb7-13"><a href="#cb7-13"></a>data <span class="op">=</span> datasets.load_titanic()</span>
+<span id="cb7-14"><a href="#cb7-14"></a>X <span class="op">=</span> data.drop(columns<span class="op">=</span><span class="st">'survived'</span>)</span>
+<span id="cb7-15"><a href="#cb7-15"></a>y <span class="op">=</span> data.survived</span>
+<span id="cb7-16"><a href="#cb7-16"></a></span>
+<span id="cb7-17"><a href="#cb7-17"></a><span class="co"># make a pipeline model</span></span>
+<span id="cb7-18"><a href="#cb7-18"></a>numeric_features <span class="op">=</span> [<span class="st">'age'</span>, <span class="st">'fare'</span>, <span class="st">'sibsp'</span>, <span class="st">'parch'</span>]</span>
+<span id="cb7-19"><a href="#cb7-19"></a>numeric_transformer <span class="op">=</span> Pipeline(steps<span class="op">=</span>[</span>
+<span id="cb7-20"><a href="#cb7-20"></a>    (<span class="st">'imputer'</span>, SimpleImputer(strategy<span class="op">=</span><span class="st">'median'</span>)),</span>
+<span id="cb7-21"><a href="#cb7-21"></a>    (<span class="st">'scaler'</span>, StandardScaler())])</span>
+<span id="cb7-22"><a href="#cb7-22"></a></span>
+<span id="cb7-23"><a href="#cb7-23"></a>categorical_features <span class="op">=</span> [<span class="st">'gender'</span>, <span class="st">'class'</span>, <span class="st">'embarked'</span>]</span>
+<span id="cb7-24"><a href="#cb7-24"></a>categorical_transformer <span class="op">=</span> Pipeline(steps<span class="op">=</span>[</span>
+<span id="cb7-25"><a href="#cb7-25"></a>    (<span class="st">'imputer'</span>, SimpleImputer(strategy<span class="op">=</span><span class="st">'constant'</span>, fill_value<span class="op">=</span><span class="st">'missing'</span>)),</span>
+<span id="cb7-26"><a href="#cb7-26"></a>    (<span class="st">'onehot'</span>, OneHotEncoder(handle_unknown<span class="op">=</span><span class="st">'ignore'</span>))])</span>
+<span id="cb7-27"><a href="#cb7-27"></a></span>
+<span id="cb7-28"><a href="#cb7-28"></a>preprocessor <span class="op">=</span> ColumnTransformer(</span>
+<span id="cb7-29"><a href="#cb7-29"></a>    transformers<span class="op">=</span>[</span>
+<span id="cb7-30"><a href="#cb7-30"></a>        (<span class="st">'num'</span>, numeric_transformer, numeric_features),</span>
+<span id="cb7-31"><a href="#cb7-31"></a>        (<span class="st">'cat'</span>, categorical_transformer, categorical_features)])</span>
+<span id="cb7-32"><a href="#cb7-32"></a></span>
+<span id="cb7-33"><a href="#cb7-33"></a></span>
+<span id="cb7-34"><a href="#cb7-34"></a>clf <span class="op">=</span> Pipeline(steps<span class="op">=</span>[(<span class="st">'preprocessor'</span>, preprocessor),</span>
+<span id="cb7-35"><a href="#cb7-35"></a>                      (<span class="st">'classifier'</span>, MLPClassifier(hidden_layer_sizes<span class="op">=</span>(<span class="dv">150</span>,<span class="dv">100</span>,<span class="dv">50</span>),</span>
+<span id="cb7-36"><a href="#cb7-36"></a>                                                   max_iter<span class="op">=</span><span class="dv">500</span>, random_state<span class="op">=</span><span class="dv">0</span>))])</span>
+<span id="cb7-37"><a href="#cb7-37"></a></span>
+<span id="cb7-38"><a href="#cb7-38"></a>clf.fit(X, y)</span>
+<span id="cb7-39"><a href="#cb7-39"></a></span>
+<span id="cb7-40"><a href="#cb7-40"></a><span class="co"># make an explainer</span></span>
+<span id="cb7-41"><a href="#cb7-41"></a>explainer <span class="op">=</span> dx.Explainer(clf, X, y)</span>
+<span id="cb7-42"><a href="#cb7-42"></a></span>
+<span id="cb7-43"><a href="#cb7-43"></a><span class="co"># remove these functions before dump</span></span>
+<span id="cb7-44"><a href="#cb7-44"></a>explainer.residual_function <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb7-45"><a href="#cb7-45"></a>explainer.predict_function <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb7-46"><a href="#cb7-46"></a></span>
+<span id="cb7-47"><a href="#cb7-47"></a><span class="co"># pack the explainer into a pickle file</span></span>
+<span id="cb7-48"><a href="#cb7-48"></a><span class="im">import</span> pickle        </span>
+<span id="cb7-49"><a href="#cb7-49"></a>pickle_out <span class="op">=</span> <span class="bu">open</span>(<span class="st">"explainer_titanic.pickle"</span>,<span class="st">"wb"</span>)</span>
+<span id="cb7-50"><a href="#cb7-50"></a>pickle.dump(explainer, pickle_out)</span>
+<span id="cb7-51"><a href="#cb7-51"></a>pickle_out.close()     </span></code></pre></div>
+<p>Then use <code>modelStudio</code> in R:</p>
+<div class="sourceCode" id="cb8"><pre class="r"><span class="co"># use reticulate to load the explainer from a pickle file</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">reticulate</span>)
 <span class="no">explainer</span> <span class="kw">&lt;-</span> <span class="fu">py_load_object</span>(<span class="st">'explainer_titanic.pickle'</span>)
 
@@ -409,6 +323,9 @@
 <span class="no">predict_function</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">model</span>, <span class="no">data</span>) {
   <span class="kw">if</span> (<span class="st">"predict_proba"</span> <span class="kw">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">model</span>)) {
     <span class="no">pred</span> <span class="kw">&lt;-</span> <span class="no">model</span>$<span class="fu">predict_proba</span>(<span class="no">data</span>)
+    <span class="kw">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span>(<span class="no">pred</span>) <span class="kw">==</span> <span class="fl">2</span>) {
+      <span class="no">pred</span> <span class="kw">&lt;-</span> <span class="no">pred</span>[,<span class="fl">2</span>]
+    }
   } <span class="kw">else</span> {
     <span class="no">pred</span> <span class="kw">&lt;-</span> <span class="no">model</span>$<span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>(<span class="no">data</span>)
   }
@@ -423,20 +340,6 @@
 <span class="co"># make a modelStudio</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">modelStudio</span>)
 <span class="fu"><a href="reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer</span>)</pre></div>
-</div>
-<div id="lightgbm" class="section level3">
-<h3 class="hasAnchor">
-<a href="#lightgbm" class="anchor"></a>lightGBM</h3>
-<div class="sourceCode" id="cb12"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DALEXtra</span>)
-
-<span class="fu">explain_scikit</span>()</pre></div>
-</div>
-<div id="tensorflowkeras" class="section level3">
-<h3 class="hasAnchor">
-<a href="#tensorflowkeras" class="anchor"></a>tensorflow/keras</h3>
-<div class="sourceCode" id="cb13"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DALEXtra</span>)
-
-<span class="fu">explain_keras</span>()</pre></div>
 </div>
 </div>
 <div id="more-resources" class="section level2">
