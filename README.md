@@ -8,7 +8,7 @@
 
 ## Overview
 
-The `modelStudio` package **automates the Explanatory Analysis of Machine Learning predictive models**. Generate advanced interactive and animated model explanations in the form of a **serverless HTML site** with only one line of code.
+The `modelStudio` package **automates the Explanatory Analysis of Machine Learning predictive models**. Generate advanced interactive and animated model explanations in the form of a **serverless HTML site** with only one line of code. This tool is model agnostic, therefore compatibile with most of the black box predictive models and frameworks (e.g. `xgboost`, `caret`, `mlr/mlr3`, `h2o`, `scikit-learn`, `lightGBM`, `tensorflow/keras`). See examples below.
 
 The main `modelStudio()` function computes various (instance and dataset level) model explanations and produces an **interactive, customisable dashboard made with D3.js**. It consists of multiple panels for plots with their short descriptions. Easily **save and share** the dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.
 
@@ -26,16 +26,16 @@ The `modelStudio` package is a part of the [**DrWhy.AI**](http://drwhy.ai) unive
 ## Installation
 
 ```r
-# Install from CRAN: 
+# Install from CRAN:
 install.packages("modelStudio")
 
 # Install the development version from GitHub:
 devtools::install_github("ModelOriented/modelStudio")
 ```
 
-## Demo
+## Simple Demo
 
-This package bases on `DALEX` explainers created with `DALEX::explain()`.
+This package bases on `DALEX` explainers created with `DALEX::explain()`. 
 
 ```r
 library("DALEX")
@@ -48,8 +48,8 @@ model <- glm(survived ~.,
 
 # Wrap it into an explainer        
 explainer <- explain(model,
-                     data = titanic_imputed[,-8],
-                     y = titanic_imputed[,8],
+                     data = titanic_imputed,
+                     y = titanic_imputed$survived,
                      label = "Titanic GLM")
 
 # Pick some data points
@@ -64,19 +64,321 @@ Saved output in the form of a HTML file - [**Demo Dashboard**](https://modelorie
 
 ![](man/figures/long.gif)
 
+## R & Python Examples
+
+```r
+# update main dependencies
+install.packages("ingredients")
+install.packages("iBreakDown")
+
+# packages for explainer objects
+install.packages("DALEX")
+devtools::install_github("ModelOriented/DALEXtra")
+```
+
+### xgboost [dashboard](https://modeloriented.github.io/modelStudio/xgboost.html)
+
+```r
+# load packages and data
+library(xgboost)
+library(DALEX)
+library(modelStudio)
+
+data <- DALEX::titanic_imputed
+
+# split the data
+index <- sample(1:nrow(data), 0.8*nrow(data))
+train <- data[index, ]
+test <- data[-index, ]
+
+train_matrix <- model.matrix(survived ~.-1, train)
+test_matrix <- model.matrix(survived ~.-1, test)
+
+# prepare the model
+xgb_matrix <- xgb.DMatrix(train_matrix, label = train$survived)
+params <- list(eta = 0.01, subsample = 0.6, max_depth = 7, min_child_weight = 3,
+               objective = "binary:logistic", eval_metric = "auc")
+model <- xgb.train(params, xgb_matrix, nrounds = 1000)
+
+# create an explainer for the model
+explainer <- explain(model,
+                     data = test_matrix,
+                     y = test$survived,
+                     label = "xgboost")
+
+# pick observations
+new_observation <- test_matrix[1:2,,drop=FALSE]
+rownames(new_observation) <- c("id1", "id2")
+
+# make a studio for the model
+modelStudio(explainer,
+            new_observation,
+            options = modelStudioOptions(margin_left = 140))
+```
+
+### caret
+
+```r
+# load packages and data
+library(caret)
+library(DALEX)
+library(modelStudio)
+
+data <- DALEX::titanic_imputed
+
+# split the data
+index <- sample(1:nrow(data), 0.8*nrow(data))
+train <- data[index, ]
+test <- data[-index, ]
+
+# caret train takes target as factor
+train$survived <- as.factor(train$survived)
+
+# prepare the model
+cv <- trainControl(method = "repeatedcv",
+                   number = 3,
+                   repeats = 10)
+
+model <- train(survived ~ ., data = train,
+               method = "gbm",
+               trControl = cv,
+               verbose = FALSE)
+
+# create an explainer for the model
+explainer <- explain(model,
+                     data = test,
+                     y = test$survived,
+                     label = "caret")
+
+# pick observations
+new_observation <- test[1:2,]
+rownames(new_observation) <- c("id1", "id2")
+
+# make a studio for the model
+modelStudio(explainer,
+            new_observation)
+```
+
+### mlr/mlr3
+
+```r
+# load packages and data
+library(mlr)
+library(DALEXtra)
+library(modelStudio)
+
+data <- DALEX::titanic_imputed
+
+# split the data
+index <- sample(1:nrow(data), 0.8*nrow(data))
+train <- data[index, ]
+test <- data[-index, ]
+
+# mlr ClassifTask takes target as factor
+train$survived <- as.factor(train$survived)
+
+# prepare the model
+task <- makeClassifTask(id = "titanic",
+                        data = train,
+                        target = "survived")
+
+learner <- makeLearner("classif.ranger",
+                       predict.type = "prob")
+
+model <- train(learner, task)
+
+# create an explainer for the model
+explainer <- explain_mlr(model,
+                         data = test,
+                         y = test$survived,
+                         label = "mlr")
+
+# pick observations
+new_observation <- test[1:2, ]
+rownames(new_observation) <- c("id1", "id2")
+
+# make a studio for the model
+modelStudio(explainer,
+            new_observation)
+```
+
+```r
+# load packages and data
+library(mlr3)
+library(mlr3learners)
+library(DALEXtra)
+library(modelStudio)
+
+data <- DALEX::titanic_imputed
+
+# split the data
+index <- sample(1:nrow(data), 0.8*nrow(data))
+train <- data[index, ]
+test <- data[-index, ]
+
+# mlr3 TaskClassif takes target as factor
+train$survived <- as.factor(train$survived)
+
+# prepare the model
+task <- TaskClassif$new(id = "titanic",
+                        backend = train,
+                        target = "survived")
+
+learner <- lrn("classif.ranger",
+               predict_type = "prob")
+
+learner$train(task)
+
+# create an explainer for the model
+explainer <- explain_mlr3(learner,
+                          data = test,
+                          y = test$survived,
+                          label = "mlr3")
+
+# pick observations
+new_observation <- test[1:2, ]
+rownames(new_observation) <- c("id1", "id2")
+
+# make a studio for the model
+modelStudio(explainer,
+            new_observation)
+```
+
+### h2o
+
+```r
+library(DALEXtra)
+
+explain_h2o()
+
+```
+
+### scikit-learn [dashboard](https://modeloriented.github.io/modelStudio/scikit-learn.html)
+
+Use `pickle` Python module and `reticulate` R package to easily produce modelStudio for scikit-learn model.
+
+In this example we fit a Pipeline MLPClassifier on the titanic data. First install the `dalex` package.
+
+```bash
+pip3 install dalex --force
+```
+
+Make an explainer object in Python:
+
+```python
+# import modules
+import dalex as dx
+from dalex import datasets
+
+from sklearn.neural_network import MLPClassifier
+from sklearn.preprocessing import StandardScaler, LabelEncoder, OneHotEncoder
+from sklearn.impute import SimpleImputer
+from sklearn.pipeline import Pipeline
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.compose import ColumnTransformer
+
+# load the data
+data = datasets.load_titanic()
+X = data.drop(columns='survived')
+y = data.survived
+
+# make a pipeline model
+numeric_features = ['age', 'fare', 'sibsp', 'parch']
+numeric_transformer = Pipeline(steps=[
+    ('imputer', SimpleImputer(strategy='median')),
+    ('scaler', StandardScaler())])
+
+categorical_features = ['gender', 'class', 'embarked']
+categorical_transformer = Pipeline(steps=[
+    ('imputer', SimpleImputer(strategy='constant', fill_value='missing')),
+    ('onehot', OneHotEncoder(handle_unknown='ignore'))])
+
+preprocessor = ColumnTransformer(
+    transformers=[
+        ('num', numeric_transformer, numeric_features),
+        ('cat', categorical_transformer, categorical_features)])
+
+
+clf = Pipeline(steps=[('preprocessor', preprocessor),
+                      ('classifier', MLPClassifier(hidden_layer_sizes=(150,100,50),
+                                                   max_iter=500, random_state=0))])
+
+clf.fit(X, y)
+
+# make an explainer
+explainer = dx.Explainer(clf, X, y)
+
+# remove these functions before dump
+explainer.residual_function = None
+explainer.predict_function = None
+
+# pack the explainer into a pickle file
+import pickle        
+pickle_out = open("explainer_titanic.pickle","wb")
+pickle.dump(explainer, pickle_out)
+pickle_out.close()     
+```
+
+Then use modelStudio in R:
+
+```r
+# use reticulate to load the explainer from a pickle file
+library(reticulate)
+explainer <- py_load_object('explainer_titanic.pickle')
+
+# make a predict_function
+predict_function <- function(model, data) {
+  if ("predict_proba" %in% names(model)) {
+    pred <- model$predict_proba(data)
+  } else {
+    pred <- model$predict(data)
+  }
+  pred
+}
+
+# adjust the explainer
+explainer$predict_function <- predict_function
+explainer$label <- 'scikit-learn'
+class(explainer) <- c(class(explainer), 'explainer')
+
+# make a modelStudio
+library(modelStudio)
+modelStudio(explainer)
+```
+
+### lightGBM
+
+```r
+library(DALEXtra)
+
+explain_scikit()
+
+```
+
+### tensorflow/keras
+
+```r
+library(DALEXtra)
+
+explain_keras()
+
+```
+
+
 ## More Resources
-  
+
   - [Explanatory Model Analysis. Explore, Explain and Examine Predictive Models.](https://pbiecek.github.io/ema)
-  
+
+  - [Read the vignette: modelStudio - perks and features](https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html)  
+
   - [Conference Poster about modelStudio](misc/MLinPL2019_modelStudio_poster.pdf)
 
 <!--  - [Article about modelStudio](https://joss.theoj.org/papers/10.21105/joss.01798) -->
-  
+
   - [News](NEWS.md)
-  
-  - [Read the vignette: modelStudio - perks and features](https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html)  
-    
-  
+
+
+
 ## Save and Share
 
 Save `modelStudio` as a HTML file using buttons on the top of the RStudio Viewer
