@@ -384,6 +384,10 @@ modelStudio.explainer <- function(explainer,
   model_studio
 }
 
+#' @export
+#' @rdname modelStudio
+modelStudio.python.builtin.object <- modelStudio.explainer
+
 #' @noRd
 #' @title remove_file_paths
 #'

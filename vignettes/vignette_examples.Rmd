@@ -53,7 +53,7 @@ test <- data[-index, ]
 # mlr ClassifTask takes target as factor
 train$survived <- as.factor(train$survived)
 
-# prepare the model
+# fit a model
 task <- makeClassifTask(id = "titanic",
                         data = train,
                         target = "survived")
@@ -97,7 +97,7 @@ test <- data[-index, ]
 # mlr3 TaskClassif takes target as factor
 train$survived <- as.factor(train$survived)
 
-# prepare the model
+# fit a model
 task <- TaskClassif$new(id = "titanic",
                         backend = train,
                         target = "survived")
@@ -140,7 +140,7 @@ test <- data[-index, ]
 train_matrix <- model.matrix(survived ~.-1, train)
 test_matrix <- model.matrix(survived ~.-1, test)
 
-# prepare the model
+# fit a model
 xgb_matrix <- xgb.DMatrix(train_matrix, label = train$survived)
 params <- list(eta = 0.01, subsample = 0.6, max_depth = 7, min_child_weight = 3,
                objective = "binary:logistic", eval_metric = "auc")
@@ -180,7 +180,7 @@ test <- data[-index, ]
 # caret train takes target as factor
 train$survived <- as.factor(train$survived)
 
-# prepare the model
+# fit a model
 cv <- trainControl(method = "repeatedcv",
                    number = 3,
                    repeats = 10)
@@ -218,98 +218,90 @@ explain_h2o()
 
 ## Python
 
-### scikit-learn [dashboard](https://modeloriented.github.io/modelStudio/scikit-learn.html)
+Use `pickle` Python module and `reticulate` R package to easily make a studio for a model.
 
-Use `pickle` Python module and `reticulate` R package to easily produce modelStudio for scikit-learn model.
-
-In this example we fit a Pipeline MLPClassifier on the titanic data. First install the `dalex` package.
+Install the `dalex` package.
 
 ```{bash, eval=FALSE, engine="sh"}
 pip3 install dalex --force
 ```
 
-Make an explainer object in Python:
+### scikit-learn [dashboard](https://modeloriented.github.io/modelStudio/scikit-learn.html)
+
+In this example we will fit a Pipeline MLPClassifier model on titanic data.
+
+First, use `dalex` in Python:
 
 ```{r eval = FALSE}
-# import modules
+# load packages and data
 import dalex as dx
-from dalex import datasets
 
-from sklearn.neural_network import MLPClassifier
-from sklearn.preprocessing import StandardScaler, LabelEncoder, OneHotEncoder
-from sklearn.impute import SimpleImputer
+from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
-from sklearn.tree import DecisionTreeRegressor
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.impute import SimpleImputer
 from sklearn.compose import ColumnTransformer
+from sklearn.neural_network import MLPClassifier
 
-# load the data
-data = datasets.load_titanic()
+data = dx.datasets.load_titanic()
 X = data.drop(columns='survived')
 y = data.survived
 
-# make a pipeline model
-numeric_features = ['age', 'fare', 'sibsp', 'parch']
-numeric_transformer = Pipeline(steps=[
-    ('imputer', SimpleImputer(strategy='median')),
-    ('scaler', StandardScaler())])
+# split the data
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=1)
 
+# fit a pipeline model
+numeric_features = ['age', 'fare', 'sibsp', 'parch']
+numeric_transformer = Pipeline(
+  steps=[
+    ('imputer', SimpleImputer(strategy='median')),
+    ('scaler', StandardScaler())
+    ]
+)
 categorical_features = ['gender', 'class', 'embarked']
-categorical_transformer = Pipeline(steps=[
+categorical_transformer = Pipeline(
+  steps=[
     ('imputer', SimpleImputer(strategy='constant', fill_value='missing')),
-    ('onehot', OneHotEncoder(handle_unknown='ignore'))])
+    ('onehot', OneHotEncoder(handle_unknown='ignore'))
+    ]
+)
 
 preprocessor = ColumnTransformer(
-    transformers=[
-        ('num', numeric_transformer, numeric_features),
-        ('cat', categorical_transformer, categorical_features)])
+  transformers=[
+    ('num', numeric_transformer, numeric_features),
+    ('cat', categorical_transformer, categorical_features)
+    ]
+)
 
+model = Pipeline(
+  steps=[
+    ('preprocessor', preprocessor),
+    ('classifier', MLPClassifier(hidden_layer_sizes=(150,100,50), max_iter=500, random_state=0))
+    ]
+)
+model.fit(X_train, y_train)
 
-clf = Pipeline(steps=[('preprocessor', preprocessor),
-                      ('classifier', MLPClassifier(hidden_layer_sizes=(150,100,50),
-                                                   max_iter=500, random_state=0))])
+# create an explainer for the model
+explainer = dx.Explainer(model, X_test, y_test, label = 'scikit-learn')
 
-clf.fit(X, y)
-
-# make an explainer
-explainer = dx.Explainer(clf, X, y)
-
-# remove these functions before dump
+#! remove residual_function before dump !
 explainer.residual_function = None
-explainer.predict_function = None
 
 # pack the explainer into a pickle file
-import pickle        
-pickle_out = open("explainer_titanic.pickle","wb")
+import pickle
+pickle_out = open("explainer_scikitlearn.pickle","wb")
 pickle.dump(explainer, pickle_out)
-pickle_out.close()     
+pickle_out.close()
 ```
 
-Then use modelStudio in R:
+Then, use `modelStudio` in R:
 
 ```{r eval = FALSE}
-# use reticulate to load the explainer from a pickle file
+# load the explainer from the pickle file
 library(reticulate)
-explainer <- py_load_object('explainer_titanic.pickle')
+explainer <- py_load_object('explainer_scikitlearn.pickle', pickle = "pickle")
 
-# make a predict_function
-predict_function <- function(model, data) {
-  if ("predict_proba" %in% names(model)) {
-    pred <- model$predict_proba(data)
-    if (ncol(pred) == 2) {
-      pred <- pred[,2]
-    }
-  } else {
-    pred <- model$predict(data)
-  }
-  pred
-}
-
-# adjust the explainer
-explainer$predict_function <- predict_function
-explainer$label <- 'scikit-learn'
-class(explainer) <- c(class(explainer), 'explainer')
-
-# make a modelStudio
+# make a studio for the model
 library(modelStudio)
 modelStudio(explainer)
 ```
