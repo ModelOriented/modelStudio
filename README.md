@@ -73,7 +73,7 @@ install.packages("iBreakDown")
 
 # packages for explainer objects
 install.packages("DALEX")
-devtools::install_github("ModelOriented/DALEXtra")
+install.packages("DALEXtra")
 ```
 
 ### mlr [dashboard](https://modeloriented.github.io/modelStudio/mlr.html)
