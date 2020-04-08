@@ -3,29 +3,11 @@
 \name{modelStudio}
 \alias{modelStudio}
 \alias{modelStudio.explainer}
-\alias{modelStudio.python.builtin.object}
 \title{Generate Interactive Studio for Explanatory Model Analysis}
 \usage{
 modelStudio(explainer, ...)
 
 \method{modelStudio}{explainer}(
-  explainer,
-  new_observation = NULL,
-  new_observation_y = NULL,
-  facet_dim = c(2, 2),
-  time = 500,
-  max_features = 10,
-  N = 400,
-  B = 15,
-  eda = TRUE,
-  show_info = TRUE,
-  parallel = FALSE,
-  options = modelStudioOptions(),
-  viewer = "external",
-  ...
-)
-
-\method{modelStudio}{python.builtin.object}(
   explainer,
   new_observation = NULL,
   new_observation_y = NULL,
