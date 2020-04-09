@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 
 # R & Python Examples
 
-The `modelStudio()` function takes `DALEX` explainers created with `DALEX::explain()` function as an input. 
+The `modelStudio()` function takes `DALEX` explainers created with `DALEX::explain()` or `DALEXtra::explain_*()` function as an input.  
 
 ```{r eval = FALSE}
 # update main dependencies
@@ -30,7 +30,7 @@ install.packages("iBreakDown")
 
 # packages for explainer objects
 install.packages("DALEX")
-install.packages("ModelOriented/DALEXtra")
+install.packages("DALEXtra")
 ```
 
 ## R
@@ -265,7 +265,7 @@ Install the `dalex` package.
 pip3 install dalex --force
 ```
 
-### scikit-learn [dashboard](https://modeloriented.github.io/modelStudio/scikit-learn.html)
+### scikit-learn [dashboard](https://modeloriented.github.io/modelStudio/scikitlearn.html)
 
 In this example we will fit a Pipeline MLPClassifier model on titanic data.
 
@@ -345,25 +345,182 @@ library(modelStudio)
 modelStudio(explainer)
 ```
 
-### lightGBM
+### lightGBM [dashboard](https://modeloriented.github.io/modelStudio/lightgbm.html)
 
-TBD
+In this example we will fit a Pipeline LGBMClassifier model on titanic data.
+
+First, use `dalex` in Python:
 
 ```{r eval = FALSE}
-library(DALEXtra)
+# load packages and data
+import dalex as dx
 
-explain_scikit()
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.impute import SimpleImputer
+from sklearn.compose import ColumnTransformer
+from lightgbm import LGBMClassifier
 
+data = dx.datasets.load_titanic()
+X = data.drop(columns='survived')
+y = data.survived
+
+# split the data
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=1)
+
+# fit a pipeline model
+numeric_features = ['age', 'fare', 'sibsp', 'parch']
+numeric_transformer = Pipeline(
+  steps=[
+    ('imputer', SimpleImputer(strategy='median')),
+    ('scaler', StandardScaler())
+    ]
+)
+categorical_features = ['gender', 'class', 'embarked']
+categorical_transformer = Pipeline(
+  steps=[
+    ('imputer', SimpleImputer(strategy='constant', fill_value='missing')),
+    ('onehot', OneHotEncoder(handle_unknown='ignore'))
+    ]
+)
+
+preprocessor = ColumnTransformer(
+  transformers=[
+    ('num', numeric_transformer, numeric_features),
+    ('cat', categorical_transformer, categorical_features)
+    ]
+)
+
+model = Pipeline(
+  steps=[
+    ('preprocessor', preprocessor),
+    ('classifier', LGBMClassifier())
+    ]
+)
+model.fit(X_train, y_train)
+
+# create an explainer for the model
+explainer = dx.Explainer(model, X_test, y_test, label = 'lightGBM')
+
+#! remove residual_function before dump !
+explainer.residual_function = None
+
+# pack the explainer into a pickle file
+import pickle
+pickle_out = open("explainer_lightgbm.pickle","wb")
+pickle.dump(explainer, pickle_out)
+pickle_out.close()  
 ```
 
-### tensorflow/keras
-
-TBD
+Then, use `modelStudio` in R:
 
 ```{r eval = FALSE}
-library(DALEXtra)
+# load the explainer from the pickle file
+library(reticulate)
+explainer <- py_load_object('explainer_lightgbm.pickle', pickle = "pickle")
 
-explain_keras()
+# make a studio for the model
+library(modelStudio)
+modelStudio(explainer)
+```
 
+### keras/tensorflow [dashboard](https://modeloriented.github.io/modelStudio/keras.html)
+
+In this example we will fit a Pipeline KerasClassifier model on titanic data.
+
+First, use `dalex` in Python:
+
+```{r eval = FALSE}
+# load packages and data
+import dalex as dx
+
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.impute import SimpleImputer
+from sklearn.compose import ColumnTransformer
+from keras.wrappers.scikit_learn import KerasClassifier
+from keras.layers import Dense
+from keras.models import Sequential
+
+data = dx.datasets.load_titanic()
+X = data.drop(columns='survived')
+y = data.survived
+
+# split the data
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=1)
+
+# fit a pipeline model
+numeric_features = ['age', 'fare', 'sibsp', 'parch']
+numeric_transformer = Pipeline(
+  steps=[
+    ('imputer', SimpleImputer(strategy='median')),
+    ('scaler', StandardScaler())
+    ]
+)
+categorical_features = ['gender', 'class', 'embarked']
+categorical_transformer = Pipeline(
+  steps=[
+    ('imputer', SimpleImputer(strategy='constant', fill_value='missing')),
+    ('onehot', OneHotEncoder(handle_unknown='ignore'))
+    ]
+)
+
+preprocessor = ColumnTransformer(
+  transformers=[
+    ('num', numeric_transformer, numeric_features),
+    ('cat', categorical_transformer, categorical_features)
+    ]
+)
+
+def create_architecture():
+  model = Sequential()
+  # after the pipeline there are 17 inputs
+  model.add(Dense(60, input_dim=17, activation='relu'))
+  model.add(Dense(1, activation='sigmoid'))
+  model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+  return model
+
+kc = KerasClassifier(build_fn=create_architecture, epochs=100, batch_size=5, verbose=0)
+
+model = Pipeline(
+  steps=[
+    ('preprocessor', preprocessor),
+    ('classifier', kc)
+    ]
+)
+model.fit(X_train, y_train)
+
+# create an explainer for the model
+explainer = dx.Explainer(model, X_test, y_test, label = 'keras')
+
+#! remove residual_function before dump !
+explainer.residual_function = None
+
+# pack the explainer into a pickle file
+import pickle
+pickle_out = open("explainer_keras.pickle","wb")
+pickle.dump(explainer, pickle_out)
+pickle_out.close() 
+```
+
+Then, use `modelStudio` in R:
+
+```{r eval = FALSE}
+# load the explainer from the pickle file
+library(reticulate)
+
+#! add blank create_architecture function before load !
+py_run_string("
+def create_architecture():
+    return True
+"
+)
+explainer <- py_load_object('explainer_keras.pickle', pickle = "pickle")
+
+# make a studio for the model
+library(modelStudio)
+modelStudio(explainer)
 ```
 

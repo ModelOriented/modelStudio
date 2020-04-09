@@ -8,7 +8,7 @@
 
 ## Overview
 
-The `modelStudio` package **automates the Explanatory Analysis of Machine Learning predictive models**. Generate advanced interactive and animated model explanations in the form of a **serverless HTML site** with only one line of code. This tool is model agnostic, therefore compatible with most of the black box predictive models and frameworks (e.g.&nbsp;`mlr/mlr3`, `xgboost`, `caret`, `h2o`, `scikit-learn`, `lightGBM`, `tensorflow/keras`).
+The `modelStudio` package **automates the Explanatory Analysis of Machine Learning predictive models**. Generate advanced interactive and animated model explanations in the form of a **serverless HTML site** with only one line of code. This tool is model agnostic, therefore compatible with most of the black box predictive models and frameworks (e.g.&nbsp;`mlr/mlr3`, `xgboost`, `caret`, `h2o`, `scikit-learn`, `lightGBM`, `keras/tensorflow`).
 
 The main `modelStudio()` function computes various (instance and dataset level) model explanations and produces an **interactive, customisable dashboard made with D3.js**. It consists of multiple panels for plots with their short descriptions. Easily **save and share** the dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.
 
@@ -159,7 +159,7 @@ modelStudio(explainer,
             options = modelStudioOptions(margin_left = 140))
 ```
 
-### scikit-learn [dashboard](https://modeloriented.github.io/modelStudio/scikit-learn.html)
+### scikit-learn [dashboard](https://modeloriented.github.io/modelStudio/scikitlearn.html)
 
 Use `pickle` Python module and `reticulate` R package to easily make a studio for a scikit-learn model.
 
