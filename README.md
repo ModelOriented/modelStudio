@@ -10,14 +10,17 @@
 
 The `modelStudio` package **automates the Explanatory Analysis of Machine Learning predictive models**. Generate advanced interactive and animated model explanations in the form of a **serverless HTML site** with only one line of code. This tool is model agnostic, therefore compatible with most of the black box predictive models and frameworks (e.g.&nbsp;`mlr/mlr3`, `xgboost`, `caret`, `h2o`, `scikit-learn`, `lightGBM`, `keras/tensorflow`).
 
-The main `modelStudio()` function computes various (instance and dataset level) model explanations and produces an **interactive, customisable dashboard made with D3.js**. It consists of multiple panels for plots with their short descriptions. Easily **save and share** the dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.
+The main `modelStudio()` function computes various (instance and dataset level) model explanations and produces an **interactive,&nbsp;customisable dashboard made with D3.js**. It consists of multiple panels for plots with their short descriptions. Easily&nbsp;**save&nbsp;and&nbsp;share** the dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.
 
+<p alig="center">
 <!--- [explain FIFA19](https://pbiecek.github.io/explainFIFA19/) &emsp; --->
 [**explain FIFA20**](https://pbiecek.github.io/explainFIFA20/) &emsp;
-[explain Lung Cancer](https://github.com/hbaniecki/transparent_xai/) &emsp;
+<!--- [explain Lung Cancer](https://github.com/hbaniecki/transparent_xai/) &emsp; --->
 [**R & Python examples**](http://modelstudio.drwhy.ai/articles/vignette_examples.html) &emsp;
-[More Resources](http://modelstudio.drwhy.ai/#more-resources) &emsp;
+[**More Resources**](http://modelstudio.drwhy.ai/#more-resources) &emsp;
 [**FAQ & Troubleshooting**](https://github.com/ModelOriented/modelStudio/issues/54)
+
+</p>
 
 ![](man/figures/short.gif)
 
@@ -35,36 +38,36 @@ devtools::install_github("ModelOriented/modelStudio")
 
 ## Simple Demo
 
-This package bases on `DALEX` explainers created with `DALEX::explain()`. 
-
 ```r
 library("DALEX")
 library("modelStudio")
 
-# Create a model
+# fit a model
 model <- glm(survived ~.,
              data = titanic_imputed,
              family = "binomial")
 
-# Wrap it into an explainer        
+# create an explainer for the model    
 explainer <- explain(model,
                      data = titanic_imputed,
                      y = titanic_imputed$survived,
                      label = "Titanic GLM")
 
-# Pick some data points
+# pick observations
 new_observations <- titanic_imputed[1:4,]
 rownames(new_observations) <- c("Lucas", "James", "Thomas", "Nancy")
 
-# Make a studio for the model
+# make a studio for the model
 modelStudio(explainer, new_observations)
 ```
 
-Saved output in the form of a HTML file - [**Demo Dashboard**](https://modeloriented.github.io/modelStudio/demo.html).
+[Save the output](http://modelstudio.drwhy.ai/#save--share) in the form of a HTML file - [**Demo Dashboard**](https://modeloriented.github.io/modelStudio/demo.html).
 
 ![](man/figures/long.gif)
 
 ## R & Python Examples [more](http://modelstudio.drwhy.ai/articles/vignette_examples.html)
+
+The `modelStudio()` function takes `DALEX` explainers (created with `DALEX::explain()` or `DALEXtra::explain_*()`) as an input.  
 
 ```r
 # update main dependencies
@@ -161,15 +164,15 @@ modelStudio(explainer,
 
 ### scikit-learn [dashboard](https://modeloriented.github.io/modelStudio/scikitlearn.html)
 
-Use `pickle` Python module and `reticulate` R package to easily make a studio for a scikit-learn model.
-
-In this example we will fit a Pipeline MLPClassifier model on titanic data. 
-
-Install the `dalex` package.
+The `modelStudio()` function takes `dalex` explainers (created with `dalex.Explainer`) as an input.
 
 ```bash
 pip3 install dalex --force
 ```
+
+Use `pickle` Python module and `reticulate` R package to easily make a studio for a model.
+
+In this example we will fit a `Pipeline MLPClassifier` model on titanic data. 
 
 First, use `dalex` in Python:
 
@@ -247,22 +250,7 @@ library(modelStudio)
 modelStudio(explainer)
 ```
 
-
-## More Resources
-
-  - [Explanatory Model Analysis. Explore, Explain and Examine Predictive Models.](https://pbiecek.github.io/ema)
-
-  - [Read the vignette: modelStudio - perks and features](https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html)  
-
-  - [Conference Poster about modelStudio](misc/MLinPL2019_modelStudio_poster.pdf)
-
-<!--  - [Article about modelStudio](https://joss.theoj.org/papers/10.21105/joss.01798) -->
-
-  - [News](NEWS.md)
-
-
-
-## Save and Share
+## Save & Share
 
 Save `modelStudio` as a HTML file using buttons on the top of the RStudio Viewer
 or with [`r2d3::save_d3_html()`](https://rstudio.github.io/r2d3/articles/publishing.html#save-as-html).
@@ -270,6 +258,21 @@ or with [`r2d3::save_d3_html()`](https://rstudio.github.io/r2d3/articles/publish
 <p align="center">
   <img src="man/figures/controls.png">
 </p>
+
+## More Resources
+
+  - Theoretical introduction to the plots: [Explanatory Model Analysis. Explore, Explain and Examine Predictive Models.](https://pbiecek.github.io/ema)
+
+  - Vignette: [modelStudio - R & python examples](https://modeloriented.github.io/modelStudio/articles/vignette_examples.html)  
+  
+  - Vignette: [modelStudio - perks and features](https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html)  
+
+  - Conference poster: [MLinPL2019](misc/MLinPL2019_modelStudio_poster.pdf)
+
+<!--  - [Article about modelStudio](https://joss.theoj.org/papers/10.21105/joss.01798) -->
+
+  - [News](NEWS.md)
+
 
 ## Acknowledgments
 

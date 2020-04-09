@@ -48,9 +48,8 @@ test <- test[,-6]
 
 # create an explainer
 explainer <- DALEX::explain(model = model,
-                            data = test[,-6],
-                            y = test[,6],
-                            verbose = FALSE)
+                            data = test,
+                            y = test$fired)
 
 # start modelStudio
 library("modelStudio")
@@ -186,7 +185,7 @@ modelStudio(explainer, new_observation, options = new_options)
 
 -------------------------------------------------------------------
 
-## R mlr model 
+## DALEXtra
 
 Use `DALEXtra::explain_*()` functions to explain various models.
 Bellow basic example of making `modelStudio` for mlr model using `DALEXtra::explain_mlr()`
@@ -195,7 +194,7 @@ Bellow basic example of making `modelStudio` for mlr model using `DALEXtra::expl
 library(DALEXtra)
 library(mlr)
 
-# prepare mlr model
+# fit a model
 task <- mlr::makeRegrTask(id = "task",
                           data = train,
                           target = "fired")
@@ -206,59 +205,20 @@ learner <- mlr::makeLearner("regr.randomForest",
 
 model <- mlr::train(learner, task)
 
-# create an explainer for mlr model
-explainer_mlr <- explain_mlr(model, data = test[,-6], y = test[,6], label = "mlr")
+# create an explainer for the model
+explainer_mlr <- explain_mlr(model,
+                             data = test,
+                             y = test$fired,
+                             label = "mlr")
 
-# call model studio for mlr model
-modelStudio(explainer_mlr,
-            new_observation,
-            N = 100, B = 10)
+# make a studio for the model
+modelStudio(explainer_mlr, B = 10)
 ```
-
--------------------------------------------------------------------
-
-## Python scikit-learn model
-
-Bellow basic example of making `modelStudio` for **scikit-learn** model using `DALEXtra::explain_scikitlearn()`
-and **Python Anaconda**. Save your Python model as a `.pkl` file and explain it in **R** with few lines of code.
-Here we use a demo model saved in `DALEXtra` package.
-
-```{r eval = FALSE}
-library(DALEXtra)
-library(modelStudio)
-
-titanic_test <- read.csv(system.file("extdata", "titanic_test.csv", package = "DALEXtra")) 
-titanic_train <- read.csv(system.file("extdata", "titanic_train.csv", package = "DALEXtra"))
-
-# read scikitlearn model
-yml <- system.file("extdata", "scikitlearn.yml", package = "DALEXtra")
-pkl_gbm <- system.file("extdata", "scikitlearn.pkl", package = "DALEXtra")
-pkl_SGDC <- "SGDC.pkl"
-
-# prepare an explainer for scikitlearn model
-explainer_scikit <- explain_scikitlearn(pkl_gbm,
-                                        yml = yml,
-                                        data = titanic_test[,1:17],
-                                        y = titanic_test[,18],
-                                        label = "python-gbm")
-
-# start model studio
-ms <- modelStudio(explainer_scikit,
-                  new_observation = titanic_test[1:4,1:17],
-                  options = modelStudioOptions(margin_left = 160))
-
-ms
-
-r2d3::save_d3_html(ms, "modelStudio-python-gbm.html")
-```
-
-`modelStudio` should work with any `explainer` class object. Find more about 
-making those [here](https://modeloriented.github.io/DALEXtra/reference/).
 
 ## References
 
+* Theoretical introduction to the plots: [Explanatory Model Analysis. Explore, Explain and Examine Predictive Models.](https://pbiecek.github.io/ema)
 * Wrapper for the function is implemented in [DALEX](https://modeloriented.github.io/DALEX/)
 * Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence plots 
 are implemented in [ingredients](https://modeloriented.github.io/ingredients/)
 * Break Down and Shapley Values plots are implemented in [iBreakDown](https://modeloriented.github.io/iBreakDown/)
-* Python wrappers and more can be found in [DALEXtra](https://modeloriented.github.io/DALEXtra/)

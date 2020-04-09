@@ -6,7 +6,7 @@
 #' Easily save and share the dashboard with others. Tools for model exploration unite with tools for EDA
 #' (Exploratory Data Analysis) to give a broad overview of the model behavior.
 #'
-#' Find more details about the plots in \href{https://github.com/pbiecek/ema}{Explanatory Model Analysis: Explore, Explain and Examine Predictive Models}
+#' Theoretical introduction to the plots can be found in \href{https://github.com/pbiecek/ema}{Explanatory Model Analysis: Explore, Explain and Examine Predictive Models}
 #'
 #' @param explainer An \code{explainer} created with function \code{DALEX::explain()}.
 #' @param new_observation A new observation with columns that correspond to variables used in the model.
@@ -45,7 +45,8 @@
 #' }
 #'
 #' @seealso
-#' Python wrappers and more can be found in \href{https://modeloriented.github.io/DALEXtra/}{\bold{DALEXtra}}
+#' Vignettes: \href{https://modeloriented.github.io/modelStudio/articles/vignette_examples.html}{\bold{modelStudio - R & python examples}}
+#' and \href{https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html}{\bold{modelStudio - perks and features}}
 #'
 #' @examples
 #' library("DALEX")
@@ -53,36 +54,35 @@
 #'
 #' #:# ex1 classification on 'titanic_imputed' dataset
 #'
-#' # Create a model
+#' # fit a model
 #' model_titanic <- glm(survived ~.,
 #'                      data = titanic_imputed,
 #'                      family = "binomial")
 #'
-#' # Wrap it into an explainer
+#' # create an explainer for the model
 #' explainer_titanic <- explain(model_titanic,
-#'                              data = titanic_imputed[,-8],
-#'                              y = titanic_imputed[,8],
-#'                              label = "glm",
+#'                              data = titanic_imputed,
+#'                              y = titanic_imputed$survived,
+#'                              label = "Titanic GLM",
 #'                              verbose = FALSE)
 #'
-#' # Pick some data points
+#' # pick observations
 #' new_observations <- titanic_imputed[1:2,]
 #' rownames(new_observations) <- c("Lucas","James")
 #'
-#' # Make a studio for the model
+#' # make a studio for the model
 #' modelStudio(explainer_titanic, new_observations,
 #'             N = 100, B = 10, show_info = FALSE)
 #'
 #' \donttest{
-#'
 #' #:# ex2 regression on 'apartments' dataset
 #' library("randomForest")
 #'
 #' model_apartments <- randomForest(m2.price ~. ,data = apartments)
 #'
 #' explainer_apartments <- explain(model_apartments,
-#'                                 data = apartments[,-1],
-#'                                 y = apartments[,1],
+#'                                 data = apartments,
+#'                                 y = apartments$m2.price,
 #'                                 verbose = FALSE)
 #'
 #' new_apartments <- apartments[1:2,]
@@ -95,8 +95,8 @@
 #'
 #' # add information about true labels
 #' modelStudio(explainer_apartments, new_apartments,
-#'                                 new_observation_y = apartments[1:2, 1],
-#'                                 show_info = FALSE)
+#'             new_observation_y = apartments[1:2, 1],
+#'             show_info = FALSE)
 #'
 #' # don't compute EDA plots
 #' modelStudio(explainer_apartments, eda = FALSE,
