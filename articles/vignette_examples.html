@@ -118,7 +118,7 @@
 <div id="r-python-examples" class="section level1">
 <h1 class="hasAnchor">
 <a href="#r-python-examples" class="anchor"></a>R &amp; Python Examples</h1>
-<p>The <code><a href="../reference/modelStudio.html">modelStudio()</a></code> function takes <code>DALEX</code> explainers created with <code><a href="https://rdrr.io/pkg/DALEX/man/explain.html">DALEX::explain()</a></code> or <code>DALEXtra::explain_*()</code> function as an input.</p>
+<p>The <code><a href="../reference/modelStudio.html">modelStudio()</a></code> function takes <code>DALEX</code> explainers (created with <code><a href="https://rdrr.io/pkg/DALEX/man/explain.html">DALEX::explain()</a></code> or <code>DALEXtra::explain_*()</code>) as an input.</p>
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="co"># update main dependencies</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"ingredients"</span>)
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"iBreakDown"</span>)
@@ -133,6 +133,7 @@
 <h3 class="hasAnchor">
 <a href="#mlr-dashboard" class="anchor"></a>mlr <a href="https://modeloriented.github.io/modelStudio/mlr.html">dashboard</a>
 </h3>
+<p>In this example we will fit a <code>ranger</code> model on titanic data.</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="co"># load packages and data</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">mlr</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DALEXtra</span>)
@@ -176,6 +177,7 @@
 <h3 class="hasAnchor">
 <a href="#mlr3-dashboard" class="anchor"></a>mlr3 <a href="https://modeloriented.github.io/modelStudio/mlr3.html">dashboard</a>
 </h3>
+<p>In this example we will fit a <code>ranger</code> model on titanic data.</p>
 <div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="co"># load packages and data</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">mlr3</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">mlr3learners</span>)
@@ -220,6 +222,7 @@
 <h3 class="hasAnchor">
 <a href="#xgboost-dashboard" class="anchor"></a>xgboost <a href="https://modeloriented.github.io/modelStudio/xgboost.html">dashboard</a>
 </h3>
+<p>In this example we will fit a <code>xgboost</code> model on titanic data.</p>
 <div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="co"># load packages and data</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">xgboost</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DALEX</span>)
@@ -260,6 +263,7 @@
 <h3 class="hasAnchor">
 <a href="#caret-dashboard" class="anchor"></a>caret <a href="https://modeloriented.github.io/modelStudio/caret.html">dashboard</a>
 </h3>
+<p>In this example we will fit a <code>gbm</code> model on titanic data.</p>
 <div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="co"># load packages and data</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">caret</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DALEX</span>)
@@ -303,6 +307,7 @@
 <h3 class="hasAnchor">
 <a href="#h2o-dashboard" class="anchor"></a>h2o <a href="https://modeloriented.github.io/modelStudio/h2o.html">dashboard</a>
 </h3>
+<p>In this example we will fit a <code>h2o.automl</code> model on titanic data.</p>
 <div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="co"># load packages and data</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">h2o</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DALEXtra</span>)
@@ -352,14 +357,14 @@
 <div id="python" class="section level2">
 <h2 class="hasAnchor">
 <a href="#python" class="anchor"></a>Python</h2>
-<p>Use <code>pickle</code> Python module and <code>reticulate</code> R package to easily make a studio for a model.</p>
-<p>Install the <code>dalex</code> package.</p>
+<p>The <code><a href="../reference/modelStudio.html">modelStudio()</a></code> function takes <code>dalex</code> explainers (created with <code>dalex.Explainer</code>) as an input.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a><span class="ex">pip3</span> install dalex --force</span></code></pre></div>
+<p>Use <code>pickle</code> Python module and <code>reticulate</code> R package to easily make a studio for a model.</p>
 <div id="scikit-learn-dashboard" class="section level3">
 <h3 class="hasAnchor">
 <a href="#scikit-learn-dashboard" class="anchor"></a>scikit-learn <a href="https://modeloriented.github.io/modelStudio/scikitlearn.html">dashboard</a>
 </h3>
-<p>In this example we will fit a Pipeline MLPClassifier model on titanic data.</p>
+<p>In this example we will fit a <code>Pipeline MLPClassifier</code> model on titanic data.</p>
 <p>First, use <code>dalex</code> in Python:</p>
 <div class="sourceCode" id="cb8"><html><body><pre class="r"># load packages and data
 import dalex as dx
@@ -433,7 +438,7 @@ pickle_out.close()</pre></body></html></div>
 <h3 class="hasAnchor">
 <a href="#lightgbm-dashboard" class="anchor"></a>lightGBM <a href="https://modeloriented.github.io/modelStudio/lightgbm.html">dashboard</a>
 </h3>
-<p>In this example we will fit a Pipeline LGBMClassifier model on titanic data.</p>
+<p>In this example we will fit a <code>Pipeline LGBMClassifier</code> model on titanic data.</p>
 <p>First, use <code>dalex</code> in Python:</p>
 <div class="sourceCode" id="cb10"><html><body><pre class="r"># load packages and data
 import dalex as dx
@@ -507,7 +512,7 @@ pickle_out.close()  </pre></body></html></div>
 <h3 class="hasAnchor">
 <a href="#kerastensorflow-dashboard" class="anchor"></a>keras/tensorflow <a href="https://modeloriented.github.io/modelStudio/keras.html">dashboard</a>
 </h3>
-<p>In this example we will fit a Pipeline KerasClassifier model on titanic data.</p>
+<p>In this example we will fit a <code>Pipeline KerasClassifier</code> model on titanic data.</p>
 <p>First, use <code>dalex</code> in Python:</p>
 <div class="sourceCode" id="cb12"><html><body><pre class="r"># load packages and data
 import dalex as dx
@@ -596,6 +601,20 @@ def create_architecture():
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">modelStudio</span>)
 <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer</span>)</pre></body></html></div>
 </div>
+</div>
+<div id="references" class="section level2">
+<h2 class="hasAnchor">
+<a href="#references" class="anchor"></a>References</h2>
+<ul>
+<li>Theoretical introduction to the plots: <a href="https://pbiecek.github.io/ema">Explanatory Model Analysis. Explore, Explain and Examine Predictive Models.</a>
+</li>
+<li>Wrapper for the function is implemented in <a href="https://modeloriented.github.io/DALEX/">DALEX</a>
+</li>
+<li>Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence plots are implemented in <a href="https://modeloriented.github.io/ingredients/">ingredients</a>
+</li>
+<li>Break Down and Shapley Values plots are implemented in <a href="https://modeloriented.github.io/iBreakDown/">iBreakDown</a>
+</li>
+</ul>
 </div>
 </div>
   </div>

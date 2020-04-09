@@ -195,9 +195,8 @@
 
 <span class="co"># create an explainer</span>
 <span class="no">explainer</span> <span class="kw">&lt;-</span> <span class="kw pkg">DALEX</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/DALEX/man/explain.html">explain</a></span>(<span class="kw">model</span> <span class="kw">=</span> <span class="no">model</span>,
-                            <span class="kw">data</span> <span class="kw">=</span> <span class="no">test</span>[,-<span class="fl">6</span>],
-                            <span class="kw">y</span> <span class="kw">=</span> <span class="no">test</span>[,<span class="fl">6</span>],
-                            <span class="kw">verbose</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
+                            <span class="kw">data</span> <span class="kw">=</span> <span class="no">test</span>,
+                            <span class="kw">y</span> <span class="kw">=</span> <span class="no">test</span>$<span class="no">fired</span>)
 
 <span class="co"># start modelStudio</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"modelStudio"</span>)</pre></body></html></div>
@@ -299,14 +298,14 @@
 <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer</span>, <span class="no">new_observation</span>, <span class="kw">options</span> <span class="kw">=</span> <span class="no">new_options</span>)</pre></body></html></div>
 <hr>
 </div>
-<div id="r-mlr-model" class="section level2">
+<div id="dalextra" class="section level2">
 <h2 class="hasAnchor">
-<a href="#r-mlr-model" class="anchor"></a>R mlr model</h2>
+<a href="#dalextra" class="anchor"></a>DALEXtra</h2>
 <p>Use <code>DALEXtra::explain_*()</code> functions to explain various models. Bellow basic example of making <code>modelStudio</code> for mlr model using <code>DALEXtra::explain_mlr()</code></p>
 <div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DALEXtra</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">mlr</span>)
 
-<span class="co"># prepare mlr model</span>
+<span class="co"># fit a model</span>
 <span class="no">task</span> <span class="kw">&lt;-</span> <span class="kw pkg">mlr</span><span class="kw ns">::</span><span class="fu">makeRegrTask</span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"task"</span>,
                           <span class="kw">data</span> <span class="kw">=</span> <span class="no">train</span>,
                           <span class="kw">target</span> <span class="kw">=</span> <span class="st">"fired"</span>)
@@ -317,58 +316,26 @@
 
 <span class="no">model</span> <span class="kw">&lt;-</span> <span class="kw pkg">mlr</span><span class="kw ns">::</span><span class="fu">train</span>(<span class="no">learner</span>, <span class="no">task</span>)
 
-<span class="co"># create an explainer for mlr model</span>
-<span class="no">explainer_mlr</span> <span class="kw">&lt;-</span> <span class="fu">explain_mlr</span>(<span class="no">model</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">test</span>[,-<span class="fl">6</span>], <span class="kw">y</span> <span class="kw">=</span> <span class="no">test</span>[,<span class="fl">6</span>], <span class="kw">label</span> <span class="kw">=</span> <span class="st">"mlr"</span>)
+<span class="co"># create an explainer for the model</span>
+<span class="no">explainer_mlr</span> <span class="kw">&lt;-</span> <span class="fu">explain_mlr</span>(<span class="no">model</span>,
+                             <span class="kw">data</span> <span class="kw">=</span> <span class="no">test</span>,
+                             <span class="kw">y</span> <span class="kw">=</span> <span class="no">test</span>$<span class="no">fired</span>,
+                             <span class="kw">label</span> <span class="kw">=</span> <span class="st">"mlr"</span>)
 
-<span class="co"># call model studio for mlr model</span>
-<span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer_mlr</span>,
-            <span class="no">new_observation</span>,
-            <span class="kw">N</span> <span class="kw">=</span> <span class="fl">100</span>, <span class="kw">B</span> <span class="kw">=</span> <span class="fl">10</span>)</pre></body></html></div>
-<hr>
-</div>
-<div id="python-scikit-learn-model" class="section level2">
-<h2 class="hasAnchor">
-<a href="#python-scikit-learn-model" class="anchor"></a>Python scikit-learn model</h2>
-<p>Bellow basic example of making <code>modelStudio</code> for <strong>scikit-learn</strong> model using <code>DALEXtra::explain_scikitlearn()</code> and <strong>Python Anaconda</strong>. Save your Python model as a <code>.pkl</code> file and explain it in <strong>R</strong> with few lines of code. Here we use a demo model saved in <code>DALEXtra</code> package.</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DALEXtra</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">modelStudio</span>)
-
-<span class="no">titanic_test</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"titanic_test.csv"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"DALEXtra"</span>))
-<span class="no">titanic_train</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"titanic_train.csv"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"DALEXtra"</span>))
-
-<span class="co"># read scikitlearn model</span>
-<span class="no">yml</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"scikitlearn.yml"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"DALEXtra"</span>)
-<span class="no">pkl_gbm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"scikitlearn.pkl"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"DALEXtra"</span>)
-<span class="no">pkl_SGDC</span> <span class="kw">&lt;-</span> <span class="st">"SGDC.pkl"</span>
-
-<span class="co"># prepare an explainer for scikitlearn model</span>
-<span class="no">explainer_scikit</span> <span class="kw">&lt;-</span> <span class="fu">explain_scikitlearn</span>(<span class="no">pkl_gbm</span>,
-                                        <span class="kw">yml</span> <span class="kw">=</span> <span class="no">yml</span>,
-                                        <span class="kw">data</span> <span class="kw">=</span> <span class="no">titanic_test</span>[,<span class="fl">1</span>:<span class="fl">17</span>],
-                                        <span class="kw">y</span> <span class="kw">=</span> <span class="no">titanic_test</span>[,<span class="fl">18</span>],
-                                        <span class="kw">label</span> <span class="kw">=</span> <span class="st">"python-gbm"</span>)
-
-<span class="co"># start model studio</span>
-<span class="no">ms</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer_scikit</span>,
-                  <span class="kw">new_observation</span> <span class="kw">=</span> <span class="no">titanic_test</span>[<span class="fl">1</span>:<span class="fl">4</span>,<span class="fl">1</span>:<span class="fl">17</span>],
-                  <span class="kw">options</span> <span class="kw">=</span> <span class="fu"><a href="../reference/modelStudioOptions.html">modelStudioOptions</a></span>(<span class="kw">margin_left</span> <span class="kw">=</span> <span class="fl">160</span>))
-
-<span class="no">ms</span>
-
-<span class="kw pkg">r2d3</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/r2d3/man/save_d3_html.html">save_d3_html</a></span>(<span class="no">ms</span>, <span class="st">"modelStudio-python-gbm.html"</span>)</pre></body></html></div>
-<p><code>modelStudio</code> should work with any <code>explainer</code> class object. Find more about making those <a href="https://modeloriented.github.io/DALEXtra/reference/">here</a>.</p>
+<span class="co"># make a studio for the model</span>
+<span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer_mlr</span>, <span class="kw">B</span> <span class="kw">=</span> <span class="fl">10</span>)</pre></body></html></div>
 </div>
 <div id="references" class="section level2">
 <h2 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h2>
 <ul>
+<li>Theoretical introduction to the plots: <a href="https://pbiecek.github.io/ema">Explanatory Model Analysis. Explore, Explain and Examine Predictive Models.</a>
+</li>
 <li>Wrapper for the function is implemented in <a href="https://modeloriented.github.io/DALEX/">DALEX</a>
 </li>
 <li>Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence plots are implemented in <a href="https://modeloriented.github.io/ingredients/">ingredients</a>
 </li>
 <li>Break Down and Shapley Values plots are implemented in <a href="https://modeloriented.github.io/iBreakDown/">iBreakDown</a>
-</li>
-<li>Python wrappers and more can be found in <a href="https://modeloriented.github.io/DALEXtra/">DALEXtra</a>
 </li>
 </ul>
 </div>

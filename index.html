@@ -119,9 +119,12 @@
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
 <p>The <code>modelStudio</code> package <strong>automates the Explanatory Analysis of Machine Learning predictive models</strong>. Generate advanced interactive and animated model explanations in the form of a <strong>serverless HTML site</strong> with only one line of code. This tool is model agnostic, therefore compatible with most of the black box predictive models and frameworks (e.g. <code>mlr/mlr3</code>, <code>xgboost</code>, <code>caret</code>, <code>h2o</code>, <code>scikit-learn</code>, <code>lightGBM</code>, <code>keras/tensorflow</code>).</p>
-<p>The main <code><a href="reference/modelStudio.html">modelStudio()</a></code> function computes various (instance and dataset level) model explanations and produces an <strong>interactive, customisable dashboard made with D3.js</strong>. It consists of multiple panels for plots with their short descriptions. Easily <strong>save and share</strong> the dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.</p>
+<p>The main <code><a href="reference/modelStudio.html">modelStudio()</a></code> function computes various (instance and dataset level) model explanations and produces an <strong>interactive, customisable dashboard made with D3.js</strong>. It consists of multiple panels for plots with their short descriptions. Easily <strong>save and share</strong> the dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.</p>
+<p alig="center">
 <!--- [explain FIFA19](https://pbiecek.github.io/explainFIFA19/) &emsp; --->
-<p><a href="https://pbiecek.github.io/explainFIFA20/"><strong>explain FIFA20</strong></a>   <a href="https://github.com/hbaniecki/transparent_xai/">explain Lung Cancer</a>   <a href="http://modelstudio.drwhy.ai/articles/vignette_examples.html"><strong>R &amp; Python examples</strong></a>   <a href="http://modelstudio.drwhy.ai/#more-resources">More Resources</a>   <a href="https://github.com/ModelOriented/modelStudio/issues/54"><strong>FAQ &amp; Troubleshooting</strong></a></p>
+</p>
+<p><a href="https://pbiecek.github.io/explainFIFA20/"><strong>explain FIFA20</strong></a>   <!--- [explain Lung Cancer](https://github.com/hbaniecki/transparent_xai/) &emsp; ---> <a href="http://modelstudio.drwhy.ai/articles/vignette_examples.html"><strong>R &amp; Python examples</strong></a>   <a href="http://modelstudio.drwhy.ai/#more-resources"><strong>More Resources</strong></a>   <a href="https://github.com/ModelOriented/modelStudio/issues/54"><strong>FAQ &amp; Troubleshooting</strong></a></p>
+
 <p><img src="reference/figures/short.gif"></p>
 <p>The <code>modelStudio</code> package is a part of the <a href="http://drwhy.ai"><strong>DrWhy.AI</strong></a> universe.</p>
 </div>
@@ -137,34 +140,34 @@
 <div id="simple-demo" class="section level2">
 <h2 class="hasAnchor">
 <a href="#simple-demo" class="anchor"></a>Simple Demo</h2>
-<p>This package bases on <code>DALEX</code> explainers created with <code><a href="https://rdrr.io/pkg/DALEX/man/explain.html">DALEX::explain()</a></code>.</p>
 <div class="sourceCode" id="cb2"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"DALEX"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"modelStudio"</span>)
 
-<span class="co"># Create a model</span>
+<span class="co"># fit a model</span>
 <span class="no">model</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span>(<span class="no">survived</span> ~<span class="no">.</span>,
              <span class="kw">data</span> <span class="kw">=</span> <span class="no">titanic_imputed</span>,
              <span class="kw">family</span> <span class="kw">=</span> <span class="st">"binomial"</span>)
 
-<span class="co"># Wrap it into an explainer        </span>
+<span class="co"># create an explainer for the model    </span>
 <span class="no">explainer</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DALEX/man/explain.html">explain</a></span>(<span class="no">model</span>,
                      <span class="kw">data</span> <span class="kw">=</span> <span class="no">titanic_imputed</span>,
                      <span class="kw">y</span> <span class="kw">=</span> <span class="no">titanic_imputed</span>$<span class="no">survived</span>,
                      <span class="kw">label</span> <span class="kw">=</span> <span class="st">"Titanic GLM"</span>)
 
-<span class="co"># Pick some data points</span>
+<span class="co"># pick observations</span>
 <span class="no">new_observations</span> <span class="kw">&lt;-</span> <span class="no">titanic_imputed</span>[<span class="fl">1</span>:<span class="fl">4</span>,]
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">new_observations</span>) <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Lucas"</span>, <span class="st">"James"</span>, <span class="st">"Thomas"</span>, <span class="st">"Nancy"</span>)
 
-<span class="co"># Make a studio for the model</span>
+<span class="co"># make a studio for the model</span>
 <span class="fu"><a href="reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer</span>, <span class="no">new_observations</span>)</pre></div>
-<p>Saved output in the form of a HTML file - <a href="https://modeloriented.github.io/modelStudio/demo.html"><strong>Demo Dashboard</strong></a>.</p>
+<p><a href="http://modelstudio.drwhy.ai/#save--share">Save the output</a> in the form of a HTML file - <a href="https://modeloriented.github.io/modelStudio/demo.html"><strong>Demo Dashboard</strong></a>.</p>
 <p><img src="reference/figures/long.gif"></p>
 </div>
 <div id="r--python-examples-more" class="section level2">
 <h2 class="hasAnchor">
 <a href="#r--python-examples-more" class="anchor"></a>R &amp; Python Examples <a href="http://modelstudio.drwhy.ai/articles/vignette_examples.html">more</a>
 </h2>
+<p>The <code><a href="reference/modelStudio.html">modelStudio()</a></code> function takes <code>DALEX</code> explainers (created with <code><a href="https://rdrr.io/pkg/DALEX/man/explain.html">DALEX::explain()</a></code> or <code>DALEXtra::explain_*()</code>) as an input.</p>
 <div class="sourceCode" id="cb3"><pre class="r"><span class="co"># update main dependencies</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"ingredients"</span>)
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"iBreakDown"</span>)
@@ -259,10 +262,10 @@
 <h3 class="hasAnchor">
 <a href="#scikit-learn-dashboard" class="anchor"></a>scikit-learn <a href="https://modeloriented.github.io/modelStudio/scikitlearn.html">dashboard</a>
 </h3>
-<p>Use <code>pickle</code> Python module and <code>reticulate</code> R package to easily make a studio for a scikit-learn model.</p>
-<p>In this example we will fit a Pipeline MLPClassifier model on titanic data.</p>
-<p>Install the <code>dalex</code> package.</p>
+<p>The <code><a href="reference/modelStudio.html">modelStudio()</a></code> function takes <code>dalex</code> explainers (created with <code>dalex.Explainer</code>) as an input.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="ex">pip3</span> install dalex --force</span></code></pre></div>
+<p>Use <code>pickle</code> Python module and <code>reticulate</code> R package to easily make a studio for a model.</p>
+<p>In this example we will fit a <code>Pipeline MLPClassifier</code> model on titanic data.</p>
 <p>First, use <code>dalex</code> in Python:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># load packages and data</span></span>
 <span id="cb7-2"><a href="#cb7-2"></a><span class="im">import</span> dalex <span class="im">as</span> dx</span>
@@ -333,24 +336,25 @@
 <span class="fu"><a href="reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer</span>)</pre></div>
 </div>
 </div>
+<div id="save--share" class="section level2">
+<h2 class="hasAnchor">
+<a href="#save--share" class="anchor"></a>Save &amp; Share</h2>
+<p>Save <code>modelStudio</code> as a HTML file using buttons on the top of the RStudio Viewer or with <a href="https://rstudio.github.io/r2d3/articles/publishing.html#save-as-html"><code><a href="https://rdrr.io/pkg/r2d3/man/save_d3_html.html">r2d3::save_d3_html()</a></code></a>.</p>
+<p align="center">
+<img src="reference/figures/controls.png"></p>
+</div>
 <div id="more-resources" class="section level2">
 <h2 class="hasAnchor">
 <a href="#more-resources" class="anchor"></a>More Resources</h2>
 <ul>
-<li><p><a href="https://pbiecek.github.io/ema">Explanatory Model Analysis. Explore, Explain and Examine Predictive Models.</a></p></li>
-<li><p><a href="https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html">Read the vignette: modelStudio - perks and features</a></p></li>
-<li><p><a href="misc/MLinPL2019_modelStudio_poster.pdf">Conference Poster about modelStudio</a></p></li>
+<li><p>Theoretical introduction to the plots: <a href="https://pbiecek.github.io/ema">Explanatory Model Analysis. Explore, Explain and Examine Predictive Models.</a></p></li>
+<li><p>Vignette: <a href="https://modeloriented.github.io/modelStudio/articles/vignette_examples.html">modelStudio - R &amp; python examples</a></p></li>
+<li><p>Vignette: <a href="https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html">modelStudio - perks and features</a></p></li>
+<li><p>Conference poster: <a href="misc/MLinPL2019_modelStudio_poster.pdf">MLinPL2019</a></p></li>
 </ul>
 <!--  - [Article about modelStudio](https://joss.theoj.org/papers/10.21105/joss.01798) --><ul>
 <li><a href="NEWS.html">News</a></li>
 </ul>
-</div>
-<div id="save-and-share" class="section level2">
-<h2 class="hasAnchor">
-<a href="#save-and-share" class="anchor"></a>Save and Share</h2>
-<p>Save <code>modelStudio</code> as a HTML file using buttons on the top of the RStudio Viewer or with <a href="https://rstudio.github.io/r2d3/articles/publishing.html#save-as-html"><code><a href="https://rdrr.io/pkg/r2d3/man/save_d3_html.html">r2d3::save_d3_html()</a></code></a>.</p>
-<p align="center">
-<img src="reference/figures/controls.png"></p>
 </div>
 <div id="acknowledgments" class="section level2">
 <h2 class="hasAnchor">
