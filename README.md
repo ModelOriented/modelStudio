@@ -12,15 +12,13 @@ The `modelStudio` package **automates the Explanatory Analysis of Machine Learni
 
 The main `modelStudio()` function computes various (instance and dataset level) model explanations and produces an **interactive,&nbsp;customisable dashboard made with D3.js**. It consists of multiple panels for plots with their short descriptions. Easily&nbsp;**save&nbsp;and&nbsp;share** the dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.
 
-<p alig="center">
 <!--- [explain FIFA19](https://pbiecek.github.io/explainFIFA19/) &emsp; --->
-[**explain FIFA20**](https://pbiecek.github.io/explainFIFA20/) &emsp;
 <!--- [explain Lung Cancer](https://github.com/hbaniecki/transparent_xai/) &emsp; --->
+&emsp; &emsp; &emsp; &emsp; &emsp;
+[**explain FIFA20**](https://pbiecek.github.io/explainFIFA20/) &emsp;
 [**R & Python examples**](http://modelstudio.drwhy.ai/articles/vignette_examples.html) &emsp;
 [**More Resources**](http://modelstudio.drwhy.ai/#more-resources) &emsp;
 [**FAQ & Troubleshooting**](https://github.com/ModelOriented/modelStudio/issues/54)
-
-</p>
 
 ![](man/figures/short.gif)
 
@@ -67,7 +65,7 @@ modelStudio(explainer, new_observations)
 
 ## R & Python Examples [more](http://modelstudio.drwhy.ai/articles/vignette_examples.html)
 
-The `modelStudio()` function takes `DALEX` explainers (created with `DALEX::explain()` or `DALEXtra::explain_*()`) as an input.  
+The `modelStudio()` function uses `DALEX` explainers created with `DALEX::explain()` or `DALEXtra::explain_*()`.
 
 ```r
 # update main dependencies
@@ -80,6 +78,8 @@ install.packages("DALEXtra")
 ```
 
 ### mlr [dashboard](https://modeloriented.github.io/modelStudio/mlr.html)
+
+In this example we will fit a `ranger` model on `titanic` data.
 
 ```r
 # load packages and data
@@ -124,6 +124,8 @@ modelStudio(explainer,
 
 ### xgboost [dashboard](https://modeloriented.github.io/modelStudio/xgboost.html)
 
+In this example we will fit a `xgboost` model on `titanic` data.
+
 ```r
 # load packages and data
 library(xgboost)
@@ -164,7 +166,7 @@ modelStudio(explainer,
 
 ### scikit-learn [dashboard](https://modeloriented.github.io/modelStudio/scikitlearn.html)
 
-The `modelStudio()` function takes `dalex` explainers (created with `dalex.Explainer`) as an input.
+The `modelStudio()` function uses `dalex` explainers created with `dalex.Explainer()`.
 
 ```bash
 pip3 install dalex --force
@@ -172,7 +174,7 @@ pip3 install dalex --force
 
 Use `pickle` Python module and `reticulate` R package to easily make a studio for a model.
 
-In this example we will fit a `Pipeline MLPClassifier` model on titanic data. 
+In this example we will fit a `Pipeline MLPClassifier` model on `titanic` data. 
 
 First, use `dalex` in Python:
 

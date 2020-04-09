@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 `modelStudio::modelStudio` computes various (instance and dataset level) model explanations and produces an interactive, customizable dashboard made with D3.js. It consists of multiple panels for plots with their short descriptions. Easily save and share the dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.
 
-Let's use `DALEX::HR` dataset to explore `modelStudio` parameters:
+Let's use `HR` dataset to explore `modelStudio` parameters:
 
 ```{r results="hide"}
 train <- DALEX::HR[1:100,]
@@ -34,7 +34,7 @@ head(train)
 knitr::kable(head(train), digits = 2, caption = "DALEX::HR dataset")
 ```
 
-Prepare data and model for the explainer:
+Prepare data and a model for the explainer:
 
 ```{r results="hide", eval = FALSE}
 # create a random forest model
@@ -188,7 +188,7 @@ modelStudio(explainer, new_observation, options = new_options)
 ## DALEXtra
 
 Use `DALEXtra::explain_*()` functions to explain various models.
-Bellow basic example of making `modelStudio` for mlr model using `DALEXtra::explain_mlr()`
+Bellow basic example of making `modelStudio` for a `mlr` model using `DALEXtra::explain_mlr()`
 
 ```{r eval = FALSE}
 library(DALEXtra)
