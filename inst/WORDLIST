@@ -28,6 +28,7 @@ tensorflow
 Shapley
 cran
 CRAN
-MLPCLassifier
+MLPClassifier
 keras
 lightGBM
+customizable

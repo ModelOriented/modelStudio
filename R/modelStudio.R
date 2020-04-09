@@ -384,6 +384,15 @@ modelStudio.explainer <- function(explainer,
   model_studio
 }
 
+#:# alias for reticulate pickle/dalex Explainer
+#' @noRd
+#' @export
+modelStudio.python.builtin.object <- modelStudio.explainer
+
+#' @noRd
+#' @export
+modelStudio.dalex._explainer.object.Explainer <- modelStudio.explainer
+
 #' @noRd
 #' @title remove_file_paths
 #'
