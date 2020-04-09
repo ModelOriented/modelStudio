@@ -116,7 +116,7 @@
     
     
 <p><code><a href="../reference/modelStudio.html">modelStudio::modelStudio</a></code> computes various (instance and dataset level) model explanations and produces an interactive, customizable dashboard made with D3.js. It consists of multiple panels for plots with their short descriptions. Easily save and share the dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.</p>
-<p>Let’s use <code><a href="https://rdrr.io/pkg/DALEX/man/HR.html">DALEX::HR</a></code> dataset to explore <code>modelStudio</code> parameters:</p>
+<p>Let’s use <code>HR</code> dataset to explore <code>modelStudio</code> parameters:</p>
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="no">train</span> <span class="kw">&lt;-</span> <span class="kw pkg">DALEX</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/DALEX/man/HR.html">HR</a></span>[<span class="fl">1</span>:<span class="fl">100</span>,]
 <span class="no">train</span>$<span class="no">fired</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="no">train</span>$<span class="no">status</span> <span class="kw">==</span> <span class="st">"fired"</span>, <span class="fl">1</span>, <span class="fl">0</span>)
 <span class="no">train</span> <span class="kw">&lt;-</span> <span class="no">train</span>[,-<span class="fl">6</span>]
@@ -183,7 +183,7 @@
 </tr>
 </tbody>
 </table>
-<p>Prepare data and model for the explainer:</p>
+<p>Prepare data and a model for the explainer:</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="co"># create a random forest model</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"randomForest"</span>)
 <span class="no">model</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/randomForest/man/randomForest.html">randomForest</a></span>(<span class="no">fired</span> ~<span class="no">.</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">train</span>)
@@ -301,7 +301,7 @@
 <div id="dalextra" class="section level2">
 <h2 class="hasAnchor">
 <a href="#dalextra" class="anchor"></a>DALEXtra</h2>
-<p>Use <code>DALEXtra::explain_*()</code> functions to explain various models. Bellow basic example of making <code>modelStudio</code> for mlr model using <code>DALEXtra::explain_mlr()</code></p>
+<p>Use <code>DALEXtra::explain_*()</code> functions to explain various models. Bellow basic example of making <code>modelStudio</code> for a <code>mlr</code> model using <code>DALEXtra::explain_mlr()</code></p>
 <div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DALEXtra</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">mlr</span>)
 

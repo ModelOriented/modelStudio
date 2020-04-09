@@ -120,11 +120,9 @@
 <a href="#overview" class="anchor"></a>Overview</h2>
 <p>The <code>modelStudio</code> package <strong>automates the Explanatory Analysis of Machine Learning predictive models</strong>. Generate advanced interactive and animated model explanations in the form of a <strong>serverless HTML site</strong> with only one line of code. This tool is model agnostic, therefore compatible with most of the black box predictive models and frameworks (e.g. <code>mlr/mlr3</code>, <code>xgboost</code>, <code>caret</code>, <code>h2o</code>, <code>scikit-learn</code>, <code>lightGBM</code>, <code>keras/tensorflow</code>).</p>
 <p>The main <code><a href="reference/modelStudio.html">modelStudio()</a></code> function computes various (instance and dataset level) model explanations and produces an <strong>interactive, customisable dashboard made with D3.js</strong>. It consists of multiple panels for plots with their short descriptions. Easily <strong>save and share</strong> the dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.</p>
-<p alig="center">
 <!--- [explain FIFA19](https://pbiecek.github.io/explainFIFA19/) &emsp; --->
-</p>
-<p><a href="https://pbiecek.github.io/explainFIFA20/"><strong>explain FIFA20</strong></a>   <!--- [explain Lung Cancer](https://github.com/hbaniecki/transparent_xai/) &emsp; ---> <a href="http://modelstudio.drwhy.ai/articles/vignette_examples.html"><strong>R &amp; Python examples</strong></a>   <a href="http://modelstudio.drwhy.ai/#more-resources"><strong>More Resources</strong></a>   <a href="https://github.com/ModelOriented/modelStudio/issues/54"><strong>FAQ &amp; Troubleshooting</strong></a></p>
-
+<!--- [explain Lung Cancer](https://github.com/hbaniecki/transparent_xai/) &emsp; --->
+<p>          <a href="https://pbiecek.github.io/explainFIFA20/"><strong>explain FIFA20</strong></a>   <a href="http://modelstudio.drwhy.ai/articles/vignette_examples.html"><strong>R &amp; Python examples</strong></a>   <a href="http://modelstudio.drwhy.ai/#more-resources"><strong>More Resources</strong></a>   <a href="https://github.com/ModelOriented/modelStudio/issues/54"><strong>FAQ &amp; Troubleshooting</strong></a></p>
 <p><img src="reference/figures/short.gif"></p>
 <p>The <code>modelStudio</code> package is a part of the <a href="http://drwhy.ai"><strong>DrWhy.AI</strong></a> universe.</p>
 </div>
@@ -167,7 +165,7 @@
 <h2 class="hasAnchor">
 <a href="#r--python-examples-more" class="anchor"></a>R &amp; Python Examples <a href="http://modelstudio.drwhy.ai/articles/vignette_examples.html">more</a>
 </h2>
-<p>The <code><a href="reference/modelStudio.html">modelStudio()</a></code> function takes <code>DALEX</code> explainers (created with <code><a href="https://rdrr.io/pkg/DALEX/man/explain.html">DALEX::explain()</a></code> or <code>DALEXtra::explain_*()</code>) as an input.</p>
+<p>The <code><a href="reference/modelStudio.html">modelStudio()</a></code> function uses <code>DALEX</code> explainers created with <code><a href="https://rdrr.io/pkg/DALEX/man/explain.html">DALEX::explain()</a></code> or <code>DALEXtra::explain_*()</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="r"><span class="co"># update main dependencies</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"ingredients"</span>)
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"iBreakDown"</span>)
@@ -179,6 +177,7 @@
 <h3 class="hasAnchor">
 <a href="#mlr-dashboard" class="anchor"></a>mlr <a href="https://modeloriented.github.io/modelStudio/mlr.html">dashboard</a>
 </h3>
+<p>In this example we will fit a <code>ranger</code> model on <code>titanic</code> data.</p>
 <div class="sourceCode" id="cb4"><pre class="r"><span class="co"># load packages and data</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">mlr</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DALEXtra</span>)
@@ -222,6 +221,7 @@
 <h3 class="hasAnchor">
 <a href="#xgboost-dashboard" class="anchor"></a>xgboost <a href="https://modeloriented.github.io/modelStudio/xgboost.html">dashboard</a>
 </h3>
+<p>In this example we will fit a <code>xgboost</code> model on <code>titanic</code> data.</p>
 <div class="sourceCode" id="cb5"><pre class="r"><span class="co"># load packages and data</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">xgboost</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DALEX</span>)
@@ -262,10 +262,10 @@
 <h3 class="hasAnchor">
 <a href="#scikit-learn-dashboard" class="anchor"></a>scikit-learn <a href="https://modeloriented.github.io/modelStudio/scikitlearn.html">dashboard</a>
 </h3>
-<p>The <code><a href="reference/modelStudio.html">modelStudio()</a></code> function takes <code>dalex</code> explainers (created with <code>dalex.Explainer</code>) as an input.</p>
+<p>The <code><a href="reference/modelStudio.html">modelStudio()</a></code> function uses <code>dalex</code> explainers created with <code>dalex.Explainer()</code>.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="ex">pip3</span> install dalex --force</span></code></pre></div>
 <p>Use <code>pickle</code> Python module and <code>reticulate</code> R package to easily make a studio for a model.</p>
-<p>In this example we will fit a <code>Pipeline MLPClassifier</code> model on titanic data.</p>
+<p>In this example we will fit a <code>Pipeline MLPClassifier</code> model on <code>titanic</code> data.</p>
 <p>First, use <code>dalex</code> in Python:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># load packages and data</span></span>
 <span id="cb7-2"><a href="#cb7-2"></a><span class="im">import</span> dalex <span class="im">as</span> dx</span>
