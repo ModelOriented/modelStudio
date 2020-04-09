@@ -118,14 +118,14 @@
 <div id="r-python-examples" class="section level1">
 <h1 class="hasAnchor">
 <a href="#r-python-examples" class="anchor"></a>R &amp; Python Examples</h1>
-<p>The <code><a href="../reference/modelStudio.html">modelStudio()</a></code> function takes <code>DALEX</code> explainers created with <code><a href="https://rdrr.io/pkg/DALEX/man/explain.html">DALEX::explain()</a></code> function as an input.</p>
+<p>The <code><a href="../reference/modelStudio.html">modelStudio()</a></code> function takes <code>DALEX</code> explainers created with <code><a href="https://rdrr.io/pkg/DALEX/man/explain.html">DALEX::explain()</a></code> or <code>DALEXtra::explain_*()</code> function as an input.</p>
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="co"># update main dependencies</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"ingredients"</span>)
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"iBreakDown"</span>)
 
 <span class="co"># packages for explainer objects</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"DALEX"</span>)
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"ModelOriented/DALEXtra"</span>)</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"DALEXtra"</span>)</pre></body></html></div>
 <div id="r" class="section level2">
 <h2 class="hasAnchor">
 <a href="#r" class="anchor"></a>R</h2>
@@ -357,7 +357,7 @@
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a><span class="ex">pip3</span> install dalex --force</span></code></pre></div>
 <div id="scikit-learn-dashboard" class="section level3">
 <h3 class="hasAnchor">
-<a href="#scikit-learn-dashboard" class="anchor"></a>scikit-learn <a href="https://modeloriented.github.io/modelStudio/scikit-learn.html">dashboard</a>
+<a href="#scikit-learn-dashboard" class="anchor"></a>scikit-learn <a href="https://modeloriented.github.io/modelStudio/scikitlearn.html">dashboard</a>
 </h3>
 <p>In this example we will fit a Pipeline MLPClassifier model on titanic data.</p>
 <p>First, use <code>dalex</code> in Python:</p>
@@ -429,21 +429,172 @@ pickle_out.close()</pre></body></html></div>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">modelStudio</span>)
 <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer</span>)</pre></body></html></div>
 </div>
-<div id="lightgbm" class="section level3">
+<div id="lightgbm-dashboard" class="section level3">
 <h3 class="hasAnchor">
-<a href="#lightgbm" class="anchor"></a>lightGBM</h3>
-<p>TBD</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DALEXtra</span>)
+<a href="#lightgbm-dashboard" class="anchor"></a>lightGBM <a href="https://modeloriented.github.io/modelStudio/lightgbm.html">dashboard</a>
+</h3>
+<p>In this example we will fit a Pipeline LGBMClassifier model on titanic data.</p>
+<p>First, use <code>dalex</code> in Python:</p>
+<div class="sourceCode" id="cb10"><html><body><pre class="r"># load packages and data
+import dalex as dx
 
-<span class="fu">explain_scikit</span>()</pre></body></html></div>
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.impute import SimpleImputer
+from sklearn.compose import ColumnTransformer
+from lightgbm import LGBMClassifier
+
+data = dx.datasets.load_titanic()
+X = data.drop(columns='survived')
+y = data.survived
+
+# split the data
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=1)
+
+# fit a pipeline model
+numeric_features = ['age', 'fare', 'sibsp', 'parch']
+numeric_transformer = Pipeline(
+  steps=[
+    ('imputer', SimpleImputer(strategy='median')),
+    ('scaler', StandardScaler())
+    ]
+)
+categorical_features = ['gender', 'class', 'embarked']
+categorical_transformer = Pipeline(
+  steps=[
+    ('imputer', SimpleImputer(strategy='constant', fill_value='missing')),
+    ('onehot', OneHotEncoder(handle_unknown='ignore'))
+    ]
+)
+
+preprocessor = ColumnTransformer(
+  transformers=[
+    ('num', numeric_transformer, numeric_features),
+    ('cat', categorical_transformer, categorical_features)
+    ]
+)
+
+model = Pipeline(
+  steps=[
+    ('preprocessor', preprocessor),
+    ('classifier', LGBMClassifier())
+    ]
+)
+model.fit(X_train, y_train)
+
+# create an explainer for the model
+explainer = dx.Explainer(model, X_test, y_test, label = 'lightGBM')
+
+#! remove residual_function before dump !
+explainer.residual_function = None
+
+# pack the explainer into a pickle file
+import pickle
+pickle_out = open("explainer_lightgbm.pickle","wb")
+pickle.dump(explainer, pickle_out)
+pickle_out.close()  </pre></body></html></div>
+<p>Then, use <code>modelStudio</code> in R:</p>
+<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="co"># load the explainer from the pickle file</span>
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">reticulate</span>)
+<span class="no">explainer</span> <span class="kw">&lt;-</span> <span class="fu">py_load_object</span>(<span class="st">'explainer_lightgbm.pickle'</span>, <span class="kw">pickle</span> <span class="kw">=</span> <span class="st">"pickle"</span>)
+
+<span class="co"># make a studio for the model</span>
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">modelStudio</span>)
+<span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer</span>)</pre></body></html></div>
 </div>
-<div id="tensorflowkeras" class="section level3">
+<div id="kerastensorflow-dashboard" class="section level3">
 <h3 class="hasAnchor">
-<a href="#tensorflowkeras" class="anchor"></a>tensorflow/keras</h3>
-<p>TBD</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DALEXtra</span>)
+<a href="#kerastensorflow-dashboard" class="anchor"></a>keras/tensorflow <a href="https://modeloriented.github.io/modelStudio/keras.html">dashboard</a>
+</h3>
+<p>In this example we will fit a Pipeline KerasClassifier model on titanic data.</p>
+<p>First, use <code>dalex</code> in Python:</p>
+<div class="sourceCode" id="cb12"><html><body><pre class="r"># load packages and data
+import dalex as dx
 
-<span class="fu">explain_keras</span>()</pre></body></html></div>
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.impute import SimpleImputer
+from sklearn.compose import ColumnTransformer
+from keras.wrappers.scikit_learn import KerasClassifier
+from keras.layers import Dense
+from keras.models import Sequential
+
+data = dx.datasets.load_titanic()
+X = data.drop(columns='survived')
+y = data.survived
+
+# split the data
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=1)
+
+# fit a pipeline model
+numeric_features = ['age', 'fare', 'sibsp', 'parch']
+numeric_transformer = Pipeline(
+  steps=[
+    ('imputer', SimpleImputer(strategy='median')),
+    ('scaler', StandardScaler())
+    ]
+)
+categorical_features = ['gender', 'class', 'embarked']
+categorical_transformer = Pipeline(
+  steps=[
+    ('imputer', SimpleImputer(strategy='constant', fill_value='missing')),
+    ('onehot', OneHotEncoder(handle_unknown='ignore'))
+    ]
+)
+
+preprocessor = ColumnTransformer(
+  transformers=[
+    ('num', numeric_transformer, numeric_features),
+    ('cat', categorical_transformer, categorical_features)
+    ]
+)
+
+def create_architecture():
+  model = Sequential()
+  # after the pipeline there are 17 inputs
+  model.add(Dense(60, input_dim=17, activation='relu'))
+  model.add(Dense(1, activation='sigmoid'))
+  model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+  return model
+
+kc = KerasClassifier(build_fn=create_architecture, epochs=100, batch_size=5, verbose=0)
+
+model = Pipeline(
+  steps=[
+    ('preprocessor', preprocessor),
+    ('classifier', kc)
+    ]
+)
+model.fit(X_train, y_train)
+
+# create an explainer for the model
+explainer = dx.Explainer(model, X_test, y_test, label = 'keras')
+
+#! remove residual_function before dump !
+explainer.residual_function = None
+
+# pack the explainer into a pickle file
+import pickle
+pickle_out = open("explainer_keras.pickle","wb")
+pickle.dump(explainer, pickle_out)
+pickle_out.close() </pre></body></html></div>
+<p>Then, use <code>modelStudio</code> in R:</p>
+<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="co"># load the explainer from the pickle file</span>
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">reticulate</span>)
+
+<span class="co">#! add blank create_architecture function before load !</span>
+<span class="fu">py_run_string</span>(<span class="st">"
+def create_architecture():
+    return True
+"</span>
+)
+<span class="no">explainer</span> <span class="kw">&lt;-</span> <span class="fu">py_load_object</span>(<span class="st">'explainer_keras.pickle'</span>, <span class="kw">pickle</span> <span class="kw">=</span> <span class="st">"pickle"</span>)
+
+<span class="co"># make a studio for the model</span>
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">modelStudio</span>)
+<span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer</span>)</pre></body></html></div>
 </div>
 </div>
 </div>
