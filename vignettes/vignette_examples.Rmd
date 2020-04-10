@@ -48,7 +48,7 @@ library(modelStudio)
 data <- DALEX::titanic_imputed
 
 # split the data
-index <- sample(1:nrow(data), 0.8*nrow(data))
+index <- sample(1:nrow(data), 0.7*nrow(data))
 train <- data[index, ]
 test <- data[-index, ]
 
@@ -94,7 +94,7 @@ library(modelStudio)
 data <- DALEX::titanic_imputed
 
 # split the data
-index <- sample(1:nrow(data), 0.8*nrow(data))
+index <- sample(1:nrow(data), 0.7*nrow(data))
 train <- data[index, ]
 test <- data[-index, ]
 
@@ -139,7 +139,7 @@ library(modelStudio)
 data <- DALEX::titanic_imputed
 
 # split the data
-index <- sample(1:nrow(data), 0.8*nrow(data))
+index <- sample(1:nrow(data), 0.7*nrow(data))
 train <- data[index, ]
 test <- data[-index, ]
 
@@ -181,7 +181,7 @@ library(modelStudio)
 data <- DALEX::titanic_imputed
 
 # split the data
-index <- sample(1:nrow(data), 0.8*nrow(data))
+index <- sample(1:nrow(data), 0.7*nrow(data))
 train <- data[index, ]
 test <- data[-index, ]
 
@@ -297,7 +297,7 @@ X = data.drop(columns='survived')
 y = data.survived
 
 # split the data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=1)
+X_train, X_test, y_train, y_test = train_test_split(X, y)
 
 # fit a pipeline model
 numeric_features = ['age', 'fare', 'sibsp', 'parch']
@@ -325,7 +325,7 @@ preprocessor = ColumnTransformer(
 model = Pipeline(
   steps=[
     ('preprocessor', preprocessor),
-    ('classifier', MLPClassifier(hidden_layer_sizes=(150,100,50), max_iter=500, random_state=0))
+    ('classifier', MLPClassifier(hidden_layer_sizes=(150,100,50), max_iter=500))
     ]
 )
 model.fit(X_train, y_train)
@@ -377,7 +377,7 @@ X = data.drop(columns='survived')
 y = data.survived
 
 # split the data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=1)
+X_train, X_test, y_train, y_test = train_test_split(X, y)
 
 # fit a pipeline model
 numeric_features = ['age', 'fare', 'sibsp', 'parch']
@@ -405,7 +405,7 @@ preprocessor = ColumnTransformer(
 model = Pipeline(
   steps=[
     ('preprocessor', preprocessor),
-    ('classifier', LGBMClassifier())
+    ('classifier', LGBMClassifier(n_estimators=300))
     ]
 )
 model.fit(X_train, y_train)
@@ -459,7 +459,7 @@ X = data.drop(columns='survived')
 y = data.survived
 
 # split the data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=1)
+X_train, X_test, y_train, y_test = train_test_split(X, y)
 
 # fit a pipeline model
 numeric_features = ['age', 'fare', 'sibsp', 'parch']
@@ -492,7 +492,7 @@ def create_architecture():
   model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
   return model
 
-kc = KerasClassifier(build_fn=create_architecture, epochs=100, batch_size=5, verbose=0)
+kc = KerasClassifier(build_fn=create_architecture, epochs=100, batch_size=5)
 
 model = Pipeline(
   steps=[
@@ -525,8 +525,8 @@ library(reticulate)
 py_run_string("
 def create_architecture():
     return True
-"
-)
+")
+
 explainer <- py_load_object('explainer_keras.pickle', pickle = "pickle")
 
 # make a studio for the model

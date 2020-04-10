@@ -10,11 +10,11 @@
 
 The `modelStudio` package **automates the Explanatory Analysis of Machine Learning predictive models**. Generate advanced interactive and animated model explanations in the form of a **serverless HTML site** with only one line of code. This tool is model agnostic, therefore compatible with most of the black box predictive models and frameworks (e.g.&nbsp;`mlr/mlr3`, `xgboost`, `caret`, `h2o`, `scikit-learn`, `lightGBM`, `keras/tensorflow`).
 
-The main `modelStudio()` function computes various (instance and dataset level) model explanations and produces an **interactive,&nbsp;customisable dashboard made with D3.js**. It consists of multiple panels for plots with their short descriptions. Easily&nbsp;**save&nbsp;and&nbsp;share** the dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.
+The main `modelStudio()` function computes various (instance and dataset level) model explanations and produces an&nbsp**interactive,&nbsp;customisable dashboard made with D3.js**. It consists of multiple panels for plots with their short descriptions. Easily&nbsp;**save&nbsp;and&nbsp;share** the dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.
 
 <!--- [explain FIFA19](https://pbiecek.github.io/explainFIFA19/) &emsp; --->
 <!--- [explain Lung Cancer](https://github.com/hbaniecki/transparent_xai/) &emsp; --->
-&emsp; &emsp; &emsp; &emsp; &emsp;
+&emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
 [**explain FIFA20**](https://pbiecek.github.io/explainFIFA20/) &emsp;
 [**R & Python examples**](http://modelstudio.drwhy.ai/articles/vignette_examples.html) &emsp;
 [**More Resources**](http://modelstudio.drwhy.ai/#more-resources) &emsp;
@@ -51,12 +51,8 @@ explainer <- explain(model,
                      y = titanic_imputed$survived,
                      label = "Titanic GLM")
 
-# pick observations
-new_observations <- titanic_imputed[1:4,]
-rownames(new_observations) <- c("Lucas", "James", "Thomas", "Nancy")
-
 # make a studio for the model
-modelStudio(explainer, new_observations)
+modelStudio(explainer)
 ```
 
 [Save the output](http://modelstudio.drwhy.ai/#save--share) in the form of a HTML file - [**Demo Dashboard**](https://modeloriented.github.io/modelStudio/demo.html).
@@ -90,7 +86,7 @@ library(modelStudio)
 data <- DALEX::titanic_imputed
 
 # split the data
-index <- sample(1:nrow(data), 0.8*nrow(data))
+index <- sample(1:nrow(data), 0.7*nrow(data))
 train <- data[index, ]
 test <- data[-index, ]
 
@@ -135,7 +131,7 @@ library(modelStudio)
 data <- DALEX::titanic_imputed
 
 # split the data
-index <- sample(1:nrow(data), 0.8*nrow(data))
+index <- sample(1:nrow(data), 0.7*nrow(data))
 train <- data[index, ]
 test <- data[-index, ]
 
@@ -174,7 +170,7 @@ pip3 install dalex --force
 
 Use `pickle` Python module and `reticulate` R package to easily make a studio for a model.
 
-In this example we will fit a `Pipeline MLPClassifier` model on `titanic` data. 
+In this example we will fit a `Pipeline MLPClassifier` model on `titanic` data.
 
 First, use `dalex` in Python:
 
@@ -194,7 +190,7 @@ X = data.drop(columns='survived')
 y = data.survived
 
 # split the data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=1)
+X_train, X_test, y_train, y_test = train_test_split(X, y)
 
 # fit a pipeline model
 numeric_features = ['age', 'fare', 'sibsp', 'parch']
@@ -222,7 +218,7 @@ preprocessor = ColumnTransformer(
 model = Pipeline(
   steps=[
     ('preprocessor', preprocessor),
-    ('classifier', MLPClassifier(hidden_layer_sizes=(150,100,50), max_iter=500, random_state=0))
+    ('classifier', MLPClassifier(hidden_layer_sizes=(150,100,50), max_iter=500))
     ]
 )
 model.fit(X_train, y_train)
@@ -257,7 +253,7 @@ modelStudio(explainer)
 Save `modelStudio` as a HTML file using buttons on the top of the RStudio Viewer
 or with [`r2d3::save_d3_html()`](https://rstudio.github.io/r2d3/articles/publishing.html#save-as-html).
 
-<p align="center">
+<p style="text-align: center;">
   <img src="man/figures/controls.png">
 </p>
 
@@ -266,14 +262,14 @@ or with [`r2d3::save_d3_html()`](https://rstudio.github.io/r2d3/articles/publish
   - Theoretical introduction to the plots: [Explanatory Model Analysis. Explore, Explain and Examine Predictive Models.](https://pbiecek.github.io/ema)
 
   - Vignette: [modelStudio - R & python examples](https://modeloriented.github.io/modelStudio/articles/vignette_examples.html)  
-  
+
   - Vignette: [modelStudio - perks and features](https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html)  
 
   - Conference poster: [MLinPL2019](misc/MLinPL2019_modelStudio_poster.pdf)
 
-<!--  - [Article about modelStudio](https://joss.theoj.org/papers/10.21105/joss.01798) -->
+  - Changelog: [News](NEWS.md)
 
-  - [News](NEWS.md)
+  <!--  - [Article about modelStudio](https://joss.theoj.org/papers/10.21105/joss.01798) -->
 
 
 ## Acknowledgments
