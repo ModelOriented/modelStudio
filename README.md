@@ -253,7 +253,7 @@ modelStudio(explainer)
 Save `modelStudio` as a HTML file using buttons on the top of the RStudio Viewer
 or with [`r2d3::save_d3_html()`](https://rstudio.github.io/r2d3/articles/publishing.html#save-as-html).
 
-<p style="text-align: center;">
+<p align = "center", style="text-align: center;">
   <img src="man/figures/controls.png">
 </p>
 
