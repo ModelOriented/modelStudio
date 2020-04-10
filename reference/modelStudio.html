@@ -57,7 +57,7 @@
 customizable dashboard made with D3.js. It consists of multiple panels for plots with their short descriptions.
 Easily save and share the dashboard with others. Tools for model exploration unite with tools for EDA
 (Exploratory Data Analysis) to give a broad overview of the model behavior.
-Find more details about the plots in Explanatory Model Analysis: Explore, Explain and Examine Predictive Models" />
+Theoretical introduction to the plots can be found in Explanatory Model Analysis: Explore, Explain and Examine Predictive Models" />
 <meta property="og:image" content="/logo.png" />
 
 <meta name="robots" content="noindex" />
@@ -166,7 +166,7 @@ Find more details about the plots in Explanatory Model Analysis: Explore, Explai
 customizable dashboard made with D3.js. It consists of multiple panels for plots with their short descriptions.
 Easily save and share the dashboard with others. Tools for model exploration unite with tools for EDA
 (Exploratory Data Analysis) to give a broad overview of the model behavior.</p>
-<p>Find more details about the plots in <a href='https://github.com/pbiecek/ema'>Explanatory Model Analysis: Explore, Explain and Examine Predictive Models</a></p>
+<p>Theoretical introduction to the plots can be found in <a href='https://github.com/pbiecek/ema'>Explanatory Model Analysis: Explore, Explain and Examine Predictive Models</a></p>
     </div>
 
     <pre class="usage"><span class='fu'>modelStudio</span>(<span class='no'>explainer</span>, <span class='no'>...</span>)
@@ -270,7 +270,8 @@ are implemented in <a href='https://modeloriented.github.io/ingredients/'><b>ing
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Python wrappers and more can be found in <a href='https://modeloriented.github.io/DALEXtra/'><b>DALEXtra</b></a></p></div>
+    <div class='dont-index'><p>Vignettes: <a href='https://modeloriented.github.io/modelStudio/articles/vignette_examples.html'><b>modelStudio - R &amp; python examples</b></a>
+and <a href='https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html'><b>modelStudio - perks and features</b></a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"DALEX"</span>)</div><div class='output co'>#&gt; <span class='message'>Welcome to DALEX (version: 1.0.1).</span>
@@ -280,35 +281,34 @@ are implemented in <a href='https://modeloriented.github.io/ingredients/'><b>ing
 
 <span class='co'>#:# ex1 classification on 'titanic_imputed' dataset</span>
 
-<span class='co'># Create a model</span>
+<span class='co'># fit a model</span>
 <span class='no'>model_titanic</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>survived</span> ~<span class='no'>.</span>,
                      <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>titanic_imputed</span>,
                      <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>)
 
-<span class='co'># Wrap it into an explainer</span>
+<span class='co'># create an explainer for the model</span>
 <span class='no'>explainer_titanic</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='no'>model_titanic</span>,
-                             <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>titanic_imputed</span>[,-<span class='fl'>8</span>],
-                             <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>titanic_imputed</span>[,<span class='fl'>8</span>],
-                             <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"glm"</span>,
+                             <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>titanic_imputed</span>,
+                             <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>titanic_imputed</span>$<span class='no'>survived</span>,
+                             <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"Titanic GLM"</span>,
                              <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='co'># Pick some data points</span>
+<span class='co'># pick observations</span>
 <span class='no'>new_observations</span> <span class='kw'>&lt;-</span> <span class='no'>titanic_imputed</span>[<span class='fl'>1</span>:<span class='fl'>2</span>,]
 <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>new_observations</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Lucas"</span>,<span class='st'>"James"</span>)
 
-<span class='co'># Make a studio for the model</span>
+<span class='co'># make a studio for the model</span>
 <span class='fu'>modelStudio</span>(<span class='no'>explainer_titanic</span>, <span class='no'>new_observations</span>,
             <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># \donttest{</span>
-
 <span class='co'>#:# ex2 regression on 'apartments' dataset</span>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"randomForest"</span>)</div><div class='output co'>#&gt; <span class='message'>randomForest 4.6-14</span></div><div class='output co'>#&gt; <span class='message'>Type rfNews() to see new features/changes/bug fixes.</span></div><div class='input'>
 <span class='no'>model_apartments</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/randomForest/man/randomForest.html'>randomForest</a></span>(<span class='no'>m2.price</span> ~<span class='no'>.</span> ,<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>)
 
 <span class='no'>explainer_apartments</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='no'>model_apartments</span>,
-                                <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>[,-<span class='fl'>1</span>],
-                                <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>apartments</span>[,<span class='fl'>1</span>],
+                                <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>,
+                                <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>apartments</span>$<span class='no'>m2.price</span>,
                                 <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='no'>new_apartments</span> <span class='kw'>&lt;-</span> <span class='no'>apartments</span>[<span class='fl'>1</span>:<span class='fl'>2</span>,]
@@ -321,8 +321,8 @@ are implemented in <a href='https://modeloriented.github.io/ingredients/'><b>ing
 
 <span class='co'># add information about true labels</span>
 <span class='fu'>modelStudio</span>(<span class='no'>explainer_apartments</span>, <span class='no'>new_apartments</span>,
-                                <span class='kw'>new_observation_y</span> <span class='kw'>=</span> <span class='no'>apartments</span>[<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='fl'>1</span>],
-                                <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+            <span class='kw'>new_observation_y</span> <span class='kw'>=</span> <span class='no'>apartments</span>[<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='fl'>1</span>],
+            <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># don't compute EDA plots</span>
 <span class='fu'>modelStudio</span>(<span class='no'>explainer_apartments</span>, <span class='kw'>eda</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,

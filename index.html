@@ -119,10 +119,10 @@
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
 <p>The <code>modelStudio</code> package <strong>automates the Explanatory Analysis of Machine Learning predictive models</strong>. Generate advanced interactive and animated model explanations in the form of a <strong>serverless HTML site</strong> with only one line of code. This tool is model agnostic, therefore compatible with most of the black box predictive models and frameworks (e.g. <code>mlr/mlr3</code>, <code>xgboost</code>, <code>caret</code>, <code>h2o</code>, <code>scikit-learn</code>, <code>lightGBM</code>, <code>keras/tensorflow</code>).</p>
-<p>The main <code><a href="reference/modelStudio.html">modelStudio()</a></code> function computes various (instance and dataset level) model explanations and produces an <strong>interactive, customisable dashboard made with D3.js</strong>. It consists of multiple panels for plots with their short descriptions. Easily <strong>save and share</strong> the dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.</p>
+<p>The main <code><a href="reference/modelStudio.html">modelStudio()</a></code> function computes various (instance and dataset level) model explanations and produces an&amp;nbsp<strong>interactive, customisable dashboard made with D3.js</strong>. It consists of multiple panels for plots with their short descriptions. Easily <strong>save and share</strong> the dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.</p>
 <!--- [explain FIFA19](https://pbiecek.github.io/explainFIFA19/) &emsp; --->
 <!--- [explain Lung Cancer](https://github.com/hbaniecki/transparent_xai/) &emsp; --->
-<p>          <a href="https://pbiecek.github.io/explainFIFA20/"><strong>explain FIFA20</strong></a>   <a href="http://modelstudio.drwhy.ai/articles/vignette_examples.html"><strong>R &amp; Python examples</strong></a>   <a href="http://modelstudio.drwhy.ai/#more-resources"><strong>More Resources</strong></a>   <a href="https://github.com/ModelOriented/modelStudio/issues/54"><strong>FAQ &amp; Troubleshooting</strong></a></p>
+<p>            <a href="https://pbiecek.github.io/explainFIFA20/"><strong>explain FIFA20</strong></a>   <a href="http://modelstudio.drwhy.ai/articles/vignette_examples.html"><strong>R &amp; Python examples</strong></a>   <a href="http://modelstudio.drwhy.ai/#more-resources"><strong>More Resources</strong></a>   <a href="https://github.com/ModelOriented/modelStudio/issues/54"><strong>FAQ &amp; Troubleshooting</strong></a></p>
 <p><img src="reference/figures/short.gif"></p>
 <p>The <code>modelStudio</code> package is a part of the <a href="http://drwhy.ai"><strong>DrWhy.AI</strong></a> universe.</p>
 </div>
@@ -152,12 +152,8 @@
                      <span class="kw">y</span> <span class="kw">=</span> <span class="no">titanic_imputed</span>$<span class="no">survived</span>,
                      <span class="kw">label</span> <span class="kw">=</span> <span class="st">"Titanic GLM"</span>)
 
-<span class="co"># pick observations</span>
-<span class="no">new_observations</span> <span class="kw">&lt;-</span> <span class="no">titanic_imputed</span>[<span class="fl">1</span>:<span class="fl">4</span>,]
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">new_observations</span>) <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Lucas"</span>, <span class="st">"James"</span>, <span class="st">"Thomas"</span>, <span class="st">"Nancy"</span>)
-
 <span class="co"># make a studio for the model</span>
-<span class="fu"><a href="reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer</span>, <span class="no">new_observations</span>)</pre></div>
+<span class="fu"><a href="reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer</span>)</pre></div>
 <p><a href="http://modelstudio.drwhy.ai/#save--share">Save the output</a> in the form of a HTML file - <a href="https://modeloriented.github.io/modelStudio/demo.html"><strong>Demo Dashboard</strong></a>.</p>
 <p><img src="reference/figures/long.gif"></p>
 </div>
@@ -186,7 +182,7 @@
 <span class="no">data</span> <span class="kw">&lt;-</span> <span class="kw pkg">DALEX</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/DALEX/man/titanic.html">titanic_imputed</a></span>
 
 <span class="co"># split the data</span>
-<span class="no">index</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="fl">1</span>:<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">data</span>), <span class="fl">0.8</span>*<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">data</span>))
+<span class="no">index</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="fl">1</span>:<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">data</span>), <span class="fl">0.7</span>*<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">data</span>))
 <span class="no">train</span> <span class="kw">&lt;-</span> <span class="no">data</span>[<span class="no">index</span>, ]
 <span class="no">test</span> <span class="kw">&lt;-</span> <span class="no">data</span>[-<span class="no">index</span>, ]
 
@@ -230,7 +226,7 @@
 <span class="no">data</span> <span class="kw">&lt;-</span> <span class="kw pkg">DALEX</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/DALEX/man/titanic.html">titanic_imputed</a></span>
 
 <span class="co"># split the data</span>
-<span class="no">index</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="fl">1</span>:<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">data</span>), <span class="fl">0.8</span>*<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">data</span>))
+<span class="no">index</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="fl">1</span>:<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">data</span>), <span class="fl">0.7</span>*<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">data</span>))
 <span class="no">train</span> <span class="kw">&lt;-</span> <span class="no">data</span>[<span class="no">index</span>, ]
 <span class="no">test</span> <span class="kw">&lt;-</span> <span class="no">data</span>[-<span class="no">index</span>, ]
 
@@ -282,7 +278,7 @@
 <span id="cb7-13"><a href="#cb7-13"></a>y <span class="op">=</span> data.survived</span>
 <span id="cb7-14"><a href="#cb7-14"></a></span>
 <span id="cb7-15"><a href="#cb7-15"></a><span class="co"># split the data</span></span>
-<span id="cb7-16"><a href="#cb7-16"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.33</span>, random_state<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb7-16"><a href="#cb7-16"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y)</span>
 <span id="cb7-17"><a href="#cb7-17"></a></span>
 <span id="cb7-18"><a href="#cb7-18"></a><span class="co"># fit a pipeline model</span></span>
 <span id="cb7-19"><a href="#cb7-19"></a>numeric_features <span class="op">=</span> [<span class="st">'age'</span>, <span class="st">'fare'</span>, <span class="st">'sibsp'</span>, <span class="st">'parch'</span>]</span>
@@ -310,7 +306,7 @@
 <span id="cb7-41"><a href="#cb7-41"></a>model <span class="op">=</span> Pipeline(</span>
 <span id="cb7-42"><a href="#cb7-42"></a>  steps<span class="op">=</span>[</span>
 <span id="cb7-43"><a href="#cb7-43"></a>    (<span class="st">'preprocessor'</span>, preprocessor),</span>
-<span id="cb7-44"><a href="#cb7-44"></a>    (<span class="st">'classifier'</span>, MLPClassifier(hidden_layer_sizes<span class="op">=</span>(<span class="dv">150</span>,<span class="dv">100</span>,<span class="dv">50</span>), max_iter<span class="op">=</span><span class="dv">500</span>, random_state<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb7-44"><a href="#cb7-44"></a>    (<span class="st">'classifier'</span>, MLPClassifier(hidden_layer_sizes<span class="op">=</span>(<span class="dv">150</span>,<span class="dv">100</span>,<span class="dv">50</span>), max_iter<span class="op">=</span><span class="dv">500</span>))</span>
 <span id="cb7-45"><a href="#cb7-45"></a>    ]</span>
 <span id="cb7-46"><a href="#cb7-46"></a>)</span>
 <span id="cb7-47"><a href="#cb7-47"></a>model.fit(X_train, y_train)</span>
@@ -340,7 +336,7 @@
 <h2 class="hasAnchor">
 <a href="#save--share" class="anchor"></a>Save &amp; Share</h2>
 <p>Save <code>modelStudio</code> as a HTML file using buttons on the top of the RStudio Viewer or with <a href="https://rstudio.github.io/r2d3/articles/publishing.html#save-as-html"><code><a href="https://rdrr.io/pkg/r2d3/man/save_d3_html.html">r2d3::save_d3_html()</a></code></a>.</p>
-<p align="center">
+<p style="text-align: center;">
 <img src="reference/figures/controls.png"></p>
 </div>
 <div id="more-resources" class="section level2">
@@ -351,10 +347,9 @@
 <li><p>Vignette: <a href="https://modeloriented.github.io/modelStudio/articles/vignette_examples.html">modelStudio - R &amp; python examples</a></p></li>
 <li><p>Vignette: <a href="https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html">modelStudio - perks and features</a></p></li>
 <li><p>Conference poster: <a href="misc/MLinPL2019_modelStudio_poster.pdf">MLinPL2019</a></p></li>
+<li><p>Changelog: <a href="NEWS.html">News</a></p></li>
 </ul>
-<!--  - [Article about modelStudio](https://joss.theoj.org/papers/10.21105/joss.01798) --><ul>
-<li><a href="NEWS.html">News</a></li>
-</ul>
+<p><!--  - [Article about modelStudio](https://joss.theoj.org/papers/10.21105/joss.01798) --></p>
 </div>
 <div id="acknowledgments" class="section level2">
 <h2 class="hasAnchor">
