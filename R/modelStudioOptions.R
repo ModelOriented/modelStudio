@@ -45,26 +45,37 @@
 #' }
 #' }
 #'
+#' @references
+#'
+#' \itemize{
+#'   \item Wrapper for the function is implemented in \href{https://modeloriented.github.io/DALEX/}{\bold{DALEX}}
+#'   \item Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence plots
+#' are implemented in \href{https://modeloriented.github.io/ingredients/}{\bold{ingredients}}
+#'   \item Break Down and Shapley Values plots are implemented in \href{https://modeloriented.github.io/iBreakDown/}{\bold{iBreakDown}}
+#' }
+#'
+#' @seealso
+#' Vignettes: \href{https://modeloriented.github.io/modelStudio/articles/vignette_examples.html}{\bold{modelStudio - R & python examples}}
+#' and \href{https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html}{\bold{modelStudio - perks and features}}
 #'
 #' @examples
 #' library("DALEX")
 #' library("modelStudio")
 #'
-#' # Create a model
+#' # fit a model
 #' model_apartments <- glm(m2.price ~. ,
 #'                         data = apartments)
 #'
-#' # Wrap it into an explainer
+#' # create an explainer for the model
 #' explainer_apartments <- DALEX::explain(model_apartments,
-#'                                        data = apartments[,-1],
-#'                                        y = apartments[,1],
-#'                                        verbose = FALSE)
+#'                                        data = apartments,
+#'                                        y = apartments$m2.price)
 #'
-#' # Pick some data points
+#' # pick observations
 #' new_apartments <- apartments[1:2,]
 #' rownames(new_apartments) <- c("ap1","ap2")
 #'
-#' # Modify default options
+#' # modify default options
 #' op <- modelStudioOptions(
 #'   show_subtitle = TRUE,
 #'   bd_subtitle = "Hello World",
@@ -76,10 +87,9 @@
 #'   bd_negative_color = "orange"
 #' )
 #'
-#' # Make a studio for the model with modified option
+#' # make a studio for the model
 #' modelStudio(explainer_apartments, new_apartments,
-#'             N = 100, B = 10, options = op,
-#'             show_info = FALSE)
+#'             N = 100, B = 10, options = op)
 #'
 #' @export
 #' @rdname modelStudioOptions

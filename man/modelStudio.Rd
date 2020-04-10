@@ -3,7 +3,7 @@
 \name{modelStudio}
 \alias{modelStudio}
 \alias{modelStudio.explainer}
-\title{Generate Interactive Studio for Explanatory Model Analysis}
+\title{Interactive Studio for Explanatory Model Analysis}
 \usage{
 modelStudio(explainer, ...)
 
@@ -25,7 +25,7 @@ modelStudio(explainer, ...)
 )
 }
 \arguments{
-\item{explainer}{An \code{explainer} created with function \code{DALEX::explain()}.}
+\item{explainer}{An \code{explainer} created with \code{DALEX::explain()}.}
 
 \item{...}{Other parameters.}
 
@@ -67,7 +67,7 @@ customizable dashboard made with D3.js. It consists of multiple panels for plots
 Easily save and share the dashboard with others. Tools for model exploration unite with tools for EDA
 (Exploratory Data Analysis) to give a broad overview of the model behavior.
 
-Theoretical introduction to the plots can be found in \href{https://github.com/pbiecek/ema}{Explanatory Model Analysis: Explore, Explain and Examine Predictive Models}
+Theoretical introduction to the plots: \href{https://pbiecek.github.io/ema/}{Explanatory Model Analysis: Explore, Explain and Examine Predictive Models}
 }
 \examples{
 library("DALEX")
@@ -84,8 +84,7 @@ model_titanic <- glm(survived ~.,
 explainer_titanic <- explain(model_titanic,
                              data = titanic_imputed,
                              y = titanic_imputed$survived,
-                             label = "Titanic GLM",
-                             verbose = FALSE)
+                             label = "Titanic GLM")
 
 # pick observations
 new_observations <- titanic_imputed[1:2,]
@@ -93,9 +92,10 @@ rownames(new_observations) <- c("Lucas","James")
 
 # make a studio for the model
 modelStudio(explainer_titanic, new_observations,
-            N = 100, B = 10, show_info = FALSE)
+            N = 100, B = 10)
 
 \donttest{
+
 #:# ex2 regression on 'apartments' dataset
 library("randomForest")
 
@@ -103,25 +103,21 @@ model_apartments <- randomForest(m2.price ~. ,data = apartments)
 
 explainer_apartments <- explain(model_apartments,
                                 data = apartments,
-                                y = apartments$m2.price,
-                                verbose = FALSE)
+                                y = apartments$m2.price)
 
 new_apartments <- apartments[1:2,]
 rownames(new_apartments) <- c("ap1","ap2")
 
 # change dashboard dimensions and animation length
 modelStudio(explainer_apartments, new_apartments,
-            facet_dim = c(2, 3), time = 800,
-            show_info = FALSE)
+            facet_dim = c(2, 3), time = 800)
 
 # add information about true labels
 modelStudio(explainer_apartments, new_apartments,
-            new_observation_y = apartments[1:2, 1],
-            show_info = FALSE)
+            new_observation_y = apartments[1:2, 1])
 
 # don't compute EDA plots
-modelStudio(explainer_apartments, eda = FALSE,
-            show_info = FALSE)
+modelStudio(explainer_apartments, eda = FALSE)
 
 
 #:# ex3 xgboost model on 'HR' dataset
@@ -130,17 +126,15 @@ library("xgboost")
 model_matrix <- model.matrix(status == "fired" ~ . -1, HR)
 data <- xgb.DMatrix(model_matrix, label = HR$status == "fired")
 
-params <- list(max_depth = 2, eta = 1, silent = 1, nthread = 2,
-               objective = "binary:logistic", eval_metric = "auc")
+params <- list(max_depth = 7, objective = "binary:logistic", eval_metric = "auc")
 
-model_HR <- xgb.train(params, data, nrounds = 50)
+model_HR <- xgb.train(params, data, nrounds = 300)
 
 explainer_HR <- explain(model_HR,
                         data = model_matrix,
-                        y = HR$status == "fired",
-                        verbose = FALSE)
+                        y = HR$status == "fired")
 
-modelStudio(explainer_HR, show_info = FALSE)
+modelStudio(explainer_HR)
 
 }
 
