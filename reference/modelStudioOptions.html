@@ -218,26 +218,39 @@ ignored when <code>scale_plot = TRUE</code>.</p></dd>
 </dl>
 
 
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    
+<ul>
+<li><p>Wrapper for the function is implemented in <a href='https://modeloriented.github.io/DALEX/'><b>DALEX</b></a></p></li>
+<li><p>Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence plots
+are implemented in <a href='https://modeloriented.github.io/ingredients/'><b>ingredients</b></a></p></li>
+<li><p>Break Down and Shapley Values plots are implemented in <a href='https://modeloriented.github.io/iBreakDown/'><b>iBreakDown</b></a></p></li>
+</ul>
+
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Vignettes: <a href='https://modeloriented.github.io/modelStudio/articles/vignette_examples.html'><b>modelStudio - R &amp; python examples</b></a>
+and <a href='https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html'><b>modelStudio - perks and features</b></a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"DALEX"</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"modelStudio"</span>)
 
-<span class='co'># Create a model</span>
+<span class='co'># fit a model</span>
 <span class='no'>model_apartments</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>m2.price</span> ~<span class='no'>.</span> ,
                         <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>)
 
-<span class='co'># Wrap it into an explainer</span>
+<span class='co'># create an explainer for the model</span>
 <span class='no'>explainer_apartments</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>DALEX</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='no'>model_apartments</span>,
-                                       <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>[,-<span class='fl'>1</span>],
-                                       <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>apartments</span>[,<span class='fl'>1</span>],
-                                       <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+                                       <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>,
+                                       <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>apartments</span>$<span class='no'>m2.price</span>)
 
-<span class='co'># Pick some data points</span>
+<span class='co'># pick observations</span>
 <span class='no'>new_apartments</span> <span class='kw'>&lt;-</span> <span class='no'>apartments</span>[<span class='fl'>1</span>:<span class='fl'>2</span>,]
 <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>new_apartments</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ap1"</span>,<span class='st'>"ap2"</span>)
 
-<span class='co'># Modify default options</span>
+<span class='co'># modify default options</span>
 <span class='no'>op</span> <span class='kw'>&lt;-</span> <span class='fu'>modelStudioOptions</span>(
   <span class='kw'>show_subtitle</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>bd_subtitle</span> <span class='kw'>=</span> <span class='st'>"Hello World"</span>,
@@ -249,10 +262,9 @@ ignored when <code>scale_plot = TRUE</code>.</p></dd>
   <span class='kw'>bd_negative_color</span> <span class='kw'>=</span> <span class='st'>"orange"</span>
 )
 
-<span class='co'># Make a studio for the model with modified option</span>
+<span class='co'># make a studio for the model</span>
 <span class='fu'><a href='modelStudio.html'>modelStudio</a></span>(<span class='no'>explainer_apartments</span>, <span class='no'>new_apartments</span>,
-            <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>options</span> <span class='kw'>=</span> <span class='no'>op</span>,
-            <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+            <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>options</span> <span class='kw'>=</span> <span class='no'>op</span>)</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
