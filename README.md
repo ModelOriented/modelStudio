@@ -10,13 +10,13 @@
 
 The `modelStudio` package **automates the Explanatory Analysis of Machine Learning predictive models**. Generate advanced interactive and animated model explanations in the form of a **serverless HTML site** with only one line of code. This tool is model agnostic, therefore compatible with most of the black box predictive models and frameworks (e.g.&nbsp;`mlr/mlr3`, `xgboost`, `caret`, `h2o`, `scikit-learn`, `lightGBM`, `keras/tensorflow`).
 
-The main `modelStudio()` function computes various (instance and dataset level) model explanations and produces an&nbsp**interactive,&nbsp;customisable dashboard made with D3.js**. It consists of multiple panels for plots with their short descriptions. Easily&nbsp;**save&nbsp;and&nbsp;share** the dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.
+The main `modelStudio()` function computes various (instance and dataset level) model explanations and produces an&nbsp;**interactive,&nbsp;customisable dashboard made with D3.js**. It consists of multiple panels for plots with their short descriptions. Easily&nbsp;**save&nbsp;and&nbsp;share** the dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.
 
 <!--- [explain FIFA19](https://pbiecek.github.io/explainFIFA19/) &emsp; --->
 <!--- [explain Lung Cancer](https://github.com/hbaniecki/transparent_xai/) &emsp; --->
 &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
 [**explain FIFA20**](https://pbiecek.github.io/explainFIFA20/) &emsp;
-[**R & Python examples**](http://modelstudio.drwhy.ai/articles/vignette_examples.html) &emsp;
+[**R & Python examples**](http://modelstudio.drwhy.ai/articles/ms-r-python-examples.html) &emsp;
 [**More Resources**](http://modelstudio.drwhy.ai/#more-resources) &emsp;
 [**FAQ & Troubleshooting**](https://github.com/ModelOriented/modelStudio/issues/54)
 
@@ -41,9 +41,7 @@ library("DALEX")
 library("modelStudio")
 
 # fit a model
-model <- glm(survived ~.,
-             data = titanic_imputed,
-             family = "binomial")
+model <- glm(survived ~., data = titanic_imputed, family = "binomial")
 
 # create an explainer for the model    
 explainer <- explain(model,
@@ -59,18 +57,18 @@ modelStudio(explainer)
 
 ![](man/figures/long.gif)
 
-## R & Python Examples [more](http://modelstudio.drwhy.ai/articles/vignette_examples.html)
+## R & Python Examples [more](http://modelstudio.drwhy.ai/articles/ms-r-python-examples.html)
 
 The `modelStudio()` function uses `DALEX` explainers created with `DALEX::explain()` or `DALEXtra::explain_*()`.
 
 ```r
-# update main dependencies
-install.packages("ingredients")
-install.packages("iBreakDown")
-
 # packages for explainer objects
 install.packages("DALEX")
 install.packages("DALEXtra")
+
+# update main dependencies
+install.packages("ingredients")
+install.packages("iBreakDown")
 ```
 
 ### mlr [dashboard](https://modeloriented.github.io/modelStudio/mlr.html)
@@ -87,19 +85,16 @@ data <- DALEX::titanic_imputed
 
 # split the data
 index <- sample(1:nrow(data), 0.7*nrow(data))
-train <- data[index, ]
-test <- data[-index, ]
+train <- data[index,]
+test <- data[-index,]
 
 # mlr ClassifTask takes target as factor
 train$survived <- as.factor(train$survived)
 
 # fit a model
-task <- makeClassifTask(id = "titanic",
-                        data = train,
-                        target = "survived")
+task <- makeClassifTask(id = "titanic", data = train, target = "survived")
 
-learner <- makeLearner("classif.ranger",
-                       predict.type = "prob")
+learner <- makeLearner("classif.ranger", predict.type = "prob")
 
 model <- train(learner, task)
 
@@ -110,7 +105,7 @@ explainer <- explain_mlr(model,
                          label = "mlr")
 
 # pick observations
-new_observation <- test[1:2, ]
+new_observation <- test[1:2,]
 rownames(new_observation) <- c("id1", "id2")
 
 # make a studio for the model
@@ -132,17 +127,18 @@ data <- DALEX::titanic_imputed
 
 # split the data
 index <- sample(1:nrow(data), 0.7*nrow(data))
-train <- data[index, ]
-test <- data[-index, ]
+train <- data[index,]
+test <- data[-index,]
 
 train_matrix <- model.matrix(survived ~.-1, train)
 test_matrix <- model.matrix(survived ~.-1, test)
 
 # fit a model
 xgb_matrix <- xgb.DMatrix(train_matrix, label = train$survived)
-params <- list(eta = 0.01, subsample = 0.6, max_depth = 7, min_child_weight = 3,
-               objective = "binary:logistic", eval_metric = "auc")
-model <- xgb.train(params, xgb_matrix, nrounds = 1000)
+
+params <- list(max_depth = 7, objective = "binary:logistic", eval_metric = "auc")
+
+model <- xgb.train(params, xgb_matrix, nrounds = 500)
 
 # create an explainer for the model
 explainer <- explain(model,
@@ -151,7 +147,7 @@ explainer <- explain(model,
                      label = "xgboost")
 
 # pick observations
-new_observation <- test_matrix[1:2,,drop=FALSE]
+new_observation <- test_matrix[1:2, , drop=FALSE]
 rownames(new_observation) <- c("id1", "id2")
 
 # make a studio for the model
@@ -169,6 +165,11 @@ pip3 install dalex --force
 ```
 
 Use `pickle` Python module and `reticulate` R package to easily make a studio for a model.
+
+```{r eval = FALSE}
+# package for pickle load
+install.packages("reticulate")
+```
 
 In this example we will fit a `Pipeline MLPClassifier` model on `titanic` data.
 
@@ -193,45 +194,47 @@ y = data.survived
 X_train, X_test, y_train, y_test = train_test_split(X, y)
 
 # fit a pipeline model
-numeric_features = ['age', 'fare', 'sibsp', 'parch']
-numeric_transformer = Pipeline(
+numerical_features = ['age', 'fare', 'sibsp', 'parch']
+numerical_transformer = Pipeline(
   steps=[
     ('imputer', SimpleImputer(strategy='median')),
     ('scaler', StandardScaler())
-    ]
+  ]
 )
 categorical_features = ['gender', 'class', 'embarked']
 categorical_transformer = Pipeline(
   steps=[
     ('imputer', SimpleImputer(strategy='constant', fill_value='missing')),
     ('onehot', OneHotEncoder(handle_unknown='ignore'))
-    ]
+  ]
 )
 
 preprocessor = ColumnTransformer(
   transformers=[
-    ('num', numeric_transformer, numeric_features),
+    ('num', numerical_transformer, numerical_features),
     ('cat', categorical_transformer, categorical_features)
-    ]
+  ]
 )
+
+classifier = MLPClassifier(hidden_layer_sizes=(150,100,50), max_iter=500)
 
 model = Pipeline(
   steps=[
     ('preprocessor', preprocessor),
-    ('classifier', MLPClassifier(hidden_layer_sizes=(150,100,50), max_iter=500))
-    ]
+    ('classifier', classifier)
+  ]
 )
 model.fit(X_train, y_train)
 
 # create an explainer for the model
-explainer = dx.Explainer(model, X_test, y_test, label = 'scikit-learn')
+explainer = dx.Explainer(model, data=X_test, y=y_test, label='scikit-learn')
 
 #! remove residual_function before dump !
 explainer.residual_function = None
 
 # pack the explainer into a pickle file
 import pickle
-pickle_out = open("explainer_scikitlearn.pickle","wb")
+pickle_out = open('explainer_scikitlearn.pickle', 'wb')
 pickle.dump(explainer, pickle_out)
 pickle_out.close()
 ```
@@ -241,7 +244,7 @@ Then, use `modelStudio` in R:
 ```r
 # load the explainer from the pickle file
 library(reticulate)
-explainer <- py_load_object('explainer_scikitlearn.pickle', pickle = "pickle")
+explainer <- py_load_object("explainer_scikitlearn.pickle", pickle = "pickle")
 
 # make a studio for the model
 library(modelStudio)
@@ -261,9 +264,9 @@ or with [`r2d3::save_d3_html()`](https://rstudio.github.io/r2d3/articles/publish
 
   - Theoretical introduction to the plots: [Explanatory Model Analysis. Explore, Explain and Examine Predictive Models.](https://pbiecek.github.io/ema)
 
-  - Vignette: [modelStudio - R & python examples](https://modeloriented.github.io/modelStudio/articles/vignette_examples.html)  
+  - Vignette: [modelStudio - R & Python examples](https://modeloriented.github.io/modelStudio/articles/ms-r-python-examples.html)  
 
-  - Vignette: [modelStudio - perks and features](https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html)  
+  - Vignette: [modelStudio - perks and features](https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html)  
 
   - Conference poster: [MLinPL2019](misc/MLinPL2019_modelStudio_poster.pdf)
 

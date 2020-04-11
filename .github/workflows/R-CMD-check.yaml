@@ -27,9 +27,9 @@ jobs:
         config:
           - {os: windows-latest, r: '3.6'}
           - {os: macOS-latest, r: '3.6'}
-          - {os: macOS-latest, r: 'devel'}
           - {os: ubuntu-16.04, r: '3.5', rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
           - {os: ubuntu-16.04, r: '3.6', rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
+          #- {os: macOS-latest, r: 'devel'} this is bugged
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
@@ -71,8 +71,6 @@ jobs:
       - name: Install dependencies
         run: |
           remotes::install_deps(dependencies = TRUE)
-          remotes::install_github("https://github.com/r-lib/xml2")
-          remotes::install_cran("processx")
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
 

@@ -21,19 +21,19 @@ knitr::opts_chunk$set(
 
 # R & Python Examples
 
+## R
+
 The `modelStudio()` function uses `DALEX` explainers created with `DALEX::explain()` or `DALEXtra::explain_*()`.   
 
 ```{r eval = FALSE}
-# update main dependencies
-install.packages("ingredients")
-install.packages("iBreakDown")
-
 # packages for explainer objects
 install.packages("DALEX")
 install.packages("DALEXtra")
-```
 
-## R
+# update main dependencies
+install.packages("ingredients")
+install.packages("iBreakDown")
+```
 
 ### mlr [dashboard](https://modeloriented.github.io/modelStudio/mlr.html)
 
@@ -49,19 +49,16 @@ data <- DALEX::titanic_imputed
 
 # split the data
 index <- sample(1:nrow(data), 0.7*nrow(data))
-train <- data[index, ]
-test <- data[-index, ]
+train <- data[index,]
+test <- data[-index,]
 
 # mlr ClassifTask takes target as factor
 train$survived <- as.factor(train$survived)
 
 # fit a model
-task <- makeClassifTask(id = "titanic",
-                        data = train,
-                        target = "survived")
+task <- makeClassifTask(id = "titanic", data = train, target = "survived")
 
-learner <- makeLearner("classif.ranger",
-                       predict.type = "prob")
+learner <- makeLearner("classif.ranger", predict.type = "prob")
 
 model <- train(learner, task)
 
@@ -72,7 +69,7 @@ explainer <- explain_mlr(model,
                          label = "mlr")
 
 # pick observations
-new_observation <- test[1:2, ]
+new_observation <- test[1:2,]
 rownames(new_observation) <- c("id1", "id2")
 
 # make a studio for the model
@@ -95,19 +92,16 @@ data <- DALEX::titanic_imputed
 
 # split the data
 index <- sample(1:nrow(data), 0.7*nrow(data))
-train <- data[index, ]
-test <- data[-index, ]
+train <- data[index,]
+test <- data[-index,]
 
 # mlr3 TaskClassif takes target as factor
 train$survived <- as.factor(train$survived)
 
 # fit a model
-task <- TaskClassif$new(id = "titanic",
-                        backend = train,
-                        target = "survived")
+task <- TaskClassif$new(id = "titanic", backend = train, target = "survived")
 
-learner <- lrn("classif.ranger",
-               predict_type = "prob")
+learner <- lrn("classif.ranger", predict_type = "prob")
 
 learner$train(task)
 
@@ -118,7 +112,7 @@ explainer <- explain_mlr3(learner,
                           label = "mlr3")
 
 # pick observations
-new_observation <- test[1:2, ]
+new_observation <- test[1:2,]
 rownames(new_observation) <- c("id1", "id2")
 
 # make a studio for the model
@@ -140,17 +134,18 @@ data <- DALEX::titanic_imputed
 
 # split the data
 index <- sample(1:nrow(data), 0.7*nrow(data))
-train <- data[index, ]
-test <- data[-index, ]
+train <- data[index,]
+test <- data[-index,]
 
 train_matrix <- model.matrix(survived ~.-1, train)
 test_matrix <- model.matrix(survived ~.-1, test)
 
 # fit a model
 xgb_matrix <- xgb.DMatrix(train_matrix, label = train$survived)
-params <- list(eta = 0.01, subsample = 0.6, max_depth = 7, min_child_weight = 3,
-               objective = "binary:logistic", eval_metric = "auc")
-model <- xgb.train(params, xgb_matrix, nrounds = 1000)
+
+params <- list(max_depth = 7, objective = "binary:logistic", eval_metric = "auc")
+
+model <- xgb.train(params, xgb_matrix, nrounds = 500)
 
 # create an explainer for the model
 explainer <- explain(model,
@@ -159,7 +154,7 @@ explainer <- explain(model,
                      label = "xgboost")
 
 # pick observations
-new_observation <- test_matrix[1:2,,drop=FALSE]
+new_observation <- test_matrix[1:2, , drop=FALSE]
 rownames(new_observation) <- c("id1", "id2")
 
 # make a studio for the model
@@ -182,21 +177,16 @@ data <- DALEX::titanic_imputed
 
 # split the data
 index <- sample(1:nrow(data), 0.7*nrow(data))
-train <- data[index, ]
-test <- data[-index, ]
+train <- data[index,]
+test <- data[-index,]
 
 # caret train takes target as factor
 train$survived <- as.factor(train$survived)
 
 # fit a model
-cv <- trainControl(method = "repeatedcv",
-                   number = 3,
-                   repeats = 10)
+cv <- trainControl(method = "repeatedcv", number = 3, repeats = 10)
 
-model <- train(survived ~ ., data = train,
-               method = "gbm",
-               trControl = cv,
-               verbose = FALSE)
+model <- train(survived ~ ., data = train, method = "gbm", trControl = cv)
 
 # create an explainer for the model
 explainer <- explain(model,
@@ -237,9 +227,8 @@ test <- as.data.frame(h2o_split[[2]])
 train$survived <- as.factor(train$survived)
 
 # fit a model
-automl <- h2o.automl(y = "survived",
-                     training_frame = train,
-                     max_runtime_secs = 30)
+automl <- h2o.automl(y = "survived", training_frame = train, max_runtime_secs = 30)
+
 model <- automl@leader
 
 # stop h2o progress printing
@@ -252,7 +241,7 @@ explainer <- explain_h2o(model,
                          label = "h2o")
 
 # pick observations
-new_observation <- test[1:2, ]
+new_observation <- test[1:2,]
 rownames(new_observation) <- c("id1", "id2")
 
 # make a studio for the model
@@ -270,10 +259,20 @@ h2o::h2o.shutdown(prompt = FALSE)
 The `modelStudio()` function uses `dalex` explainers created with `dalex.Explainer()`.
 
 ```{bash, eval=FALSE, engine="sh"}
+# package for Explainer object
 pip3 install dalex --force
 ```
 
 Use `pickle` Python module and `reticulate` R package to easily make a studio for a model.
+
+```{r eval = FALSE}
+# package for pickle load
+install.packages("reticulate")
+
+# update main dependencies
+install.packages("ingredients")
+install.packages("iBreakDown")
+```
 
 ### scikit-learn [dashboard](https://modeloriented.github.io/modelStudio/scikitlearn.html)
 
@@ -281,7 +280,7 @@ In this example we will fit a `Pipeline MLPClassifier` model on `titanic` data.
 
 First, use `dalex` in Python:
 
-```{r eval = FALSE}
+```{python, python.reticulate = FALSE, eval = FALSE}
 # load packages and data
 import dalex as dx
 
@@ -300,45 +299,47 @@ y = data.survived
 X_train, X_test, y_train, y_test = train_test_split(X, y)
 
 # fit a pipeline model
-numeric_features = ['age', 'fare', 'sibsp', 'parch']
-numeric_transformer = Pipeline(
+numerical_features = ['age', 'fare', 'sibsp', 'parch']
+numerical_transformer = Pipeline(
   steps=[
     ('imputer', SimpleImputer(strategy='median')),
     ('scaler', StandardScaler())
-    ]
+  ]
 )
 categorical_features = ['gender', 'class', 'embarked']
 categorical_transformer = Pipeline(
   steps=[
     ('imputer', SimpleImputer(strategy='constant', fill_value='missing')),
     ('onehot', OneHotEncoder(handle_unknown='ignore'))
-    ]
+  ]
 )
 
 preprocessor = ColumnTransformer(
   transformers=[
-    ('num', numeric_transformer, numeric_features),
+    ('num', numerical_transformer, numerical_features),
     ('cat', categorical_transformer, categorical_features)
-    ]
+  ]
 )
+
+classifier = MLPClassifier(hidden_layer_sizes=(150,100,50), max_iter=500)
 
 model = Pipeline(
   steps=[
     ('preprocessor', preprocessor),
-    ('classifier', MLPClassifier(hidden_layer_sizes=(150,100,50), max_iter=500))
-    ]
+    ('classifier', classifier)
+  ]
 )
 model.fit(X_train, y_train)
 
 # create an explainer for the model
-explainer = dx.Explainer(model, X_test, y_test, label = 'scikit-learn')
+explainer = dx.Explainer(model, data=X_test, y=y_test, label='scikit-learn')
 
 #! remove residual_function before dump !
 explainer.residual_function = None
 
 # pack the explainer into a pickle file
 import pickle
-pickle_out = open("explainer_scikitlearn.pickle","wb")
+pickle_out = open('explainer_scikitlearn.pickle', 'wb')
 pickle.dump(explainer, pickle_out)
 pickle_out.close()
 ```
@@ -348,7 +349,7 @@ Then, use `modelStudio` in R:
 ```{r eval = FALSE}
 # load the explainer from the pickle file
 library(reticulate)
-explainer <- py_load_object('explainer_scikitlearn.pickle', pickle = "pickle")
+explainer <- py_load_object("explainer_scikitlearn.pickle", pickle = "pickle")
 
 # make a studio for the model
 library(modelStudio)
@@ -361,7 +362,7 @@ In this example we will fit a `Pipeline LGBMClassifier` model on `titanic` data.
 
 First, use `dalex` in Python:
 
-```{r eval = FALSE}
+```{python, python.reticulate = FALSE, eval = FALSE}
 # load packages and data
 import dalex as dx
 
@@ -380,45 +381,47 @@ y = data.survived
 X_train, X_test, y_train, y_test = train_test_split(X, y)
 
 # fit a pipeline model
-numeric_features = ['age', 'fare', 'sibsp', 'parch']
-numeric_transformer = Pipeline(
+numerical_features = ['age', 'fare', 'sibsp', 'parch']
+numerical_transformer = Pipeline(
   steps=[
     ('imputer', SimpleImputer(strategy='median')),
     ('scaler', StandardScaler())
-    ]
+  ]
 )
 categorical_features = ['gender', 'class', 'embarked']
 categorical_transformer = Pipeline(
   steps=[
     ('imputer', SimpleImputer(strategy='constant', fill_value='missing')),
     ('onehot', OneHotEncoder(handle_unknown='ignore'))
-    ]
+  ]
 )
 
 preprocessor = ColumnTransformer(
   transformers=[
-    ('num', numeric_transformer, numeric_features),
+    ('num', numerical_transformer, numerical_features),
     ('cat', categorical_transformer, categorical_features)
-    ]
+  ]
 )
+
+classifier = LGBMClassifier(n_estimators=300)
 
 model = Pipeline(
   steps=[
     ('preprocessor', preprocessor),
-    ('classifier', LGBMClassifier(n_estimators=300))
-    ]
+    ('classifier', classifier)
+  ]
 )
 model.fit(X_train, y_train)
 
 # create an explainer for the model
-explainer = dx.Explainer(model, X_test, y_test, label = 'lightGBM')
+explainer = dx.Explainer(model, data=X_test, y=y_test, label='lightGBM')
 
 #! remove residual_function before dump !
 explainer.residual_function = None
 
 # pack the explainer into a pickle file
 import pickle
-pickle_out = open("explainer_lightgbm.pickle","wb")
+pickle_out = open('explainer_lightgbm.pickle', 'wb')
 pickle.dump(explainer, pickle_out)
 pickle_out.close()  
 ```
@@ -428,7 +431,7 @@ Then, use `modelStudio` in R:
 ```{r eval = FALSE}
 # load the explainer from the pickle file
 library(reticulate)
-explainer <- py_load_object('explainer_lightgbm.pickle', pickle = "pickle")
+explainer <- py_load_object("explainer_lightgbm.pickle", pickle = "pickle")
 
 # make a studio for the model
 library(modelStudio)
@@ -441,7 +444,7 @@ In this example we will fit a `Pipeline KerasClassifier` model on `titanic` data
 
 First, use `dalex` in Python:
 
-```{r eval = FALSE}
+```{python, python.reticulate = FALSE, eval = FALSE}
 # load packages and data
 import dalex as dx
 
@@ -462,57 +465,57 @@ y = data.survived
 X_train, X_test, y_train, y_test = train_test_split(X, y)
 
 # fit a pipeline model
-numeric_features = ['age', 'fare', 'sibsp', 'parch']
-numeric_transformer = Pipeline(
+numerical_features = ['age', 'fare', 'sibsp', 'parch']
+numerical_transformer = Pipeline(
   steps=[
     ('imputer', SimpleImputer(strategy='median')),
     ('scaler', StandardScaler())
-    ]
+  ]
 )
 categorical_features = ['gender', 'class', 'embarked']
 categorical_transformer = Pipeline(
   steps=[
     ('imputer', SimpleImputer(strategy='constant', fill_value='missing')),
     ('onehot', OneHotEncoder(handle_unknown='ignore'))
-    ]
+  ]
 )
 
 preprocessor = ColumnTransformer(
   transformers=[
-    ('num', numeric_transformer, numeric_features),
+    ('num', numerical_transformer, numerical_features),
     ('cat', categorical_transformer, categorical_features)
-    ]
+  ]
 )
 
 def create_architecture():
-  model = Sequential()
-  # after the pipeline there are 17 inputs
-  model.add(Dense(60, input_dim=17, activation='relu'))
-  model.add(Dense(1, activation='sigmoid'))
-  model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-  return model
+    model = Sequential()
+    # there are 17 inputs after the pipeline
+    model.add(Dense(60, input_dim=17, activation='relu'))
+    model.add(Dense(1, activation='sigmoid'))
+    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+    return model
 
-kc = KerasClassifier(build_fn=create_architecture, epochs=100, batch_size=5)
+classifier = KerasClassifier(build_fn=create_architecture, epochs=100, batch_size=5)
 
 model = Pipeline(
   steps=[
     ('preprocessor', preprocessor),
-    ('classifier', kc)
-    ]
+    ('classifier', classifier)
+  ]
 )
 model.fit(X_train, y_train)
 
 # create an explainer for the model
-explainer = dx.Explainer(model, X_test, y_test, label = 'keras')
+explainer = dx.Explainer(model, data=X_test, y=y_test, label='keras')
 
 #! remove residual_function before dump !
 explainer.residual_function = None
 
 # pack the explainer into a pickle file
 import pickle
-pickle_out = open("explainer_keras.pickle","wb")
+pickle_out = open('explainer_keras.pickle', 'wb')
 pickle.dump(explainer, pickle_out)
-pickle_out.close() 
+pickle_out.close()
 ```
 
 Then, use `modelStudio` in R:
@@ -527,7 +530,7 @@ def create_architecture():
     return True
 ")
 
-explainer <- py_load_object('explainer_keras.pickle', pickle = "pickle")
+explainer <- py_load_object("explainer_keras.pickle", pickle = "pickle")
 
 # make a studio for the model
 library(modelStudio)
@@ -537,7 +540,7 @@ modelStudio(explainer)
 ## References
 
 * Theoretical introduction to the plots: [Explanatory Model Analysis. Explore, Explain and Examine Predictive Models.](https://pbiecek.github.io/ema)
-* Wrapper for the function is implemented in [DALEX](https://modeloriented.github.io/DALEX/)
-* Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence plots 
+* The input object is implemented in [DALEX](https://modeloriented.github.io/DALEX/)
+* Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence plots
 are implemented in [ingredients](https://modeloriented.github.io/ingredients/)
 * Break Down and Shapley Values plots are implemented in [iBreakDown](https://modeloriented.github.io/iBreakDown/)

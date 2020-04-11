@@ -76,9 +76,7 @@ library("modelStudio")
 #:# ex1 classification on 'titanic_imputed' dataset
 
 # fit a model
-model_titanic <- glm(survived ~.,
-                     data = titanic_imputed,
-                     family = "binomial")
+model_titanic <- glm(survived ~., data = titanic_imputed, family = "binomial")
 
 # create an explainer for the model
 explainer_titanic <- explain(model_titanic,
@@ -91,8 +89,9 @@ new_observations <- titanic_imputed[1:2,]
 rownames(new_observations) <- c("Lucas","James")
 
 # make a studio for the model
-modelStudio(explainer_titanic, new_observations,
-            N = 100, B = 10)
+modelStudio(explainer_titanic,
+            new_observations,
+            N = 100, B = 10) # faster example
 
 \donttest{
 
@@ -109,45 +108,58 @@ new_apartments <- apartments[1:2,]
 rownames(new_apartments) <- c("ap1","ap2")
 
 # change dashboard dimensions and animation length
-modelStudio(explainer_apartments, new_apartments,
-            facet_dim = c(2, 3), time = 800)
+modelStudio(explainer_apartments,
+            new_apartments,
+            facet_dim = c(2, 3),
+            time = 800)
 
 # add information about true labels
-modelStudio(explainer_apartments, new_apartments,
-            new_observation_y = apartments[1:2, 1])
+modelStudio(explainer_apartments,
+            new_apartments,
+            new_observation_y = new_apartments$m2.price)
 
 # don't compute EDA plots
-modelStudio(explainer_apartments, eda = FALSE)
+modelStudio(explainer_apartments,
+            eda = FALSE)
 
 
 #:# ex3 xgboost model on 'HR' dataset
 library("xgboost")
 
-model_matrix <- model.matrix(status == "fired" ~ . -1, HR)
-data <- xgb.DMatrix(model_matrix, label = HR$status == "fired")
+# fit a model
+HR_matrix <- model.matrix(status == "fired" ~ . -1, HR)
+
+xgb_matrix <- xgb.DMatrix(HR_matrix, label = HR$status == "fired")
 
 params <- list(max_depth = 7, objective = "binary:logistic", eval_metric = "auc")
 
-model_HR <- xgb.train(params, data, nrounds = 300)
+model_HR <- xgb.train(params, xgb_matrix, nrounds = 300)
 
+# create an explainer for the model
 explainer_HR <- explain(model_HR,
-                        data = model_matrix,
-                        y = HR$status == "fired")
+                        data = HR_matrix,
+                        y = HR$status == "fired",
+                        label = "xgboost")
 
-modelStudio(explainer_HR)
+# pick observations
+new_observation <- HR_matrix[1:2, , drop=FALSE]
+rownames(new_observation) <- c("id1", "id2")
+# make a studio for the model
+modelStudio(explainer_HR,
+            new_observation)
 
 }
 
 }
 \references{
 \itemize{
-  \item Wrapper for the function is implemented in \href{https://modeloriented.github.io/DALEX/}{\bold{DALEX}}
+  \item The input object is implemented in \href{https://modeloriented.github.io/DALEX/}{\bold{DALEX}}
   \item Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence plots
 are implemented in \href{https://modeloriented.github.io/ingredients/}{\bold{ingredients}}
   \item Break Down and Shapley Values plots are implemented in \href{https://modeloriented.github.io/iBreakDown/}{\bold{iBreakDown}}
 }
 }
 \seealso{
-Vignettes: \href{https://modeloriented.github.io/modelStudio/articles/vignette_examples.html}{\bold{modelStudio - R & python examples}}
-and \href{https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html}{\bold{modelStudio - perks and features}}
+Vignettes: \href{https://modeloriented.github.io/modelStudio/articles/ms-r-python-examples.html}{\bold{modelStudio - R & Python examples}}
+and \href{(https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html}{\bold{modelStudio - perks and features}}
 }

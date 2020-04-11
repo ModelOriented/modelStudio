@@ -45,3 +45,5 @@ modelStudio.Rproj
 #*.html
 
 docs/*
+
+*.pickle
