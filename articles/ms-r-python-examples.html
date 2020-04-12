@@ -106,7 +106,7 @@
       <h1 data-toc-skip>modelStudio - R &amp; Python examples</h1>
                         <h4 class="author">Hubert Baniecki</h4>
             
-            <h4 class="date">2020-04-11</h4>
+            <h4 class="date">2020-04-12</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ModelOriented/modelStudio/blob/master/vignettes/ms-r-python-examples.Rmd"><code>vignettes/ms-r-python-examples.Rmd</code></a></small>
       <div class="hidden name"><code>ms-r-python-examples.Rmd</code></div>
@@ -306,7 +306,7 @@
 <span class="no">data</span> <span class="kw">&lt;-</span> <span class="kw pkg">DALEX</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/DALEX/man/titanic.html">titanic_imputed</a></span>
 
 <span class="co"># init h2o</span>
-<span class="kw pkg">h2o</span><span class="kw ns">::</span><span class="fu">h2o.init</span>()
+<span class="fu">h2o.init</span>()
 
 <span class="co"># split the data</span>
 <span class="no">h2o_split</span> <span class="kw">&lt;-</span> <span class="fu">h2o.splitFrame</span>(<span class="fu">as.h2o</span>(<span class="no">data</span>))
@@ -340,7 +340,7 @@
             <span class="kw">B</span> <span class="kw">=</span> <span class="fl">5</span>)
 
 <span class="co"># shutdown h2o</span>
-<span class="kw pkg">h2o</span><span class="kw ns">::</span><span class="fu">h2o.shutdown</span>(<span class="kw">prompt</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
+<span class="fu">h2o.shutdown</span>(<span class="kw">prompt</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
 </div>
 </div>
 <div id="python" class="section level2">
