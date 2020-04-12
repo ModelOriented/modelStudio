@@ -19,10 +19,10 @@
 #' @param eda Compute EDA plots. Default is \code{TRUE}.
 #' @param show_info Verbose progress on the console. Default is \code{TRUE}.
 #' @param parallel Speed up the computation using \code{parallelMap::parallelMap()}.
-#' See \href{https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#parallel-computation}{\bold{vignette}}.
+#' See \href{https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html#parallel-computation}{\bold{vignette}}.
 #' This might interfere with showing progress using \code{show_info}.
 #' @param options Customize \code{modelStudio}. See \code{\link{modelStudioOptions}} and
-#' \href{https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#plot-options}{\bold{vignette}}.
+#' \href{https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html#plot-options}{\bold{vignette}}.
 #' @param viewer Default is \code{external} to display in an external RStudio window.
 #' Use \code{browser} to display in an external browser or
 #' \code{internal} to use the RStudio internal viewer pane for output.
@@ -46,7 +46,7 @@
 #'
 #' @seealso
 #' Vignettes: \href{https://modeloriented.github.io/modelStudio/articles/ms-r-python-examples.html}{\bold{modelStudio - R & Python examples}}
-#' and \href{(https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html}{\bold{modelStudio - perks and features}}
+#' and \href{https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html}{\bold{modelStudio - perks and features}}
 #'
 #' @examples
 #' library("DALEX")

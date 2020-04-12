@@ -48,11 +48,11 @@ modelStudio(explainer, ...)
 \item{show_info}{Verbose progress on the console. Default is \code{TRUE}.}
 
 \item{parallel}{Speed up the computation using \code{parallelMap::parallelMap()}.
-See \href{https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#parallel-computation}{\bold{vignette}}.
+See \href{https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html#parallel-computation}{\bold{vignette}}.
 This might interfere with showing progress using \code{show_info}.}
 
 \item{options}{Customize \code{modelStudio}. See \code{\link{modelStudioOptions}} and
-\href{https://modeloriented.github.io/modelStudio/articles/vignette_modelStudio.html#plot-options}{\bold{vignette}}.}
+\href{https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html#plot-options}{\bold{vignette}}.}
 
 \item{viewer}{Default is \code{external} to display in an external RStudio window.
 Use \code{browser} to display in an external browser or
@@ -161,5 +161,5 @@ are implemented in \href{https://modeloriented.github.io/ingredients/}{\bold{ing
 }
 \seealso{
 Vignettes: \href{https://modeloriented.github.io/modelStudio/articles/ms-r-python-examples.html}{\bold{modelStudio - R & Python examples}}
-and \href{(https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html}{\bold{modelStudio - perks and features}}
+and \href{https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html}{\bold{modelStudio - perks and features}}
 }

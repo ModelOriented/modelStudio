@@ -268,9 +268,9 @@ or with [`r2d3::save_d3_html()`](https://rstudio.github.io/r2d3/articles/publish
 
   - Vignette: [modelStudio - perks and features](https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html)  
 
-  - Conference poster: [MLinPL2019](misc/MLinPL2019_modelStudio_poster.pdf)
+  - Conference poster: [MLinPL2019](https://github.com/ModelOriented/modelStudio/blob/master/misc/MLinPL2019_modelStudio_poster.pdf)
 
-  - Changelog: [News](NEWS.md)
+  - Changelog: [News](https://modeloriented.github.io/modelStudio/news/index.html)
 
   <!--  - [Article about modelStudio](https://joss.theoj.org/papers/10.21105/joss.01798) -->
 
