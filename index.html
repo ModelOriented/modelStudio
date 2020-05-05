@@ -59,7 +59,7 @@
         <div class="info">
           <span class="partof">part of the <a href="https://github.com/ModelOriented/DrWhy">DrWhy.AI</a>
            developed by the <a href="https://mi2.mini.pw.edu.pl/">MI^2 DataLab</a> </span>
-          <span class="version version-default">1.0.2</span>
+          <span class="version version-default">1.0.2.9000</span>
         </div>
       </div>
     </div>
@@ -255,74 +255,75 @@
 <a href="#scikit-learn-dashboard" class="anchor"></a>scikit-learn <a href="https://modeloriented.github.io/modelStudio/scikitlearn.html">dashboard</a>
 </h3>
 <p>The <code><a href="reference/modelStudio.html">modelStudio()</a></code> function uses <code>dalex</code> explainers created with <code>dalex.Explainer()</code>.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="ex">pip3</span> install dalex --force</span></code></pre></div>
+<pre class="console"><code>pip install dalex</code></pre>
 <p>Use <code>pickle</code> Python module and <code>reticulate</code> R package to easily make a studio for a model.</p>
-<p><code>{r eval = FALSE} # package for pickle load install.packages("reticulate")</code></p>
+<div class="sourceCode" id="cb7"><pre class="r"><span class="co"># package for pickle load</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"reticulate"</span>)</pre></div>
 <p>In this example we will fit a <code>Pipeline MLPClassifier</code> model on <code>titanic</code> data.</p>
 <p>First, use <code>dalex</code> in Python:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># load packages and data</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="im">import</span> dalex <span class="im">as</span> dx</span>
-<span id="cb7-3"><a href="#cb7-3"></a></span>
-<span id="cb7-4"><a href="#cb7-4"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
-<span id="cb7-5"><a href="#cb7-5"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
-<span id="cb7-6"><a href="#cb7-6"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler, OneHotEncoder</span>
-<span id="cb7-7"><a href="#cb7-7"></a><span class="im">from</span> sklearn.impute <span class="im">import</span> SimpleImputer</span>
-<span id="cb7-8"><a href="#cb7-8"></a><span class="im">from</span> sklearn.compose <span class="im">import</span> ColumnTransformer</span>
-<span id="cb7-9"><a href="#cb7-9"></a><span class="im">from</span> sklearn.neural_network <span class="im">import</span> MLPClassifier</span>
-<span id="cb7-10"><a href="#cb7-10"></a></span>
-<span id="cb7-11"><a href="#cb7-11"></a>data <span class="op">=</span> dx.datasets.load_titanic()</span>
-<span id="cb7-12"><a href="#cb7-12"></a>X <span class="op">=</span> data.drop(columns<span class="op">=</span><span class="st">'survived'</span>)</span>
-<span id="cb7-13"><a href="#cb7-13"></a>y <span class="op">=</span> data.survived</span>
-<span id="cb7-14"><a href="#cb7-14"></a></span>
-<span id="cb7-15"><a href="#cb7-15"></a><span class="co"># split the data</span></span>
-<span id="cb7-16"><a href="#cb7-16"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y)</span>
-<span id="cb7-17"><a href="#cb7-17"></a></span>
-<span id="cb7-18"><a href="#cb7-18"></a><span class="co"># fit a pipeline model</span></span>
-<span id="cb7-19"><a href="#cb7-19"></a>numerical_features <span class="op">=</span> [<span class="st">'age'</span>, <span class="st">'fare'</span>, <span class="st">'sibsp'</span>, <span class="st">'parch'</span>]</span>
-<span id="cb7-20"><a href="#cb7-20"></a>numerical_transformer <span class="op">=</span> Pipeline(</span>
-<span id="cb7-21"><a href="#cb7-21"></a>  steps<span class="op">=</span>[</span>
-<span id="cb7-22"><a href="#cb7-22"></a>    (<span class="st">'imputer'</span>, SimpleImputer(strategy<span class="op">=</span><span class="st">'median'</span>)),</span>
-<span id="cb7-23"><a href="#cb7-23"></a>    (<span class="st">'scaler'</span>, StandardScaler())</span>
-<span id="cb7-24"><a href="#cb7-24"></a>  ]</span>
-<span id="cb7-25"><a href="#cb7-25"></a>)</span>
-<span id="cb7-26"><a href="#cb7-26"></a>categorical_features <span class="op">=</span> [<span class="st">'gender'</span>, <span class="st">'class'</span>, <span class="st">'embarked'</span>]</span>
-<span id="cb7-27"><a href="#cb7-27"></a>categorical_transformer <span class="op">=</span> Pipeline(</span>
-<span id="cb7-28"><a href="#cb7-28"></a>  steps<span class="op">=</span>[</span>
-<span id="cb7-29"><a href="#cb7-29"></a>    (<span class="st">'imputer'</span>, SimpleImputer(strategy<span class="op">=</span><span class="st">'constant'</span>, fill_value<span class="op">=</span><span class="st">'missing'</span>)),</span>
-<span id="cb7-30"><a href="#cb7-30"></a>    (<span class="st">'onehot'</span>, OneHotEncoder(handle_unknown<span class="op">=</span><span class="st">'ignore'</span>))</span>
-<span id="cb7-31"><a href="#cb7-31"></a>  ]</span>
-<span id="cb7-32"><a href="#cb7-32"></a>)</span>
-<span id="cb7-33"><a href="#cb7-33"></a></span>
-<span id="cb7-34"><a href="#cb7-34"></a>preprocessor <span class="op">=</span> ColumnTransformer(</span>
-<span id="cb7-35"><a href="#cb7-35"></a>  transformers<span class="op">=</span>[</span>
-<span id="cb7-36"><a href="#cb7-36"></a>    (<span class="st">'num'</span>, numerical_transformer, numerical_features),</span>
-<span id="cb7-37"><a href="#cb7-37"></a>    (<span class="st">'cat'</span>, categorical_transformer, categorical_features)</span>
-<span id="cb7-38"><a href="#cb7-38"></a>  ]</span>
-<span id="cb7-39"><a href="#cb7-39"></a>)</span>
-<span id="cb7-40"><a href="#cb7-40"></a></span>
-<span id="cb7-41"><a href="#cb7-41"></a>classifier <span class="op">=</span> MLPClassifier(hidden_layer_sizes<span class="op">=</span>(<span class="dv">150</span>,<span class="dv">100</span>,<span class="dv">50</span>), max_iter<span class="op">=</span><span class="dv">500</span>)</span>
-<span id="cb7-42"><a href="#cb7-42"></a></span>
-<span id="cb7-43"><a href="#cb7-43"></a>model <span class="op">=</span> Pipeline(</span>
-<span id="cb7-44"><a href="#cb7-44"></a>  steps<span class="op">=</span>[</span>
-<span id="cb7-45"><a href="#cb7-45"></a>    (<span class="st">'preprocessor'</span>, preprocessor),</span>
-<span id="cb7-46"><a href="#cb7-46"></a>    (<span class="st">'classifier'</span>, classifier)</span>
-<span id="cb7-47"><a href="#cb7-47"></a>  ]</span>
-<span id="cb7-48"><a href="#cb7-48"></a>)</span>
-<span id="cb7-49"><a href="#cb7-49"></a>model.fit(X_train, y_train)</span>
-<span id="cb7-50"><a href="#cb7-50"></a></span>
-<span id="cb7-51"><a href="#cb7-51"></a><span class="co"># create an explainer for the model</span></span>
-<span id="cb7-52"><a href="#cb7-52"></a>explainer <span class="op">=</span> dx.Explainer(model, data<span class="op">=</span>X_test, y<span class="op">=</span>y_test, label<span class="op">=</span><span class="st">'scikit-learn'</span>)</span>
-<span id="cb7-53"><a href="#cb7-53"></a></span>
-<span id="cb7-54"><a href="#cb7-54"></a><span class="co">#! remove residual_function before dump !</span></span>
-<span id="cb7-55"><a href="#cb7-55"></a>explainer.residual_function <span class="op">=</span> <span class="va">None</span></span>
-<span id="cb7-56"><a href="#cb7-56"></a></span>
-<span id="cb7-57"><a href="#cb7-57"></a><span class="co"># pack the explainer into a pickle file</span></span>
-<span id="cb7-58"><a href="#cb7-58"></a><span class="im">import</span> pickle</span>
-<span id="cb7-59"><a href="#cb7-59"></a>pickle_out <span class="op">=</span> <span class="bu">open</span>(<span class="st">'explainer_scikitlearn.pickle'</span>, <span class="st">'wb'</span>)</span>
-<span id="cb7-60"><a href="#cb7-60"></a>pickle.dump(explainer, pickle_out)</span>
-<span id="cb7-61"><a href="#cb7-61"></a>pickle_out.close()</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># load packages and data</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="im">import</span> dalex <span class="im">as</span> dx</span>
+<span id="cb8-3"><a href="#cb8-3"></a></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler, OneHotEncoder</span>
+<span id="cb8-7"><a href="#cb8-7"></a><span class="im">from</span> sklearn.impute <span class="im">import</span> SimpleImputer</span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="im">from</span> sklearn.compose <span class="im">import</span> ColumnTransformer</span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="im">from</span> sklearn.neural_network <span class="im">import</span> MLPClassifier</span>
+<span id="cb8-10"><a href="#cb8-10"></a></span>
+<span id="cb8-11"><a href="#cb8-11"></a>data <span class="op">=</span> dx.datasets.load_titanic()</span>
+<span id="cb8-12"><a href="#cb8-12"></a>X <span class="op">=</span> data.drop(columns<span class="op">=</span><span class="st">'survived'</span>)</span>
+<span id="cb8-13"><a href="#cb8-13"></a>y <span class="op">=</span> data.survived</span>
+<span id="cb8-14"><a href="#cb8-14"></a></span>
+<span id="cb8-15"><a href="#cb8-15"></a><span class="co"># split the data</span></span>
+<span id="cb8-16"><a href="#cb8-16"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y)</span>
+<span id="cb8-17"><a href="#cb8-17"></a></span>
+<span id="cb8-18"><a href="#cb8-18"></a><span class="co"># fit a pipeline model</span></span>
+<span id="cb8-19"><a href="#cb8-19"></a>numerical_features <span class="op">=</span> [<span class="st">'age'</span>, <span class="st">'fare'</span>, <span class="st">'sibsp'</span>, <span class="st">'parch'</span>]</span>
+<span id="cb8-20"><a href="#cb8-20"></a>numerical_transformer <span class="op">=</span> Pipeline(</span>
+<span id="cb8-21"><a href="#cb8-21"></a>  steps<span class="op">=</span>[</span>
+<span id="cb8-22"><a href="#cb8-22"></a>    (<span class="st">'imputer'</span>, SimpleImputer(strategy<span class="op">=</span><span class="st">'median'</span>)),</span>
+<span id="cb8-23"><a href="#cb8-23"></a>    (<span class="st">'scaler'</span>, StandardScaler())</span>
+<span id="cb8-24"><a href="#cb8-24"></a>  ]</span>
+<span id="cb8-25"><a href="#cb8-25"></a>)</span>
+<span id="cb8-26"><a href="#cb8-26"></a>categorical_features <span class="op">=</span> [<span class="st">'gender'</span>, <span class="st">'class'</span>, <span class="st">'embarked'</span>]</span>
+<span id="cb8-27"><a href="#cb8-27"></a>categorical_transformer <span class="op">=</span> Pipeline(</span>
+<span id="cb8-28"><a href="#cb8-28"></a>  steps<span class="op">=</span>[</span>
+<span id="cb8-29"><a href="#cb8-29"></a>    (<span class="st">'imputer'</span>, SimpleImputer(strategy<span class="op">=</span><span class="st">'constant'</span>, fill_value<span class="op">=</span><span class="st">'missing'</span>)),</span>
+<span id="cb8-30"><a href="#cb8-30"></a>    (<span class="st">'onehot'</span>, OneHotEncoder(handle_unknown<span class="op">=</span><span class="st">'ignore'</span>))</span>
+<span id="cb8-31"><a href="#cb8-31"></a>  ]</span>
+<span id="cb8-32"><a href="#cb8-32"></a>)</span>
+<span id="cb8-33"><a href="#cb8-33"></a></span>
+<span id="cb8-34"><a href="#cb8-34"></a>preprocessor <span class="op">=</span> ColumnTransformer(</span>
+<span id="cb8-35"><a href="#cb8-35"></a>  transformers<span class="op">=</span>[</span>
+<span id="cb8-36"><a href="#cb8-36"></a>    (<span class="st">'num'</span>, numerical_transformer, numerical_features),</span>
+<span id="cb8-37"><a href="#cb8-37"></a>    (<span class="st">'cat'</span>, categorical_transformer, categorical_features)</span>
+<span id="cb8-38"><a href="#cb8-38"></a>  ]</span>
+<span id="cb8-39"><a href="#cb8-39"></a>)</span>
+<span id="cb8-40"><a href="#cb8-40"></a></span>
+<span id="cb8-41"><a href="#cb8-41"></a>classifier <span class="op">=</span> MLPClassifier(hidden_layer_sizes<span class="op">=</span>(<span class="dv">150</span>,<span class="dv">100</span>,<span class="dv">50</span>), max_iter<span class="op">=</span><span class="dv">500</span>)</span>
+<span id="cb8-42"><a href="#cb8-42"></a></span>
+<span id="cb8-43"><a href="#cb8-43"></a>model <span class="op">=</span> Pipeline(</span>
+<span id="cb8-44"><a href="#cb8-44"></a>  steps<span class="op">=</span>[</span>
+<span id="cb8-45"><a href="#cb8-45"></a>    (<span class="st">'preprocessor'</span>, preprocessor),</span>
+<span id="cb8-46"><a href="#cb8-46"></a>    (<span class="st">'classifier'</span>, classifier)</span>
+<span id="cb8-47"><a href="#cb8-47"></a>  ]</span>
+<span id="cb8-48"><a href="#cb8-48"></a>)</span>
+<span id="cb8-49"><a href="#cb8-49"></a>model.fit(X_train, y_train)</span>
+<span id="cb8-50"><a href="#cb8-50"></a></span>
+<span id="cb8-51"><a href="#cb8-51"></a><span class="co"># create an explainer for the model</span></span>
+<span id="cb8-52"><a href="#cb8-52"></a>explainer <span class="op">=</span> dx.Explainer(model, data<span class="op">=</span>X_test, y<span class="op">=</span>y_test, label<span class="op">=</span><span class="st">'scikit-learn'</span>)</span>
+<span id="cb8-53"><a href="#cb8-53"></a></span>
+<span id="cb8-54"><a href="#cb8-54"></a><span class="co">#! remove residual_function before dump !</span></span>
+<span id="cb8-55"><a href="#cb8-55"></a>explainer.residual_function <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb8-56"><a href="#cb8-56"></a></span>
+<span id="cb8-57"><a href="#cb8-57"></a><span class="co"># pack the explainer into a pickle file</span></span>
+<span id="cb8-58"><a href="#cb8-58"></a><span class="im">import</span> pickle</span>
+<span id="cb8-59"><a href="#cb8-59"></a>pickle_out <span class="op">=</span> <span class="bu">open</span>(<span class="st">'explainer_scikitlearn.pickle'</span>, <span class="st">'wb'</span>)</span>
+<span id="cb8-60"><a href="#cb8-60"></a>pickle.dump(explainer, pickle_out)</span>
+<span id="cb8-61"><a href="#cb8-61"></a>pickle_out.close()</span></code></pre></div>
 <p>Then, use <code>modelStudio</code> in R:</p>
-<div class="sourceCode" id="cb8"><pre class="r"><span class="co"># load the explainer from the pickle file</span>
+<div class="sourceCode" id="cb9"><pre class="r"><span class="co"># load the explainer from the pickle file</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">reticulate</span>)
 <span class="no">explainer</span> <span class="kw">&lt;-</span> <span class="fu">py_load_object</span>(<span class="st">"explainer_scikitlearn.pickle"</span>, <span class="kw">pickle</span> <span class="kw">=</span> <span class="st">"pickle"</span>)
 
