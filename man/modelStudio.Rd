@@ -63,8 +63,8 @@ An object of the \code{r2d3} class.
 }
 \description{
 This function computes various (instance and dataset level) model explanations and produces an interactive,
-customizable dashboard made with D3.js. It consists of multiple panels for plots with their short descriptions.
-Easily save and share the dashboard with others. Tools for model exploration unite with tools for EDA
+customisable dashboard. It consists of multiple panels for plots with their short descriptions.
+Easily save and share the HTML dashboard with others. Tools for model exploration unite with tools for EDA
 (Exploratory Data Analysis) to give a broad overview of the model behavior.
 
 Theoretical introduction to the plots: \href{https://pbiecek.github.io/ema/}{Explanatory Model Analysis: Explore, Explain and Examine Predictive Models}

@@ -12,7 +12,7 @@ Description: Automate the explanatory analysis of machine learning predictive mo
     a serverless HTML site with only one line of code. This tool is model agnostic,
     therefore compatible with most of the black box predictive models and frameworks.
     The main function computes various (instance and dataset level) model explanations
-    and produces an interactive, customizable dashboard made with 'D3.js'. It consists
+    and produces an interactive, customisable dashboard. It consists
     of multiple panels for plots with their short descriptions. Easily save and share 
     the dashboard with others. Tools for model exploration unite with tools for EDA 
     (Exploratory Data Analysis) to give a broad overview of the model behavior.

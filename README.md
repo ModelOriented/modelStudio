@@ -10,7 +10,7 @@
 
 The `modelStudio` package **automates the Explanatory Analysis of Machine Learning predictive models**. Generate advanced interactive and animated model explanations in the form of a **serverless HTML site** with only one line of code. This tool is model agnostic, therefore compatible with most of the black box predictive models and frameworks (e.g.&nbsp;`mlr/mlr3`, `xgboost`, `caret`, `h2o`, `scikit-learn`, `lightGBM`, `keras/tensorflow`).
 
-The main `modelStudio()` function computes various (instance and dataset level) model explanations and produces an&nbsp;**interactive,&nbsp;customisable dashboard made with D3.js**. It consists of multiple panels for plots with their short descriptions. Easily&nbsp;**save&nbsp;and&nbsp;share** the dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.
+The main `modelStudio()` function computes various (instance and dataset level) model explanations and produces an&nbsp;**interactive,&nbsp;customisable dashboard**. It consists of multiple panels for plots with their short descriptions. Easily&nbsp;**save&nbsp;and&nbsp;share** the dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.
 
 <!--- [explain FIFA19](https://pbiecek.github.io/explainFIFA19/) &emsp; --->
 <!--- [explain Lung Cancer](https://github.com/hbaniecki/transparent_xai/) &emsp; --->
@@ -93,9 +93,7 @@ train$survived <- as.factor(train$survived)
 
 # fit a model
 task <- makeClassifTask(id = "titanic", data = train, target = "survived")
-
 learner <- makeLearner("classif.ranger", predict.type = "prob")
-
 model <- train(learner, task)
 
 # create an explainer for the model
@@ -135,9 +133,7 @@ test_matrix <- model.matrix(survived ~.-1, test)
 
 # fit a model
 xgb_matrix <- xgb.DMatrix(train_matrix, label = train$survived)
-
 params <- list(max_depth = 7, objective = "binary:logistic", eval_metric = "auc")
-
 model <- xgb.train(params, xgb_matrix, nrounds = 500)
 
 # create an explainer for the model
@@ -262,6 +258,8 @@ or with [`r2d3::save_d3_html()`](https://rstudio.github.io/r2d3/articles/publish
 
 ## More Resources
 
+  - Citation: a preprint of [The Grammar of Interactive Explanatory Model Analysis](https://arxiv.org/abs/2005.00497)
+
   - Theoretical introduction to the plots: [Explanatory Model Analysis. Explore, Explain and Examine Predictive Models.](https://pbiecek.github.io/ema)
 
   - Vignette: [modelStudio - R & Python examples](https://modeloriented.github.io/modelStudio/articles/ms-r-python-examples.html)  
@@ -270,7 +268,7 @@ or with [`r2d3::save_d3_html()`](https://rstudio.github.io/r2d3/articles/publish
 
   - Conference poster: [MLinPL2019](https://github.com/ModelOriented/modelStudio/blob/master/misc/MLinPL2019_modelStudio_poster.pdf)
 
-  - Changelog: [News](https://modeloriented.github.io/modelStudio/news/index.html)
+  - Changelog: [NEWS](https://modeloriented.github.io/modelStudio/news/index.html)
 
   <!--  - [Article about modelStudio](https://joss.theoj.org/papers/10.21105/joss.01798) -->
 
