@@ -183,10 +183,10 @@
 </tr>
 </tbody>
 </table>
-<p>Prepare <code>HR_test</code> data and a <code>randomForest</code> model for the explainer:</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="co"># fit a randomForest model</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"randomForest"</span>)
-<span class="no">model</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/randomForest/man/randomForest.html">randomForest</a></span>(<span class="no">fired</span> ~<span class="no">.</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">train</span>)
+<p>Prepare <code>HR_test</code> data and a <code>ranger</code> model for the explainer:</p>
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="co"># fit a ranger model</span>
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"ranger"</span>)
+<span class="no">model</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ranger/man/ranger.html">ranger</a></span>(<span class="no">fired</span> ~<span class="no">.</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">train</span>)
 
 <span class="co"># prepare validation dataset</span>
 <span class="no">test</span> <span class="kw">&lt;-</span> <span class="kw pkg">DALEX</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/DALEX/man/HR.html">HR_test</a></span>[<span class="fl">1</span>:<span class="fl">1000</span>,]
@@ -323,7 +323,7 @@
 <span class="co"># fit a model</span>
 <span class="no">task</span> <span class="kw">&lt;-</span> <span class="fu">makeRegrTask</span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"task"</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">train</span>, <span class="kw">target</span> <span class="kw">=</span> <span class="st">"fired"</span>)
 
-<span class="no">learner</span> <span class="kw">&lt;-</span> <span class="fu">makeLearner</span>(<span class="st">"regr.randomForest"</span>, <span class="kw">par.vals</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">ntree</span> <span class="kw">=</span> <span class="fl">300</span>), <span class="kw">predict.type</span> <span class="kw">=</span> <span class="st">"response"</span>)
+<span class="no">learner</span> <span class="kw">&lt;-</span> <span class="fu">makeLearner</span>(<span class="st">"regr.ranger"</span>, <span class="kw">predict.type</span> <span class="kw">=</span> <span class="st">"response"</span>)
 
 <span class="no">model</span> <span class="kw">&lt;-</span> <span class="fu">train</span>(<span class="no">learner</span>, <span class="no">task</span>)
 

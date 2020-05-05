@@ -177,8 +177,8 @@ Easily save and share the dashboard with others. Tools for model exploration uni
   <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>2</span>),
   <span class='kw'>time</span> <span class='kw'>=</span> <span class='fl'>500</span>,
   <span class='kw'>max_features</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>400</span>,
-  <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>15</span>,
+  <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>300</span>,
+  <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>10</span>,
   <span class='kw'>eda</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
@@ -220,11 +220,11 @@ Easily save and share the dashboard with others. Tools for model exploration uni
     </tr>
     <tr>
       <th>N</th>
-      <td><p>Number of observations used for calculation of partial dependence profiles. Default is <code>400</code>.</p></td>
+      <td><p>Number of observations used for calculation of partial dependence profiles. Default is <code>300</code>.</p></td>
     </tr>
     <tr>
       <th>B</th>
-      <td><p>Number of random paths used for calculation of Shapley values. Default is <code>15</code>.</p></td>
+      <td><p>Number of random paths used for calculation of Shapley values. Default is <code>10</code>.</p></td>
     </tr>
     <tr>
       <th>eda</th>
@@ -293,14 +293,14 @@ and <a href='https://modeloriented.github.io/modelStudio/articles/ms-perks-featu
 <span class='co'># make a studio for the model</span>
 <span class='fu'>modelStudio</span>(<span class='no'>explainer_titanic</span>,
             <span class='no'>new_observations</span>,
-            <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>10</span>) <span class='co'># faster example</span>
+            <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>200</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>5</span>) <span class='co'># faster example</span>
 
 <span class='co'># \donttest{</span>
 
 <span class='co'>#:# ex2 regression on 'apartments' dataset</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"randomForest"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"ranger"</span>)
 
-<span class='no'>model_apartments</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/randomForest/man/randomForest.html'>randomForest</a></span>(<span class='no'>m2.price</span> ~<span class='no'>.</span> ,<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>)
+<span class='no'>model_apartments</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/ranger/man/ranger.html'>ranger</a></span>(<span class='no'>m2.price</span> ~<span class='no'>.</span> ,<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>)
 
 <span class='no'>explainer_apartments</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='no'>model_apartments</span>,
                                 <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>,
