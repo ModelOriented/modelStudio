@@ -14,8 +14,8 @@
 #' @param facet_dim Dimensions of the grid. Default is \code{c(2,2)}.
 #' @param time Time in ms. Set animation length. Default is \code{500}.
 #' @param max_features Maximum number of features to be included in Break Down and Shapley Values plots. Default is \code{10}.
-#' @param N Number of observations used for calculation of partial dependence profiles. Default is \code{400}.
-#' @param B Number of random paths used for calculation of Shapley values. Default is \code{15}.
+#' @param N Number of observations used for calculation of partial dependence profiles. Default is \code{300}.
+#' @param B Number of random paths used for calculation of Shapley values. Default is \code{10}.
 #' @param eda Compute EDA plots. Default is \code{TRUE}.
 #' @param show_info Verbose progress on the console. Default is \code{TRUE}.
 #' @param parallel Speed up the computation using \code{parallelMap::parallelMap()}.
@@ -30,7 +30,7 @@
 #'
 #' @return An object of the \code{r2d3} class.
 #'
-#' @importFrom utils head tail setTxtProgressBar txtProgressBar packageVersion
+#' @importFrom utils head tail packageVersion
 #' @importFrom stats aggregate predict quantile IQR
 #' @importFrom grDevices nclass.Sturges
 #' @import progress
@@ -70,7 +70,7 @@
 #' # make a studio for the model
 #' modelStudio(explainer_titanic,
 #'             new_observations,
-#'             N = 100, B = 10) # faster example
+#'             N = 200, B = 5) # faster example
 #'
 #' \donttest{
 #'
@@ -144,8 +144,8 @@ modelStudio.explainer <- function(explainer,
                                   facet_dim = c(2,2),
                                   time = 500,
                                   max_features = 10,
-                                  N = 400,
-                                  B = 15,
+                                  N = 300,
+                                  B = 10,
                                   eda = TRUE,
                                   show_info = TRUE,
                                   parallel = FALSE,
@@ -207,7 +207,7 @@ modelStudio.explainer <- function(explainer,
   ## count only once
   fi <- calculate(
     ingredients::feature_importance(
-        model, data, y, predict_function, variables = variable_names, B = B),
+        model, data, y, predict_function, variables = variable_names, B = B, N = 10*N),
     "ingredients::feature_importance", show_info, pb, 4*B)
 
   which_numerical <- which_variables_are_numeric(data)

@@ -1,6 +1,6 @@
 Package: modelStudio
 Title: Interactive Studio for Explanatory Model Analysis
-Version: 1.0.2
+Version: 1.0.2.9000
 Authors@R:
     c(person("Hubert", "Baniecki", role = c("aut", "cre"),
              email = "hbaniecki@gmail.com",
@@ -36,8 +36,7 @@ Suggests:
     knitr,
     rmarkdown,
     testthat,
-    spelling,
-    covr
+    spelling
 VignetteBuilder: knitr
 URL: https://modelstudio.drwhy.ai, https://github.com/ModelOriented/modelStudio
 BugReports: https://github.com/ModelOriented/modelStudio/issues

@@ -160,13 +160,13 @@ modelStudio(explainer,
 
 The `modelStudio()` function uses `dalex` explainers created with `dalex.Explainer()`.
 
-```bash
-pip3 install dalex --force
+```console
+pip install dalex
 ```
 
 Use `pickle` Python module and `reticulate` R package to easily make a studio for a model.
 
-```{r eval = FALSE}
+```r
 # package for pickle load
 install.packages("reticulate")
 ```
