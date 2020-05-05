@@ -14,8 +14,8 @@ modelStudio(explainer, ...)
   facet_dim = c(2, 2),
   time = 500,
   max_features = 10,
-  N = 400,
-  B = 15,
+  N = 300,
+  B = 10,
   eda = TRUE,
   show_info = TRUE,
   parallel = FALSE,
@@ -39,9 +39,9 @@ modelStudio(explainer, ...)
 
 \item{max_features}{Maximum number of features to be included in Break Down and Shapley Values plots. Default is \code{10}.}
 
-\item{N}{Number of observations used for calculation of partial dependence profiles. Default is \code{400}.}
+\item{N}{Number of observations used for calculation of partial dependence profiles. Default is \code{300}.}
 
-\item{B}{Number of random paths used for calculation of Shapley values. Default is \code{15}.}
+\item{B}{Number of random paths used for calculation of Shapley values. Default is \code{10}.}
 
 \item{eda}{Compute EDA plots. Default is \code{TRUE}.}
 
@@ -91,14 +91,14 @@ rownames(new_observations) <- c("Lucas","James")
 # make a studio for the model
 modelStudio(explainer_titanic,
             new_observations,
-            N = 100, B = 10) # faster example
+            N = 200, B = 5) # faster example
 
 \donttest{
 
 #:# ex2 regression on 'apartments' dataset
-library("randomForest")
+library("ranger")
 
-model_apartments <- randomForest(m2.price ~. ,data = apartments)
+model_apartments <- ranger(m2.price ~. ,data = apartments)
 
 explainer_apartments <- explain(model_apartments,
                                 data = apartments,

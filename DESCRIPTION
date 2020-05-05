@@ -31,7 +31,7 @@ Imports:
 Suggests:
     DALEX (>= 1.0),
     parallelMap,
-    randomForest,
+    ranger,
     xgboost,
     knitr,
     rmarkdown,

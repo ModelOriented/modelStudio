@@ -65,9 +65,9 @@ explain_model_small <- DALEX::explain(model_small,
                                verbose = v)
 
 
-### randomForest + apartments
+### ranger + apartments
 
-model_rf <- randomForest::randomForest(m2.price ~. , data = apartments)
+model_rf <- ranger::ranger(m2.price ~. , data = apartments)
 explain_rf <- DALEX::explain(model_rf,
                       data = apartments,
                       y = apartments$m2.price,

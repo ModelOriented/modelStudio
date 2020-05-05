@@ -75,9 +75,9 @@
 #' \donttest{
 #'
 #' #:# ex2 regression on 'apartments' dataset
-#' library("randomForest")
+#' library("ranger")
 #'
-#' model_apartments <- randomForest(m2.price ~. ,data = apartments)
+#' model_apartments <- ranger(m2.price ~. ,data = apartments)
 #'
 #' explainer_apartments <- explain(model_apartments,
 #'                                 data = apartments,

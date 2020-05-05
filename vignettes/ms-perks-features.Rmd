@@ -34,12 +34,12 @@ head(train)
 knitr::kable(head(train), digits = 2, caption = "DALEX::HR dataset")
 ```
 
-Prepare `HR_test` data and a `randomForest` model for the explainer:
+Prepare `HR_test` data and a `ranger` model for the explainer:
 
 ```{r results="hide", eval = FALSE}
-# fit a randomForest model
-library("randomForest")
-model <- randomForest(fired ~., data = train)
+# fit a ranger model
+library("ranger")
+model <- ranger(fired ~., data = train)
 
 # prepare validation dataset
 test <- DALEX::HR_test[1:1000,]
@@ -220,7 +220,7 @@ library(mlr)
 # fit a model
 task <- makeRegrTask(id = "task", data = train, target = "fired")
 
-learner <- makeLearner("regr.randomForest", par.vals = list(ntree = 300), predict.type = "response")
+learner <- makeLearner("regr.ranger", predict.type = "response")
 
 model <- train(learner, task)
 

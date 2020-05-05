@@ -86,7 +86,7 @@ new_options <- modelStudioOptions(
 modelStudio(explainer_apartments,
             new_observation,
             options = new_options,
-            N = 100,  B = 10) # faster example
+            N = 200,  B = 5) # faster example
 
 }
 \references{

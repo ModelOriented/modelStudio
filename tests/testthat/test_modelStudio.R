@@ -116,7 +116,7 @@ testthat::test_that("README DEMO", {
   testthat::expect_is(ms_readme, "r2d3")
 })
 
-testthat::test_that("randomForest apartments", {
+testthat::test_that("ranger apartments", {
   testthat::expect_is(ms_rf_apartments, "r2d3")
 })
 
