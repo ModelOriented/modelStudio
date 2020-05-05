@@ -25,7 +25,7 @@
     a serverless HTML site with only one line of code. This tool is model agnostic,
     therefore compatible with most of the black box predictive models and frameworks.
     The main function computes various (instance and dataset level) model explanations
-    and produces an interactive, customizable dashboard made with D3.js. It consists
+    and produces an interactive, customisable dashboard. It consists
     of multiple panels for plots with their short descriptions. Easily save and share 
     the dashboard with others. Tools for model exploration unite with tools for EDA 
     (Exploratory Data Analysis) to give a broad overview of the model behavior.">
@@ -119,7 +119,7 @@
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
 <p>The <code>modelStudio</code> package <strong>automates the Explanatory Analysis of Machine Learning predictive models</strong>. Generate advanced interactive and animated model explanations in the form of a <strong>serverless HTML site</strong> with only one line of code. This tool is model agnostic, therefore compatible with most of the black box predictive models and frameworks (e.g. <code>mlr/mlr3</code>, <code>xgboost</code>, <code>caret</code>, <code>h2o</code>, <code>scikit-learn</code>, <code>lightGBM</code>, <code>keras/tensorflow</code>).</p>
-<p>The main <code><a href="reference/modelStudio.html">modelStudio()</a></code> function computes various (instance and dataset level) model explanations and produces an <strong>interactive, customisable dashboard made with D3.js</strong>. It consists of multiple panels for plots with their short descriptions. Easily <strong>save and share</strong> the dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.</p>
+<p>The main <code><a href="reference/modelStudio.html">modelStudio()</a></code> function computes various (instance and dataset level) model explanations and produces an <strong>interactive, customisable dashboard</strong>. It consists of multiple panels for plots with their short descriptions. Easily <strong>save and share</strong> the dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.</p>
 <!--- [explain FIFA19](https://pbiecek.github.io/explainFIFA19/) &emsp; --->
 <!--- [explain Lung Cancer](https://github.com/hbaniecki/transparent_xai/) &emsp; --->
 <p>            <a href="https://pbiecek.github.io/explainFIFA20/"><strong>explain FIFA20</strong></a>   <a href="http://modelstudio.drwhy.ai/articles/ms-r-python-examples.html"><strong>R &amp; Python examples</strong></a>   <a href="http://modelstudio.drwhy.ai/#more-resources"><strong>More Resources</strong></a>   <a href="https://github.com/ModelOriented/modelStudio/issues/54"><strong>FAQ &amp; Troubleshooting</strong></a></p>
@@ -189,9 +189,7 @@
 
 <span class="co"># fit a model</span>
 <span class="no">task</span> <span class="kw">&lt;-</span> <span class="fu">makeClassifTask</span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"titanic"</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">train</span>, <span class="kw">target</span> <span class="kw">=</span> <span class="st">"survived"</span>)
-
 <span class="no">learner</span> <span class="kw">&lt;-</span> <span class="fu">makeLearner</span>(<span class="st">"classif.ranger"</span>, <span class="kw">predict.type</span> <span class="kw">=</span> <span class="st">"prob"</span>)
-
 <span class="no">model</span> <span class="kw">&lt;-</span> <span class="fu">train</span>(<span class="no">learner</span>, <span class="no">task</span>)
 
 <span class="co"># create an explainer for the model</span>
@@ -230,9 +228,7 @@
 
 <span class="co"># fit a model</span>
 <span class="no">xgb_matrix</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xgboost/man/xgb.DMatrix.html">xgb.DMatrix</a></span>(<span class="no">train_matrix</span>, <span class="kw">label</span> <span class="kw">=</span> <span class="no">train</span>$<span class="no">survived</span>)
-
 <span class="no">params</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">max_depth</span> <span class="kw">=</span> <span class="fl">7</span>, <span class="kw">objective</span> <span class="kw">=</span> <span class="st">"binary:logistic"</span>, <span class="kw">eval_metric</span> <span class="kw">=</span> <span class="st">"auc"</span>)
-
 <span class="no">model</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xgboost/man/xgb.train.html">xgb.train</a></span>(<span class="no">params</span>, <span class="no">xgb_matrix</span>, <span class="kw">nrounds</span> <span class="kw">=</span> <span class="fl">500</span>)
 
 <span class="co"># create an explainer for the model</span>
@@ -343,11 +339,12 @@
 <h2 class="hasAnchor">
 <a href="#more-resources" class="anchor"></a>More Resources</h2>
 <ul>
+<li><p>Citation: a preprint of <a href="https://arxiv.org/abs/2005.00497">The Grammar of Interactive Explanatory Model Analysis</a></p></li>
 <li><p>Theoretical introduction to the plots: <a href="https://pbiecek.github.io/ema">Explanatory Model Analysis. Explore, Explain and Examine Predictive Models.</a></p></li>
 <li><p>Vignette: <a href="https://modeloriented.github.io/modelStudio/articles/ms-r-python-examples.html">modelStudio - R &amp; Python examples</a></p></li>
 <li><p>Vignette: <a href="https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html">modelStudio - perks and features</a></p></li>
 <li><p>Conference poster: <a href="https://github.com/ModelOriented/modelStudio/blob/master/misc/MLinPL2019_modelStudio_poster.pdf">MLinPL2019</a></p></li>
-<li><p>Changelog: <a href="https://modeloriented.github.io/modelStudio/news/index.html">News</a></p></li>
+<li><p>Changelog: <a href="https://modeloriented.github.io/modelStudio/news/index.html">NEWS</a></p></li>
 </ul>
 <p><!--  - [Article about modelStudio](https://joss.theoj.org/papers/10.21105/joss.01798) --></p>
 </div>
