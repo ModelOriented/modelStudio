@@ -73,7 +73,7 @@ install.packages("iBreakDown")
 
 ### mlr [dashboard](https://modeloriented.github.io/modelStudio/mlr.html)
 
-In this example we will fit a `ranger` model on `titanic` data.
+In this example we will make a studio for the `ranger` model on `apartments` data.
 
 ```r
 # load packages and data
@@ -81,25 +81,22 @@ library(mlr)
 library(DALEXtra)
 library(modelStudio)
 
-data <- DALEX::titanic_imputed
+data <- DALEX::apartments
 
 # split the data
 index <- sample(1:nrow(data), 0.7*nrow(data))
 train <- data[index,]
 test <- data[-index,]
 
-# mlr ClassifTask takes target as factor
-train$survived <- as.factor(train$survived)
-
 # fit a model
-task <- makeClassifTask(id = "titanic", data = train, target = "survived")
-learner <- makeLearner("classif.ranger", predict.type = "prob")
+task <- makeRegrTask(id = "apartments", data = train, target = "m2.price")
+learner <- makeLearner("regr.ranger", predict.type = "response")
 model <- train(learner, task)
 
 # create an explainer for the model
 explainer <- explain_mlr(model,
                          data = test,
-                         y = test$survived,
+                         y = test$m2.price,
                          label = "mlr")
 
 # pick observations
@@ -113,7 +110,7 @@ modelStudio(explainer,
 
 ### xgboost [dashboard](https://modeloriented.github.io/modelStudio/xgboost.html)
 
-In this example we will fit a `xgboost` model on `titanic` data.
+In this example we will make a studio for the `xgboost` model on `titanic` data.
 
 ```r
 # load packages and data
@@ -167,72 +164,35 @@ Use `pickle` Python module and `reticulate` R package to easily make a studio fo
 install.packages("reticulate")
 ```
 
-In this example we will fit a `Pipeline MLPClassifier` model on `titanic` data.
+In this example we will make a studio for the `Pipeline SVR` model on `fifa` data.
 
 First, use `dalex` in Python:
 
 ```python
 # load packages and data
 import dalex as dx
-
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
-from sklearn.impute import SimpleImputer
-from sklearn.compose import ColumnTransformer
-from sklearn.neural_network import MLPClassifier
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVR
+from numpy import log
 
-data = dx.datasets.load_titanic()
-X = data.drop(columns='survived')
-y = data.survived
+data = dx.datasets.load_fifa()
+X = data.drop(columns=['overall', 'potential', 'value_eur', 'wage_eur', 'nationality'], axis=1)
+y = log(data.value_eur)
 
 # split the data
 X_train, X_test, y_train, y_test = train_test_split(X, y)
 
 # fit a pipeline model
-numerical_features = ['age', 'fare', 'sibsp', 'parch']
-numerical_transformer = Pipeline(
-  steps=[
-    ('imputer', SimpleImputer(strategy='median')),
-    ('scaler', StandardScaler())
-  ]
-)
-categorical_features = ['gender', 'class', 'embarked']
-categorical_transformer = Pipeline(
-  steps=[
-    ('imputer', SimpleImputer(strategy='constant', fill_value='missing')),
-    ('onehot', OneHotEncoder(handle_unknown='ignore'))
-  ]
-)
-
-preprocessor = ColumnTransformer(
-  transformers=[
-    ('num', numerical_transformer, numerical_features),
-    ('cat', categorical_transformer, categorical_features)
-  ]
-)
-
-classifier = MLPClassifier(hidden_layer_sizes=(150,100,50), max_iter=500)
-
-model = Pipeline(
-  steps=[
-    ('preprocessor', preprocessor),
-    ('classifier', classifier)
-  ]
-)
+model = Pipeline([('scale', StandardScaler()), ('svm', SVR())])
 model.fit(X_train, y_train)
 
 # create an explainer for the model
 explainer = dx.Explainer(model, data=X_test, y=y_test, label='scikit-learn')
 
-#! remove residual_function before dump !
-explainer.residual_function = None
-
 # pack the explainer into a pickle file
-import pickle
-pickle_out = open('explainer_scikitlearn.pickle', 'wb')
-pickle.dump(explainer, pickle_out)
-pickle_out.close()
+explainer.dump(open('explainer_scikitlearn.pickle', 'wb'))
 ```
 
 Then, use `modelStudio` in R:
@@ -244,7 +204,8 @@ explainer <- py_load_object("explainer_scikitlearn.pickle", pickle = "pickle")
 
 # make a studio for the model
 library(modelStudio)
-modelStudio(explainer)
+modelStudio(explainer, B = 5,
+            options = modelStudioOptions(margin_left = 160))
 ```
 
 ## Save & Share

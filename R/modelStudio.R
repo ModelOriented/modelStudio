@@ -206,7 +206,7 @@ modelStudio.explainer <- function(explainer,
   if (show_info) {
     pb <- progress_bar$new(
       format = "  Calculating :what \n    Elapsed time: :elapsedfull ETA::eta", # :percent  [:bar]
-      total = (2*B + 8 + 1)*obs_count + (4*B + 3*B + B) + 1,
+      total = (3*B + 2 + 1)*obs_count + (B + 3*B + B) + 1,
       show_after = 0
     )
     pb$tick(0, tokens = list(what = "..."))
@@ -216,7 +216,7 @@ modelStudio.explainer <- function(explainer,
   fi <- calculate(
     ingredients::feature_importance(
         model, data, y, predict_function, variables = variable_names, B = B, N = 10*N),
-    "ingredients::feature_importance", show_info, pb, 4*B)
+    "ingredients::feature_importance", show_info, pb, B)
 
   which_numerical <- which_variables_are_numeric(data)
 
@@ -283,10 +283,10 @@ modelStudio.explainer <- function(explainer,
       bd <- calculate(
         iBreakDown::local_attributions(
           model, data, predict_function, new_observation, label = label),
-        paste0("iBreakDown::local_attributions (", i, ")"), show_info, pb, 8)
+        paste0("iBreakDown::local_attributions (", i, ")"), show_info, pb, 2)
       sv <- calculate(
         iBreakDown::shap(
-          model, data, predict_function, new_observation, label = label, B = B),
+          model, data, predict_function, new_observation, label = label, B = 3*B),
         paste0("iBreakDown::shap (", i, ")"), show_info, pb, 2*B)
       cp <- calculate(
         ingredients::ceteris_paribus(
@@ -321,10 +321,10 @@ modelStudio.explainer <- function(explainer,
       bd <- calculate(
         iBreakDown::local_attributions(
           model, data, predict_function, new_observation, label = label),
-        paste0("iBreakDown::local_attributions (", i, ")"), show_info, pb, 8)
+        paste0("iBreakDown::local_attributions (", i, ")"), show_info, pb, 2)
       sv <- calculate(
         iBreakDown::shap(
-          model, data, predict_function, new_observation, label = label, B = B),
+          model, data, predict_function, new_observation, label = label, B = 3*B),
         paste0("iBreakDown::shap (", i, ")"), show_info, pb, 2*B)
       cp <- calculate(
         ingredients::ceteris_paribus(

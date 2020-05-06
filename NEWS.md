@@ -1,6 +1,8 @@
 # modelStudio (development)
 * lower `B` default value from `15` to `10` and `N` default value from `400` to `300`
 * `feature_importance` is now calculated on `10*N` sampled rows from the data
+* use `ranger` instead of `randomForest` everywhere
+* remove unnecessary imports, update the documentation
 
 # modelStudio 1.0.2
 * fix `FD` plot on matrix-like data 
