@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Modify default options and pass them to modelStudio — ms_options • modelStudio</title>
+<title>Update the observations of a modelStudio object — ms_update_observations • modelStudio</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,11 +52,9 @@
 
 
 
-<meta property="og:title" content="Modify default options and pass them to modelStudio — ms_options" />
-<meta property="og:description" content="This function returns default options for modelStudio.
-It is possible to modify values of this list and pass it to the options
-parameter in the main function. WARNING: Editing default options may cause
-unintended behavior." />
+<meta property="og:title" content="Update the observations of a modelStudio object — ms_update_observations" />
+<meta property="og:description" content="This function calculates local explanations on new observations and adds them
+to a modelStudio object." />
 <meta property="og:image" content="/logo.png" />
 
 <meta name="robots" content="noindex" />
@@ -153,75 +151,83 @@ unintended behavior." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Modify default options and pass them to modelStudio</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ModelOriented/modelStudio/blob/master/R/ms_options.R'><code>R/ms_options.R</code></a></small>
-    <div class="hidden name"><code>ms_options.Rd</code></div>
+    <h1>Update the observations of a modelStudio object</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ModelOriented/modelStudio/blob/master/R/ms_update_observations.R'><code>R/ms_update_observations.R</code></a></small>
+    <div class="hidden name"><code>ms_update_observations.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function returns default options for <code><a href='modelStudio.html'>modelStudio</a></code>.
-It is possible to modify values of this list and pass it to the <code>options</code>
-parameter in the main function. <strong>WARNING: Editing default options may cause
-unintended behavior.</strong></p>
+    <p>This function calculates local explanations on new observations and adds them
+to a <code>modelStudio</code> object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ms_options</span>(<span class='no'>...</span>)
-
-<span class='fu'>modelStudioOptions</span>(<span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>ms_update_observations</span>(
+  <span class='no'>object</span>,
+  <span class='no'>explainer</span>,
+  <span class='kw'>new_observation</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>new_observation_y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>max_features</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>object</th>
+      <td><p>A <code>modelStudio</code> created with <code><a href='modelStudio.html'>modelStudio()</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>explainer</th>
+      <td><p>An <code>explainer</code> created with <code><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>DALEX::explain()</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>new_observation</th>
+      <td><p>New observations with columns that correspond to variables used in the model.</p></td>
+    </tr>
+    <tr>
+      <th>new_observation_y</th>
+      <td><p>True label for <code>new_observation</code> (optional).</p></td>
+    </tr>
+    <tr>
+      <th>max_features</th>
+      <td><p>Maximum number of features to be included in BD and SV plots.
+Default is <code>10</code>.</p></td>
+    </tr>
+    <tr>
+      <th>B</th>
+      <td><p>Number of permutation rounds used for calculation of SV and FI.
+Default is <code>10</code>.
+See <a href='https://modelstudio.drwhy.ai/articles/ms-perks-features.html#more-calculations-means-more-time'><b>vignette</b></a></p></td>
+    </tr>
+    <tr>
+      <th>show_info</th>
+      <td><p>Verbose a progress on the console. Default is <code>TRUE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>parallel</th>
+      <td><p>Speed up the computation using <code><a href='https://parallelmap.mlr-org.com/reference/parallelMap.html'>parallelMap::parallelMap()</a></code>.
+See <a href='https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html#parallel-computation'><b>vignette</b></a>.
+This might interfere with showing progress using <code>show_info</code>.</p></td>
+    </tr>
+    <tr>
+      <th>overwrite</th>
+      <td><p>Overwrite existing observations and their explanations.
+Default is <code>FALSE</code> which means add new observations to the existing ones.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
-      <td><p>Options to change in the form <code>option_name = value</code>.</p></td>
+      <td><p>Other parameters.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>list</code> of options for <code>modelStudio</code>.</p>
-    <h2 class="hasAnchor" id="options"><a class="anchor" href="#options"></a>Options</h2>
-
-    
-
-<h3>Main options:</h3>
-
-<dl>
-<dt>scale_plot</dt><dd><p><code>TRUE</code> Makes every plot the same height, ignores <code>bar_width</code>.</p></dd>
-<dt>show_boxplot</dt><dd><p><code>TRUE</code> Display boxplots in Feature Importance and Shapley Values plots.</p></dd>
-<dt>show_subtitle</dt><dd><p><code>TRUE</code> Should the subtitle be displayed?</p></dd>
-<dt>subtitle</dt><dd><p><code>label</code> parameter from <code>explainer</code>.</p></dd>
-<dt>ms_title</dt><dd><p>Title of the dashboard.</p></dd>
-<dt>margin_*</dt><dd><p>Plot margins. Change <code>margin_left</code> for longer/shorter axis labels.</p></dd>
-<dt>w</dt><dd><p><code>420</code> in px. Inner plot width.</p></dd>
-<dt>h</dt><dd><p><code>280</code> in px. Inner plot height.</p></dd>
-<dt>bar_width</dt><dd><p><code>16</code> in px. Default width of bars for all plots,
-ignored when <code>scale_plot = TRUE</code>.</p></dd>
-<dt>line_size</dt><dd><p><code>2</code> in px. Default width of lines for all plots.</p></dd>
-<dt>point_size</dt><dd><p><code>3</code> in px. Default point radius for all plots.</p></dd>
-<dt>[bar,line,point]_color</dt><dd><p><code>[#46bac2,#46bac2,#371ea3]</code></p></dd>
-<dt>positive_color</dt><dd><p><code>#8bdcbe</code> for Break Down and Shapley Values bars.</p></dd>
-<dt>negative_color</dt><dd><p><code>#f05a71</code> for Break Down and Shapley Values bars.</p></dd>
-<dt>default_color</dt><dd><p><code>#371ea3</code> for Break Down bar and highlighted line.</p></dd>
-
-</dl>
-
-<h3>Plot specific options:</h3>
-<p><code>**</code> is a two letter code unique to each plot, might be
-one of <code>[bd,sv,cp,fi,pd,ad,fd,tv,at]</code>.<br /></p>
-<dl>
-<dt>**_title</dt><dd><p>Plot specific title. Default varies.</p></dd>
-<dt>**_subtitle</dt><dd><p>Plot specific subtitle. Default is <code>subtitle</code>.</p></dd>
-<dt>**_bar_width</dt><dd><p>Plot specific width of bars. Default is <code>bar_width</code>,
-ignored when <code>scale_plot = TRUE</code>.</p></dd>
-<dt>**_line_size</dt><dd><p><code>line_size</code> Plot specific width of lines. Default is <code>line_size</code>.</p></dd>
-<dt>**_point_size</dt><dd><p>Plot specific point radius. Default is <code>point_size</code>.</p></dd>
-<dt>**_*_color</dt><dd><p>Plot specific <code>[bar,line,point]</code> color. Default is <code>[bar,line,point]_color</code>.</p></dd>
-
-</dl>
-
-
+    <p>An object of the <code>r2d3, htmlwidget, modelStudio</code> class.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     
@@ -249,27 +255,23 @@ and <a href='https://modeloriented.github.io/modelStudio/articles/ms-perks-featu
                                 <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>,
                                 <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>apartments</span>$<span class='no'>m2.price</span>)
 
-<span class='co'># pick observations</span>
-<span class='no'>new_observation</span> <span class='kw'>&lt;-</span> <span class='no'>apartments</span>[<span class='fl'>1</span>:<span class='fl'>2</span>,]
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>new_observation</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ap1"</span>,<span class='st'>"ap2"</span>)
-
-<span class='co'># modify default options</span>
-<span class='no'>new_options</span> <span class='kw'>&lt;-</span> <span class='fu'>ms_options</span>(
-  <span class='kw'>show_subtitle</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>bd_subtitle</span> <span class='kw'>=</span> <span class='st'>"Hello World"</span>,
-  <span class='kw'>line_size</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-  <span class='kw'>point_size</span> <span class='kw'>=</span> <span class='fl'>9</span>,
-  <span class='kw'>line_color</span> <span class='kw'>=</span> <span class='st'>"pink"</span>,
-  <span class='kw'>point_color</span> <span class='kw'>=</span> <span class='st'>"purple"</span>,
-  <span class='kw'>bd_positive_color</span> <span class='kw'>=</span> <span class='st'>"yellow"</span>,
-  <span class='kw'>bd_negative_color</span> <span class='kw'>=</span> <span class='st'>"orange"</span>
-)
-
 <span class='co'># make a studio for the model</span>
-<span class='fu'><a href='modelStudio.html'>modelStudio</a></span>(<span class='no'>explainer_apartments</span>,
-            <span class='no'>new_observation</span>,
-            <span class='kw'>options</span> <span class='kw'>=</span> <span class='no'>new_options</span>,
-            <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>200</span>,  <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>5</span>) <span class='co'># faster example</span></pre>
+<span class='no'>ms</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='modelStudio.html'>modelStudio</a></span>(<span class='no'>explainer_apartments</span>)
+<span class='no'>ms</span>
+
+<span class='co'># add new observations</span>
+<span class='no'>ms</span> <span class='kw'>&lt;-</span> <span class='fu'>ms_update_observations</span>(<span class='no'>ms</span>,
+                             <span class='no'>explainer_apartments</span>,
+                             <span class='kw'>new_observation</span> <span class='kw'>=</span> <span class='no'>apartments</span>[<span class='fl'>100</span>:<span class='fl'>101</span>,],
+                             <span class='kw'>new_observation_y</span> <span class='kw'>=</span> <span class='no'>apartments</span>$<span class='no'>m2.price</span>[<span class='fl'>100</span>:<span class='fl'>101</span>])
+<span class='no'>ms</span>
+
+<span class='co'># overwrite the observations with new ones</span>
+<span class='no'>ms</span> <span class='kw'>&lt;-</span> <span class='fu'>ms_update_observations</span>(<span class='no'>ms</span>,
+                             <span class='no'>explainer_apartments</span>,
+                             <span class='kw'>new_observation</span> <span class='kw'>=</span> <span class='no'>apartments</span>[<span class='fl'>100</span>:<span class='fl'>101</span>,],
+                             <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>ms</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

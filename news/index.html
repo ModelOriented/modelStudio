@@ -97,7 +97,7 @@
         <div class="info">
           <span class="partof">part of the <a href="https://github.com/ModelOriented/DrWhy">DrWhy.AI</a>
            developed by the <a href="https://mi2.mini.pw.edu.pl/">MI^2 DataLab</a> </span>
-          <span class="version version-default">1.0.2.9000</span>
+          <span class="version version-default">1.1.0</span>
         </div>
       </div>
     </div>
@@ -153,6 +153,25 @@
       <small>Source: <a href='https://github.com/ModelOriented/modelStudio/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="modelstudio-110" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.0">
+<a href="#modelstudio-110" class="anchor"></a>modelStudio 1.1.0<small> Unreleased </small>
+</h1>
+<ul>
+<li>rename <code><a href="../reference/ms_options.html">modelStudioOptions()</a></code> to <code><a href="../reference/ms_options.html">ms_options()</a></code>
+</li>
+<li>add new <code><a href="../reference/ms_update_options.html">ms_update_options()</a></code> function that updates the options of a <code>modelStudio</code> object</li>
+<li>add new <code><a href="../reference/ms_update_observations.html">ms_update_observations()</a></code> function that updates the observations of a <code>modelStudio</code> object</li>
+<li>lower <code>B</code> default value from <code>15</code> to <code>10</code> and <code>N</code> default value from <code>400</code> to <code>300</code>
+</li>
+<li>
+<code>feature_importance</code> is now calculated on <code>10*N</code> sampled rows from the data</li>
+<li>use <code>ranger</code> instead of <code>randomForest</code> everywhere</li>
+<li>remove unnecessary imports, update the documentation</li>
+<li>added <code>auto_unbox = TRUE</code> to <code><a href="https://jeroen.cran.dev/jsonlite/reference/fromJSON.html">jsonlite::toJSON</a></code> and changed the <code>.js</code> code to comply</li>
+<li>add new class <code>"modelStudio"</code> to the <code><a href="../reference/modelStudio.html">modelStudio()</a></code> output</li>
+</ul>
+</div>
     <div id="modelstudio-102" class="section level1">
 <h1 class="page-header" data-toc-text="1.0.2">
 <a href="#modelstudio-102" class="anchor"></a>modelStudio 1.0.2<small> 2020-04-13 </small>

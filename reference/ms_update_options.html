@@ -99,7 +99,7 @@ WARNING: Editing default options may cause unintended behavior." />
         <div class="info">
           <span class="partof">part of the <a href="https://github.com/ModelOriented/DrWhy">DrWhy.AI</a>
            developed by the <a href="https://mi2.mini.pw.edu.pl/">MI^2 DataLab</a> </span>
-          <span class="version version-default">1.0.2.9000</span>
+          <span class="version version-default">1.1.0</span>
         </div>
       </div>
     </div>
@@ -252,7 +252,11 @@ and <a href='https://modeloriented.github.io/modelStudio/articles/ms-perks-featu
 <span class='no'>ms</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='modelStudio.html'>modelStudio</a></span>(<span class='no'>explainer_apartments</span>)
 <span class='no'>ms</span>
 
-<span class='no'>new_ms</span> <span class='kw'>&lt;-</span> <span class='fu'>ms_update_options</span>(<span class='no'>ms</span>, <span class='kw'>time</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>), <span class='kw'>margin_left</span> <span class='kw'>=</span> <span class='fl'>100</span>)
+<span class='co'># update the options</span>
+<span class='no'>new_ms</span> <span class='kw'>&lt;-</span> <span class='fu'>ms_update_options</span>(<span class='no'>ms</span>,
+                            <span class='kw'>time</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+                            <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>),
+                            <span class='kw'>margin_left</span> <span class='kw'>=</span> <span class='fl'>150</span>)
 <span class='no'>new_ms</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
