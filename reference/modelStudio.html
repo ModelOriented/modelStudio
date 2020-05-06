@@ -57,7 +57,8 @@
 customisable dashboard. It consists of multiple panels for plots with their short descriptions.
 Easily save and share the HTML dashboard with others. Tools for model exploration unite with tools for EDA
 (Exploratory Data Analysis) to give a broad overview of the model behavior.
-Theoretical introduction to the plots: Explanatory Model Analysis: Explore, Explain and Examine Predictive Models" />
+Theoretical introduction to the plots:
+Explanatory Model Analysis: Explore, Explain and Examine Predictive Models" />
 <meta property="og:image" content="/logo.png" />
 
 <meta name="robots" content="noindex" />
@@ -164,7 +165,8 @@ Theoretical introduction to the plots: Explanatory Model Analysis: Explore, Expl
 customisable dashboard. It consists of multiple panels for plots with their short descriptions.
 Easily save and share the HTML dashboard with others. Tools for model exploration unite with tools for EDA
 (Exploratory Data Analysis) to give a broad overview of the model behavior.</p>
-<p>Theoretical introduction to the plots: <a href='https://pbiecek.github.io/ema/'>Explanatory Model Analysis: Explore, Explain and Examine Predictive Models</a></p>
+<p>Theoretical introduction to the plots:
+<a href='https://pbiecek.github.io/ema/'>Explanatory Model Analysis: Explore, Explain and Examine Predictive Models</a></p>
     </div>
 
     <pre class="usage"><span class='fu'>modelStudio</span>(<span class='no'>explainer</span>, <span class='no'>...</span>)
@@ -212,19 +214,25 @@ Easily save and share the HTML dashboard with others. Tools for model exploratio
     </tr>
     <tr>
       <th>time</th>
-      <td><p>Time in ms. Set animation length. Default is <code>500</code>.</p></td>
+      <td><p>Time in ms. Set the animation length. Default is <code>500</code>.</p></td>
     </tr>
     <tr>
       <th>max_features</th>
-      <td><p>Maximum number of features to be included in Break Down and Shapley Values plots. Default is <code>10</code>.</p></td>
+      <td><p>Maximum number of features to be included in BD and SV plots.
+Default is <code>10</code>.</p></td>
     </tr>
     <tr>
       <th>N</th>
-      <td><p>Number of observations used for calculation of partial dependence profiles. Default is <code>300</code>.</p></td>
+      <td><p>Number of observations used for the calculation of PD and AD.
+<code>10*N</code> is a number of observations used for the calculation of FI.
+Default <code>N</code> is <code>300</code>.
+See <a href='https://modelstudio.drwhy.ai/articles/ms-perks-features.html#more-calculations-means-more-time'><b>vignette</b></a></p></td>
     </tr>
     <tr>
       <th>B</th>
-      <td><p>Number of random paths used for calculation of Shapley values. Default is <code>10</code>.</p></td>
+      <td><p>Number of permutation rounds used for calculation of SV and FI.
+Default is <code>10</code>.
+See <a href='https://modelstudio.drwhy.ai/articles/ms-perks-features.html#more-calculations-means-more-time'><b>vignette</b></a></p></td>
     </tr>
     <tr>
       <th>eda</th>
@@ -232,7 +240,7 @@ Easily save and share the HTML dashboard with others. Tools for model exploratio
     </tr>
     <tr>
       <th>show_info</th>
-      <td><p>Verbose progress on the console. Default is <code>TRUE</code>.</p></td>
+      <td><p>Verbose a progress on the console. Default is <code>TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>parallel</th>
@@ -262,8 +270,9 @@ Use <code>browser</code> to display in an external browser or
 <ul>
 <li><p>The input object is implemented in <a href='https://modeloriented.github.io/DALEX/'><b>DALEX</b></a></p></li>
 <li><p>Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence plots
-are implemented in <a href='https://modeloriented.github.io/ingredients/'><b>ingredients</b></a></p></li>
-<li><p>Break Down and Shapley Values plots are implemented in <a href='https://modeloriented.github.io/iBreakDown/'><b>iBreakDown</b></a></p></li>
+   are implemented in <a href='https://modeloriented.github.io/ingredients/'><b>ingredients</b></a></p></li>
+<li><p>Break Down and Shapley Values plots are implemented in
+   <a href='https://modeloriented.github.io/iBreakDown/'><b>iBreakDown</b></a></p></li>
 </ul>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>

@@ -106,7 +106,7 @@
       <h1 data-toc-skip>modelStudio - perks and features</h1>
                         <h4 class="author">Hubert Baniecki</h4>
             
-            <h4 class="date">2020-05-05</h4>
+            <h4 class="date">2020-05-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ModelOriented/modelStudio/blob/master/vignettes/ms-perks-features.Rmd"><code>vignettes/ms-perks-features.Rmd</code></a></small>
       <div class="hidden name"><code>ms-perks-features.Rmd</code></div>
@@ -243,14 +243,14 @@
 <div id="more-calculations-means-more-time" class="section level3">
 <h3 class="hasAnchor">
 <a href="#more-calculations-means-more-time" class="anchor"></a>more calculations means more time</h3>
-<p><code>N</code> is a number of observations used for calculation of <a href="https://pbiecek.github.io/ema/partialDependenceProfiles.html">Partial Dependence</a> and <a href="https://pbiecek.github.io/ema/accumulatedLocalProfiles.html">Accumulated Dependence</a> Profiles. <code>B</code> is a number of permutation rounds used for calculation of <a href="https://pbiecek.github.io/ema/shapley.html">Shapley Values</a> and <a href="https://pbiecek.github.io/ema/featureImportance.html">Feature Importance</a>. Decrease <code>N</code> and <code>B</code> parameters to lower the computation time or increase them to get more accurate empirical results.</p>
+<p><code>N</code> is a number of observations used for calculation of <a href="https://pbiecek.github.io/ema/partialDependenceProfiles.html">Partial Dependence</a> and <a href="https://pbiecek.github.io/ema/accumulatedLocalProfiles.html">Accumulated Dependence</a> Profiles. <code>10*N</code> is a number of observations used for calculation of <a href="https://pbiecek.github.io/ema/featureImportance.html">Feature Importance</a>. <code>B</code> is a number of permutation rounds used for calculation of <a href="https://pbiecek.github.io/ema/shapley.html">Shapley Values</a> and <a href="https://pbiecek.github.io/ema/featureImportance.html">Feature Importance</a>. Decrease <code>N</code> and <code>B</code> parameters to lower the computation time or increase them to get more accurate empirical results.</p>
 <div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="co"># faster, less precise</span>
 <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer</span>,
             <span class="kw">N</span> <span class="kw">=</span> <span class="fl">200</span>, <span class="kw">B</span> <span class="kw">=</span> <span class="fl">5</span>)
 
 <span class="co"># slower, more precise</span>
 <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer</span>,
-            <span class="kw">N</span> <span class="kw">=</span> <span class="fl">800</span>, <span class="kw">B</span> <span class="kw">=</span> <span class="fl">25</span>)</pre></body></html></div>
+            <span class="kw">N</span> <span class="kw">=</span> <span class="fl">500</span>, <span class="kw">B</span> <span class="kw">=</span> <span class="fl">15</span>)</pre></body></html></div>
 </div>
 <div id="no-eda-mode" class="section level3">
 <h3 class="hasAnchor">
