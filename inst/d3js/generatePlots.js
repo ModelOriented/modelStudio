@@ -110,7 +110,7 @@ function breakDown() {
 
   var bdData = tData[0],
       bData = bdData.x;
-      bdBarCount = bdData.m[0],
+      bdBarCount = bdData.m,
       xMinMax = bdData.x_min_max,
       desc = bdData.desc;
 
@@ -119,7 +119,7 @@ function breakDown() {
 
   var x = d3.scaleLinear()
             .range([margin.left,  margin.left + bdPlotWidth])
-            .domain([xMinMax[0], xMinMax[1]]);
+            .domain(xMinMax);
 
   BD.append("text")
     .attr("transform",
@@ -347,7 +347,7 @@ function shapleyValues() {
 
   var svData = tData[2],
       bData = svData.x,
-      svBarCount = svData.m[0],
+      svBarCount = svData.m,
       xMinMax = svData.x_min_max,
       desc = svData.desc;
 
@@ -356,7 +356,7 @@ function shapleyValues() {
 
   var x = d3.scaleLinear()
             .range([margin.left,  margin.left + svPlotWidth])
-            .domain([xMinMax[0], xMinMax[1]]);
+            .domain(xMinMax);
 
   SV.append("text")
     .attr("transform",
@@ -587,7 +587,7 @@ function ceterisParibus() {
   let tVariableName = CLICKED_VARIABLE_NAME;
 
   // lines or bars?
-  if (isNumeric[tVariableName][0]) {
+  if (isNumeric[tVariableName]) {
     cpNumericalPlot(tVariableName, profData[tVariableName],
                     xMinMax[tVariableName], yMinMax, pData,
                     desc[tVariableName]);
@@ -601,7 +601,7 @@ function featureImportance() {
 
   if (fiData.x === undefined) return null;
 
-  var fiBarCount = fiData.m[0],
+  var fiBarCount = fiData.m,
       bData = fiData.x,
       xMinMax = fiData.x_min_max,
       desc = fiData.desc;
@@ -611,7 +611,7 @@ function featureImportance() {
 
   var x = d3.scaleLinear()
             .range([margin.left, margin.left + fiPlotWidth])
-            .domain([xMinMax[0], xMinMax[1]]);
+            .domain(xMinMax);
 
   FI.append("text")
     .attr("transform",
@@ -811,7 +811,7 @@ function partialDependence() {
   let tVariableName = CLICKED_VARIABLE_NAME;
 
   // lines or bars?
-  if (isNumeric[tVariableName][0]) {
+  if (isNumeric[tVariableName]) {
     pdNumericalPlot(tVariableName, profData[tVariableName],
                     xMinMax[tVariableName], yMinMax, yMean,
                     desc[tVariableName]);
@@ -835,7 +835,7 @@ function accumulatedDependence() {
   let tVariableName = CLICKED_VARIABLE_NAME;
 
   // lines or bars?
-  if (isNumeric[tVariableName][0]) {
+  if (isNumeric[tVariableName]) {
     adNumericalPlot(tVariableName, profData[tVariableName],
                     xMinMax[tVariableName], yMinMax, yMean,
                     desc[tVariableName]);
@@ -858,7 +858,7 @@ function featureDistribution() {
   let tVariableName = CLICKED_VARIABLE_NAME;
 
   // histogram or bars?
-  if (isNumeric[tVariableName][0]) {
+  if (isNumeric[tVariableName]) {
     fdNumericalPlot(tVariableName, dData, xMinMax[tVariableName],
                     nBin[tVariableName]);
   } else {
@@ -879,7 +879,7 @@ function targetVs() {
   let tVariableName = CLICKED_VARIABLE_NAME;
 
   // scatterplot or violin?
-  if (isNumeric[tVariableName][0]) {
+  if (isNumeric[tVariableName]) {
     tvNumericalPlot(tVariableName, xData, xMinMax[tVariableName], yMinMax);
   } else {
     tvCategoricalPlot(tVariableName, xData, xMinMax[tVariableName], yMinMax);
@@ -899,7 +899,7 @@ function averageTarget() {
   let tVariableName = CLICKED_VARIABLE_NAME;
 
   // scatterplot or violin?
-  if (isNumeric[tVariableName][0]) {
+  if (isNumeric[tVariableName]) {
     atNumericalPlot(tVariableName, xData[tVariableName],
                     xMinMax[tVariableName], yMinMax[tVariableName], yMean);
   } else {
@@ -917,7 +917,7 @@ function cpNumericalPlot(variableName, lData, mData, yMinMax, pData, desc) {
 
   var x = d3.scaleLinear()
             .range([margin.left + 10, margin.left + cpPlotWidth - 10])
-            .domain([mData[0], mData[1]]);
+            .domain(mData);
 
   CP.append("text")
     .attr("transform",
@@ -929,7 +929,7 @@ function cpNumericalPlot(variableName, lData, mData, yMinMax, pData, desc) {
 
   var y = d3.scaleLinear()
             .range([margin.top + cpPlotHeight, margin.top - additionalHeight])
-            .domain([yMinMax[0], yMinMax[1]]);
+            .domain(yMinMax);
 
   var line = d3.line()
                .x(d => x(d.xhat))
@@ -940,7 +940,7 @@ function cpNumericalPlot(variableName, lData, mData, yMinMax, pData, desc) {
      .attr("class","smallTitle")
      .attr("x", margin.left)
      .attr("y", margin.top - 15)
-     .text(cpSubtitle); //variableName + " = " + pData[0][variableName]
+     .text(cpSubtitle);
 
   CP.append("text")
     .attr("class", "bigTitle")
@@ -1147,7 +1147,7 @@ function cpCategoricalPlot(variableName, bData, yMinMax, lData, desc) {
 
   var x = d3.scaleLinear()
             .range([margin.left,  margin.left + cpPlotWidth])
-            .domain([yMinMax[0], yMinMax[1]]); // because it is flipped
+            .domain(yMinMax); // because it is flipped
 
   var xAxis = d3.axisBottom(x)
                 .ticks(5)
@@ -1196,7 +1196,7 @@ function cpCategoricalPlot(variableName, bData, yMinMax, lData, desc) {
     .attr("x", margin.left)
     .attr("y", margin.top - 15)
     .attr("class", "smallTitle")
-    .text(cpSubtitle); //variableName + " = " + lData[0][variableName]
+    .text(cpSubtitle);
 
   CP.append("text")
     .attr("x", margin.left)
@@ -1301,7 +1301,7 @@ function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean, desc) {
 
   var x = d3.scaleLinear()
             .range([margin.left + 10, margin.left + pdPlotWidth - 10])
-            .domain([mData[0], mData[1]]);
+            .domain(mData);
 
   PD.append("text")
     .attr("transform",
@@ -1313,7 +1313,7 @@ function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean, desc) {
 
   var y = d3.scaleLinear()
             .range([margin.top + pdPlotHeight, margin.top - additionalHeight])
-            .domain([yMinMax[0], yMinMax[1]]);
+            .domain(yMinMax);
 
   var line = d3.line()
                .x(d => x(d.xhat))
@@ -1478,7 +1478,7 @@ function pdCategoricalPlot(variableName, bData, yMinMax, yMean, desc) {
 
   var x = d3.scaleLinear()
             .range([margin.left,  margin.left + pdPlotWidth])
-            .domain([yMinMax[0], yMinMax[1]]); // because it is flipped
+            .domain(yMinMax); // because it is flipped
 
   var xAxis = d3.axisBottom(x)
                 .ticks(5)
@@ -1632,7 +1632,7 @@ function adNumericalPlot(variableName, lData, mData, yMinMax, yMean, desc) {
 
   var x = d3.scaleLinear()
             .range([margin.left + 10, margin.left + adPlotWidth - 10])
-            .domain([mData[0], mData[1]]);
+            .domain(mData);
 
   AD.append("text")
     .attr("transform",
@@ -1644,7 +1644,7 @@ function adNumericalPlot(variableName, lData, mData, yMinMax, yMean, desc) {
 
   var y = d3.scaleLinear()
             .range([margin.top + adPlotHeight, margin.top - additionalHeight])
-            .domain([yMinMax[0], yMinMax[1]]);
+            .domain(yMinMax);
 
   var line = d3.line()
                .x(d => x(d.xhat))
@@ -1809,7 +1809,7 @@ function adCategoricalPlot(variableName, bData, yMinMax, yMean, desc) {
 
   var x = d3.scaleLinear()
             .range([margin.left,  margin.left + adPlotWidth])
-            .domain([yMinMax[0], yMinMax[1]]); // because it is flipped
+            .domain(yMinMax); // because it is flipped
 
   var xAxis = d3.axisBottom(x)
                 .ticks(5)
@@ -1961,7 +1961,7 @@ function fdNumericalPlot(variableName, dData, mData, nBin) {
 
   var x = d3.scaleLinear()
             .range([margin.left + 10, margin.left + fdPlotWidth - 10])
-            .domain([mData[0], mData[1]]);
+            .domain(mData);
 
   FD.append("text")
     .attr("transform",

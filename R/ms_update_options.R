@@ -41,7 +41,11 @@
 #' ms <- modelStudio(explainer_apartments)
 #' ms
 #'
-#' new_ms <- ms_update_options(ms, time = 0, facet_dim = c(1,2), margin_left = 100)
+#' # update the options
+#' new_ms <- ms_update_options(ms,
+#'                             time = 0,
+#'                             facet_dim = c(1,2),
+#'                             margin_left = 150)
 #' new_ms
 #'
 #' @export
@@ -52,10 +56,13 @@ ms_update_options <- function(object, ...) {
 
   # extract old options
   old_options <- object$x$options
-  # input user options
+  # input new options
   old_options[names(list(...))] <- list(...)
-
   new_options <- old_options
+
+  # update footer text
+  new_options$footer_text <- paste0("Site built with modelStudio v", packageVersion("modelStudio"),
+                                    " on ", format(Sys.time(), usetz = FALSE))
 
   options("r2d3.shadow" = FALSE) # set this option to avoid using shadow-root
 
@@ -74,7 +81,6 @@ ms_update_options <- function(object, ...) {
     css = system.file("d3js/modelStudio.css", package = "modelStudio"),
     options = new_options,
     d3_version = "4",
-    viewer = NULL,
     sizing = object$sizingPolicy,
     elementId = object$elementId,
     width = new_options$facet_dim[2]*(new_options$w + new_options$margin_left + new_options$margin_right),

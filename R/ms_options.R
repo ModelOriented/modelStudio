@@ -177,7 +177,7 @@ ms_options <- function(...) {
     at_point_color = "#371ea3"
   )
 
-  # input user options
+  # input new options
   default_options[names(list(...))] <- list(...)
 
   default_options

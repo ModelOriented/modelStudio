@@ -1,10 +1,15 @@
 # modelStudio (development)
+* ...
+
+# modelStudio 1.1.0
 * rename `modelStudioOptions()` to `ms_options()`
 * add new `ms_update_options()` function that updates the options of a `modelStudio` object
+* add new `ms_update_observations()` function that updates the observations of a `modelStudio` object
 * lower `B` default value from `15` to `10` and `N` default value from `400` to `300`
 * `feature_importance` is now calculated on `10*N` sampled rows from the data
 * use `ranger` instead of `randomForest` everywhere
 * remove unnecessary imports, update the documentation
+* added `auto_unbox = TRUE` to `jsonlite::toJSON` and changed the `.js` code to comply
 * add new class `"modelStudio"` to the `modelStudio()` output
 
 # modelStudio 1.0.2

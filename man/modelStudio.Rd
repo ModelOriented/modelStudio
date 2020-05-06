@@ -29,7 +29,7 @@ modelStudio(explainer, ...)
 
 \item{...}{Other parameters.}
 
-\item{new_observation}{A new observation with columns that correspond to variables used in the model.}
+\item{new_observation}{New observations with columns that correspond to variables used in the model.}
 
 \item{new_observation_y}{True label for \code{new_observation} (optional).}
 

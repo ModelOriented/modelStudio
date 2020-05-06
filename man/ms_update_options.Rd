@@ -73,7 +73,11 @@ explainer_apartments <- explain(model_apartments,
 ms <- modelStudio(explainer_apartments)
 ms
 
-new_ms <- ms_update_options(ms, time = 0, facet_dim = c(1,2), margin_left = 100)
+# update the options
+new_ms <- ms_update_options(ms,
+                            time = 0,
+                            facet_dim = c(1,2),
+                            margin_left = 150)
 new_ms
 
 }

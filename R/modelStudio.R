@@ -10,7 +10,7 @@
 #' \href{https://pbiecek.github.io/ema/}{Explanatory Model Analysis: Explore, Explain and Examine Predictive Models}
 #'
 #' @param explainer An \code{explainer} created with \code{DALEX::explain()}.
-#' @param new_observation A new observation with columns that correspond to variables used in the model.
+#' @param new_observation New observations with columns that correspond to variables used in the model.
 #' @param new_observation_y True label for \code{new_observation} (optional).
 #' @param facet_dim Dimensions of the grid. Default is \code{c(2,2)}.
 #' @param time Time in ms. Set the animation length. Default is \code{500}.
@@ -286,8 +286,8 @@ modelStudio.explainer <- function(explainer,
         paste0("iBreakDown::local_attributions (", i, ")"), show_info, pb, 2)
       sv <- calculate(
         iBreakDown::shap(
-          model, data, predict_function, new_observation, label = label, B = 3*B),
-        paste0("iBreakDown::shap (", i, ")"), show_info, pb, 2*B)
+          model, data, predict_function, new_observation, label = label, B = B),
+        paste0("iBreakDown::shap (", i, ")"), show_info, pb, 3*B)
       cp <- calculate(
         ingredients::ceteris_paribus(
           model, data, predict_function, new_observation, label = label),
@@ -324,8 +324,8 @@ modelStudio.explainer <- function(explainer,
         paste0("iBreakDown::local_attributions (", i, ")"), show_info, pb, 2)
       sv <- calculate(
         iBreakDown::shap(
-          model, data, predict_function, new_observation, label = label, B = 3*B),
-        paste0("iBreakDown::shap (", i, ")"), show_info, pb, 2*B)
+          model, data, predict_function, new_observation, label = label, B = B),
+        paste0("iBreakDown::shap (", i, ")"), show_info, pb, 3*B)
       cp <- calculate(
         ingredients::ceteris_paribus(
           model, data, predict_function, new_observation, label = label),
@@ -341,7 +341,7 @@ modelStudio.explainer <- function(explainer,
 
   # pack explanation data to json and make hash for htmlwidget
   names(obs_list) <- rownames(obs_data)
-  temp <- jsonlite::toJSON(list(obs_list, fi_data, pd_data, ad_data, fd_data, at_data))
+  temp <- jsonlite::toJSON(list(obs_list, fi_data, pd_data, ad_data, fd_data, at_data), auto_unbox = TRUE)
   widget_id <- paste0("widget-", digest::digest(temp))
 
   # prepare observation data for drop down
@@ -462,7 +462,7 @@ calculate <- function(expr, function_name, show_info = FALSE, pb = NULL, ticks =
     expr
     },
     error = function(e) {
-      warning(paste0("Error occurred in ", function_name, " function: ", e$message))
+      warning(paste0("\nError occurred in ", function_name, " function: ", e$message))
       NULL
   })
 }
