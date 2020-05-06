@@ -1,4 +1,4 @@
-context("Check modelStudio() function for warnings and errors")
+context("Check functions for warnings and errors")
 
 source("test_objects.R")
 
@@ -15,6 +15,12 @@ testthat::test_that("check_single_prediction error", {
     modelStudio::modelStudio(explainer_xgb,
                              new_observation = model_matrix_train[1,],
                              show_info = v)
+  )
+})
+
+testthat::test_that("deprecated modelStudioOptions", {
+  testthat::expect_warning(
+    modelStudio::modelStudioOptions()
   )
 })
 

@@ -22,8 +22,8 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.0
 Imports:
-    iBreakDown (>= 1.0),
-    ingredients (>= 1.0),
+    iBreakDown (>= 1.1.0),
+    ingredients (>= 1.0.0),
     r2d3,
     jsonlite,
     progress,

@@ -19,7 +19,7 @@ modelStudio(explainer, ...)
   eda = TRUE,
   show_info = TRUE,
   parallel = FALSE,
-  options = modelStudioOptions(),
+  options = ms_options(),
   viewer = "external",
   ...
 )
@@ -57,7 +57,7 @@ See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#more-calc
 See \href{https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html#parallel-computation}{\bold{vignette}}.
 This might interfere with showing progress using \code{show_info}.}
 
-\item{options}{Customize \code{modelStudio}. See \code{\link{modelStudioOptions}} and
+\item{options}{Customize \code{modelStudio}. See \code{\link{ms_options}} and
 \href{https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html#plot-options}{\bold{vignette}}.}
 
 \item{viewer}{Default is \code{external} to display in an external RStudio window.
@@ -65,7 +65,7 @@ Use \code{browser} to display in an external browser or
 \code{internal} to use the RStudio internal viewer pane for output.}
 }
 \value{
-An object of the \code{r2d3} class.
+An object of the \code{r2d3, htmlwidget, modelStudio} class.
 }
 \description{
 This function computes various (instance and dataset level) model explanations and produces an interactive,

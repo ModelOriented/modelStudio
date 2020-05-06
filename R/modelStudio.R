@@ -28,14 +28,14 @@
 #' @param parallel Speed up the computation using \code{parallelMap::parallelMap()}.
 #'  See \href{https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html#parallel-computation}{\bold{vignette}}.
 #'  This might interfere with showing progress using \code{show_info}.
-#' @param options Customize \code{modelStudio}. See \code{\link{modelStudioOptions}} and
+#' @param options Customize \code{modelStudio}. See \code{\link{ms_options}} and
 #'  \href{https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html#plot-options}{\bold{vignette}}.
 #' @param viewer Default is \code{external} to display in an external RStudio window.
 #'  Use \code{browser} to display in an external browser or
 #'  \code{internal} to use the RStudio internal viewer pane for output.
 #' @param ... Other parameters.
 #'
-#' @return An object of the \code{r2d3} class.
+#' @return An object of the \code{r2d3, htmlwidget, modelStudio} class.
 #'
 #' @importFrom utils head tail packageVersion
 #' @importFrom stats aggregate predict quantile IQR
@@ -157,7 +157,7 @@ modelStudio.explainer <- function(explainer,
                                   eda = TRUE,
                                   show_info = TRUE,
                                   parallel = FALSE,
-                                  options = modelStudioOptions(),
+                                  options = ms_options(),
                                   viewer = "external",
                                   ...) {
 
@@ -395,6 +395,8 @@ modelStudio.explainer <- function(explainer,
 
   model_studio$x$script <- remove_file_paths(model_studio$x$script, "js")
   model_studio$x$style <- remove_file_paths(model_studio$x$style, "css")
+
+  class(model_studio) <- c(class(model_studio), "modelStudio")
 
   model_studio
 }

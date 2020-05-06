@@ -192,12 +192,12 @@ modelStudio(explainer,
 ## plot options
 
 Customize some of `modelStudio` looks by overwriting default options returned
-by the `modelStudioOptions()` function. Full list of options:
-[documentation](http://modelstudio.drwhy.ai/reference/modelStudioOptions.html).
+by the `ms_options()` function. Full list of options:
+[documentation](http://modelstudio.drwhy.ai/reference/ms_options.html).
 
 ```{r eval = FALSE}
 # set additional graphical parameters
-new_options <- modelStudioOptions(
+new_options <- ms_options(
   show_subtitle = TRUE,
   bd_subtitle = "Hello World",
   line_size = 5,

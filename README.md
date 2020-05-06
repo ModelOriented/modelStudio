@@ -146,7 +146,7 @@ rownames(new_observation) <- c("id1", "id2")
 # make a studio for the model
 modelStudio(explainer,
             new_observation,
-            options = modelStudioOptions(margin_left = 140))
+            options = ms_options(margin_left = 140))
 ```
 
 ### scikit-learn [dashboard](https://modeloriented.github.io/modelStudio/scikitlearn.html)
@@ -205,7 +205,7 @@ explainer <- py_load_object("explainer_scikitlearn.pickle", pickle = "pickle")
 # make a studio for the model
 library(modelStudio)
 modelStudio(explainer, B = 5,
-            options = modelStudioOptions(margin_left = 160))
+            options = ms_options(margin_left = 160))
 ```
 
 ## Save & Share
