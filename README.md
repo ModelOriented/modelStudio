@@ -262,13 +262,11 @@ or with [`r2d3::save_d3_html()`](https://rstudio.github.io/r2d3/articles/publish
 
   - Theoretical introduction to the plots: [Explanatory Model Analysis. Explore, Explain and Examine Predictive Models.](https://pbiecek.github.io/ema)
 
-  - Vignette: [modelStudio - R & Python examples](https://modeloriented.github.io/modelStudio/articles/ms-r-python-examples.html)  
-
-  - Vignette: [modelStudio - perks and features](https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html)  
-
-  - Conference poster: [MLinPL2019](https://github.com/ModelOriented/modelStudio/blob/master/misc/MLinPL2019_modelStudio_poster.pdf)
-
+  - Vignettes: [modelStudio - perks and features](https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html) and [modelStudio - R & Python examples](https://modeloriented.github.io/modelStudio/articles/ms-r-python-examples.html)  
+  
   - Changelog: [NEWS](https://modeloriented.github.io/modelStudio/news/index.html)
+  
+  - Conference poster: [MLinPL2019](https://github.com/ModelOriented/modelStudio/blob/master/misc/MLinPL2019_modelStudio_poster.pdf)
 
   <!--  - [Article about modelStudio](https://joss.theoj.org/papers/10.21105/joss.01798) -->
 

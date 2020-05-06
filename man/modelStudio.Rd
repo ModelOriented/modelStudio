@@ -35,17 +35,23 @@ modelStudio(explainer, ...)
 
 \item{facet_dim}{Dimensions of the grid. Default is \code{c(2,2)}.}
 
-\item{time}{Time in ms. Set animation length. Default is \code{500}.}
+\item{time}{Time in ms. Set the animation length. Default is \code{500}.}
 
-\item{max_features}{Maximum number of features to be included in Break Down and Shapley Values plots. Default is \code{10}.}
+\item{max_features}{Maximum number of features to be included in BD and SV plots.
+Default is \code{10}.}
 
-\item{N}{Number of observations used for calculation of partial dependence profiles. Default is \code{300}.}
+\item{N}{Number of observations used for the calculation of PD and AD.
+\code{10*N} is a number of observations used for the calculation of FI.
+Default \code{N} is \code{300}.
+See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#more-calculations-means-more-time}{\bold{vignette}}}
 
-\item{B}{Number of random paths used for calculation of Shapley values. Default is \code{10}.}
+\item{B}{Number of permutation rounds used for calculation of SV and FI.
+Default is \code{10}.
+See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#more-calculations-means-more-time}{\bold{vignette}}}
 
 \item{eda}{Compute EDA plots. Default is \code{TRUE}.}
 
-\item{show_info}{Verbose progress on the console. Default is \code{TRUE}.}
+\item{show_info}{Verbose a progress on the console. Default is \code{TRUE}.}
 
 \item{parallel}{Speed up the computation using \code{parallelMap::parallelMap()}.
 See \href{https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html#parallel-computation}{\bold{vignette}}.
@@ -67,7 +73,8 @@ customisable dashboard. It consists of multiple panels for plots with their shor
 Easily save and share the HTML dashboard with others. Tools for model exploration unite with tools for EDA
 (Exploratory Data Analysis) to give a broad overview of the model behavior.
 
-Theoretical introduction to the plots: \href{https://pbiecek.github.io/ema/}{Explanatory Model Analysis: Explore, Explain and Examine Predictive Models}
+Theoretical introduction to the plots:
+\href{https://pbiecek.github.io/ema/}{Explanatory Model Analysis: Explore, Explain and Examine Predictive Models}
 }
 \examples{
 library("DALEX")
@@ -155,8 +162,9 @@ modelStudio(explainer_HR,
 \itemize{
   \item The input object is implemented in \href{https://modeloriented.github.io/DALEX/}{\bold{DALEX}}
   \item Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence plots
-are implemented in \href{https://modeloriented.github.io/ingredients/}{\bold{ingredients}}
-  \item Break Down and Shapley Values plots are implemented in \href{https://modeloriented.github.io/iBreakDown/}{\bold{iBreakDown}}
+   are implemented in \href{https://modeloriented.github.io/ingredients/}{\bold{ingredients}}
+  \item Break Down and Shapley Values plots are implemented in
+   \href{https://modeloriented.github.io/iBreakDown/}{\bold{iBreakDown}}
 }
 }
 \seealso{

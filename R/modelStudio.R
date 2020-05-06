@@ -6,26 +6,33 @@
 #' Easily save and share the HTML dashboard with others. Tools for model exploration unite with tools for EDA
 #' (Exploratory Data Analysis) to give a broad overview of the model behavior.
 #'
-#' Theoretical introduction to the plots: \href{https://pbiecek.github.io/ema/}{Explanatory Model Analysis: Explore, Explain and Examine Predictive Models}
+#' Theoretical introduction to the plots:
+#' \href{https://pbiecek.github.io/ema/}{Explanatory Model Analysis: Explore, Explain and Examine Predictive Models}
 #'
 #' @param explainer An \code{explainer} created with \code{DALEX::explain()}.
 #' @param new_observation A new observation with columns that correspond to variables used in the model.
 #' @param new_observation_y True label for \code{new_observation} (optional).
 #' @param facet_dim Dimensions of the grid. Default is \code{c(2,2)}.
-#' @param time Time in ms. Set animation length. Default is \code{500}.
-#' @param max_features Maximum number of features to be included in Break Down and Shapley Values plots. Default is \code{10}.
-#' @param N Number of observations used for calculation of partial dependence profiles. Default is \code{300}.
-#' @param B Number of random paths used for calculation of Shapley values. Default is \code{10}.
+#' @param time Time in ms. Set the animation length. Default is \code{500}.
+#' @param max_features Maximum number of features to be included in BD and SV plots.
+#'  Default is \code{10}.
+#' @param N Number of observations used for the calculation of PD and AD.
+#'  \code{10*N} is a number of observations used for the calculation of FI.
+#'  Default \code{N} is \code{300}.
+#'  See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#more-calculations-means-more-time}{\bold{vignette}}
+#' @param B Number of permutation rounds used for calculation of SV and FI.
+#'  Default is \code{10}.
+#'  See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#more-calculations-means-more-time}{\bold{vignette}}
 #' @param eda Compute EDA plots. Default is \code{TRUE}.
-#' @param show_info Verbose progress on the console. Default is \code{TRUE}.
+#' @param show_info Verbose a progress on the console. Default is \code{TRUE}.
 #' @param parallel Speed up the computation using \code{parallelMap::parallelMap()}.
-#' See \href{https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html#parallel-computation}{\bold{vignette}}.
-#' This might interfere with showing progress using \code{show_info}.
+#'  See \href{https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html#parallel-computation}{\bold{vignette}}.
+#'  This might interfere with showing progress using \code{show_info}.
 #' @param options Customize \code{modelStudio}. See \code{\link{modelStudioOptions}} and
-#' \href{https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html#plot-options}{\bold{vignette}}.
+#'  \href{https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html#plot-options}{\bold{vignette}}.
 #' @param viewer Default is \code{external} to display in an external RStudio window.
-#' Use \code{browser} to display in an external browser or
-#' \code{internal} to use the RStudio internal viewer pane for output.
+#'  Use \code{browser} to display in an external browser or
+#'  \code{internal} to use the RStudio internal viewer pane for output.
 #' @param ... Other parameters.
 #'
 #' @return An object of the \code{r2d3} class.
@@ -40,8 +47,9 @@
 #' \itemize{
 #'   \item The input object is implemented in \href{https://modeloriented.github.io/DALEX/}{\bold{DALEX}}
 #'   \item Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence plots
-#' are implemented in \href{https://modeloriented.github.io/ingredients/}{\bold{ingredients}}
-#'   \item Break Down and Shapley Values plots are implemented in \href{https://modeloriented.github.io/iBreakDown/}{\bold{iBreakDown}}
+#'    are implemented in \href{https://modeloriented.github.io/ingredients/}{\bold{ingredients}}
+#'   \item Break Down and Shapley Values plots are implemented in
+#'    \href{https://modeloriented.github.io/iBreakDown/}{\bold{iBreakDown}}
 #' }
 #'
 #' @seealso

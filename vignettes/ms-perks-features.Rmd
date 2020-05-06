@@ -18,7 +18,10 @@ knitr::opts_chunk$set(
 )
 ```
 
-`modelStudio::modelStudio` computes various (instance and dataset level) model explanations and produces an interactive, customisable dashboard. It consists of multiple panels for plots with their short descriptions. Easily save and share the HTML dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.
+`modelStudio::modelStudio` computes various (instance and dataset level) model explanations and produces
+an interactive, customisable dashboard. It consists of multiple panels for plots with their short descriptions.
+Easily save and share the HTML dashboard with others. Tools for model exploration unite with tools for
+EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.
 
 Let's use `HR` dataset to explore `modelStudio` parameters:
 
@@ -110,7 +113,9 @@ modelStudio(explainer,
 
 `N` is a number of observations used for calculation of
 [Partial Dependence](https://pbiecek.github.io/ema/partialDependenceProfiles.html)
-and [Accumulated Dependence](https://pbiecek.github.io/ema/accumulatedLocalProfiles.html) Profiles.
+and [Accumulated Dependence](https://pbiecek.github.io/ema/accumulatedLocalProfiles.html) Profiles. 
+`10*N` is a number of observations used for calculation of
+[Feature Importance](https://pbiecek.github.io/ema/featureImportance.html).
 `B` is a number of permutation rounds used for calculation of
 [Shapley Values](https://pbiecek.github.io/ema/shapley.html) and
 [Feature Importance](https://pbiecek.github.io/ema/featureImportance.html).
@@ -124,7 +129,7 @@ modelStudio(explainer,
 
 # slower, more precise
 modelStudio(explainer,
-            N = 800, B = 25)
+            N = 500, B = 15)
 ```
 
 ### no EDA mode
@@ -148,7 +153,8 @@ modelStudio(explainer,
 ### viewer or browser?
 
 Change `viewer` parameter to set where to display `modelStudio`.
-Best described in `r2d3` documentation: [`r2d3 viewer argument`](https://rstudio.github.io/r2d3/articles/visualization_options.html#viewer).
+Best described in `r2d3` documentation:
+[`r2d3 viewer argument`](https://rstudio.github.io/r2d3/articles/visualization_options.html#viewer).
 
 ```{r eval = FALSE}
 modelStudio(explainer,
@@ -211,7 +217,8 @@ modelStudio(explainer,
 ## DALEXtra
 
 Use `explain_*()` functions from the [DALEXtra](https://github.com/ModelOriented/DALEXtra)
-package to explain various models. Bellow basic example of making `modelStudio` for a `mlr` model using `explain_mlr()`.
+package to explain various models. Bellow basic example of making `modelStudio` for
+a `mlr` model using `explain_mlr()`.
 
 ```{r eval = FALSE}
 library(DALEXtra)
