@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Modify default options and pass them to modelStudio — modelStudioOptions • modelStudio</title>
+<title>Update the options of a modelStudio object — ms_update_options • modelStudio</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,11 +52,9 @@
 
 
 
-<meta property="og:title" content="Modify default options and pass them to modelStudio — modelStudioOptions" />
-<meta property="og:description" content="This function returns default options for modelStudio.
-It is possible to modify values of this list and pass it to the options
-parameter in the main function. WARNING: Editing default options may cause
-unintended behavior." />
+<meta property="og:title" content="Update the options of a modelStudio object — ms_update_options" />
+<meta property="og:description" content="This function updates the options of a modelStudio object.
+WARNING: Editing default options may cause unintended behavior." />
 <meta property="og:image" content="/logo.png" />
 
 <meta name="robots" content="noindex" />
@@ -153,32 +151,39 @@ unintended behavior." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Modify default options and pass them to modelStudio</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ModelOriented/modelStudio/blob/master/R/modelStudioOptions.R'><code>R/modelStudioOptions.R</code></a></small>
-    <div class="hidden name"><code>modelStudioOptions.Rd</code></div>
+    <h1>Update the options of a modelStudio object</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ModelOriented/modelStudio/blob/master/R/ms_update_options.R'><code>R/ms_update_options.R</code></a></small>
+    <div class="hidden name"><code>ms_update_options.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function returns default options for <code><a href='modelStudio.html'>modelStudio</a></code>.
-It is possible to modify values of this list and pass it to the <code>options</code>
-parameter in the main function. <strong>WARNING: Editing default options may cause
-unintended behavior.</strong></p>
+    <p>This function updates the options of a <code><a href='modelStudio.html'>modelStudio</a></code> object.
+<strong>WARNING: Editing default options may cause unintended behavior.</strong></p>
     </div>
 
-    <pre class="usage"><span class='fu'>modelStudioOptions</span>(<span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>ms_update_options</span>(<span class='no'>object</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>object</th>
+      <td><p>A <code>modelStudio</code> created with <code><a href='modelStudio.html'>modelStudio()</a></code>.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
-      <td><p>Options to change, <code>option_name = value</code>.</p></td>
+      <td><p>Options to change in the form <code>option_name = value</code>,
+e.g. <code>time = 0</code>, <code>facet_dim = c(1,2)</code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>list</code> of options for <code>modelStudio</code>.</p>
+    <p>An object of the <code>r2d3, htmlwidget, modelStudio</code> class.</p>
+    <h2 class="hasAnchor" id="options"><a class="anchor" href="#options"></a>Options</h2>
+
+    
+
 <h3>Main options:</h3>
 
 <dl>
@@ -239,32 +244,16 @@ and <a href='https://modeloriented.github.io/modelStudio/articles/ms-perks-featu
 <span class='no'>model_apartments</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>m2.price</span> ~<span class='no'>.</span> , <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>)
 
 <span class='co'># create an explainer for the model</span>
-<span class='no'>explainer_apartments</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>DALEX</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='no'>model_apartments</span>,
-                                       <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>,
-                                       <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>apartments</span>$<span class='no'>m2.price</span>,
-                                       <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"glm"</span>)
-
-<span class='co'># pick observations</span>
-<span class='no'>new_observation</span> <span class='kw'>&lt;-</span> <span class='no'>apartments</span>[<span class='fl'>1</span>:<span class='fl'>2</span>,]
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>new_observation</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ap1"</span>,<span class='st'>"ap2"</span>)
-
-<span class='co'># modify default options</span>
-<span class='no'>new_options</span> <span class='kw'>&lt;-</span> <span class='fu'>modelStudioOptions</span>(
-  <span class='kw'>show_subtitle</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>bd_subtitle</span> <span class='kw'>=</span> <span class='st'>"Hello World"</span>,
-  <span class='kw'>line_size</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-  <span class='kw'>point_size</span> <span class='kw'>=</span> <span class='fl'>9</span>,
-  <span class='kw'>line_color</span> <span class='kw'>=</span> <span class='st'>"pink"</span>,
-  <span class='kw'>point_color</span> <span class='kw'>=</span> <span class='st'>"purple"</span>,
-  <span class='kw'>bd_positive_color</span> <span class='kw'>=</span> <span class='st'>"yellow"</span>,
-  <span class='kw'>bd_negative_color</span> <span class='kw'>=</span> <span class='st'>"orange"</span>
-)
+<span class='no'>explainer_apartments</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='no'>model_apartments</span>,
+                                <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>,
+                                <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>apartments</span>$<span class='no'>m2.price</span>)
 
 <span class='co'># make a studio for the model</span>
-<span class='fu'><a href='modelStudio.html'>modelStudio</a></span>(<span class='no'>explainer_apartments</span>,
-            <span class='no'>new_observation</span>,
-            <span class='kw'>options</span> <span class='kw'>=</span> <span class='no'>new_options</span>,
-            <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>200</span>,  <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>5</span>) <span class='co'># faster example</span></pre>
+<span class='no'>ms</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='modelStudio.html'>modelStudio</a></span>(<span class='no'>explainer_apartments</span>)
+<span class='no'>ms</span>
+
+<span class='no'>new_ms</span> <span class='kw'>&lt;-</span> <span class='fu'>ms_update_options</span>(<span class='no'>ms</span>, <span class='kw'>time</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>), <span class='kw'>margin_left</span> <span class='kw'>=</span> <span class='fl'>100</span>)
+<span class='no'>new_ms</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
