@@ -233,7 +233,7 @@ ms_update_observations <- function(object,
                            auto_unbox = TRUE)
   widget_id <- paste0("widget-", digest::digest(temp))
 
-  #:# exctract old options and update them
+  #:# extract old options and update them
   new_options <- options
   new_options$widget_id <- widget_id
   new_options$variable_names <- variable_names

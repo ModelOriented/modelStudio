@@ -16,9 +16,6 @@ new_ms2 <- modelStudio::ms_update_options(ms, explain_rf,
 new_ms3 <- modelStudio::ms_update_options(ms, explain_rf,
                                           new_observation = apartments[1:2,],
                                           B = 3, overwrite = TRUE)
-new_ms4 <- modelStudio::ms_update_options(ms, explain_rf,
-                                          new_observation = apartments[1,],
-                                          new_observation_y = apartments$m2.price[1])
 
 testthat::test_that("ms_update_observations", {
   testthat::expect_is(new_ms1, "modelStudio")
@@ -27,6 +24,4 @@ testthat::test_that("ms_update_observations", {
   testthat::expect_silent(new_ms2)
   testthat::expect_is(new_ms3, "modelStudio")
   testthat::expect_silent(new_ms3)
-  testthat::expect_is(new_ms4, "modelStudio")
-  testthat::expect_warning(new_ms4)
 })
