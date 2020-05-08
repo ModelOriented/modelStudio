@@ -80,7 +80,7 @@ Theoretical introduction to the plots:
 library("DALEX")
 library("modelStudio")
 
-#:# ex1 classification on 'titanic_imputed' dataset
+#:# ex1 classification on 'titanic' data
 
 # fit a model
 model_titanic <- glm(survived ~., data = titanic_imputed, family = "binomial")
@@ -97,12 +97,11 @@ rownames(new_observations) <- c("Lucas","James")
 
 # make a studio for the model
 modelStudio(explainer_titanic,
-            new_observations,
-            N = 200, B = 5) # faster example
+            new_observations)
 
 \donttest{
 
-#:# ex2 regression on 'apartments' dataset
+#:# ex2 regression on 'apartments' data
 library("ranger")
 
 model_apartments <- ranger(m2.price ~. ,data = apartments)
@@ -133,13 +132,11 @@ modelStudio(explainer_apartments,
 #:# ex3 xgboost model on 'HR' dataset
 library("xgboost")
 
-# fit a model
 HR_matrix <- model.matrix(status == "fired" ~ . -1, HR)
 
+# fit a model
 xgb_matrix <- xgb.DMatrix(HR_matrix, label = HR$status == "fired")
-
-params <- list(max_depth = 7, objective = "binary:logistic", eval_metric = "auc")
-
+params <- list(max_depth = 3, objective = "binary:logistic", eval_metric = "auc")
 model_HR <- xgb.train(params, xgb_matrix, nrounds = 300)
 
 # create an explainer for the model

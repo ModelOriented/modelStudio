@@ -56,28 +56,27 @@ library("DALEX")
 library("modelStudio")
 
 # fit a model
-model_apartments <- glm(m2.price ~. , data = apartments)
+model_titanic <- glm(survived ~., data = titanic_imputed, family = "binomial")
 
 # create an explainer for the model
-explainer_apartments <- explain(model_apartments,
-                                data = apartments,
-                                y = apartments$m2.price)
+explainer_titanic <- explain(model_titanic,
+                             data = titanic_imputed,
+                             y = titanic_imputed$survived)
 
 # make a studio for the model
-ms <- modelStudio(explainer_apartments)
-ms
+ms <- modelStudio(explainer_titanic)
 
 # add new observations
 ms <- ms_update_observations(ms,
-                             explainer_apartments,
-                             new_observation = apartments[100:101,],
-                             new_observation_y = apartments$m2.price[100:101])
+                             explainer_titanic,
+                             new_observation = titanic_imputed[100:101,],
+                             new_observation_y = titanic_imputed$survived[100:101])
 ms
 
 # overwrite the observations with new ones
 ms <- ms_update_observations(ms,
-                             explainer_apartments,
-                             new_observation = apartments[100:101,],
+                             explainer_titanic,
+                             new_observation = titanic_imputed[100:101,],
                              overwrite = TRUE)
 ms
 

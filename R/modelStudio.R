@@ -77,8 +77,7 @@
 #'
 #' # make a studio for the model
 #' modelStudio(explainer_titanic,
-#'             new_observations,
-#'             N = 200, B = 5) # faster example
+#'             new_observations)
 #'
 #' \donttest{
 #'

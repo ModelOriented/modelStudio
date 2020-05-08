@@ -30,16 +30,15 @@
 #' library("modelStudio")
 #'
 #' # fit a model
-#' model_apartments <- glm(m2.price ~. , data = apartments)
+#' model_titanic <- glm(survived ~., data = titanic_imputed, family = "binomial")
 #'
 #' # create an explainer for the model
-#' explainer_apartments <- explain(model_apartments,
-#'                                 data = apartments,
-#'                                 y = apartments$m2.price)
+#' explainer_titanic <- explain(model_titanic,
+#'                              data = titanic_imputed,
+#'                              y = titanic_imputed$survived)
 #'
 #' # make a studio for the model
-#' ms <- modelStudio(explainer_apartments)
-#' ms
+#' ms <- modelStudio(explainer_titanic)
 #'
 #' # update the options
 #' new_ms <- ms_update_options(ms,
