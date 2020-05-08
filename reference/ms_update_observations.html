@@ -258,6 +258,8 @@ and <a href='https://modeloriented.github.io/modelStudio/articles/ms-perks-featu
 <span class='co'># make a studio for the model</span>
 <span class='no'>ms</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='modelStudio.html'>modelStudio</a></span>(<span class='no'>explainer_titanic</span>)
 
+<span class='co'># \donttest{</span>
+
 <span class='co'># add new observations</span>
 <span class='no'>ms</span> <span class='kw'>&lt;-</span> <span class='fu'>ms_update_observations</span>(<span class='no'>ms</span>,
                              <span class='no'>explainer_titanic</span>,
@@ -265,12 +267,16 @@ and <a href='https://modeloriented.github.io/modelStudio/articles/ms-perks-featu
                              <span class='kw'>new_observation_y</span> <span class='kw'>=</span> <span class='no'>titanic_imputed</span>$<span class='no'>survived</span>[<span class='fl'>100</span>:<span class='fl'>101</span>])
 <span class='no'>ms</span>
 
+
+
 <span class='co'># overwrite the observations with new ones</span>
 <span class='no'>ms</span> <span class='kw'>&lt;-</span> <span class='fu'>ms_update_observations</span>(<span class='no'>ms</span>,
                              <span class='no'>explainer_titanic</span>,
                              <span class='kw'>new_observation</span> <span class='kw'>=</span> <span class='no'>titanic_imputed</span>[<span class='fl'>100</span>:<span class='fl'>101</span>,],
                              <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>ms</span></pre>
+<span class='no'>ms</span>
+
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
