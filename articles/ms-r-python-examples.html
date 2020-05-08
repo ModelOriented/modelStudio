@@ -106,7 +106,7 @@
       <h1 data-toc-skip>modelStudio - R &amp; Python examples</h1>
                         <h4 class="author">Hubert Baniecki</h4>
             
-            <h4 class="date">2020-05-06</h4>
+            <h4 class="date">2020-05-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ModelOriented/modelStudio/blob/master/vignettes/ms-r-python-examples.Rmd"><code>vignettes/ms-r-python-examples.Rmd</code></a></small>
       <div class="hidden name"><code>ms-r-python-examples.Rmd</code></div>
@@ -188,9 +188,7 @@
 
 <span class="co"># fit a model</span>
 <span class="no">task</span> <span class="kw">&lt;-</span> <span class="no">TaskClassif</span>$<span class="fu">new</span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"titanic"</span>, <span class="kw">backend</span> <span class="kw">=</span> <span class="no">train</span>, <span class="kw">target</span> <span class="kw">=</span> <span class="st">"survived"</span>)
-
 <span class="no">learner</span> <span class="kw">&lt;-</span> <span class="fu">lrn</span>(<span class="st">"classif.ranger"</span>, <span class="kw">predict_type</span> <span class="kw">=</span> <span class="st">"prob"</span>)
-
 <span class="no">learner</span>$<span class="fu">train</span>(<span class="no">task</span>)
 
 <span class="co"># create an explainer for the model</span>
@@ -229,9 +227,7 @@
 
 <span class="co"># fit a model</span>
 <span class="no">xgb_matrix</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xgboost/man/xgb.DMatrix.html">xgb.DMatrix</a></span>(<span class="no">train_matrix</span>, <span class="kw">label</span> <span class="kw">=</span> <span class="no">train</span>$<span class="no">survived</span>)
-
-<span class="no">params</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">max_depth</span> <span class="kw">=</span> <span class="fl">7</span>, <span class="kw">objective</span> <span class="kw">=</span> <span class="st">"binary:logistic"</span>, <span class="kw">eval_metric</span> <span class="kw">=</span> <span class="st">"auc"</span>)
-
+<span class="no">params</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">max_depth</span> <span class="kw">=</span> <span class="fl">3</span>, <span class="kw">objective</span> <span class="kw">=</span> <span class="st">"binary:logistic"</span>, <span class="kw">eval_metric</span> <span class="kw">=</span> <span class="st">"auc"</span>)
 <span class="no">model</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xgboost/man/xgb.train.html">xgb.train</a></span>(<span class="no">params</span>, <span class="no">xgb_matrix</span>, <span class="kw">nrounds</span> <span class="kw">=</span> <span class="fl">500</span>)
 
 <span class="co"># create an explainer for the model</span>
@@ -270,9 +266,8 @@
 <span class="no">train</span>$<span class="no">survived</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(<span class="no">train</span>$<span class="no">survived</span>)
 
 <span class="co"># fit a model</span>
-<span class="no">cv</span> <span class="kw">&lt;-</span> <span class="fu">trainControl</span>(<span class="kw">method</span> <span class="kw">=</span> <span class="st">"repeatedcv"</span>, <span class="kw">number</span> <span class="kw">=</span> <span class="fl">3</span>, <span class="kw">repeats</span> <span class="kw">=</span> <span class="fl">10</span>)
-
-<span class="no">model</span> <span class="kw">&lt;-</span> <span class="fu">train</span>(<span class="no">survived</span> ~ <span class="no">.</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">train</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"gbm"</span>, <span class="kw">trControl</span> <span class="kw">=</span> <span class="no">cv</span>)
+<span class="no">cv</span> <span class="kw">&lt;-</span> <span class="fu">trainControl</span>(<span class="kw">method</span> <span class="kw">=</span> <span class="st">"repeatedcv"</span>, <span class="kw">number</span> <span class="kw">=</span> <span class="fl">3</span>, <span class="kw">repeats</span> <span class="kw">=</span> <span class="fl">3</span>)
+<span class="no">model</span> <span class="kw">&lt;-</span> <span class="fu">train</span>(<span class="no">survived</span> ~ <span class="no">.</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">train</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"gbm"</span>, <span class="kw">trControl</span> <span class="kw">=</span> <span class="no">cv</span>, <span class="kw">verbose</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
 
 <span class="co"># create an explainer for the model</span>
 <span class="no">explainer</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DALEX/man/explain.html">explain</a></span>(<span class="no">model</span>,
@@ -302,6 +297,7 @@
 
 <span class="co"># init h2o</span>
 <span class="fu">h2o.init</span>()
+<span class="fu">h2o.no_progress</span>()
 
 <span class="co"># split the data</span>
 <span class="no">h2o_split</span> <span class="kw">&lt;-</span> <span class="fu">h2o.splitFrame</span>(<span class="fu">as.h2o</span>(<span class="no">data</span>))
@@ -313,11 +309,7 @@
 
 <span class="co"># fit a model</span>
 <span class="no">automl</span> <span class="kw">&lt;-</span> <span class="fu">h2o.automl</span>(<span class="kw">y</span> <span class="kw">=</span> <span class="st">"survived"</span>, <span class="kw">training_frame</span> <span class="kw">=</span> <span class="no">train</span>, <span class="kw">max_runtime_secs</span> <span class="kw">=</span> <span class="fl">30</span>)
-
 <span class="no">model</span> <span class="kw">&lt;-</span> <span class="no">automl</span>@<span class="kw">leader</span>
-
-<span class="co"># stop h2o progress printing</span>
-<span class="fu">h2o.no_progress</span>()
 
 <span class="co"># create an explainer for the model</span>
 <span class="no">explainer</span> <span class="kw">&lt;-</span> <span class="fu">explain_h2o</span>(<span class="no">model</span>,
@@ -355,7 +347,7 @@
 <span class="no">test</span> <span class="kw">&lt;-</span> <span class="no">data</span>[-<span class="no">index</span>,]
 
 <span class="co"># fit a model</span>
-<span class="fu">rand_forest</span>() <span class="kw">%&gt;%</span>
+<span class="no">model</span> <span class="kw">&lt;-</span> <span class="fu">rand_forest</span>() <span class="kw">%&gt;%</span>
   <span class="fu">set_engine</span>(<span class="st">"ranger"</span>, <span class="kw">importance</span> <span class="kw">=</span> <span class="st">"impurity"</span>) <span class="kw">%&gt;%</span>
   <span class="fu">set_mode</span>(<span class="st">"regression"</span>) <span class="kw">%&gt;%</span>
   <span class="fu">fit</span>(<span class="no">m2.price</span> ~ <span class="no">.</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">train</span>)

@@ -225,7 +225,7 @@
 
 <span class="co"># fit a model</span>
 <span class="no">xgb_matrix</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xgboost/man/xgb.DMatrix.html">xgb.DMatrix</a></span>(<span class="no">train_matrix</span>, <span class="kw">label</span> <span class="kw">=</span> <span class="no">train</span>$<span class="no">survived</span>)
-<span class="no">params</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">max_depth</span> <span class="kw">=</span> <span class="fl">7</span>, <span class="kw">objective</span> <span class="kw">=</span> <span class="st">"binary:logistic"</span>, <span class="kw">eval_metric</span> <span class="kw">=</span> <span class="st">"auc"</span>)
+<span class="no">params</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">max_depth</span> <span class="kw">=</span> <span class="fl">3</span>, <span class="kw">objective</span> <span class="kw">=</span> <span class="st">"binary:logistic"</span>, <span class="kw">eval_metric</span> <span class="kw">=</span> <span class="st">"auc"</span>)
 <span class="no">model</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xgboost/man/xgb.train.html">xgb.train</a></span>(<span class="no">params</span>, <span class="no">xgb_matrix</span>, <span class="kw">nrounds</span> <span class="kw">=</span> <span class="fl">500</span>)
 
 <span class="co"># create an explainer for the model</span>

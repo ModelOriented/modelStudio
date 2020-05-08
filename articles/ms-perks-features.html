@@ -106,7 +106,7 @@
       <h1 data-toc-skip>modelStudio - perks and features</h1>
                         <h4 class="author">Hubert Baniecki</h4>
             
-            <h4 class="date">2020-05-06</h4>
+            <h4 class="date">2020-05-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ModelOriented/modelStudio/blob/master/vignettes/ms-perks-features.Rmd"><code>vignettes/ms-perks-features.Rmd</code></a></small>
       <div class="hidden name"><code>ms-perks-features.Rmd</code></div>
@@ -118,7 +118,7 @@
 <p><code><a href="../reference/modelStudio.html">modelStudio::modelStudio</a></code> computes various (instance and dataset level) model explanations and produces an interactive, customisable dashboard. It consists of multiple panels for plots with their short descriptions. Easily save and share the HTML dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.</p>
 <p>Let’s use <code>HR</code> dataset to explore <code>modelStudio</code> parameters:</p>
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="no">train</span> <span class="kw">&lt;-</span> <span class="kw pkg">DALEX</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/DALEX/man/HR.html">HR</a></span>
-<span class="no">train</span>$<span class="no">fired</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="no">train</span>$<span class="no">status</span> <span class="kw">==</span> <span class="st">"fired"</span>, <span class="fl">1</span>, <span class="fl">0</span>)
+<span class="no">train</span>$<span class="no">fired</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="no">train</span>$<span class="no">status</span> <span class="kw">==</span> <span class="st">"fired"</span>, <span class="fl">1</span>, <span class="fl">0</span>))
 <span class="no">train</span>$<span class="no">status</span> <span class="kw">&lt;-</span> <span class="kw">NULL</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">train</span>)</pre></body></html></div>
@@ -130,7 +130,7 @@
 <th align="right">hours</th>
 <th align="right">evaluation</th>
 <th align="right">salary</th>
-<th align="right">fired</th>
+<th align="left">fired</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
@@ -139,7 +139,7 @@
 <td align="right">41.89</td>
 <td align="right">3</td>
 <td align="right">1</td>
-<td align="right">1</td>
+<td align="left">1</td>
 </tr>
 <tr class="even">
 <td align="left">female</td>
@@ -147,7 +147,7 @@
 <td align="right">36.34</td>
 <td align="right">2</td>
 <td align="right">5</td>
-<td align="right">1</td>
+<td align="left">1</td>
 </tr>
 <tr class="odd">
 <td align="left">male</td>
@@ -155,7 +155,7 @@
 <td align="right">36.82</td>
 <td align="right">3</td>
 <td align="right">0</td>
-<td align="right">1</td>
+<td align="left">1</td>
 </tr>
 <tr class="even">
 <td align="left">female</td>
@@ -163,7 +163,7 @@
 <td align="right">38.96</td>
 <td align="right">3</td>
 <td align="right">2</td>
-<td align="right">1</td>
+<td align="left">1</td>
 </tr>
 <tr class="odd">
 <td align="left">male</td>
@@ -171,7 +171,7 @@
 <td align="right">62.15</td>
 <td align="right">5</td>
 <td align="right">3</td>
-<td align="right">0</td>
+<td align="left">0</td>
 </tr>
 <tr class="even">
 <td align="left">male</td>
@@ -179,14 +179,14 @@
 <td align="right">69.54</td>
 <td align="right">2</td>
 <td align="right">0</td>
-<td align="right">1</td>
+<td align="left">1</td>
 </tr>
 </tbody>
 </table>
 <p>Prepare <code>HR_test</code> data and a <code>ranger</code> model for the explainer:</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="co"># fit a ranger model</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"ranger"</span>)
-<span class="no">model</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ranger/man/ranger.html">ranger</a></span>(<span class="no">fired</span> ~<span class="no">.</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">train</span>)
+<span class="no">model</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ranger/man/ranger.html">ranger</a></span>(<span class="no">fired</span> ~<span class="no">.</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">train</span>, <span class="kw">probability</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
 
 <span class="co"># prepare validation dataset</span>
 <span class="no">test</span> <span class="kw">&lt;-</span> <span class="kw pkg">DALEX</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/DALEX/man/HR.html">HR_test</a></span>[<span class="fl">1</span>:<span class="fl">1000</span>,]
@@ -293,9 +293,9 @@
             <span class="kw">parallel</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
 <hr>
 </div>
-<div id="plot-options" class="section level2">
+<div id="additional-options" class="section level2">
 <h2 class="hasAnchor">
-<a href="#plot-options" class="anchor"></a>plot options</h2>
+<a href="#additional-options" class="anchor"></a>additional options</h2>
 <p>Customize some of <code>modelStudio</code> looks by overwriting default options returned by the <code><a href="../reference/ms_options.html">ms_options()</a></code> function. Full list of options: <a href="http://modelstudio.drwhy.ai/reference/ms_options.html">documentation</a>.</p>
 <div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="co"># set additional graphical parameters</span>
 <span class="no">new_options</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/ms_options.html">ms_options</a></span>(
@@ -311,20 +311,48 @@
 
 <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer</span>,
             <span class="kw">options</span> <span class="kw">=</span> <span class="no">new_options</span>)</pre></body></html></div>
+<p>All visual options can be changed after the calculations using <code><a href="../reference/ms_update_options.html">ms_update_options()</a></code>.</p>
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">old_ms</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer</span>)
+<span class="no">old_ms</span>
+
+<span class="co"># update the options</span>
+<span class="no">new_ms</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/ms_update_options.html">ms_update_options</a></span>(<span class="no">old_ms</span>,
+                            <span class="kw">time</span> <span class="kw">=</span> <span class="fl">0</span>,
+                            <span class="kw">facet_dim</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>,<span class="fl">2</span>),
+                            <span class="kw">margin_left</span> <span class="kw">=</span> <span class="fl">150</span>)
+<span class="no">new_ms</span></pre></body></html></div>
 <hr>
+</div>
+<div id="update-observations" class="section level2">
+<h2 class="hasAnchor">
+<a href="#update-observations" class="anchor"></a>update observations</h2>
+<p>Use <code><a href="../reference/ms_update_observations.html">ms_update_observations()</a></code> to add more observations with their local explanations to the <code>modelStudio</code>.</p>
+<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">old_ms</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer</span>)
+<span class="no">old_ms</span>
+
+<span class="co"># add new observations</span>
+<span class="no">plus_ms</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/ms_update_observations.html">ms_update_observations</a></span>(<span class="no">old_ms</span>,
+                                  <span class="no">explainer</span>,
+                                  <span class="kw">new_observation</span> <span class="kw">=</span> <span class="no">test</span>[<span class="fl">101</span>:<span class="fl">102</span>,])
+<span class="no">plus_ms</span>
+
+<span class="co"># overwrite old observations</span>
+<span class="no">new_ms</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/ms_update_observations.html">ms_update_observations</a></span>(<span class="no">old_ms</span>,
+                                 <span class="no">explainer</span>,
+                                 <span class="kw">new_observation</span> <span class="kw">=</span> <span class="no">test</span>[<span class="fl">103</span>:<span class="fl">104</span>,],
+                                 <span class="kw">overwrite</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+<span class="no">new_ms</span></pre></body></html></div>
 </div>
 <div id="dalextra" class="section level2">
 <h2 class="hasAnchor">
 <a href="#dalextra" class="anchor"></a>DALEXtra</h2>
 <p>Use <code>explain_*()</code> functions from the <a href="https://github.com/ModelOriented/DALEXtra">DALEXtra</a> package to explain various models. Bellow basic example of making <code>modelStudio</code> for a <code>mlr</code> model using <code>explain_mlr()</code>.</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DALEXtra</span>)
+<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DALEXtra</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">mlr</span>)
 
 <span class="co"># fit a model</span>
-<span class="no">task</span> <span class="kw">&lt;-</span> <span class="fu">makeRegrTask</span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"task"</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">train</span>, <span class="kw">target</span> <span class="kw">=</span> <span class="st">"fired"</span>)
-
-<span class="no">learner</span> <span class="kw">&lt;-</span> <span class="fu">makeLearner</span>(<span class="st">"regr.ranger"</span>, <span class="kw">predict.type</span> <span class="kw">=</span> <span class="st">"response"</span>)
-
+<span class="no">task</span> <span class="kw">&lt;-</span> <span class="fu">makeClassifTask</span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"task"</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">train</span>, <span class="kw">target</span> <span class="kw">=</span> <span class="st">"fired"</span>)
+<span class="no">learner</span> <span class="kw">&lt;-</span> <span class="fu">makeLearner</span>(<span class="st">"classif.ranger"</span>, <span class="kw">predict.type</span> <span class="kw">=</span> <span class="st">"prob"</span>)
 <span class="no">model</span> <span class="kw">&lt;-</span> <span class="fu">train</span>(<span class="no">learner</span>, <span class="no">task</span>)
 
 <span class="co"># create an explainer for the model</span>
@@ -334,8 +362,7 @@
                              <span class="kw">label</span> <span class="kw">=</span> <span class="st">"mlr"</span>)
 
 <span class="co"># make a studio for the model</span>
-<span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer_mlr</span>,
-            <span class="kw">B</span> <span class="kw">=</span> <span class="fl">10</span>)</pre></body></html></div>
+<span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer_mlr</span>)</pre></body></html></div>
 </div>
 <div id="references" class="section level2">
 <h2 class="hasAnchor">
