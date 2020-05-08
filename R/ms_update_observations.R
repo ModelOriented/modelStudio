@@ -51,6 +51,8 @@
 #' # make a studio for the model
 #' ms <- modelStudio(explainer_titanic)
 #'
+#' \donttest{
+#'
 #' # add new observations
 #' ms <- ms_update_observations(ms,
 #'                              explainer_titanic,
@@ -58,7 +60,7 @@
 #'                              new_observation_y = titanic_imputed$survived[100:101])
 #' ms
 #'
-#' \donttest{
+#'
 #'
 #' # overwrite the observations with new ones
 #' ms <- ms_update_observations(ms,

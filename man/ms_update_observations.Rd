@@ -66,6 +66,8 @@ explainer_titanic <- explain(model_titanic,
 # make a studio for the model
 ms <- modelStudio(explainer_titanic)
 
+\donttest{
+
 # add new observations
 ms <- ms_update_observations(ms,
                              explainer_titanic,
@@ -73,12 +75,16 @@ ms <- ms_update_observations(ms,
                              new_observation_y = titanic_imputed$survived[100:101])
 ms
 
+
+
 # overwrite the observations with new ones
 ms <- ms_update_observations(ms,
                              explainer_titanic,
                              new_observation = titanic_imputed[100:101,],
                              overwrite = TRUE)
 ms
+
+}
 
 }
 \references{
