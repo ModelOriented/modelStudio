@@ -284,7 +284,7 @@ and <a href='https://modeloriented.github.io/modelStudio/articles/ms-perks-featu
     <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"DALEX"</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"modelStudio"</span>)
 
-<span class='co'>#:# ex1 classification on 'titanic_imputed' dataset</span>
+<span class='co'>#:# ex1 classification on 'titanic' data</span>
 
 <span class='co'># fit a model</span>
 <span class='no'>model_titanic</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>survived</span> ~<span class='no'>.</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>titanic_imputed</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>)
@@ -301,12 +301,11 @@ and <a href='https://modeloriented.github.io/modelStudio/articles/ms-perks-featu
 
 <span class='co'># make a studio for the model</span>
 <span class='fu'>modelStudio</span>(<span class='no'>explainer_titanic</span>,
-            <span class='no'>new_observations</span>,
-            <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>200</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>5</span>) <span class='co'># faster example</span>
+            <span class='no'>new_observations</span>)
 
 <span class='co'># \donttest{</span>
 
-<span class='co'>#:# ex2 regression on 'apartments' dataset</span>
+<span class='co'>#:# ex2 regression on 'apartments' data</span>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"ranger"</span>)
 
 <span class='no'>model_apartments</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/ranger/man/ranger.html'>ranger</a></span>(<span class='no'>m2.price</span> ~<span class='no'>.</span> ,<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>)
@@ -337,13 +336,11 @@ and <a href='https://modeloriented.github.io/modelStudio/articles/ms-perks-featu
 <span class='co'>#:# ex3 xgboost model on 'HR' dataset</span>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"xgboost"</span>)
 
-<span class='co'># fit a model</span>
 <span class='no'>HR_matrix</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/model.matrix.html'>model.matrix</a></span>(<span class='no'>status</span> <span class='kw'>==</span> <span class='st'>"fired"</span> ~ <span class='no'>.</span> -<span class='fl'>1</span>, <span class='no'>HR</span>)
 
+<span class='co'># fit a model</span>
 <span class='no'>xgb_matrix</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/xgboost/man/xgb.DMatrix.html'>xgb.DMatrix</a></span>(<span class='no'>HR_matrix</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='no'>HR</span>$<span class='no'>status</span> <span class='kw'>==</span> <span class='st'>"fired"</span>)
-
-<span class='no'>params</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>max_depth</span> <span class='kw'>=</span> <span class='fl'>7</span>, <span class='kw'>objective</span> <span class='kw'>=</span> <span class='st'>"binary:logistic"</span>, <span class='kw'>eval_metric</span> <span class='kw'>=</span> <span class='st'>"auc"</span>)
-
+<span class='no'>params</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>max_depth</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>objective</span> <span class='kw'>=</span> <span class='st'>"binary:logistic"</span>, <span class='kw'>eval_metric</span> <span class='kw'>=</span> <span class='st'>"auc"</span>)
 <span class='no'>model_HR</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/xgboost/man/xgb.train.html'>xgb.train</a></span>(<span class='no'>params</span>, <span class='no'>xgb_matrix</span>, <span class='kw'>nrounds</span> <span class='kw'>=</span> <span class='fl'>300</span>)
 
 <span class='co'># create an explainer for the model</span>

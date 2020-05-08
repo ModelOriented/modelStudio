@@ -248,28 +248,27 @@ and <a href='https://modeloriented.github.io/modelStudio/articles/ms-perks-featu
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"modelStudio"</span>)
 
 <span class='co'># fit a model</span>
-<span class='no'>model_apartments</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>m2.price</span> ~<span class='no'>.</span> , <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>)
+<span class='no'>model_titanic</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>survived</span> ~<span class='no'>.</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>titanic_imputed</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>)
 
 <span class='co'># create an explainer for the model</span>
-<span class='no'>explainer_apartments</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='no'>model_apartments</span>,
-                                <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>,
-                                <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>apartments</span>$<span class='no'>m2.price</span>)
+<span class='no'>explainer_titanic</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='no'>model_titanic</span>,
+                             <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>titanic_imputed</span>,
+                             <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>titanic_imputed</span>$<span class='no'>survived</span>)
 
 <span class='co'># make a studio for the model</span>
-<span class='no'>ms</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='modelStudio.html'>modelStudio</a></span>(<span class='no'>explainer_apartments</span>)
-<span class='no'>ms</span>
+<span class='no'>ms</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='modelStudio.html'>modelStudio</a></span>(<span class='no'>explainer_titanic</span>)
 
 <span class='co'># add new observations</span>
 <span class='no'>ms</span> <span class='kw'>&lt;-</span> <span class='fu'>ms_update_observations</span>(<span class='no'>ms</span>,
-                             <span class='no'>explainer_apartments</span>,
-                             <span class='kw'>new_observation</span> <span class='kw'>=</span> <span class='no'>apartments</span>[<span class='fl'>100</span>:<span class='fl'>101</span>,],
-                             <span class='kw'>new_observation_y</span> <span class='kw'>=</span> <span class='no'>apartments</span>$<span class='no'>m2.price</span>[<span class='fl'>100</span>:<span class='fl'>101</span>])
+                             <span class='no'>explainer_titanic</span>,
+                             <span class='kw'>new_observation</span> <span class='kw'>=</span> <span class='no'>titanic_imputed</span>[<span class='fl'>100</span>:<span class='fl'>101</span>,],
+                             <span class='kw'>new_observation_y</span> <span class='kw'>=</span> <span class='no'>titanic_imputed</span>$<span class='no'>survived</span>[<span class='fl'>100</span>:<span class='fl'>101</span>])
 <span class='no'>ms</span>
 
 <span class='co'># overwrite the observations with new ones</span>
 <span class='no'>ms</span> <span class='kw'>&lt;-</span> <span class='fu'>ms_update_observations</span>(<span class='no'>ms</span>,
-                             <span class='no'>explainer_apartments</span>,
-                             <span class='kw'>new_observation</span> <span class='kw'>=</span> <span class='no'>apartments</span>[<span class='fl'>100</span>:<span class='fl'>101</span>,],
+                             <span class='no'>explainer_titanic</span>,
+                             <span class='kw'>new_observation</span> <span class='kw'>=</span> <span class='no'>titanic_imputed</span>[<span class='fl'>100</span>:<span class='fl'>101</span>,],
                              <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>ms</span></pre>
   </div>
