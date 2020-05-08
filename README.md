@@ -130,7 +130,7 @@ test_matrix <- model.matrix(survived ~.-1, test)
 
 # fit a model
 xgb_matrix <- xgb.DMatrix(train_matrix, label = train$survived)
-params <- list(max_depth = 7, objective = "binary:logistic", eval_metric = "auc")
+params <- list(max_depth = 3, objective = "binary:logistic", eval_metric = "auc")
 model <- xgb.train(params, xgb_matrix, nrounds = 500)
 
 # create an explainer for the model

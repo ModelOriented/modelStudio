@@ -27,7 +27,7 @@ Let's use `HR` dataset to explore `modelStudio` parameters:
 
 ```{r results="hide"}
 train <- DALEX::HR
-train$fired <- ifelse(train$status == "fired", 1, 0)
+train$fired <- as.factor(ifelse(train$status == "fired", 1, 0))
 train$status <- NULL
 
 head(train)
@@ -42,7 +42,7 @@ Prepare `HR_test` data and a `ranger` model for the explainer:
 ```{r results="hide", eval = FALSE}
 # fit a ranger model
 library("ranger")
-model <- ranger(fired ~., data = train)
+model <- ranger(fired ~., data = train, probability = TRUE)
 
 # prepare validation dataset
 test <- DALEX::HR_test[1:1000,]
@@ -189,7 +189,7 @@ modelStudio(explainer,
 
 --------------------------------------------------------------------
 
-## plot options
+## additional options
 
 Customize some of `modelStudio` looks by overwriting default options returned
 by the `ms_options()` function. Full list of options:
@@ -212,7 +212,43 @@ modelStudio(explainer,
             options = new_options)
 ```
 
+All visual options can be changed after the calculations using `ms_update_options()`.
+
+```{r eval = FALSE}
+old_ms <- modelStudio(explainer)
+old_ms
+
+# update the options
+new_ms <- ms_update_options(old_ms,
+                            time = 0,
+                            facet_dim = c(1,2),
+                            margin_left = 150)
+new_ms
+```
+
 -------------------------------------------------------------------
+
+## update observations
+
+Use `ms_update_observations()` to add more observations with their local explanations to the `modelStudio`.
+
+```{r eval = FALSE}
+old_ms <- modelStudio(explainer)
+old_ms
+
+# add new observations
+plus_ms <- ms_update_observations(old_ms,
+                                  explainer,
+                                  new_observation = test[101:102,])
+plus_ms
+
+# overwrite old observations
+new_ms <- ms_update_observations(old_ms,
+                                 explainer,
+                                 new_observation = test[103:104,],
+                                 overwrite = TRUE)
+new_ms
+```
 
 ## DALEXtra
 
@@ -225,10 +261,8 @@ library(DALEXtra)
 library(mlr)
 
 # fit a model
-task <- makeRegrTask(id = "task", data = train, target = "fired")
-
-learner <- makeLearner("regr.ranger", predict.type = "response")
-
+task <- makeClassifTask(id = "task", data = train, target = "fired")
+learner <- makeLearner("classif.ranger", predict.type = "prob")
 model <- train(learner, task)
 
 # create an explainer for the model
@@ -238,8 +272,7 @@ explainer_mlr <- explain_mlr(model,
                              label = "mlr")
 
 # make a studio for the model
-modelStudio(explainer_mlr,
-            B = 10)
+modelStudio(explainer_mlr)
 ```
 
 ## References

@@ -95,9 +95,7 @@ train$survived <- as.factor(train$survived)
 
 # fit a model
 task <- TaskClassif$new(id = "titanic", backend = train, target = "survived")
-
 learner <- lrn("classif.ranger", predict_type = "prob")
-
 learner$train(task)
 
 # create an explainer for the model
@@ -137,9 +135,7 @@ test_matrix <- model.matrix(survived ~.-1, test)
 
 # fit a model
 xgb_matrix <- xgb.DMatrix(train_matrix, label = train$survived)
-
-params <- list(max_depth = 7, objective = "binary:logistic", eval_metric = "auc")
-
+params <- list(max_depth = 3, objective = "binary:logistic", eval_metric = "auc")
 model <- xgb.train(params, xgb_matrix, nrounds = 500)
 
 # create an explainer for the model
@@ -179,9 +175,8 @@ test <- data[-index,]
 train$survived <- as.factor(train$survived)
 
 # fit a model
-cv <- trainControl(method = "repeatedcv", number = 3, repeats = 10)
-
-model <- train(survived ~ ., data = train, method = "gbm", trControl = cv)
+cv <- trainControl(method = "repeatedcv", number = 3, repeats = 3)
+model <- train(survived ~ ., data = train, method = "gbm", trControl = cv, verbose = FALSE)
 
 # create an explainer for the model
 explainer <- explain(model,
@@ -212,6 +207,7 @@ data <- DALEX::titanic_imputed
 
 # init h2o
 h2o.init()
+h2o.no_progress()
 
 # split the data
 h2o_split <- h2o.splitFrame(as.h2o(data))
@@ -223,11 +219,7 @@ train$survived <- as.factor(train$survived)
 
 # fit a model
 automl <- h2o.automl(y = "survived", training_frame = train, max_runtime_secs = 30)
-
 model <- automl@leader
-
-# stop h2o progress printing
-h2o.no_progress()
 
 # create an explainer for the model
 explainer <- explain_h2o(model,
@@ -266,7 +258,7 @@ train <- data[index,]
 test <- data[-index,]
 
 # fit a model
-rand_forest() %>%
+model <- rand_forest() %>%
   set_engine("ranger", importance = "impurity") %>%
   set_mode("regression") %>%
   fit(m2.price ~ ., data = train)

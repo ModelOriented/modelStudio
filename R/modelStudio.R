@@ -60,7 +60,7 @@
 #' library("DALEX")
 #' library("modelStudio")
 #'
-#' #:# ex1 classification on 'titanic_imputed' dataset
+#' #:# ex1 classification on 'titanic' data
 #'
 #' # fit a model
 #' model_titanic <- glm(survived ~., data = titanic_imputed, family = "binomial")
@@ -82,7 +82,7 @@
 #'
 #' \donttest{
 #'
-#' #:# ex2 regression on 'apartments' dataset
+#' #:# ex2 regression on 'apartments' data
 #' library("ranger")
 #'
 #' model_apartments <- ranger(m2.price ~. ,data = apartments)
@@ -113,13 +113,11 @@
 #' #:# ex3 xgboost model on 'HR' dataset
 #' library("xgboost")
 #'
-#' # fit a model
 #' HR_matrix <- model.matrix(status == "fired" ~ . -1, HR)
 #'
+#' # fit a model
 #' xgb_matrix <- xgb.DMatrix(HR_matrix, label = HR$status == "fired")
-#'
-#' params <- list(max_depth = 7, objective = "binary:logistic", eval_metric = "auc")
-#'
+#' params <- list(max_depth = 3, objective = "binary:logistic", eval_metric = "auc")
 #' model_HR <- xgb.train(params, xgb_matrix, nrounds = 300)
 #'
 #' # create an explainer for the model
@@ -206,7 +204,7 @@ modelStudio.explainer <- function(explainer,
   if (show_info) {
     pb <- progress_bar$new(
       format = "  Calculating :what \n    Elapsed time: :elapsedfull ETA::eta", # :percent  [:bar]
-      total = (3*B + 2 + 1)*obs_count + (B + 3*B + B) + 1,
+      total = (3*B + 2 + 1)*obs_count + (2*B + 3*B + B) + 1,
       show_after = 0
     )
     pb$tick(0, tokens = list(what = "..."))
@@ -216,7 +214,7 @@ modelStudio.explainer <- function(explainer,
   fi <- calculate(
     ingredients::feature_importance(
         model, data, y, predict_function, variables = variable_names, B = B, N = 10*N),
-    "ingredients::feature_importance", show_info, pb, B)
+    "ingredients::feature_importance", show_info, pb, 2*B)
 
   which_numerical <- which_variables_are_numeric(data)
 
