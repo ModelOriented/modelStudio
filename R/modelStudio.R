@@ -184,7 +184,7 @@ modelStudio.explainer <- function(explainer,
 
   check_single_prediction <- try(predict_function(model, new_observation[1,, drop = FALSE]), silent = TRUE)
   if (class(check_single_prediction)[1] == "try-error") {
-    stop("`predict_function` returns an error when executed on `new_observation[1,, drop = FALSE]` \n")
+    stop("`explainer$predict_function` returns an error when executed on `new_observation[1,, drop = FALSE]` \n")
   }
   #:#
 

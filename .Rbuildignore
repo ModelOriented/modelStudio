@@ -19,3 +19,5 @@ modelStudio_my_test.R
 ^CONTRIBUTING.md
 ^\.github$
 ^pickle$
+^.*\.gif
+^.*\.png

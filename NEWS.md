@@ -1,5 +1,5 @@
 # modelStudio (development)
-* ...
+* remove redundant documentation resources so that the package weights less
 
 # modelStudio 1.1.0
 * rename `modelStudioOptions()` to `ms_options()`
