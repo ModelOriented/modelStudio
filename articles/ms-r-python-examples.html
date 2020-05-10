@@ -106,7 +106,7 @@
       <h1 data-toc-skip>modelStudio - R &amp; Python examples</h1>
                         <h4 class="author">Hubert Baniecki</h4>
             
-            <h4 class="date">2020-05-09</h4>
+            <h4 class="date">2020-05-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ModelOriented/modelStudio/blob/master/vignettes/ms-r-python-examples.Rmd"><code>vignettes/ms-r-python-examples.Rmd</code></a></small>
       <div class="hidden name"><code>ms-r-python-examples.Rmd</code></div>
@@ -367,7 +367,7 @@
 <a href="#python" class="anchor"></a>Python</h2>
 <p>The <code><a href="../reference/modelStudio.html">modelStudio()</a></code> function uses <code>dalex</code> explainers created with <code>dalex.Explainer()</code>.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># package for Explainer object</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="ex">pip3</span> install dalex --force</span></code></pre></div>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="ex">pip</span> install dalex</span></code></pre></div>
 <p>Use <code>pickle</code> Python module and <code>reticulate</code> R package to easily make a studio for a model.</p>
 <div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="co"># package for pickle load</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"reticulate"</span>)
@@ -417,7 +417,7 @@
 </div>
 <div id="lightgbm-dashboard" class="section level3">
 <h3 class="hasAnchor">
-<a href="#lightgbm-dashboard" class="anchor"></a>lightGBM <a href="https://modeloriented.github.io/modelStudio/lightgbm.html">dashboard</a>
+<a href="#lightgbm-dashboard" class="anchor"></a>lightgbm <a href="https://modeloriented.github.io/modelStudio/lightgbm.html">dashboard</a>
 </h3>
 <p>In this example we will make a studio for the <code>Pipeline LGBMClassifier</code> model on <code>titanic</code> data.</p>
 <p>First, use <code>dalex</code> in Python:</p>
@@ -471,7 +471,7 @@
 <span id="cb12-48"><a href="#cb12-48"></a>model.fit(X_train, y_train)</span>
 <span id="cb12-49"><a href="#cb12-49"></a></span>
 <span id="cb12-50"><a href="#cb12-50"></a><span class="co"># create an explainer for the model</span></span>
-<span id="cb12-51"><a href="#cb12-51"></a>explainer <span class="op">=</span> dx.Explainer(model, data<span class="op">=</span>X_test, y<span class="op">=</span>y_test, label<span class="op">=</span><span class="st">'lightGBM'</span>)</span>
+<span id="cb12-51"><a href="#cb12-51"></a>explainer <span class="op">=</span> dx.Explainer(model, data<span class="op">=</span>X_test, y<span class="op">=</span>y_test, label<span class="op">=</span><span class="st">'lightgbm'</span>)</span>
 <span id="cb12-52"><a href="#cb12-52"></a></span>
 <span id="cb12-53"><a href="#cb12-53"></a><span class="co"># pack the explainer into a pickle file</span></span>
 <span id="cb12-54"><a href="#cb12-54"></a>explainer.dump(<span class="bu">open</span>(<span class="st">'explainer_lightgbm.pickle'</span>, <span class="st">'wb'</span>)) </span></code></pre></div>

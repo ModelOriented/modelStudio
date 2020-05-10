@@ -106,7 +106,7 @@
       <h1 data-toc-skip>modelStudio - perks and features</h1>
                         <h4 class="author">Hubert Baniecki</h4>
             
-            <h4 class="date">2020-05-09</h4>
+            <h4 class="date">2020-05-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ModelOriented/modelStudio/blob/master/vignettes/ms-perks-features.Rmd"><code>vignettes/ms-perks-features.Rmd</code></a></small>
       <div class="hidden name"><code>ms-perks-features.Rmd</code></div>
@@ -115,7 +115,7 @@
 
     
     
-<p><code><a href="../reference/modelStudio.html">modelStudio::modelStudio</a></code> computes various (instance and dataset level) model explanations and produces an interactive, customisable dashboard. It consists of multiple panels for plots with their short descriptions. Easily save and share the HTML dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.</p>
+<p>The <code><a href="../reference/modelStudio.html">modelStudio()</a></code> function computes various (instance and dataset level) model explanations and produces an interactive, customisable dashboard. It consists of multiple panels for plots with their short descriptions. Easily save and share the HTML dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.</p>
 <p>Let’s use <code>HR</code> dataset to explore <code>modelStudio</code> parameters:</p>
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="no">train</span> <span class="kw">&lt;-</span> <span class="kw pkg">DALEX</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/DALEX/man/HR.html">HR</a></span>
 <span class="no">train</span>$<span class="no">fired</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="no">train</span>$<span class="no">status</span> <span class="kw">==</span> <span class="st">"fired"</span>, <span class="fl">1</span>, <span class="fl">0</span>))
@@ -243,7 +243,15 @@
 <div id="more-calculations-means-more-time" class="section level3">
 <h3 class="hasAnchor">
 <a href="#more-calculations-means-more-time" class="anchor"></a>more calculations means more time</h3>
-<p><code>N</code> is a number of observations used for calculation of <a href="https://pbiecek.github.io/ema/partialDependenceProfiles.html">Partial Dependence</a> and <a href="https://pbiecek.github.io/ema/accumulatedLocalProfiles.html">Accumulated Dependence</a> Profiles. <code>10*N</code> is a number of observations used for calculation of <a href="https://pbiecek.github.io/ema/featureImportance.html">Feature Importance</a>. <code>B</code> is a number of permutation rounds used for calculation of <a href="https://pbiecek.github.io/ema/shapley.html">Shapley Values</a> and <a href="https://pbiecek.github.io/ema/featureImportance.html">Feature Importance</a>. Decrease <code>N</code> and <code>B</code> parameters to lower the computation time or increase them to get more accurate empirical results.</p>
+<ul>
+<li>
+<code>N</code> is a number of observations used for calculation of <a href="https://pbiecek.github.io/ema/partialDependenceProfiles.html">Partial Dependence</a> and <a href="https://pbiecek.github.io/ema/accumulatedLocalProfiles.html">Accumulated Dependence</a> Profiles.</li>
+<li>
+<code>10*N</code> is a number of observations used for calculation of <a href="https://pbiecek.github.io/ema/featureImportance.html">Feature Importance</a>.</li>
+<li>
+<code>B</code> is a number of permutation rounds used for calculation of <a href="https://pbiecek.github.io/ema/shapley.html">Shapley Values</a> and <a href="https://pbiecek.github.io/ema/featureImportance.html">Feature Importance</a>.</li>
+</ul>
+<p>Decrease <code>N</code> and <code>B</code> parameters to lower the computation time or increase them to get more accurate empirical results.</p>
 <div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="co"># faster, less precise</span>
 <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer</span>,
             <span class="kw">N</span> <span class="kw">=</span> <span class="fl">200</span>, <span class="kw">B</span> <span class="kw">=</span> <span class="fl">5</span>)
@@ -269,7 +277,7 @@
 <div id="viewer-or-browser" class="section level3">
 <h3 class="hasAnchor">
 <a href="#viewer-or-browser" class="anchor"></a>viewer or browser?</h3>
-<p>Change <code>viewer</code> parameter to set where to display <code>modelStudio</code>. Best described in <code>r2d3</code> documentation: <a href="https://rstudio.github.io/r2d3/articles/visualization_options.html#viewer"><code>r2d3 viewer argument</code></a>.</p>
+<p>Change <code>viewer</code> parameter to set where to display <code>modelStudio</code>. <a href="https://rstudio.github.io/r2d3/articles/visualization_options.html#viewer">Best described in <code>r2d3</code> documentation</a>.</p>
 <div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer</span>,
             <span class="kw">viewer</span> <span class="kw">=</span> <span class="st">"browser"</span>)</pre></body></html></div>
 <hr>
@@ -279,7 +287,7 @@
 <h2 class="hasAnchor">
 <a href="#parallel-computation" class="anchor"></a>parallel computation</h2>
 <p>Speed up <code>modelStudio</code> computation by setting <code>parallel</code> parameter to <code>TRUE</code>. It uses <a href="https://www.rdocumentation.org/packages/parallelMap"><code>parallelMap</code></a> package to calculate local explainers faster. It is really useful when using <code>modelStudio</code> with complicated models, vast datasets or <strong>many observations are being processed</strong>.</p>
-<p>All options can be set outside of function call. More on that <a href="https://github.com/berndbischl/parallelMap#being-lazy-configuration">here</a>.</p>
+<p>All options can be set outside of the function call. <a href="https://github.com/berndbischl/parallelMap#being-lazy-configuration">How to use parallelMap</a>.</p>
 <div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="co"># set up the cluster</span>
 <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span>(
   <span class="kw">parallelMap.default.mode</span>        <span class="kw">=</span> <span class="st">"socket"</span>,
@@ -296,7 +304,7 @@
 <div id="additional-options" class="section level2">
 <h2 class="hasAnchor">
 <a href="#additional-options" class="anchor"></a>additional options</h2>
-<p>Customize some of <code>modelStudio</code> looks by overwriting default options returned by the <code><a href="../reference/ms_options.html">ms_options()</a></code> function. Full list of options: <a href="http://modelstudio.drwhy.ai/reference/ms_options.html">documentation</a>.</p>
+<p>Customize some of the <code>modelStudio</code> looks by overwriting default options returned by the <code><a href="../reference/ms_options.html">ms_options()</a></code> function. <a href="http://modelstudio.drwhy.ai/reference/ms_options.html">Full list of options</a>.</p>
 <div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="co"># set additional graphical parameters</span>
 <span class="no">new_options</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/ms_options.html">ms_options</a></span>(
   <span class="kw">show_subtitle</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
@@ -346,7 +354,8 @@
 <div id="dalextra" class="section level2">
 <h2 class="hasAnchor">
 <a href="#dalextra" class="anchor"></a>DALEXtra</h2>
-<p>Use <code>explain_*()</code> functions from the <a href="https://github.com/ModelOriented/DALEXtra">DALEXtra</a> package to explain various models. Bellow basic example of making <code>modelStudio</code> for a <code>mlr</code> model using <code>explain_mlr()</code>.</p>
+<p>Use <code>explain_*()</code> functions from the <a href="https://github.com/ModelOriented/DALEXtra">DALEXtra</a> package to explain various models.</p>
+<p>Bellow basic example of making <code>modelStudio</code> for a <code>mlr</code> model using <code>explain_mlr()</code>.</p>
 <div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DALEXtra</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">mlr</span>)
 
