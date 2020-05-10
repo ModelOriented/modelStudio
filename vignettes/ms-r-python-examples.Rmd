@@ -280,7 +280,7 @@ The `modelStudio()` function uses `dalex` explainers created with `dalex.Explain
 
 ```{bash, eval=FALSE, engine="sh"}
 # package for Explainer object
-pip3 install dalex --force
+pip install dalex
 ```
 
 Use `pickle` Python module and `reticulate` R package to easily make a studio for a model.
@@ -340,7 +340,7 @@ modelStudio(explainer, B = 5,
             options = ms_options(margin_left = 160))
 ```
 
-### lightGBM [dashboard](https://modeloriented.github.io/modelStudio/lightgbm.html)
+### lightgbm [dashboard](https://modeloriented.github.io/modelStudio/lightgbm.html)
 
 In this example we will make a studio for the `Pipeline LGBMClassifier` model on `titanic` data.
 
@@ -397,7 +397,7 @@ model = Pipeline(
 model.fit(X_train, y_train)
 
 # create an explainer for the model
-explainer = dx.Explainer(model, data=X_test, y=y_test, label='lightGBM')
+explainer = dx.Explainer(model, data=X_test, y=y_test, label='lightgbm')
 
 # pack the explainer into a pickle file
 explainer.dump(open('explainer_lightgbm.pickle', 'wb')) 

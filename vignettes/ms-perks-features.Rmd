@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-`modelStudio::modelStudio` computes various (instance and dataset level) model explanations and produces
+The `modelStudio()` function computes various (instance and dataset level) model explanations and produces
 an interactive, customisable dashboard. It consists of multiple panels for plots with their short descriptions.
 Easily save and share the HTML dashboard with others. Tools for model exploration unite with tools for
 EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.
@@ -111,14 +111,15 @@ modelStudio(explainer,
 
 ### more calculations means more time
 
-`N` is a number of observations used for calculation of
+- `N` is a number of observations used for calculation of
 [Partial Dependence](https://pbiecek.github.io/ema/partialDependenceProfiles.html)
 and [Accumulated Dependence](https://pbiecek.github.io/ema/accumulatedLocalProfiles.html) Profiles. 
-`10*N` is a number of observations used for calculation of
+- `10*N` is a number of observations used for calculation of
 [Feature Importance](https://pbiecek.github.io/ema/featureImportance.html).
-`B` is a number of permutation rounds used for calculation of
+- `B` is a number of permutation rounds used for calculation of
 [Shapley Values](https://pbiecek.github.io/ema/shapley.html) and
 [Feature Importance](https://pbiecek.github.io/ema/featureImportance.html).
+
 Decrease `N` and `B` parameters to lower the computation time or increase
 them to get more accurate empirical results.
 
@@ -153,8 +154,7 @@ modelStudio(explainer,
 ### viewer or browser?
 
 Change `viewer` parameter to set where to display `modelStudio`.
-Best described in `r2d3` documentation:
-[`r2d3 viewer argument`](https://rstudio.github.io/r2d3/articles/visualization_options.html#viewer).
+[Best described in `r2d3` documentation](https://rstudio.github.io/r2d3/articles/visualization_options.html#viewer).
 
 ```{r eval = FALSE}
 modelStudio(explainer,
@@ -170,8 +170,8 @@ It uses [`parallelMap`](https://www.rdocumentation.org/packages/parallelMap) pac
 to calculate local explainers faster. It is really useful when using `modelStudio` with
 complicated models, vast datasets or **many observations are being processed**.
 
-All options can be set outside of function call.
-More on that [here](https://github.com/berndbischl/parallelMap#being-lazy-configuration).
+All options can be set outside of the function call.
+[How to use parallelMap](https://github.com/berndbischl/parallelMap#being-lazy-configuration).
 
 ```{r eval = FALSE}
 # set up the cluster
@@ -191,9 +191,9 @@ modelStudio(explainer,
 
 ## additional options
 
-Customize some of `modelStudio` looks by overwriting default options returned
-by the `ms_options()` function. Full list of options:
-[documentation](http://modelstudio.drwhy.ai/reference/ms_options.html).
+Customize some of the `modelStudio` looks by overwriting default options returned
+by the `ms_options()` function.
+[Full list of options](http://modelstudio.drwhy.ai/reference/ms_options.html).
 
 ```{r eval = FALSE}
 # set additional graphical parameters
@@ -253,8 +253,9 @@ new_ms
 ## DALEXtra
 
 Use `explain_*()` functions from the [DALEXtra](https://github.com/ModelOriented/DALEXtra)
-package to explain various models. Bellow basic example of making `modelStudio` for
-a `mlr` model using `explain_mlr()`.
+package to explain various models.
+
+Bellow basic example of making `modelStudio` for a `mlr` model using `explain_mlr()`.
 
 ```{r eval = FALSE}
 library(DALEXtra)
