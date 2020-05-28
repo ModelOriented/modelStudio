@@ -171,6 +171,7 @@
 <h3 class="hasAnchor">
 <a href="#mlr-dashboard" class="anchor"></a>mlr <a href="https://modeloriented.github.io/modelStudio/mlr.html">dashboard</a>
 </h3>
+<details><p><summary><strong><em>Code</em></strong></summary></p>
 <p>In this example we will make a studio for the <code>ranger</code> model on <code>apartments</code> data.</p>
 <div class="sourceCode" id="cb4"><pre class="r"><span class="co"># load packages and data</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">mlr</span>)
@@ -202,11 +203,13 @@
 <span class="co"># make a studio for the model</span>
 <span class="fu"><a href="reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer</span>,
             <span class="no">new_observation</span>)</pre></div>
+</details>
 </div>
 <div id="xgboost-dashboard" class="section level3">
 <h3 class="hasAnchor">
 <a href="#xgboost-dashboard" class="anchor"></a>xgboost <a href="https://modeloriented.github.io/modelStudio/xgboost.html">dashboard</a>
 </h3>
+<details><p><summary><strong><em>Code</em></strong></summary></p>
 <p>In this example we will make a studio for the <code>xgboost</code> model on <code>titanic</code> data.</p>
 <div class="sourceCode" id="cb5"><pre class="r"><span class="co"># load packages and data</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">xgboost</span>)
@@ -242,11 +245,13 @@
 <span class="fu"><a href="reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer</span>,
             <span class="no">new_observation</span>,
             <span class="kw">options</span> <span class="kw">=</span> <span class="fu"><a href="reference/ms_options.html">ms_options</a></span>(<span class="kw">margin_left</span> <span class="kw">=</span> <span class="fl">140</span>))</pre></div>
+</details>
 </div>
 <div id="scikit-learn-dashboard" class="section level3">
 <h3 class="hasAnchor">
 <a href="#scikit-learn-dashboard" class="anchor"></a>scikit-learn <a href="https://modeloriented.github.io/modelStudio/scikitlearn.html">dashboard</a>
 </h3>
+<details><p><summary><strong><em>Code</em></strong></summary></p>
 <p>The <code><a href="reference/modelStudio.html">modelStudio()</a></code> function uses <code>dalex</code> explainers created with <code>dalex.Explainer()</code>.</p>
 <pre class="console"><code>pip install dalex</code></pre>
 <p>Use <code>pickle</code> Python module and <code>reticulate</code> R package to easily make a studio for a model.</p>
@@ -287,6 +292,7 @@
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">modelStudio</span>)
 <span class="fu"><a href="reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer</span>, <span class="kw">B</span> <span class="kw">=</span> <span class="fl">5</span>,
             <span class="kw">options</span> <span class="kw">=</span> <span class="fu"><a href="reference/ms_options.html">ms_options</a></span>(<span class="kw">margin_left</span> <span class="kw">=</span> <span class="fl">160</span>))</pre></div>
+</details>
 </div>
 </div>
 <div id="save--share" class="section level2">
