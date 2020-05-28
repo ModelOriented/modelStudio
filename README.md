@@ -59,6 +59,8 @@ modelStudio(explainer)
 
 ## R & Python Examples [more](http://modelstudio.drwhy.ai/articles/ms-r-python-examples.html)
 
+-------------------------------
+
 The `modelStudio()` function uses `DALEX` explainers created with `DALEX::explain()` or `DALEXtra::explain_*()`.
 
 ```r
@@ -73,10 +75,10 @@ install.packages("iBreakDown")
 
 ### mlr [dashboard](https://modeloriented.github.io/modelStudio/mlr.html)
 
-<details>
-<summary><strong><em>Code</em></strong></summary>
+Make a studio for the regression `ranger` model on `apartments` data.
 
-In this example we will make a studio for the `ranger` model on `apartments` data.
+<details>
+<summary><strong><em>code</em></strong></summary>
 
 ```r
 # load packages and data
@@ -115,10 +117,10 @@ modelStudio(explainer,
 
 ### xgboost [dashboard](https://modeloriented.github.io/modelStudio/xgboost.html)
 
-<details>
-<summary><strong><em>Code</em></strong></summary>
+Make a studio for the classification `xgboost` model on `titanic` data.
 
-In this example we will make a studio for the `xgboost` model on `titanic` data.
+<details>
+<summary><strong><em>code</em></strong></summary>
 
 ```r
 # load packages and data
@@ -159,14 +161,12 @@ modelStudio(explainer,
 
 </details>
 
-### scikit-learn [dashboard](https://modeloriented.github.io/modelStudio/scikitlearn.html)
-
-<details>
-<summary><strong><em>Code</em></strong></summary>
+-------------------------
 
 The `modelStudio()` function uses `dalex` explainers created with `dalex.Explainer()`.
 
 ```console
+:: package for Explainer object
 pip install dalex
 ```
 
@@ -175,9 +175,18 @@ Use `pickle` Python module and `reticulate` R package to easily make a studio fo
 ```r
 # package for pickle load
 install.packages("reticulate")
+
+# update main dependencies
+install.packages("ingredients")
+install.packages("iBreakDown")
 ```
 
-In this example we will make a studio for the `Pipeline SVR` model on `fifa` data.
+### scikit-learn [dashboard](https://modeloriented.github.io/modelStudio/scikitlearn.html)
+
+Make a studio for the regression `Pipeline SVR` model on `fifa` data.
+
+<details>
+<summary><strong><em>code</em></strong></summary>
 
 First, use `dalex` in Python:
 
@@ -222,6 +231,88 @@ modelStudio(explainer, B = 5,
 ```
 
 </details>
+
+### lightgbm [dashboard](https://modeloriented.github.io/modelStudio/lightgbm.html)
+
+Make a studio for the classification `Pipeline LGBMClassifier` model on `titanic` data.
+
+<details>
+<summary><strong><em>code</em></strong></summary>
+
+First, use `dalex` in Python:
+
+```python
+# load packages and data
+import dalex as dx
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.impute import SimpleImputer
+from sklearn.compose import ColumnTransformer
+from lightgbm import LGBMClassifier
+
+data = dx.datasets.load_titanic()
+X = data.drop(columns='survived')
+y = data.survived
+
+# split the data
+X_train, X_test, y_train, y_test = train_test_split(X, y)
+
+# fit a pipeline model
+numerical_features = ['age', 'fare', 'sibsp', 'parch']
+numerical_transformer = Pipeline(
+  steps=[
+    ('imputer', SimpleImputer(strategy='median')),
+    ('scaler', StandardScaler())
+  ]
+)
+categorical_features = ['gender', 'class', 'embarked']
+categorical_transformer = Pipeline(
+  steps=[
+    ('imputer', SimpleImputer(strategy='constant', fill_value='missing')),
+    ('onehot', OneHotEncoder(handle_unknown='ignore'))
+  ]
+)
+
+preprocessor = ColumnTransformer(
+  transformers=[
+    ('num', numerical_transformer, numerical_features),
+    ('cat', categorical_transformer, categorical_features)
+  ]
+)
+
+classifier = LGBMClassifier(n_estimators=300)
+
+model = Pipeline(
+  steps=[
+    ('preprocessor', preprocessor),
+    ('classifier', classifier)
+  ]
+)
+model.fit(X_train, y_train)
+
+# create an explainer for the model
+explainer = dx.Explainer(model, data=X_test, y=y_test, label='lightgbm')
+
+# pack the explainer into a pickle file
+explainer.dump(open('explainer_lightgbm.pickle', 'wb')) 
+```
+
+Then, use `modelStudio` in R:
+
+```r
+# load the explainer from the pickle file
+library(reticulate)
+explainer <- py_load_object("explainer_lightgbm.pickle", pickle = "pickle")
+
+# make a studio for the model
+library(modelStudio)
+modelStudio(explainer)
+```
+
+</details>
+
+-------------------------------
 
 ## Save & Share
 
