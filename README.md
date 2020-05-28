@@ -73,6 +73,9 @@ install.packages("iBreakDown")
 
 ### mlr [dashboard](https://modeloriented.github.io/modelStudio/mlr.html)
 
+<details>
+<summary><strong><em>Code</em></strong></summary>
+
 In this example we will make a studio for the `ranger` model on `apartments` data.
 
 ```r
@@ -108,7 +111,12 @@ modelStudio(explainer,
             new_observation)
 ```
 
+</details>
+
 ### xgboost [dashboard](https://modeloriented.github.io/modelStudio/xgboost.html)
+
+<details>
+<summary><strong><em>Code</em></strong></summary>
 
 In this example we will make a studio for the `xgboost` model on `titanic` data.
 
@@ -149,7 +157,12 @@ modelStudio(explainer,
             options = ms_options(margin_left = 140))
 ```
 
+</details>
+
 ### scikit-learn [dashboard](https://modeloriented.github.io/modelStudio/scikitlearn.html)
+
+<details>
+<summary><strong><em>Code</em></strong></summary>
 
 The `modelStudio()` function uses `dalex` explainers created with `dalex.Explainer()`.
 
@@ -207,6 +220,8 @@ library(modelStudio)
 modelStudio(explainer, B = 5,
             options = ms_options(margin_left = 160))
 ```
+
+</details>
 
 ## Save & Share
 
