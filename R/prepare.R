@@ -45,8 +45,8 @@ prepare_break_down_df <- function(x, max_features = 10, baseline = NA, digits = 
 
   x[x[,'variable_name']=="",'variable_name'] <- "prediction"
 
-  temp <- data.frame(x[c(1,nrow(x)),])
-  x <- data.frame(x[-c(1,nrow(x)),])
+  temp <- data.frame(x[c(1,nrow(x)),], stringsAsFactors=TRUE)
+  x <- data.frame(x[-c(1,nrow(x)),], stringsAsFactors=TRUE)
 
   if (nrow(x) > max_features) {
     last_row <- max_features + 1
@@ -102,7 +102,7 @@ prepare_shapley_values <- function(x, max_features = 10, show_boxplot = TRUE, ba
   if (is.na(baseline)) baseline <- attr(x, "intercept")[[1]]
   prediction <- attr(x, "prediction")[[1]]
 
-  x_df <- as.data.frame(x)
+  x_df <- as.data.frame(x, stringsAsFactors=TRUE)
 
   x_df_short <- subset(x_df[x_df$B == 0, ], select = -B)
 
@@ -117,7 +117,8 @@ prepare_shapley_values <- function(x, max_features = 10, show_boxplot = TRUE, ba
       q1 = as.numeric(tapply(x_df$contribution, x_df$variable_name, quantile, 0.25, na.rm = TRUE)),
       q3 = as.numeric(tapply(x_df$contribution, x_df$variable_name, quantile, 0.75, na.rm = TRUE)),
       max = as.numeric(tapply(x_df$contribution, x_df$variable_name, max, na.rm = TRUE)),
-      iqr = as.numeric(tapply(x_df$contribution, x_df$variable_name, IQR, na.rm = TRUE))
+      iqr = as.numeric(tapply(x_df$contribution, x_df$variable_name, IQR, na.rm = TRUE)),
+      stringsAsFactors=TRUE
     )
 
     x_stats$min <- pmax(x_stats$min, x_stats$q1 - 1.5*x_stats$iqr) + baseline
@@ -162,7 +163,7 @@ prepare_shapley_values_df <- function(x, max_features = 10, baseline = NA, predi
                                       digits = 3, rounding_function = round) {
   ### This function returns data as DF needed to plot ShapleyValues in D3 ###
 
-  x <- as.data.frame(x)
+  x <- as.data.frame(x, stringsAsFactors=TRUE)
   rownames(x) <- NULL
 
   # sort rows on contribution for max_features
@@ -289,7 +290,7 @@ prepare_feature_importance <- function(x, max_features = 10, show_boxplot = TRUE
   if (is.null(x)) return(NULL)
   permutation <- NULL
 
-  x_df <- as.data.frame(x)
+  x_df <- as.data.frame(x, stringsAsFactors=TRUE)
 
   x_df_short <- subset(x_df[x_df$permutation == 0,], select = -permutation)
   m <- dim(x_df_short)[1] - 2
@@ -320,7 +321,8 @@ prepare_feature_importance <- function(x, max_features = 10, show_boxplot = TRUE
       q1 = as.numeric(tapply(x_df$dropout_loss, x_df$variable, quantile, 0.25, na.rm = TRUE)),
       q3 = as.numeric(tapply(x_df$dropout_loss, x_df$variable, quantile, 0.75, na.rm = TRUE)),
       max = as.numeric(tapply(x_df$dropout_loss, x_df$variable, max, na.rm = TRUE)),
-      iqr = as.numeric(tapply(x_df$dropout_loss, x_df$variable, IQR, na.rm = TRUE))
+      iqr = as.numeric(tapply(x_df$dropout_loss, x_df$variable, IQR, na.rm = TRUE)),
+      stringsAsFactors=TRUE
     )
 
     x_stats$min <- pmax(x_stats$min, x_stats$q1 - 1.5*x_stats$iqr)
@@ -554,7 +556,7 @@ prepare_feature_distribution <- function(x, y, variables = NULL) {
     }
   }
 
-  X <- as.data.frame(cbind(x[,variables], y))
+  X <- as.data.frame(cbind(x[,variables], y), stringsAsFactors=TRUE)
   colnames(X) <- c(variables, "_target_")
 
   y_max <- max(y)
@@ -610,7 +612,8 @@ prepare_average_target <- function(x, y, variables = NULL) {
       p <- length(mid_points)
 
       temp <- as.data.frame(cbind(mid_points[-p], mid_points[-1],
-                                  y_mean_aggr[-p, 2], y_mean_aggr[-1, 2]))
+                                  y_mean_aggr[-p, 2], y_mean_aggr[-1, 2]),
+                            stringsAsFactors=TRUE)
       colnames(temp) <- c("x0", "x1", "y0", "y1")
 
     } else {
@@ -618,7 +621,7 @@ prepare_average_target <- function(x, y, variables = NULL) {
 
       y_mean_aggr <- aggregate(y, by = list(x[,name]), mean)
 
-      temp <- as.data.frame(y_mean_aggr)
+      temp <- as.data.frame(y_mean_aggr, stringsAsFactors=TRUE)
       colnames(temp) <- c("y", "x0")
       temp$sign <- ifelse(temp$x0 < y_mean, -1, 1)
     }

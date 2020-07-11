@@ -169,6 +169,13 @@ initializeStudio();
 function initializeStudio() {
   /// this function initializes modelStudio (used only once, at start)
 
+  // center the ms
+  d3.select("#" + WIDGET_ID)
+    .style('position', 'absolute')
+    .style('left', 0)
+    .style('right', 0)
+    .style('margin', 'auto');
+
   // top decorations
   var TOP_G = svg.append("g")
                  .attr("class", "TOP_G");
@@ -187,20 +194,13 @@ function initializeStudio() {
        .attr("y2", studioMargin.top - margin.big);
 
   ///:\\\ add select observation input
-  let tempW = calculateTextWidth(dropDownData.map(e => e.text))*1.6 + 18; // 15px bold 600
-
-  // center the ms
-  d3.select("#" + WIDGET_ID)
-    .style('position', 'absolute')
-    .style('left', 0)
-    .style('right', 0)
-    .style('margin', 'auto');
+  let ddWidth = calculateTextWidth(dropDownData.map(e => e.text))*1.6 + 18; // 15px bold 600
 
   var input = d3.select("#" + WIDGET_ID)
                 .append("select")
                 .attr("id","input")
                 .style("position", "absolute") // to make input appear on top
-                .style("left", (studioWidth - margin.big - tempW)+"px")
+                .style("left", (studioWidth - margin.big - ddWidth)+"px")
                 .style("top", -studioHeight + 180)
                 .style("font-size", "15px")
                 .style("font-weight", 600)
@@ -222,6 +222,39 @@ function initializeStudio() {
     updatePlots(event = "observationChange",
                 variableName = null,
                 observationId = this.value,
+                plotId = null);
+  });
+  ///:\\\
+
+  ///:\\\ add select variable input
+  let ddWidthVar = calculateTextWidth(variableNames)*1.6 + 18; // 15px bold 600
+
+  var inputVar = d3.select("#" + WIDGET_ID)
+                   .append("select")
+                   .attr("id","input")
+                   .style("position", "absolute") // to make input appear on top
+                   .style("left", (studioWidth - margin.big - ddWidthVar - margin.big - ddWidth)+"px")
+                   .style("top", -studioHeight + 180)
+                   .style("font-size", "15px")
+                   .style("font-weight", 600)
+                   .style("color", "#371ea3");
+
+  inputVar.selectAll()
+          .data(variableNames)
+          .enter()
+          .append("option")
+          .attr("value", d => d)
+          .text(d => d)
+          .style("font-size", "15px")
+          .style("font-weight", 600)
+          .style("color", "#371ea3");
+
+  inputVar.on("change", function() {
+
+    // update variable specific plots
+    updatePlots(event = "variableChange",
+                variableName = this.value,
+                observationId = null,
                 plotId = null);
   });
   ///:\\\
