@@ -157,18 +157,18 @@ WARNING: Editing default options may cause unintended behavior." />
     </div>
 
     <div class="ref-description">
-    <p>This function updates the options of a <code><a href='modelStudio.html'>modelStudio</a></code> object.
+    <p>This function updates the options of a <code><a href='https://rdrr.io/pkg/modelStudio/man/modelStudio.html'>modelStudio</a></code> object.
 <strong>WARNING: Editing default options may cause unintended behavior.</strong></p>
     </div>
 
-    <pre class="usage"><span class='fu'>ms_update_options</span>(<span class='no'>object</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/modelStudio/man/ms_update_options.html'>ms_update_options</a></span>(<span class='kw'>object</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>A <code>modelStudio</code> created with <code><a href='modelStudio.html'>modelStudio()</a></code>.</p></td>
+      <td><p>A <code>modelStudio</code> created with <code><a href='https://rdrr.io/pkg/modelStudio/man/modelStudio.html'>modelStudio()</a></code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -237,26 +237,27 @@ are implemented in <a href='https://modeloriented.github.io/ingredients/'><b>ing
 and <a href='https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html'><b>modelStudio - perks and features</b></a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"DALEX"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"modelStudio"</span>)
+    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'><a href='https://ModelOriented.github.io/DALEX'>"DALEX"</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'><a href='https://modelstudio.drwhy.ai'>"modelStudio"</a></span>)
 
 <span class='co'># fit a model</span>
-<span class='no'>model_titanic</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>survived</span> ~<span class='no'>.</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>titanic_imputed</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>)
+<span class='kw'>model_titanic</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='kw'>survived</span> <span class='op'>~</span><span class='kw'>.</span>, data = <span class='kw'>titanic_imputed</span>, family = <span class='st'>"binomial"</span>)
 
 <span class='co'># create an explainer for the model</span>
-<span class='no'>explainer_titanic</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='no'>model_titanic</span>,
-                             <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>titanic_imputed</span>,
-                             <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>titanic_imputed</span>$<span class='no'>survived</span>)
+<span class='kw'>explainer_titanic</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='kw'>model_titanic</span>,
+                             data = <span class='kw'>titanic_imputed</span>,
+                             y = <span class='kw'>titanic_imputed</span><span class='op'>$</span><span class='kw'>survived</span>)
 
 <span class='co'># make a studio for the model</span>
-<span class='no'>ms</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='modelStudio.html'>modelStudio</a></span>(<span class='no'>explainer_titanic</span>)
+<span class='kw'>ms</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/modelStudio/man/modelStudio.html'>modelStudio</a></span>(<span class='kw'>explainer_titanic</span>)
 
 <span class='co'># update the options</span>
-<span class='no'>new_ms</span> <span class='kw'>&lt;-</span> <span class='fu'>ms_update_options</span>(<span class='no'>ms</span>,
-                            <span class='kw'>time</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-                            <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>),
-                            <span class='kw'>margin_left</span> <span class='kw'>=</span> <span class='fl'>150</span>)
-<span class='no'>new_ms</span></pre>
+<span class='kw'>new_ms</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/modelStudio/man/ms_update_options.html'>ms_update_options</a></span>(<span class='kw'>ms</span>,
+                            time = <span class='fl'>0</span>,
+                            facet_dim = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>),
+                            margin_left = <span class='fl'>150</span>)
+<span class='kw'>new_ms</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

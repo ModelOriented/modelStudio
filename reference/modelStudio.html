@@ -169,24 +169,24 @@ Easily save and share the HTML dashboard with others. Tools for model exploratio
 <a href='https://pbiecek.github.io/ema/'>Explanatory Model Analysis: Explore, Explain and Examine Predictive Models</a></p>
     </div>
 
-    <pre class="usage"><span class='fu'>modelStudio</span>(<span class='no'>explainer</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/modelStudio/man/modelStudio.html'>modelStudio</a></span>(<span class='kw'>explainer</span>, <span class='kw'>...</span>)
 
 <span class='co'># S3 method for explainer</span>
-<span class='fu'>modelStudio</span>(
-  <span class='no'>explainer</span>,
-  <span class='kw'>new_observation</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>new_observation_y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>2</span>),
-  <span class='kw'>time</span> <span class='kw'>=</span> <span class='fl'>500</span>,
-  <span class='kw'>max_features</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>300</span>,
-  <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>eda</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>options</span> <span class='kw'>=</span> <span class='fu'><a href='ms_options.html'>ms_options</a></span>(),
-  <span class='kw'>viewer</span> <span class='kw'>=</span> <span class='st'>"external"</span>,
-  <span class='no'>...</span>
+<span class='fu'><a href='https://rdrr.io/pkg/modelStudio/man/modelStudio.html'>modelStudio</a></span>(
+  <span class='kw'>explainer</span>,
+  new_observation = <span class='kw'>NULL</span>,
+  new_observation_y = <span class='kw'>NULL</span>,
+  facet_dim = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>2</span>),
+  time = <span class='fl'>500</span>,
+  max_features = <span class='fl'>10</span>,
+  N = <span class='fl'>300</span>,
+  B = <span class='fl'>10</span>,
+  eda = <span class='fl'>TRUE</span>,
+  show_info = <span class='fl'>TRUE</span>,
+  parallel = <span class='fl'>FALSE</span>,
+  options = <span class='fu'><a href='https://rdrr.io/pkg/modelStudio/man/ms_options.html'>ms_options</a></span>(),
+  viewer = <span class='st'>"external"</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -250,7 +250,7 @@ This might interfere with showing progress using <code>show_info</code>.</p></td
     </tr>
     <tr>
       <th>options</th>
-      <td><p>Customize <code>modelStudio</code>. See <code><a href='ms_options.html'>ms_options</a></code> and
+      <td><p>Customize <code>modelStudio</code>. See <code><a href='https://rdrr.io/pkg/modelStudio/man/ms_options.html'>ms_options</a></code> and
 <a href='https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html#plot-options'><b>vignette</b></a>.</p></td>
     </tr>
     <tr>
@@ -281,82 +281,83 @@ Use <code>browser</code> to display in an external browser or
 and <a href='https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html'><b>modelStudio - perks and features</b></a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"DALEX"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"modelStudio"</span>)
+    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'><a href='https://ModelOriented.github.io/DALEX'>"DALEX"</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'><a href='https://modelstudio.drwhy.ai'>"modelStudio"</a></span>)
 
 <span class='co'>#:# ex1 classification on 'titanic' data</span>
 
 <span class='co'># fit a model</span>
-<span class='no'>model_titanic</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>survived</span> ~<span class='no'>.</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>titanic_imputed</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"binomial"</span>)
+<span class='kw'>model_titanic</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='kw'>survived</span> <span class='op'>~</span><span class='kw'>.</span>, data = <span class='kw'>titanic_imputed</span>, family = <span class='st'>"binomial"</span>)
 
 <span class='co'># create an explainer for the model</span>
-<span class='no'>explainer_titanic</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='no'>model_titanic</span>,
-                             <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>titanic_imputed</span>,
-                             <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>titanic_imputed</span>$<span class='no'>survived</span>,
-                             <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"Titanic GLM"</span>)
+<span class='kw'>explainer_titanic</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='kw'>model_titanic</span>,
+                             data = <span class='kw'>titanic_imputed</span>,
+                             y = <span class='kw'>titanic_imputed</span><span class='op'>$</span><span class='kw'>survived</span>,
+                             label = <span class='st'>"Titanic GLM"</span>)
 
 <span class='co'># pick observations</span>
-<span class='no'>new_observations</span> <span class='kw'>&lt;-</span> <span class='no'>titanic_imputed</span>[<span class='fl'>1</span>:<span class='fl'>2</span>,]
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>new_observations</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Lucas"</span>,<span class='st'>"James"</span>)
+<span class='kw'>new_observations</span> <span class='op'>&lt;-</span> <span class='kw'>titanic_imputed</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>,]
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='kw'>new_observations</span>) <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Lucas"</span>,<span class='st'>"James"</span>)
 
 <span class='co'># make a studio for the model</span>
-<span class='fu'>modelStudio</span>(<span class='no'>explainer_titanic</span>,
-            <span class='no'>new_observations</span>)
+<span class='fu'><a href='https://rdrr.io/pkg/modelStudio/man/modelStudio.html'>modelStudio</a></span>(<span class='kw'>explainer_titanic</span>,
+            <span class='kw'>new_observations</span>)
 
 <span class='co'># \donttest{</span>
 
 <span class='co'>#:# ex2 regression on 'apartments' data</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"ranger"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'><a href='https://github.com/imbs-hl/ranger'>"ranger"</a></span>)
 
-<span class='no'>model_apartments</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/ranger/man/ranger.html'>ranger</a></span>(<span class='no'>m2.price</span> ~<span class='no'>.</span> ,<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>)
+<span class='kw'>model_apartments</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/ranger/man/ranger.html'>ranger</a></span>(<span class='kw'>m2.price</span> <span class='op'>~</span><span class='kw'>.</span> ,data = <span class='kw'>apartments</span>)
 
-<span class='no'>explainer_apartments</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='no'>model_apartments</span>,
-                                <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>,
-                                <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>apartments</span>$<span class='no'>m2.price</span>)
+<span class='kw'>explainer_apartments</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='kw'>model_apartments</span>,
+                                data = <span class='kw'>apartments</span>,
+                                y = <span class='kw'>apartments</span><span class='op'>$</span><span class='kw'>m2.price</span>)
 
-<span class='no'>new_apartments</span> <span class='kw'>&lt;-</span> <span class='no'>apartments</span>[<span class='fl'>1</span>:<span class='fl'>2</span>,]
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>new_apartments</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ap1"</span>,<span class='st'>"ap2"</span>)
+<span class='kw'>new_apartments</span> <span class='op'>&lt;-</span> <span class='kw'>apartments</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>,]
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='kw'>new_apartments</span>) <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ap1"</span>,<span class='st'>"ap2"</span>)
 
 <span class='co'># change dashboard dimensions and animation length</span>
-<span class='fu'>modelStudio</span>(<span class='no'>explainer_apartments</span>,
-            <span class='no'>new_apartments</span>,
-            <span class='kw'>facet_dim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>3</span>),
-            <span class='kw'>time</span> <span class='kw'>=</span> <span class='fl'>800</span>)
+<span class='fu'><a href='https://rdrr.io/pkg/modelStudio/man/modelStudio.html'>modelStudio</a></span>(<span class='kw'>explainer_apartments</span>,
+            <span class='kw'>new_apartments</span>,
+            facet_dim = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>3</span>),
+            time = <span class='fl'>800</span>)
 
 <span class='co'># add information about true labels</span>
-<span class='fu'>modelStudio</span>(<span class='no'>explainer_apartments</span>,
-            <span class='no'>new_apartments</span>,
-            <span class='kw'>new_observation_y</span> <span class='kw'>=</span> <span class='no'>new_apartments</span>$<span class='no'>m2.price</span>)
+<span class='fu'><a href='https://rdrr.io/pkg/modelStudio/man/modelStudio.html'>modelStudio</a></span>(<span class='kw'>explainer_apartments</span>,
+            <span class='kw'>new_apartments</span>,
+            new_observation_y = <span class='kw'>new_apartments</span><span class='op'>$</span><span class='kw'>m2.price</span>)
 
 <span class='co'># don't compute EDA plots</span>
-<span class='fu'>modelStudio</span>(<span class='no'>explainer_apartments</span>,
-            <span class='kw'>eda</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'><a href='https://rdrr.io/pkg/modelStudio/man/modelStudio.html'>modelStudio</a></span>(<span class='kw'>explainer_apartments</span>,
+            eda = <span class='fl'>FALSE</span>)
 
 
 <span class='co'>#:# ex3 xgboost model on 'HR' dataset</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"xgboost"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'><a href='https://github.com/dmlc/xgboost'>"xgboost"</a></span>)
 
-<span class='no'>HR_matrix</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/model.matrix.html'>model.matrix</a></span>(<span class='no'>status</span> <span class='kw'>==</span> <span class='st'>"fired"</span> ~ <span class='no'>.</span> -<span class='fl'>1</span>, <span class='no'>HR</span>)
+<span class='kw'>HR_matrix</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/model.matrix.html'>model.matrix</a></span>(<span class='kw'>status</span> <span class='op'>==</span> <span class='st'>"fired"</span> <span class='op'>~</span> <span class='kw'>.</span> <span class='op'>-</span><span class='fl'>1</span>, <span class='kw'>HR</span>)
 
 <span class='co'># fit a model</span>
-<span class='no'>xgb_matrix</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/xgboost/man/xgb.DMatrix.html'>xgb.DMatrix</a></span>(<span class='no'>HR_matrix</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='no'>HR</span>$<span class='no'>status</span> <span class='kw'>==</span> <span class='st'>"fired"</span>)
-<span class='no'>params</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>max_depth</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>objective</span> <span class='kw'>=</span> <span class='st'>"binary:logistic"</span>, <span class='kw'>eval_metric</span> <span class='kw'>=</span> <span class='st'>"auc"</span>)
-<span class='no'>model_HR</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/xgboost/man/xgb.train.html'>xgb.train</a></span>(<span class='no'>params</span>, <span class='no'>xgb_matrix</span>, <span class='kw'>nrounds</span> <span class='kw'>=</span> <span class='fl'>300</span>)
+<span class='kw'>xgb_matrix</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/xgboost/man/xgb.DMatrix.html'>xgb.DMatrix</a></span>(<span class='kw'>HR_matrix</span>, label = <span class='kw'>HR</span><span class='op'>$</span><span class='kw'>status</span> <span class='op'>==</span> <span class='st'>"fired"</span>)
+<span class='kw'>params</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(max_depth = <span class='fl'>3</span>, objective = <span class='st'>"binary:logistic"</span>, eval_metric = <span class='st'>"auc"</span>)
+<span class='kw'>model_HR</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/xgboost/man/xgb.train.html'>xgb.train</a></span>(<span class='kw'>params</span>, <span class='kw'>xgb_matrix</span>, nrounds = <span class='fl'>300</span>)
 
 <span class='co'># create an explainer for the model</span>
-<span class='no'>explainer_HR</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='no'>model_HR</span>,
-                        <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>HR_matrix</span>,
-                        <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>HR</span>$<span class='no'>status</span> <span class='kw'>==</span> <span class='st'>"fired"</span>,
-                        <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"xgboost"</span>)
+<span class='kw'>explainer_HR</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='kw'>model_HR</span>,
+                        data = <span class='kw'>HR_matrix</span>,
+                        y = <span class='kw'>HR</span><span class='op'>$</span><span class='kw'>status</span> <span class='op'>==</span> <span class='st'>"fired"</span>,
+                        label = <span class='st'>"xgboost"</span>)
 
 <span class='co'># pick observations</span>
-<span class='no'>new_observation</span> <span class='kw'>&lt;-</span> <span class='no'>HR_matrix</span>[<span class='fl'>1</span>:<span class='fl'>2</span>, , <span class='kw'>drop</span><span class='kw'>=</span><span class='fl'>FALSE</span>]
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>new_observation</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"id1"</span>, <span class='st'>"id2"</span>)
+<span class='kw'>new_observation</span> <span class='op'>&lt;-</span> <span class='kw'>HR_matrix</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, , drop=<span class='fl'>FALSE</span>]
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='kw'>new_observation</span>) <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"id1"</span>, <span class='st'>"id2"</span>)
 <span class='co'># make a studio for the model</span>
-<span class='fu'>modelStudio</span>(<span class='no'>explainer_HR</span>,
-            <span class='no'>new_observation</span>)
+<span class='fu'><a href='https://rdrr.io/pkg/modelStudio/man/modelStudio.html'>modelStudio</a></span>(<span class='kw'>explainer_HR</span>,
+            <span class='kw'>new_observation</span>)
 
-<span class='co'># }</span></pre>
+<span class='co'># }</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

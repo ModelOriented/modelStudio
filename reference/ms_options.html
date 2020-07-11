@@ -159,15 +159,15 @@ unintended behavior." />
     </div>
 
     <div class="ref-description">
-    <p>This function returns default options for <code><a href='modelStudio.html'>modelStudio</a></code>.
+    <p>This function returns default options for <code><a href='https://rdrr.io/pkg/modelStudio/man/modelStudio.html'>modelStudio</a></code>.
 It is possible to modify values of this list and pass it to the <code>options</code>
 parameter in the main function. <strong>WARNING: Editing default options may cause
 unintended behavior.</strong></p>
     </div>
 
-    <pre class="usage"><span class='fu'>ms_options</span>(<span class='no'>...</span>)
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/modelStudio/man/ms_options.html'>ms_options</a></span>(<span class='kw'>...</span>)
 
-<span class='fu'>modelStudioOptions</span>(<span class='no'>...</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/pkg/modelStudio/man/ms_options.html'>modelStudioOptions</a></span>(<span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -238,38 +238,39 @@ are implemented in <a href='https://modeloriented.github.io/ingredients/'><b>ing
 and <a href='https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html'><b>modelStudio - perks and features</b></a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"DALEX"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"modelStudio"</span>)
+    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'><a href='https://ModelOriented.github.io/DALEX'>"DALEX"</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'><a href='https://modelstudio.drwhy.ai'>"modelStudio"</a></span>)
 
 <span class='co'># fit a model</span>
-<span class='no'>model_apartments</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>m2.price</span> ~<span class='no'>.</span> , <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>)
+<span class='kw'>model_apartments</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='kw'>m2.price</span> <span class='op'>~</span><span class='kw'>.</span> , data = <span class='kw'>apartments</span>)
 
 <span class='co'># create an explainer for the model</span>
-<span class='no'>explainer_apartments</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='no'>model_apartments</span>,
-                                <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>apartments</span>,
-                                <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>apartments</span>$<span class='no'>m2.price</span>)
+<span class='kw'>explainer_apartments</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='kw'>model_apartments</span>,
+                                data = <span class='kw'>apartments</span>,
+                                y = <span class='kw'>apartments</span><span class='op'>$</span><span class='kw'>m2.price</span>)
 
 <span class='co'># pick observations</span>
-<span class='no'>new_observation</span> <span class='kw'>&lt;-</span> <span class='no'>apartments</span>[<span class='fl'>1</span>:<span class='fl'>2</span>,]
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>new_observation</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ap1"</span>,<span class='st'>"ap2"</span>)
+<span class='kw'>new_observation</span> <span class='op'>&lt;-</span> <span class='kw'>apartments</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>,]
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='kw'>new_observation</span>) <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ap1"</span>,<span class='st'>"ap2"</span>)
 
 <span class='co'># modify default options</span>
-<span class='no'>new_options</span> <span class='kw'>&lt;-</span> <span class='fu'>ms_options</span>(
-  <span class='kw'>show_subtitle</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>bd_subtitle</span> <span class='kw'>=</span> <span class='st'>"Hello World"</span>,
-  <span class='kw'>line_size</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-  <span class='kw'>point_size</span> <span class='kw'>=</span> <span class='fl'>9</span>,
-  <span class='kw'>line_color</span> <span class='kw'>=</span> <span class='st'>"pink"</span>,
-  <span class='kw'>point_color</span> <span class='kw'>=</span> <span class='st'>"purple"</span>,
-  <span class='kw'>bd_positive_color</span> <span class='kw'>=</span> <span class='st'>"yellow"</span>,
-  <span class='kw'>bd_negative_color</span> <span class='kw'>=</span> <span class='st'>"orange"</span>
+<span class='kw'>new_options</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/modelStudio/man/ms_options.html'>ms_options</a></span>(
+  show_subtitle = <span class='fl'>TRUE</span>,
+  bd_subtitle = <span class='st'>"Hello World"</span>,
+  line_size = <span class='fl'>5</span>,
+  point_size = <span class='fl'>9</span>,
+  line_color = <span class='st'>"pink"</span>,
+  point_color = <span class='st'>"purple"</span>,
+  bd_positive_color = <span class='st'>"yellow"</span>,
+  bd_negative_color = <span class='st'>"orange"</span>
 )
 
 <span class='co'># make a studio for the model</span>
-<span class='fu'><a href='modelStudio.html'>modelStudio</a></span>(<span class='no'>explainer_apartments</span>,
-            <span class='no'>new_observation</span>,
-            <span class='kw'>options</span> <span class='kw'>=</span> <span class='no'>new_options</span>,
-            <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>200</span>,  <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>5</span>) <span class='co'># faster example</span></pre>
+<span class='fu'><a href='https://rdrr.io/pkg/modelStudio/man/modelStudio.html'>modelStudio</a></span>(<span class='kw'>explainer_apartments</span>,
+            <span class='kw'>new_observation</span>,
+            options = <span class='kw'>new_options</span>,
+            N = <span class='fl'>200</span>,  B = <span class='fl'>5</span>) <span class='co'># faster example</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
