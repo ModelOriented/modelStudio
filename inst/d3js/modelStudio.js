@@ -198,7 +198,7 @@ function initializeStudio() {
 
   var input = d3.select("#" + WIDGET_ID)
                 .append("select")
-                .attr("id","input")
+                .attr("id", "input")
                 .style("position", "absolute") // to make input appear on top
                 .style("left", (studioWidth - margin.big - ddWidth)+"px")
                 .style("top", -studioHeight + 180)
@@ -231,7 +231,7 @@ function initializeStudio() {
 
   var inputVar = d3.select("#" + WIDGET_ID)
                    .append("select")
-                   .attr("id","input")
+                   .attr("id", "inputVar")
                    .style("position", "absolute") // to make input appear on top
                    .style("left", (studioWidth - margin.big - ddWidthVar - margin.big - ddWidth)+"px")
                    .style("top", -studioHeight + 180)

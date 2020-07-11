@@ -246,6 +246,7 @@ function breakDown() {
                     variableName = this.id,
                     observationId = null,
                     plotId = null);
+        updateDropDownVar(this.id);
       })
       .transition()
       .duration(TIME)
@@ -462,6 +463,7 @@ function shapleyValues() {
                     variableName = this.id,
                     observationId = null,
                     plotId = null);
+        updateDropDownVar(this.id);
       })
       .transition()
       .duration(TIME)
@@ -708,6 +710,7 @@ function featureImportance() {
                     variableName = this.id,
                     observationId = null,
                     plotId = null);
+        updateDropDownVar(this.id);
       })
       .transition()
       .duration(TIME)
@@ -2658,4 +2661,9 @@ function generatePlots(arrPlotId) {
       mapIdPlotFunction[id]();
     }
   });
+}
+
+function updateDropDownVar(variableName) {
+  /// change dropdown variable on bar click
+  d3.select('#inputVar').property('value', variableName)
 }
