@@ -496,10 +496,10 @@ Then, use `modelStudio` in R:
 library(reticulate)
 
 #! add blank create_architecture function before load !
-py_run_string("
+py_run_string('
 def create_architecture():
     return True
-")
+')
 
 explainer <- py_load_object("explainer_keras.pickle", pickle = "pickle")
 
