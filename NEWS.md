@@ -1,6 +1,9 @@
 # modelStudio (development)
+* ...
+
+# modelStudio 1.2.0
 * remove redundant documentation resources so that the package weights less
-* add a dropdown list for variables
+* add a second dropdown list for variable change
 * fix check class warning
 * add `stringsAsFactors=TRUE` where `data.frame` is used
 

@@ -3,11 +3,14 @@
 #' @description
 #' This function computes various (instance and dataset level) model explanations and produces an interactive,
 #' customisable dashboard. It consists of multiple panels for plots with their short descriptions.
-#' Easily save and share the HTML dashboard with others. Tools for model exploration unite with tools for EDA
-#' (Exploratory Data Analysis) to give a broad overview of the model behavior.
+#' Easily save and share the HTML dashboard with others. Tools for model exploration unite with tools for
+#' Exploratory Data Analysis to give a broad overview of the model behavior.
 #'
 #' Theoretical introduction to the plots:
 #' \href{https://pbiecek.github.io/ema/}{Explanatory Model Analysis: Explore, Explain and Examine Predictive Models}
+#'
+#' Displayed variable can be changed by clicking on the bars of plots or with the first dropdown list,
+#'  and observation can be changed with the second dropdown list.
 #'
 #' @param explainer An \code{explainer} created with \code{DALEX::explain()}.
 #' @param new_observation New observations with columns that correspond to variables used in the model.

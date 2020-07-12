@@ -2665,5 +2665,7 @@ function generatePlots(arrPlotId) {
 
 function updateDropDownVar(variableName) {
   /// change dropdown variable on bar click
+  if (variableName == "prediction" || variableName == "intercept" ||
+      variableName == "other") { return; }
   d3.select('#inputVar').property('value', variableName)
 }
