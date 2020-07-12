@@ -581,13 +581,13 @@
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">reticulate</span>)
 
 <span class="co">#! add blank create_architecture function before load !</span>
-<span class="fu">py_run_string</span>(<span class="st">"
+<span class="fu">py_run_string</span>(<span class="st">'
 def create_architecture():
     return True
-"</span>y_run_string("
+'</span>y_run_string('
 def create_architecture():
     return True
-")
+')
 
 <span class="kw">explainer</span> <span class="op">&lt;-</span> <span class="fu">py_load_object</span>(<span class="st">"explainer_keras.pickle"</span>, pickle = <span class="st">"pickle"</span>)
 
