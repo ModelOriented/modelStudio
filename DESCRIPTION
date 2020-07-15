@@ -14,8 +14,8 @@ Description: Automate the explanatory analysis of machine learning predictive mo
     The main function computes various (instance and dataset level) model explanations
     and produces an interactive, customisable dashboard. It consists
     of multiple panels for plots with their short descriptions. Easily save and share 
-    the dashboard with others. Tools for model exploration unite with tools for EDA 
-    (Exploratory Data Analysis) to give a broad overview of the model behavior.
+    the dashboard with others. Tools for model exploration unite with tools for
+    Exploratory Data Analysis to give a broad overview of the model behavior.
 Depends: R (>= 3.5)
 License: GPL-3
 Encoding: UTF-8
