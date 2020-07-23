@@ -155,7 +155,7 @@
 
     <div id="modelstudio-120" class="section level1">
 <h1 class="page-header" data-toc-text="1.2.0">
-<a href="#modelstudio-120" class="anchor"></a>modelStudio 1.2.0<small> Unreleased </small>
+<a href="#modelstudio-120" class="anchor"></a>modelStudio 1.2.0<small> 2020-07-15 </small>
 </h1>
 <ul>
 <li>remove redundant documentation resources so that the package weights less</li>
@@ -169,10 +169,10 @@
 <a href="#modelstudio-110" class="anchor"></a>modelStudio 1.1.0<small> 2020-05-08 </small>
 </h1>
 <ul>
-<li>rename <code><a href="https://rdrr.io/pkg/modelStudio/man/ms_options.html">modelStudioOptions()</a></code> to <code><a href="https://rdrr.io/pkg/modelStudio/man/ms_options.html">ms_options()</a></code>
+<li>rename <code><a href="../reference/ms_options.html">modelStudioOptions()</a></code> to <code><a href="../reference/ms_options.html">ms_options()</a></code>
 </li>
-<li>add new <code><a href="https://rdrr.io/pkg/modelStudio/man/ms_update_options.html">ms_update_options()</a></code> function that updates the options of a <code>modelStudio</code> object</li>
-<li>add new <code><a href="https://rdrr.io/pkg/modelStudio/man/ms_update_observations.html">ms_update_observations()</a></code> function that updates the observations of a <code>modelStudio</code> object</li>
+<li>add new <code><a href="../reference/ms_update_options.html">ms_update_options()</a></code> function that updates the options of a <code>modelStudio</code> object</li>
+<li>add new <code><a href="../reference/ms_update_observations.html">ms_update_observations()</a></code> function that updates the observations of a <code>modelStudio</code> object</li>
 <li>lower <code>B</code> default value from <code>15</code> to <code>10</code> and <code>N</code> default value from <code>400</code> to <code>300</code>
 </li>
 <li>
@@ -180,7 +180,7 @@
 <li>use <code>ranger</code> instead of <code>randomForest</code> everywhere</li>
 <li>remove unnecessary imports, update the documentation</li>
 <li>added <code>auto_unbox = TRUE</code> to <code><a href="https://jeroen.cran.dev/jsonlite/reference/fromJSON.html">jsonlite::toJSON</a></code> and changed the <code>.js</code> code to comply</li>
-<li>add new class <code>"modelStudio"</code> to the <code><a href="https://rdrr.io/pkg/modelStudio/man/modelStudio.html">modelStudio()</a></code> output</li>
+<li>add new class <code>"modelStudio"</code> to the <code><a href="../reference/modelStudio.html">modelStudio()</a></code> output</li>
 </ul>
 </div>
     <div id="modelstudio-102" class="section level1">
@@ -221,7 +221,7 @@
 <a href="#modelstudio-030" class="anchor"></a>modelStudio 0.3.0<small> 2020-02-20 </small>
 </h1>
 <ul>
-<li><strong><code><a href="https://rdrr.io/pkg/modelStudio/man/modelStudio.html">modelStudio()</a></code> now only works on <code>explainer</code> class object made with <code><a href="https://rdrr.io/pkg/DALEX/man/explain.html">DALEX::explain()</a></code></strong></li>
+<li><strong><code><a href="../reference/modelStudio.html">modelStudio()</a></code> now only works on <code>explainer</code> class object made with <code><a href="https://rdrr.io/pkg/DALEX/man/explain.html">DALEX::explain()</a></code></strong></li>
 <li>this version requires <code>iBreakDown v1.0.0</code> and <code>ingredients v1.0.0</code>
 </li>
 <li>change <code>cummulative</code> to <code>cumulative</code> in code (<a href='https://github.com/ModelOriented/modelStudio/issues/49'>#49</a>)</li>
@@ -229,9 +229,9 @@
 <li>update package title and description</li>
 <li>change LICENSE to GPL-3 (<a href='https://github.com/ModelOriented/modelStudio/issues/55'>#55</a>)</li>
 <li>add boxplots to <code>SV</code> plot (<a href='https://github.com/ModelOriented/modelStudio/issues/50'>#50</a>)</li>
-<li>add <code>eda</code> argument to <code><a href="https://rdrr.io/pkg/modelStudio/man/modelStudio.html">modelStudio()</a></code>
+<li>add <code>eda</code> argument to <code><a href="../reference/modelStudio.html">modelStudio()</a></code>
 </li>
-<li>add <code>show_boxplot</code> argument to <code><a href="https://rdrr.io/pkg/modelStudio/man/ms_options.html">modelStudioOptions()</a></code>
+<li>add <code>show_boxplot</code> argument to <code><a href="../reference/ms_options.html">modelStudioOptions()</a></code>
 </li>
 </ul>
 </div>
@@ -241,7 +241,7 @@
 </h1>
 <ul>
 <li>fix <code>TV</code> plot (X had columns sorted while y was the same)</li>
-<li>add <code>ms_title</code> argument to <code><a href="https://rdrr.io/pkg/modelStudio/man/ms_options.html">modelStudioOptions()</a></code> (<a href='https://github.com/ModelOriented/modelStudio/issues/46'>#46</a>)</li>
+<li>add <code>ms_title</code> argument to <code><a href="../reference/ms_options.html">modelStudioOptions()</a></code> (<a href='https://github.com/ModelOriented/modelStudio/issues/46'>#46</a>)</li>
 <li>
 <code>modelStudio</code> footer is generated faster</li>
 </ul>
@@ -255,9 +255,9 @@
 <li>new plot: <code>Average Target vs Feature [EDA]</code> (<a href='https://github.com/ModelOriented/modelStudio/issues/41'>#41</a>)</li>
 <li>add boxplots to <code>FI</code> plot <a href="https://github.com/ModelOriented/ingredients/issues/72">ingredients/72</a>
 </li>
-<li>add <code>new_observation_y</code> argument to <code><a href="https://rdrr.io/pkg/modelStudio/man/modelStudio.html">modelStudio()</a></code> (<a href='https://github.com/ModelOriented/modelStudio/issues/39'>#39</a>)</li>
+<li>add <code>new_observation_y</code> argument to <code><a href="../reference/modelStudio.html">modelStudio()</a></code> (<a href='https://github.com/ModelOriented/modelStudio/issues/39'>#39</a>)</li>
 <li>pass <code>...</code> to <code>prepare_*</code> functions (e.g. allows to round numbers)</li>
-<li>add <code>margin_ytitle</code> argument to <code><a href="https://rdrr.io/pkg/modelStudio/man/ms_options.html">modelStudioOptions()</a></code>
+<li>add <code>margin_ytitle</code> argument to <code><a href="../reference/ms_options.html">modelStudioOptions()</a></code>
 </li>
 <li>by default: observations to calculate local explanations are taken at random from the <code>data</code> (<a href='https://github.com/ModelOriented/modelStudio/issues/25'>#25</a>)</li>
 <li>by default: first plot is selected as <code>BD</code> and second is <code>clicked</code> (<a href='https://github.com/ModelOriented/modelStudio/issues/37'>#37</a>)</li>
@@ -304,11 +304,11 @@
 </h1>
 <p>Many minor changes stated in <a href='https://github.com/ModelOriented/modelStudio/issues/20'>#20</a>, most notably:</p>
 <ul>
-<li>rename <code>x</code> parameter to <code>object</code> in <code><a href="https://rdrr.io/pkg/modelStudio/man/modelStudio.html">modelStudio()</a></code>
+<li>rename <code>x</code> parameter to <code>object</code> in <code><a href="../reference/modelStudio.html">modelStudio()</a></code>
 </li>
-<li>rename <code>getOptions()</code> to <code><a href="https://rdrr.io/pkg/modelStudio/man/ms_options.html">modelStudioOptions()</a></code>
+<li>rename <code>getOptions()</code> to <code><a href="../reference/ms_options.html">modelStudioOptions()</a></code>
 </li>
-<li>add <code>viewer</code> parameter to <code><a href="https://rdrr.io/pkg/modelStudio/man/modelStudio.html">modelStudio()</a></code>
+<li>add <code>viewer</code> parameter to <code><a href="../reference/modelStudio.html">modelStudio()</a></code>
 </li>
 <li>add suppressWarnings(ingredients::describe)</li>
 <li>upgrade documentation, examples and vignette</li>
@@ -377,7 +377,7 @@
 <ul>
 <li>first stable version of the <code>modelStudio</code> package</li>
 <li>
-<code><a href="https://rdrr.io/pkg/modelStudio/man/modelStudio.html">modelStudio()</a></code> function implemented</li>
+<code><a href="../reference/modelStudio.html">modelStudio()</a></code> function implemented</li>
 </ul>
 </div>
   </div>
