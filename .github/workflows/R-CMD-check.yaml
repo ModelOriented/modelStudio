@@ -9,6 +9,7 @@ on:
       - 'doc*'
       - 'gh-actions'
       - 'githubactions'
+      - 'ms*'
   pull_request:
     branches:
       - master

@@ -36,6 +36,8 @@
 #' @param viewer Default is \code{external} to display in an external RStudio window.
 #'  Use \code{browser} to display in an external browser or
 #'  \code{internal} to use the RStudio internal viewer pane for output.
+#' @param widget_id Use an explicit element ID for the widget (rather than an automatically generated one).
+#'  Useful e.g. when using \code{modelStudio} with Shiny.
 #' @param ... Other parameters.
 #'
 #' @return An object of the \code{r2d3, htmlwidget, modelStudio} class.
