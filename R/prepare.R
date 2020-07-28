@@ -545,14 +545,14 @@ prepare_feature_distribution <- function(x, y, variables = NULL) {
   x_min_max_list <- x_max_list <- nbin <- list()
 
   for (name in names(is_numeric)) {
-
+    variable_column_nona <- na.omit(x[,name])
     if (is_numeric[name]) {
-      x_min_max_list[[name]] <- range(x[,name])
-      nbin[[name]] <- nclass.Sturges(x[,name]) ## FD, scott/Sturges nbin choice
+      x_min_max_list[[name]] <- range(variable_column_nona)
+      nbin[[name]] <- nclass.Sturges(variable_column_nona) ## FD, scott/Sturges nbin choice
 
     } else {
-      x_min_max_list[[name]] <- sort(unique(x[,name]))
-      x_max_list[[name]] <- max(table(x[,name]))
+      x_min_max_list[[name]] <- sort(unique(variable_column_nona))
+      x_max_list[[name]] <- max(table(variable_column_nona))
     }
   }
 
@@ -591,17 +591,24 @@ prepare_average_target <- function(x, y, variables = NULL) {
   y_mean <- mean(y)
 
   for (name in names(is_numeric)) {
+    index <- !is.na(x[,name])
+    variable_column_nona <- x[,name][index]
+    y_nona <- y[index]
 
     if (length(unique(x[,name])) == 1) is_numeric[name] <- FALSE # issue #45
 
     if (is_numeric[name]) {
-      x_min_max_list[[name]] <- range(x[,name])
+      x_min_max_list[[name]] <- range(variable_column_nona)
 
-      nbins <- nclass.Sturges(x[,name])
-      variable_splits <- seq(min(x[,name]), max(x[,name]), length.out = nbins)
+      nbins <- nclass.Sturges(variable_column_nona)
+      variable_splits <- seq(min(variable_column_nona),
+                             max(variable_column_nona),
+                             length.out = nbins)
 
-      x_bin <- cut(x[,name], variable_splits, include.lowest = TRUE)
-      y_mean_aggr <- aggregate(y, by = list(x_bin), mean)
+      x_bin <- cut(variable_column_nona,
+                   variable_splits,
+                   include.lowest = TRUE)
+      y_mean_aggr <- aggregate(y_nona, by = list(x_bin), mean)
 
       ci <- y_mean_aggr[, 1]
       ci2 <- substr(as.character(ci), 2, nchar(as.character(ci)) - 1)
@@ -617,9 +624,9 @@ prepare_average_target <- function(x, y, variables = NULL) {
       colnames(temp) <- c("x0", "x1", "y0", "y1")
 
     } else {
-      x_min_max_list[[name]] <- sort(unique(x[,name]))
+      x_min_max_list[[name]] <- sort(unique(variable_column_nona))
 
-      y_mean_aggr <- aggregate(y, by = list(x[,name]), mean)
+      y_mean_aggr <- aggregate(y_nona, by = list(variable_column_nona), mean)
 
       temp <- as.data.frame(y_mean_aggr, stringsAsFactors=TRUE)
       colnames(temp) <- c("y", "x0")
@@ -629,7 +636,8 @@ prepare_average_target <- function(x, y, variables = NULL) {
     y_mean_max <- max(y_mean_aggr[,2])
     y_mean_min <- min(y_mean_aggr[,2])
     y_mean_margin <- abs(y_mean_max - y_mean_min)*0.1
-    y_min_max_list[[name]] <- c(y_mean_min - y_mean_margin, y_mean_max + y_mean_margin)
+    y_min_max_list[[name]] <- c(y_mean_min - y_mean_margin,
+                                y_mean_max + y_mean_margin)
 
     X[[name]] <- temp
   }

@@ -228,6 +228,30 @@ new_ms
 
 -------------------------------------------------------------------
 
+## update observations
+
+Use `ms_update_observations()` to add more observations with their local explanations to the `modelStudio`.
+
+```{r eval = FALSE}
+old_ms <- modelStudio(explainer)
+old_ms
+
+# add new observations
+plus_ms <- ms_update_observations(old_ms,
+                                  explainer,
+                                  new_observation = test[101:102,])
+plus_ms
+
+# overwrite old observations
+new_ms <- ms_update_observations(old_ms,
+                                 explainer,
+                                 new_observation = test[103:104,],
+                                 overwrite = TRUE)
+new_ms
+```
+
+-------------------------------------------------------------------
+
 ## Shiny
 
 Use the `widget_id` argument and `r2d3` package to render the `modelStudio` output in Shiny.
@@ -256,9 +280,11 @@ server <- function(input, output) {
   explainer <- explain(model,
                        data = titanic_imputed,
                        y = titanic_imputed$survived,
-                       label = "Titanic GLM")
+                       label = "Titanic GLM",
+                       verbose = FALSE)
   ms <- modelStudio(explainer,
-                    widget_id = WIDGET_ID) #:# use the widget_id (ignore warning in RStudio console)
+                    verbose = FALSE,
+                    widget_id = WIDGET_ID) #:# use the widget_id (ignore warning)
   
   #:# basic render d3 output
   output[[WIDGET_ID]] <- renderD3({
@@ -274,27 +300,7 @@ server <- function(input, output) {
 shinyApp(ui = ui, server = server)
 ```
 
-## update observations
-
-Use `ms_update_observations()` to add more observations with their local explanations to the `modelStudio`.
-
-```{r eval = FALSE}
-old_ms <- modelStudio(explainer)
-old_ms
-
-# add new observations
-plus_ms <- ms_update_observations(old_ms,
-                                  explainer,
-                                  new_observation = test[101:102,])
-plus_ms
-
-# overwrite old observations
-new_ms <- ms_update_observations(old_ms,
-                                 explainer,
-                                 new_observation = test[103:104,],
-                                 overwrite = TRUE)
-new_ms
-```
+-------------------------------------------------------------------
 
 ## DALEXtra
 
@@ -321,6 +327,8 @@ explainer_mlr <- explain_mlr(model,
 # make a studio for the model
 modelStudio(explainer_mlr)
 ```
+
+-------------------------------------------------------------------
 
 ## References
 
