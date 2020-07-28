@@ -1,5 +1,6 @@
 # modelStudio (development)
-* ...
+* add support for `modelStudio` in Shiny [(#77)](https://github.com/ModelOriented/modelStudio/issues/77)
+using new `widget_id` argument
 
 # modelStudio 1.2.0
 * remove redundant documentation resources so that the package weights less
