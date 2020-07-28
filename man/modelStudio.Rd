@@ -21,6 +21,7 @@ modelStudio(explainer, ...)
   parallel = FALSE,
   options = ms_options(),
   viewer = "external",
+  widget_id = NULL,
   ...
 )
 }

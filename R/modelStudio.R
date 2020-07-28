@@ -159,6 +159,7 @@ modelStudio.explainer <- function(explainer,
                                   parallel = FALSE,
                                   options = ms_options(),
                                   viewer = "external",
+                                  widget_id = NULL,
                                   ...) {
 
   model <- explainer$model
@@ -342,7 +343,9 @@ modelStudio.explainer <- function(explainer,
   # pack explanation data to json and make hash for htmlwidget
   names(obs_list) <- rownames(obs_data)
   temp <- jsonlite::toJSON(list(obs_list, fi_data, pd_data, ad_data, fd_data, at_data), auto_unbox = TRUE)
-  widget_id <- paste0("widget-", digest::digest(temp))
+  widget_id <- ifelse(!is.null(widget_id),
+                      widget_id,
+                      paste0("widget-", digest::digest(temp)))
 
   # prepare observation data for drop down
   between <- " - "
