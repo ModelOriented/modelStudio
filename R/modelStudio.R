@@ -36,12 +36,14 @@
 #' @param viewer Default is \code{external} to display in an external RStudio window.
 #'  Use \code{browser} to display in an external browser or
 #'  \code{internal} to use the RStudio internal viewer pane for output.
+#' @param widget_id Use an explicit element ID for the widget (rather than an automatically generated one).
+#'  Useful e.g. when using \code{modelStudio} with Shiny.
 #' @param ... Other parameters.
 #'
 #' @return An object of the \code{r2d3, htmlwidget, modelStudio} class.
 #'
 #' @importFrom utils head tail packageVersion
-#' @importFrom stats aggregate predict quantile IQR
+#' @importFrom stats aggregate predict quantile IQR na.omit
 #' @importFrom grDevices nclass.Sturges
 #' @import progress
 #'
@@ -159,6 +161,7 @@ modelStudio.explainer <- function(explainer,
                                   parallel = FALSE,
                                   options = ms_options(),
                                   viewer = "external",
+                                  widget_id = NULL,
                                   ...) {
 
   model <- explainer$model
@@ -224,41 +227,49 @@ modelStudio.explainer <- function(explainer,
   if (all(which_numerical)) {
     pd_n <- calculate(
       ingredients::partial_dependence(
-          model, data, predict_function, variable_type = "numerical", N = N),
+          model, data, predict_function, variable_type = "numerical", N = N,
+          variable_splits_type='uniform'),
       "ingredients::partial_dependence (numerical)", show_info, pb, B)
     pd_c <- NULL
     ad_n <- calculate(
       ingredients::accumulated_dependence(
-          model, data, predict_function, variable_type = "numerical", N = N),
+          model, data, predict_function, variable_type = "numerical", N = N,
+          variable_splits_type='uniform'),
       "ingredients::accumulated_dependence (numerical)", show_info, pb, 3*B)
     ad_c <- NULL
   } else if (all(!which_numerical)) {
     pd_n <- NULL
     pd_c <- calculate(
       ingredients::partial_dependence(
-          model, data, predict_function, variable_type = "categorical", N = N),
+          model, data, predict_function, variable_type = "categorical", N = N,
+          variable_splits_type='uniform'),
       "ingredients::partial_dependence (categorical)", show_info, pb, B)
     ad_n <- NULL
     ad_c <- calculate(
       ingredients::accumulated_dependence(
-          model, data, predict_function, variable_type = "categorical", N = N),
+          model, data, predict_function, variable_type = "categorical", N = N,
+          variable_splits_type='uniform'),
       "ingredients::accumulated_dependence (categorical)", show_info, pb, 3*B)
   } else {
     pd_n <- calculate(
       ingredients::partial_dependence(
-        model, data, predict_function, variable_type = "numerical", N = N),
+        model, data, predict_function, variable_type = "numerical", N = N,
+        variable_splits_type='uniform'),
       "ingredients::partial_dependence (numerical)", show_info, pb, B/2)
     pd_c <- calculate(
       ingredients::partial_dependence(
-        model, data, predict_function, variable_type = "categorical", N = N),
+        model, data, predict_function, variable_type = "categorical", N = N,
+        variable_splits_type='uniform'),
       "ingredients::partial_dependence (categorical)", show_info, pb, B/2)
     ad_n <- calculate(
       ingredients::accumulated_dependence(
-        model, data, predict_function, variable_type = "numerical", N = N),
+        model, data, predict_function, variable_type = "numerical", N = N,
+        variable_splits_type='uniform'),
       "ingredients::accumulated_dependence (numerical)", show_info, pb, 2*B)
     ad_c <- calculate(
       ingredients::accumulated_dependence(
-        model, data, predict_function, variable_type = "categorical", N = N),
+        model, data, predict_function, variable_type = "categorical", N = N,
+        variable_splits_type='uniform'),
       "ingredients::accumulated_dependence (categorical)", show_info, pb, B)
   }
 
@@ -290,7 +301,8 @@ modelStudio.explainer <- function(explainer,
         paste0("iBreakDown::shap (", i, ")"), show_info, pb, 3*B)
       cp <- calculate(
         ingredients::ceteris_paribus(
-          model, data, predict_function, new_observation, label = label),
+          model, data, predict_function, new_observation, label = label,
+          variable_splits_type='uniform', variable_splits_with_obs=TRUE),
         paste0("ingredients::ceteris_paribus (", i, ")"), show_info, pb, 1)
 
       bd_data <- prepare_break_down(bd, max_features, ...)
@@ -328,7 +340,8 @@ modelStudio.explainer <- function(explainer,
         paste0("iBreakDown::shap (", i, ")"), show_info, pb, 3*B)
       cp <- calculate(
         ingredients::ceteris_paribus(
-          model, data, predict_function, new_observation, label = label),
+          model, data, predict_function, new_observation, label = label,
+          variable_splits_type='uniform', variable_splits_with_obs=TRUE),
         paste0("ingredients::ceteris_paribus (", i, ")"), show_info, pb, 1)
 
       bd_data <- prepare_break_down(bd, max_features, ...)
@@ -342,7 +355,9 @@ modelStudio.explainer <- function(explainer,
   # pack explanation data to json and make hash for htmlwidget
   names(obs_list) <- rownames(obs_data)
   temp <- jsonlite::toJSON(list(obs_list, fi_data, pd_data, ad_data, fd_data, at_data), auto_unbox = TRUE)
-  widget_id <- paste0("widget-", digest::digest(temp))
+  widget_id <- ifelse(!is.null(widget_id),
+                      widget_id,
+                      paste0("widget-", digest::digest(temp)))
 
   # prepare observation data for drop down
   between <- " - "
