@@ -43,7 +43,7 @@
 #' @return An object of the \code{r2d3, htmlwidget, modelStudio} class.
 #'
 #' @importFrom utils head tail packageVersion
-#' @importFrom stats aggregate predict quantile IQR
+#' @importFrom stats aggregate predict quantile IQR na.omit
 #' @importFrom grDevices nclass.Sturges
 #' @import progress
 #'
@@ -227,41 +227,49 @@ modelStudio.explainer <- function(explainer,
   if (all(which_numerical)) {
     pd_n <- calculate(
       ingredients::partial_dependence(
-          model, data, predict_function, variable_type = "numerical", N = N),
+          model, data, predict_function, variable_type = "numerical", N = N,
+          variable_splits_type='uniform'),
       "ingredients::partial_dependence (numerical)", show_info, pb, B)
     pd_c <- NULL
     ad_n <- calculate(
       ingredients::accumulated_dependence(
-          model, data, predict_function, variable_type = "numerical", N = N),
+          model, data, predict_function, variable_type = "numerical", N = N,
+          variable_splits_type='uniform'),
       "ingredients::accumulated_dependence (numerical)", show_info, pb, 3*B)
     ad_c <- NULL
   } else if (all(!which_numerical)) {
     pd_n <- NULL
     pd_c <- calculate(
       ingredients::partial_dependence(
-          model, data, predict_function, variable_type = "categorical", N = N),
+          model, data, predict_function, variable_type = "categorical", N = N,
+          variable_splits_type='uniform'),
       "ingredients::partial_dependence (categorical)", show_info, pb, B)
     ad_n <- NULL
     ad_c <- calculate(
       ingredients::accumulated_dependence(
-          model, data, predict_function, variable_type = "categorical", N = N),
+          model, data, predict_function, variable_type = "categorical", N = N,
+          variable_splits_type='uniform'),
       "ingredients::accumulated_dependence (categorical)", show_info, pb, 3*B)
   } else {
     pd_n <- calculate(
       ingredients::partial_dependence(
-        model, data, predict_function, variable_type = "numerical", N = N),
+        model, data, predict_function, variable_type = "numerical", N = N,
+        variable_splits_type='uniform'),
       "ingredients::partial_dependence (numerical)", show_info, pb, B/2)
     pd_c <- calculate(
       ingredients::partial_dependence(
-        model, data, predict_function, variable_type = "categorical", N = N),
+        model, data, predict_function, variable_type = "categorical", N = N,
+        variable_splits_type='uniform'),
       "ingredients::partial_dependence (categorical)", show_info, pb, B/2)
     ad_n <- calculate(
       ingredients::accumulated_dependence(
-        model, data, predict_function, variable_type = "numerical", N = N),
+        model, data, predict_function, variable_type = "numerical", N = N,
+        variable_splits_type='uniform'),
       "ingredients::accumulated_dependence (numerical)", show_info, pb, 2*B)
     ad_c <- calculate(
       ingredients::accumulated_dependence(
-        model, data, predict_function, variable_type = "categorical", N = N),
+        model, data, predict_function, variable_type = "categorical", N = N,
+        variable_splits_type='uniform'),
       "ingredients::accumulated_dependence (categorical)", show_info, pb, B)
   }
 
@@ -293,7 +301,8 @@ modelStudio.explainer <- function(explainer,
         paste0("iBreakDown::shap (", i, ")"), show_info, pb, 3*B)
       cp <- calculate(
         ingredients::ceteris_paribus(
-          model, data, predict_function, new_observation, label = label),
+          model, data, predict_function, new_observation, label = label,
+          variable_splits_type='uniform', variable_splits_with_obs=TRUE),
         paste0("ingredients::ceteris_paribus (", i, ")"), show_info, pb, 1)
 
       bd_data <- prepare_break_down(bd, max_features, ...)
@@ -331,7 +340,8 @@ modelStudio.explainer <- function(explainer,
         paste0("iBreakDown::shap (", i, ")"), show_info, pb, 3*B)
       cp <- calculate(
         ingredients::ceteris_paribus(
-          model, data, predict_function, new_observation, label = label),
+          model, data, predict_function, new_observation, label = label,
+          variable_splits_type='uniform', variable_splits_with_obs=TRUE),
         paste0("ingredients::ceteris_paribus (", i, ")"), show_info, pb, 1)
 
       bd_data <- prepare_break_down(bd, max_features, ...)
