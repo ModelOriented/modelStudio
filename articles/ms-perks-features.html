@@ -106,7 +106,7 @@
       <h1 data-toc-skip>modelStudio - perks and features</h1>
                         <h4 class="author">Hubert Baniecki</h4>
             
-            <h4 class="date">2020-07-26</h4>
+            <h4 class="date">2020-08-03</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ModelOriented/modelStudio/blob/master/vignettes/ms-perks-features.Rmd"><code>vignettes/ms-perks-features.Rmd</code></a></small>
       <div class="hidden name"><code>ms-perks-features.Rmd</code></div>
@@ -350,13 +350,59 @@
                                  <span class="kw">new_observation</span> <span class="kw">=</span> <span class="no">test</span>[<span class="fl">103</span>:<span class="fl">104</span>,],
                                  <span class="kw">overwrite</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
 <span class="no">new_ms</span></pre></body></html></div>
+<hr>
+</div>
+<div id="shiny" class="section level2">
+<h2 class="hasAnchor">
+<a href="#shiny" class="anchor"></a>Shiny</h2>
+<p>Use the <code>widget_id</code> argument and <code>r2d3</code> package to render the <code>modelStudio</code> output in Shiny. See <a href="https://rstudio.github.io/r2d3/articles/shiny.html">Using r2d3 with Shiny</a> and consider the following example:</p>
+<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">shiny</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">r2d3</span>)
+
+
+<span class="no">ui</span> <span class="kw">&lt;-</span> <span class="fu">fluidPage</span>(
+  <span class="fu">textInput</span>(<span class="st">"text"</span>, <span class="fu">h3</span>(<span class="st">"Text input"</span>),
+            <span class="kw">value</span> <span class="kw">=</span> <span class="st">"Enter text..."</span>),
+  <span class="fu">uiOutput</span>(<span class="st">'dashboard'</span>)
+)
+
+<span class="no">server</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">input</span>, <span class="no">output</span>) {
+  <span class="co">#:# id of div where modelStudio will appear</span>
+  <span class="no">WIDGET_ID</span> <span class="kw">=</span> <span class="st">'MODELSTUDIO'</span>
+
+  <span class="co">#:# create modelStudio </span>
+  <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">modelStudio</span>)
+  <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DALEX</span>)
+  <span class="no">model</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span>(<span class="no">survived</span> ~<span class="no">.</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">titanic_imputed</span>, <span class="kw">family</span> <span class="kw">=</span> <span class="st">"binomial"</span>)
+  <span class="no">explainer</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DALEX/man/explain.html">explain</a></span>(<span class="no">model</span>,
+                       <span class="kw">data</span> <span class="kw">=</span> <span class="no">titanic_imputed</span>,
+                       <span class="kw">y</span> <span class="kw">=</span> <span class="no">titanic_imputed</span>$<span class="no">survived</span>,
+                       <span class="kw">label</span> <span class="kw">=</span> <span class="st">"Titanic GLM"</span>,
+                       <span class="kw">verbose</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
+  <span class="no">ms</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer</span>,
+                    <span class="kw">verbose</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
+                    <span class="kw">widget_id</span> <span class="kw">=</span> <span class="no">WIDGET_ID</span>) <span class="co">#:# use the widget_id (ignore warning)</span>
+
+  <span class="co">#:# basic render d3 output</span>
+  <span class="no">output</span><span class="kw">[[</span><span class="no">WIDGET_ID</span>]] <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/r2d3/man/d3-shiny.html">renderD3</a></span>({
+    <span class="no">ms</span>
+  })
+
+  <span class="co">#:# use render ui to set proper width and height</span>
+  <span class="no">output</span>$<span class="no">dashboard</span> <span class="kw">&lt;-</span> <span class="fu">renderUI</span>({
+    <span class="fu"><a href="https://rdrr.io/pkg/r2d3/man/d3-shiny.html">d3Output</a></span>(<span class="no">WIDGET_ID</span>, <span class="kw">width</span><span class="kw">=</span><span class="no">ms</span>$<span class="no">width</span>, <span class="kw">height</span><span class="kw">=</span><span class="no">ms</span>$<span class="no">height</span>)
+  })
+}
+
+<span class="fu">shinyApp</span>(<span class="kw">ui</span> <span class="kw">=</span> <span class="no">ui</span>, <span class="kw">server</span> <span class="kw">=</span> <span class="no">server</span>)</pre></body></html></div>
+<hr>
 </div>
 <div id="dalextra" class="section level2">
 <h2 class="hasAnchor">
 <a href="#dalextra" class="anchor"></a>DALEXtra</h2>
 <p>Use <code>explain_*()</code> functions from the <a href="https://github.com/ModelOriented/DALEXtra">DALEXtra</a> package to explain various models.</p>
 <p>Bellow basic example of making <code>modelStudio</code> for a <code>mlr</code> model using <code>explain_mlr()</code>.</p>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DALEXtra</span>)
+<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DALEXtra</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">mlr</span>)
 
 <span class="co"># fit a model</span>
@@ -372,6 +418,7 @@
 
 <span class="co"># make a studio for the model</span>
 <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer_mlr</span>)</pre></body></html></div>
+<hr>
 </div>
 <div id="references" class="section level2">
 <h2 class="hasAnchor">
