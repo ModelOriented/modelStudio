@@ -169,6 +169,7 @@ modelStudio.explainer <- function(explainer,
   y <- explainer$y
   predict_function <- explainer$predict_function
   label <- explainer$label
+  loss_function <- DALEX::loss_default(explainer$model_info$type)
 
   #:# checks
   if (is.null(rownames(data))) {
@@ -218,7 +219,9 @@ modelStudio.explainer <- function(explainer,
   ## count only once
   fi <- calculate(
     ingredients::feature_importance(
-        model, data, y, predict_function, variables = variable_names, B = B, N = 10*N),
+        model, data, y, predict_function, variables = variable_names, B = B, N = 10*N,
+        loss_function = loss_function
+        ),
     "ingredients::feature_importance", show_info, pb, 2*B)
 
   which_numerical <- which_variables_are_numeric(data)
@@ -273,7 +276,8 @@ modelStudio.explainer <- function(explainer,
       "ingredients::accumulated_dependence (categorical)", show_info, pb, B)
   }
 
-  fi_data <- prepare_feature_importance(fi, max_features, options$show_boxplot, ...)
+  fi_data <- prepare_feature_importance(fi, max_features, options$show_boxplot,
+                                        attr(loss_function, "loss_name"), ...)
   pd_data <- prepare_partial_dependence(pd_n, pd_c, variables = variable_names)
   ad_data <- prepare_accumulated_dependence(ad_n, ad_c, variables = variable_names)
 

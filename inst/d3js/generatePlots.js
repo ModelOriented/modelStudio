@@ -606,6 +606,7 @@ function featureImportance() {
   var fiBarCount = fiData.m,
       bData = fiData.x,
       xMinMax = fiData.x_min_max,
+      xTitle = fiData.x_title,
       desc = fiData.desc;
 
   var fiPlotHeight = SCALE_PLOT ? h : fiBarCount*fiBarWidth + (fiBarCount+1)*fiBarWidth/2,
@@ -621,7 +622,7 @@ function featureImportance() {
                          (margin.top + fiPlotHeight + 45) + ")")
     .attr("class", "axisTitle")
     .attr("text-anchor", "middle")
-    .text("drop-out loss");
+    .text(xTitle);
 
   var xAxis = d3.axisBottom(x)
                 .ticks(5)
