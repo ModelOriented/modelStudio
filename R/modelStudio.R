@@ -372,6 +372,7 @@ modelStudio.explainer <- function(explainer,
                         " on ", format(Sys.time(), usetz = FALSE))
 
   if (is.null(options$ms_title)) options$ms_title <- paste0("Interactive Studio for ", label, " Model")
+  if (is.null(options$telemetry)) options$telemetry <- TRUE
 
   options <- c(list(time = time,
                     model_name = label,
