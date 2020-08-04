@@ -372,7 +372,13 @@ modelStudio.explainer <- function(explainer,
                         " on ", format(Sys.time(), usetz = FALSE))
 
   if (is.null(options$ms_title)) options$ms_title <- paste0("Interactive Studio for ", label, " Model")
-  if (is.null(options$telemetry)) options$telemetry <- TRUE
+  if (options$telemetry) {
+    options$telemetry <- list(created = format(Sys.time(), usetz=TRUE),
+                              version = as.character(packageVersion("modelStudio")),
+                              model = class(model),
+                              dataset_size = nrow(data),
+                              observations = obs_count)
+  }
 
   options <- c(list(time = time,
                     model_name = label,

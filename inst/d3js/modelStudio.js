@@ -91,7 +91,8 @@ var TIME = options.time,
     atBarColor = options.at_bar_color || barColor,
     atLineColor = options.at_line_color || lineColor,
     atPointColor = options.at_point_color || pointColor,
-    telemetryEnabled = !!options.telemetry;
+    telemetryData = options.telemetry,
+    showcaseName = options.showcase;
 
 /// for observation choice
 var observationIds = Object.keys(obsData);
@@ -164,7 +165,7 @@ for (let i = 0; i < dim[0]; i++) {
 }
 
 ///:\\\
-if (telemetryEnabled) startTelemetrySession();
+if (telemetryData) startTelemetrySession();
 initializeStudio();
 ///:\\\
 
@@ -177,7 +178,14 @@ function startTelemetrySession() {
       application_version: 'telemetry_tests',
       data: JSON.stringify({
         width: document.body.offsetWidth,
-        height: document.body.offsetHeight
+        height: document.body.offsetHeight,
+        rows: dim[0],
+        cols: dim[1],
+        variables: variableNames.length,
+        observations: observationIds.length,
+        animationTime: TIME,
+        showcaseName,
+        ...telemetryData
       })
     }),
     headers: {
