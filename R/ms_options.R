@@ -175,8 +175,7 @@ ms_options <- function(...) {
     at_bar_color = NULL,
     at_line_color = NULL,
     at_point_color = "#371ea3",
-    telemetry = TRUE,
-    showcase = NULL
+    showcaseName = NULL
   )
 
   # input new options
