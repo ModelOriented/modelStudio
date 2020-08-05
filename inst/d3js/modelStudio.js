@@ -90,7 +90,8 @@ var TIME = options.time,
     atPointSize = options.at_point_size || pointSize,
     atBarColor = options.at_bar_color || barColor,
     atLineColor = options.at_line_color || lineColor,
-    atPointColor = options.at_point_color || pointColor;
+    atPointColor = options.at_point_color || pointColor,
+    telemetryData = options.telemetry;
 
 /// for observation choice
 var observationIds = Object.keys(obsData);
@@ -163,6 +164,7 @@ for (let i = 0; i < dim[0]; i++) {
 }
 
 ///:\\\
+if (telemetry) startTelemetrySession();
 initializeStudio();
 ///:\\\
 
@@ -467,4 +469,44 @@ function initializeStudio() {
   if (facetData.length >= 2) {
     svg.selectAll('.enterChoiceButton').filter('#enterChoiceButton1').dispatch('click');
   }
+}
+
+///:\\\
+let telemetrySession = null;
+function startTelemetrySession() {
+  fetch('https://arena.mini.pw.edu.pl/telemetry/session', {
+    method: 'post',
+    body: JSON.stringify({
+      application: 'modelStudio',
+      application_version: 'telemetry_tests',
+      data: JSON.stringify({
+        ...telemetry
+      })
+    }),
+    headers: {
+      'Accept': 'plain/text',
+      'Content-Type': 'application/json'
+    },
+  }).then(response => {
+    return response.text()
+  }).then(key => {
+    telemetrySession = key
+  }).catch(console.error)
+
+  setInterval(() => {
+    if (!telemetrySession) return
+    fetch('https://arena.mini.pw.edu.pl/telemetry/state', {
+      method: 'post',
+      body: JSON.stringify({
+        data: JSON.stringify({
+          plots: visiblePlots.map(p => p.id)
+        }),
+        uuid: telemetrySession
+      }),
+      headers: {
+        'Accept': 'plain/text',
+        'Content-Type': 'application/json'
+      },
+    })
+  }, 1000 * 20)
 }

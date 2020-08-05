@@ -22,6 +22,7 @@ modelStudio(explainer, ...)
   options = ms_options(),
   viewer = "external",
   widget_id = NULL,
+  telemetry = TRUE,
   ...
 )
 }
@@ -67,6 +68,9 @@ Use \code{browser} to display in an external browser or
 
 \item{widget_id}{Use an explicit element ID for the widget (rather than an automatically generated one).
 Useful e.g. when using \code{modelStudio} with Shiny.}
+
+\item{telemetry}{The dashboard gathers useful, but not sensitive, information about how it is being used (e.g. computation length,
+package version, dashboard dimensions). This is for the development purposes only and can be blocked by setting \code{telemetry} to \code{FALSE}.}
 }
 \value{
 An object of the \code{r2d3, htmlwidget, modelStudio} class.
@@ -82,6 +86,8 @@ Theoretical introduction to the plots:
 
 Displayed variable can be changed by clicking on the bars of plots or with the first dropdown list,
  and observation can be changed with the second dropdown list.
+The dashboard gathers useful, but not sensitive, information about how it is being used (e.g. computation length,
+ package version, dashboard dimensions). This is for the development purposes only and can be blocked by setting \code{telemetry} to \code{FALSE}.
 }
 \examples{
 library("DALEX")

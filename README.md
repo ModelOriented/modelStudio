@@ -325,7 +325,7 @@ or with [`r2d3::save_d3_html()`](https://rstudio.github.io/r2d3/articles/publish
 
 ## More Resources
 
-  - Citation: a preprint of [The Grammar of Interactive Explanatory Model Analysis](https://arxiv.org/abs/2005.00497)
+  - Citation: [JOSS](https://joss.theoj.org/papers/10.21105/joss.01798) More: a preprint of [The Grammar of Interactive Explanatory Model Analysis](https://arxiv.org/abs/2005.00497)
 
   - Theoretical introduction to the plots: [Explanatory Model Analysis. Explore, Explain and Examine Predictive Models.](https://pbiecek.github.io/ema)
 

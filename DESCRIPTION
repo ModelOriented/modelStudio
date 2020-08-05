@@ -6,7 +6,8 @@ Authors@R:
              email = "hbaniecki@gmail.com",
              comment = c(ORCID = "0000-0001-6661-5364")),
       person("Przemyslaw", "Biecek", role = c("aut"), 
-             comment = c(ORCID = "0000-0001-8423-1823")))
+             comment = c(ORCID = "0000-0001-8423-1823")),
+      person("Piotr", "Piatyszek", role = c("ctb")))
 Description: Automate the explanatory analysis of machine learning predictive models.
     Generate advanced interactive and animated model explanations in the form of
     a serverless HTML site with only one line of code. This tool is model agnostic,
@@ -20,8 +21,9 @@ Depends: R (>= 3.5)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.0
-Imports:
+RoxygenNote: 7.1.1
+Imports:  
+    DALEX (>= 1.3.0),
     iBreakDown (>= 1.2.1),
     ingredients (>= 1.3.1),
     r2d3,
@@ -29,7 +31,6 @@ Imports:
     progress,
     digest
 Suggests:
-    DALEX (>= 1.0),
     parallelMap,
     ranger,
     xgboost,

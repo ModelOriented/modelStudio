@@ -1,10 +1,11 @@
 # modelStudio (development)
-* this version requires `iBreakDown v1.2.1` and `ingredients v1.3.1` 
+* this version requires `DALEX v1.3.0`, `iBreakDown v1.2.1` and `ingredients v1.3.1`
+* The dashboard gathers useful, but not sensitive, information about how it is being used (e.g. computation length, package version, dashboard dimensions). This is for the development purposes only and can be blocked by setting `telemetry` to `FALSE`.
 * add support for `modelStudio` in Shiny [(#77)](https://github.com/ModelOriented/modelStudio/issues/77)
 using new `widget_id` argument
 * modelStudio now works with `NA` in `data` [(#71)](https://github.com/ModelOriented/modelStudio/issues/71)
-* CP, PD and AD plots are now calculated with `variable_splits_type='uniform'` [(#74)](https://github.com/ModelOriented/modelStudio/issues/74)
-* CP plots are now calculated with `variable_splits_with_obs=TRUE` [(#74)](https://github.com/ModelOriented/modelStudio/issues/74)
+* CP, PD and AD plots are now calculated with `variable_splits_type='uniform'` and CP plots are now calculated with `variable_splits_with_obs=TRUE` [(#74)](https://github.com/ModelOriented/modelStudio/issues/74)
+* By default the `loss_function` in FI is now different for each `explainer$model_info$type` [(#73)](https://github.com/ModelOriented/modelStudio/issues/73)
 
 # modelStudio 1.2.0
 * remove redundant documentation resources so that the package weights less

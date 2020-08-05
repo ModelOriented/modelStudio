@@ -11,6 +11,8 @@
 #'
 #' Displayed variable can be changed by clicking on the bars of plots or with the first dropdown list,
 #'  and observation can be changed with the second dropdown list.
+#' The dashboard gathers useful, but not sensitive, information about how it is being used (e.g. computation length,
+#'  package version, dashboard dimensions). This is for the development purposes only and can be blocked by setting \code{telemetry} to \code{FALSE}.
 #'
 #' @param explainer An \code{explainer} created with \code{DALEX::explain()}.
 #' @param new_observation New observations with columns that correspond to variables used in the model.
@@ -38,6 +40,8 @@
 #'  \code{internal} to use the RStudio internal viewer pane for output.
 #' @param widget_id Use an explicit element ID for the widget (rather than an automatically generated one).
 #'  Useful e.g. when using \code{modelStudio} with Shiny.
+#' @param telemetry The dashboard gathers useful, but not sensitive, information about how it is being used (e.g. computation length,
+#'  package version, dashboard dimensions). This is for the development purposes only and can be blocked by setting \code{telemetry} to \code{FALSE}.
 #' @param ... Other parameters.
 #'
 #' @return An object of the \code{r2d3, htmlwidget, modelStudio} class.
@@ -162,13 +166,17 @@ modelStudio.explainer <- function(explainer,
                                   options = ms_options(),
                                   viewer = "external",
                                   widget_id = NULL,
+                                  telemetry = TRUE,
                                   ...) {
+
+  start_time <- Sys.time()
 
   model <- explainer$model
   data <- explainer$data
   y <- explainer$y
   predict_function <- explainer$predict_function
   label <- explainer$label
+  loss_function <- DALEX::loss_default(explainer$model_info$type)
 
   #:# checks
   if (is.null(rownames(data))) {
@@ -218,7 +226,9 @@ modelStudio.explainer <- function(explainer,
   ## count only once
   fi <- calculate(
     ingredients::feature_importance(
-        model, data, y, predict_function, variables = variable_names, B = B, N = 10*N),
+        model, data, y, predict_function, variables = variable_names, B = B, N = 10*N,
+        loss_function = loss_function
+        ),
     "ingredients::feature_importance", show_info, pb, 2*B)
 
   which_numerical <- which_variables_are_numeric(data)
@@ -273,7 +283,8 @@ modelStudio.explainer <- function(explainer,
       "ingredients::accumulated_dependence (categorical)", show_info, pb, B)
   }
 
-  fi_data <- prepare_feature_importance(fi, max_features, options$show_boxplot, ...)
+  fi_data <- prepare_feature_importance(fi, max_features, options$show_boxplot,
+                                        attr(loss_function, "loss_name"), ...)
   pd_data <- prepare_partial_dependence(pd_n, pd_c, variables = variable_names)
   ad_data <- prepare_accumulated_dependence(ad_n, ad_c, variables = variable_names)
 
@@ -368,11 +379,30 @@ modelStudio.explainer <- function(explainer,
   colnames(drop_down_data) <- c("id", "text")
 
   # prepare footer text and ms title
-  footer_text <- paste0("Site built with modelStudio v", packageVersion("modelStudio"),
-                        " on ", format(Sys.time(), usetz = FALSE))
+  ms_package_version <- as.character(packageVersion("modelStudio"))
+  ms_creation_date <- Sys.time()
+  footer_text <- paste0("Site built with modelStudio v",
+                        ms_package_version,
+                        " on ",
+                        format(ms_creation_date, usetz = FALSE))
+
+  if (telemetry) {
+    creation_time <- as.character(as.integer(as.numeric(ms_creation_date - start_time)*60))
+    options$telemetry <- list(date = format(ms_creation_date, usetz = FALSE),
+                              creationTime = creation_time,
+                              facetRow = facet_dim[1],
+                              facetCol = facet_dim[2],
+                              width = options$w,
+                              height = options$h,
+                              animationTime = time,
+                              version = ms_package_version,
+                              model = class(model)[1],
+                              dataSize = nrow(data),
+                              varCount = length(variable_names),
+                              obsCount = obs_count)
+  }
 
   if (is.null(options$ms_title)) options$ms_title <- paste0("Interactive Studio for ", label, " Model")
-
   options <- c(list(time = time,
                     model_name = label,
                     variable_names = variable_names,

@@ -174,7 +174,8 @@ ms_options <- function(...) {
     at_point_size = 3,
     at_bar_color = NULL,
     at_line_color = NULL,
-    at_point_color = "#371ea3"
+    at_point_color = "#371ea3",
+    showcaseName = NULL
   )
 
   # input new options
