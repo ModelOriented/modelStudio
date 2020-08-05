@@ -60,7 +60,9 @@ Exploratory Data Analysis to give a broad overview of the model behavior.
 Theoretical introduction to the plots:
 Explanatory Model Analysis: Explore, Explain and Examine Predictive Models
 Displayed variable can be changed by clicking on the bars of plots or with the first dropdown list,
- and observation can be changed with the second dropdown list." />
+ and observation can be changed with the second dropdown list.
+The dashboard gathers useful, but not sensitive, information about how it is being used (e.g. computation length,
+ package version, dashboard dimensions). This is for the development purposes only and can be blocked by setting telemetry to FALSE." />
 <meta property="og:image" content="/logo.png" />
 
 <meta name="robots" content="noindex" />
@@ -170,7 +172,9 @@ Exploratory Data Analysis to give a broad overview of the model behavior.</p>
 <p>Theoretical introduction to the plots:
 <a href='https://pbiecek.github.io/ema/'>Explanatory Model Analysis: Explore, Explain and Examine Predictive Models</a></p>
 <p>Displayed variable can be changed by clicking on the bars of plots or with the first dropdown list,
- and observation can be changed with the second dropdown list.</p>
+ and observation can be changed with the second dropdown list.
+The dashboard gathers useful, but not sensitive, information about how it is being used (e.g. computation length,
+ package version, dashboard dimensions). This is for the development purposes only and can be blocked by setting <code>telemetry</code> to <code>FALSE</code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>modelStudio</span>(<span class='no'>explainer</span>, <span class='no'>...</span>)
@@ -191,6 +195,7 @@ Exploratory Data Analysis to give a broad overview of the model behavior.</p>
   <span class='kw'>options</span> <span class='kw'>=</span> <span class='fu'><a href='ms_options.html'>ms_options</a></span>(),
   <span class='kw'>viewer</span> <span class='kw'>=</span> <span class='st'>"external"</span>,
   <span class='kw'>widget_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>telemetry</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='no'>...</span>
 )</pre>
 
@@ -268,6 +273,11 @@ Use <code>browser</code> to display in an external browser or
       <th>widget_id</th>
       <td><p>Use an explicit element ID for the widget (rather than an automatically generated one).
 Useful e.g. when using <code>modelStudio</code> with Shiny.</p></td>
+    </tr>
+    <tr>
+      <th>telemetry</th>
+      <td><p>The dashboard gathers useful, but not sensitive, information about how it is being used (e.g. computation length,
+package version, dashboard dimensions). This is for the development purposes only and can be blocked by setting <code>telemetry</code> to <code>FALSE</code>.</p></td>
     </tr>
     </table>
 
