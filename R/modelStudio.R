@@ -37,7 +37,6 @@
 #'  Default is \code{10}.
 #'  See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#more-calculations-means-more-time}{\bold{vignette}}
 #' @param eda Compute EDA plots. Default is \code{TRUE}.
-#' @param binary Treat the binary variables (e.g. one-hot-encoding) as categorical and use bar plots. Default is \code{TRUE}.
 #' @param show_info Verbose a progress on the console. Default is \code{TRUE}.
 #' @param parallel Speed up the computation using \code{parallelMap::parallelMap()}.
 #'  See \href{https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html#parallel-computation}{\bold{vignette}}.
@@ -171,7 +170,6 @@ modelStudio.explainer <- function(explainer,
                                   N = 300,
                                   B = 10,
                                   eda = TRUE,
-                                  binary = TRUE,
                                   show_info = TRUE,
                                   parallel = FALSE,
                                   options = ms_options(),
@@ -187,9 +185,10 @@ modelStudio.explainer <- function(explainer,
   y <- explainer$y
   predict_function <- explainer$predict_function
   label <- explainer$label
-  loss_function <- ifelse(is.null(explainer$model_info$type),
-                          DALEX::loss_root_mean_square,
-                          DALEX::loss_default(explainer$model_info$type))
+  loss_function <- DALEX::loss_root_mean_square
+
+  if (!is.null(explainer$model_info$type))
+    loss_function <- DALEX::loss_default(explainer$model_info$type)
 
   #:# checks
   if (is.null(rownames(data))) {
@@ -245,7 +244,6 @@ modelStudio.explainer <- function(explainer,
     "ingredients::feature_importance", show_info, pb, 2*B)
 
   which_numerical <- which_variables_are_numeric(data)
-  if (binary) which_binary <- which_variables_are_binary(data)
 
   ## because aggregate_profiles calculates numerical OR categorical
   if (all(which_numerical)) {
@@ -544,15 +542,7 @@ which_variables_are_numeric <- function(data) {
   }
 }
 
-# check for binary columns
-which_variables_are_binary <- function(data) {
-  if (is.matrix(data)) {
-    apply(data[,, drop = FALSE], 2, is_numeric_and_binary)
-  } else {
-    sapply(data[,, drop = FALSE], is_numeric_and_binary)
-  }
-}
-
-is_numeric_and_binary <- function(column) {
-  is.numeric(column) & length(unique(column)) == 2
+# check for binary target
+is_y_binary <- function(y) {
+  is.numeric(y) & length(unique(y)) == 2
 }
