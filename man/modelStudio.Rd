@@ -17,7 +17,6 @@ modelStudio(explainer, ...)
   N = 300,
   B = 10,
   eda = TRUE,
-  binary = TRUE,
   show_info = TRUE,
   parallel = FALSE,
   options = ms_options(),
@@ -53,8 +52,6 @@ Default is \code{10}.
 See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#more-calculations-means-more-time}{\bold{vignette}}}
 
 \item{eda}{Compute EDA plots. Default is \code{TRUE}.}
-
-\item{binary}{Treat the binary variables (e.g. one-hot-encoding) as categorical and use bar plots. Default is \code{TRUE}.}
 
 \item{show_info}{Verbose a progress on the console. Default is \code{TRUE}.}
 

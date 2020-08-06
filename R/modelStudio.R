@@ -185,10 +185,6 @@ modelStudio.explainer <- function(explainer,
   y <- explainer$y
   predict_function <- explainer$predict_function
   label <- explainer$label
-  loss_function <- DALEX::loss_root_mean_square
-
-  if (!is.null(explainer$model_info$type))
-    loss_function <- DALEX::loss_default(explainer$model_info$type)
 
   #:# checks
   if (is.null(rownames(data))) {
@@ -212,9 +208,21 @@ modelStudio.explainer <- function(explainer,
   if ("try-error" %in% class(check_single_prediction)) {
     stop("`explainer$predict_function` returns an error when executed on `new_observation[1,, drop = FALSE]` \n")
   }
+
+  if ('loss_function' %in% names(list(...))) {
+    loss_function <- list(...)[['loss_function']]
+  } else if (is.null(explainer$model_info$type)) {
+    if (is_y_binary(y)) {
+      loss_function <- DALEX::loss_one_minus_auc
+    } else {
+      loss_function <- DALEX::loss_root_mean_square
+    }
+  } else {
+    loss_function <- DALEX::loss_default(explainer$model_info$type)
+  }
   #:#
 
-  ## get proper names of features that arent target
+  ## get proper names of features that aren't target
   is_y <- is_y_in_data(data, y)
   potential_variable_names <- names(is_y[!is_y])
   variable_names <- intersect(potential_variable_names, colnames(new_observation))
