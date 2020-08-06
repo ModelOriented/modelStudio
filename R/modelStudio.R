@@ -29,6 +29,7 @@
 #' @param time Time in ms. Set the animation length. Default is \code{500}.
 #' @param max_features Maximum number of features to be included in BD and SV plots.
 #'  Default is \code{10}.
+#' @param max_vars An alias for \code{max_features}. If provided, it will override the value.
 #' @param N Number of observations used for the calculation of PD and AD.
 #'  \code{10*N} is a number of observations used for the calculation of FI.
 #'  Default \code{N} is \code{300}.
@@ -176,6 +177,7 @@ modelStudio.explainer <- function(explainer,
                                   viewer = "external",
                                   widget_id = NULL,
                                   telemetry = TRUE,
+                                  max_vars = NULL,
                                   ...) {
 
   start_time <- Sys.time()
@@ -220,6 +222,8 @@ modelStudio.explainer <- function(explainer,
   } else {
     loss_function <- DALEX::loss_default(explainer$model_info$type)
   }
+
+  if (!is.null(max_vars)) max_features <- max_vars
   #:#
 
   ## get proper names of features that aren't target

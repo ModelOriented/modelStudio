@@ -13,6 +13,7 @@ ms_update_observations(
   B = 10,
   show_info = TRUE,
   parallel = FALSE,
+  widget_id = NULL,
   overwrite = FALSE,
   ...
 )
@@ -38,6 +39,10 @@ See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#more-calc
 \item{parallel}{Speed up the computation using \code{parallelMap::parallelMap()}.
 See \href{https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html#parallel-computation}{\bold{vignette}}.
 This might interfere with showing progress using \code{show_info}.}
+
+\item{widget_id}{Use an explicit element ID for the widget (rather than an automatically generated one).
+Useful e.g. when using \code{modelStudio} with Shiny.
+See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#shiny-1}{\bold{vignette}}.}
 
 \item{overwrite}{Overwrite existing observations and their explanations.
 Default is \code{FALSE} which means add new observations to the existing ones.}

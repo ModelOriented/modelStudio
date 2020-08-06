@@ -23,6 +23,7 @@ modelStudio(explainer, ...)
   viewer = "external",
   widget_id = NULL,
   telemetry = TRUE,
+  max_vars = NULL,
   ...
 )
 }
@@ -72,6 +73,8 @@ See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#shiny-1}{
 
 \item{telemetry}{The dashboard gathers useful, but not sensitive, information about how it is being used (e.g. computation length,
 package version, dashboard dimensions). This is for the development purposes only and can be blocked by setting \code{telemetry} to \code{FALSE}.}
+
+\item{max_vars}{An alias for \code{max_features}. If provided, it will override the value.}
 }
 \value{
 An object of the \code{r2d3, htmlwidget, modelStudio} class.

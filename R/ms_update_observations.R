@@ -17,6 +17,9 @@
 #' @param parallel Speed up the computation using \code{parallelMap::parallelMap()}.
 #'  See \href{https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html#parallel-computation}{\bold{vignette}}.
 #'  This might interfere with showing progress using \code{show_info}.
+#' @param widget_id Use an explicit element ID for the widget (rather than an automatically generated one).
+#'  Useful e.g. when using \code{modelStudio} with Shiny.
+#'  See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#shiny-1}{\bold{vignette}}.
 #' @param overwrite Overwrite existing observations and their explanations.
 #'  Default is \code{FALSE} which means add new observations to the existing ones.
 #' @param ... Other parameters.
@@ -81,21 +84,23 @@ ms_update_observations <- function(object,
                                    B = 10,
                                    show_info = TRUE,
                                    parallel = FALSE,
+                                   widget_id = NULL,
                                    overwrite = FALSE,
                                    ...) {
-
-  #:# TODO: clean code in this function #:#
 
   stopifnot("modelStudio" %in% class(object))
   stopifnot("explainer" %in% class(explainer))
 
-  options <- object$x$options
   model <- explainer$model
   data <- explainer$data
   y <- explainer$y
   predict_function <- explainer$predict_function
   label <- explainer$label
 
+  # extract old options
+  options <- object$x$options
+
+  #:# checks
   if (is.null(rownames(data))) {
     rownames(data) <- 1:nrow(data)
   }
@@ -115,8 +120,9 @@ ms_update_observations <- function(object,
 
   check_single_prediction <- try(predict_function(model, new_observation[1,, drop = FALSE]), silent = TRUE)
   if ("try-error" %in% class(check_single_prediction)) {
-    stop("`predict_function` returns an error when executed on `new_observation[1,, drop = FALSE]` \n")
+    stop("`explainer$predict_function` returns an error when executed on `new_observation[1,, drop = FALSE]` \n")
   }
+  #:#
 
   ## get proper names of features that arent target
   is_y <- is_y_in_data(data, y)
@@ -236,14 +242,18 @@ ms_update_observations <- function(object,
   temp <- jsonlite::toJSON(list(obs_list, old_data[[2]], old_data[[3]],
                                 old_data[[4]], old_data[[5]], old_data[[6]]),
                            auto_unbox = TRUE)
-  widget_id <- paste0("widget-", digest::digest(temp))
+  widget_id <- ifelse(!is.null(widget_id),
+                      widget_id,
+                      paste0("widget-", digest::digest(temp)))
 
   #:# extract old options and update them
   new_options <- options
   new_options$widget_id <- widget_id
   new_options$variable_names <- variable_names
-  new_options$footer_text <- paste0("Site built with modelStudio v", packageVersion("modelStudio"),
-                                    " on ", format(Sys.time(), usetz = FALSE))
+  new_options$footer_text <- paste0("Site built with modelStudio v",
+                                    as.character(packageVersion("modelStudio")),
+                                    " on ",
+                                    format(Sys.time(), usetz = FALSE))
   new_options$drop_down_data <-  jsonlite::toJSON(drop_down_data)
 
   options("r2d3.shadow" = FALSE) # set this option to avoid using shadow-root
