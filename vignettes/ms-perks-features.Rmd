@@ -142,6 +142,16 @@ modelStudio(explainer,
             eda = FALSE)
 ```
 
+### bar plots for binary variables
+
+Treat the binary variables (e.g. one-hot-encoding) as categorical and use bar plots. Set the `binary` parameter to `FALSE` to remove this feature 
+and treat these variables as any other numerical variable by default.
+
+```{r eval = FALSE}
+modelStudio(explainer,
+            binary = FALSE)
+```
+
 ### progress bar
 
 Hide computation progress bar messages with `show_info` parameter.

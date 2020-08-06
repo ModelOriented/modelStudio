@@ -284,7 +284,7 @@ prepare_ceteris_paribus <- function(x, variables = NULL) {
 }
 
 prepare_feature_importance <- function(x, max_features = 10, show_boxplot = TRUE,
-                                       x_title = "drop-out loss",
+                                       x_title = NULL,
                                        margin = 0.15, digits = 3, rounding_function = round) {
   ### This function returns object needed to plot FeatureImportance in D3 ###
 
@@ -353,7 +353,7 @@ prepare_feature_importance <- function(x, max_features = 10, show_boxplot = TRUE
   ret$x <- new_x
   ret$m <- m
   ret$x_min_max <- min_max
-  ret$x_title <- x_title
+  ret$x_title <- ifelse(is.null(x_title), "drop-out loss", x_title)
   ret$desc <- data.frame(type = "desc",
                          text = gsub("\n","</br>", desc))
 
