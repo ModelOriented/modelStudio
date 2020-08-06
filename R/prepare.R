@@ -1,5 +1,5 @@
 prepare_break_down <- function(x, max_features = 10, baseline = NA, digits = 3,
-                               rounding_function = round, margin = 0.2) {
+                               rounding_function = round, margin = 0.2, ...) {
   ### This function returns object needed to plot BreakDown in D3 ###
 
   if (is.null(x)) return(NULL)
@@ -92,8 +92,10 @@ prepare_break_down_df <- function(x, max_features = 10, baseline = NA, digits = 
   x
 }
 
-prepare_shapley_values <- function(x, max_features = 10, show_boxplot = TRUE, baseline = NA,
-                                   digits = 3, rounding_function = round, margin = 0.15) {
+prepare_shapley_values <- function(x, max_features = 10, show_boxplot = TRUE,
+                                   baseline = NA,
+                                   digits = 3, rounding_function = round,
+                                   margin = 0.15, ...) {
   ### This function returns object needed to plot ShapleyValues in D3 ###
 
   if (is.null(x)) return(NULL)
@@ -284,8 +286,9 @@ prepare_ceteris_paribus <- function(x, variables = NULL) {
 }
 
 prepare_feature_importance <- function(x, max_features = 10, show_boxplot = TRUE,
-                                       x_title = "drop-out loss",
-                                       margin = 0.15, digits = 3, rounding_function = round) {
+                                       x_title = NULL,
+                                       margin = 0.15, digits = 3, rounding_function = round,
+                                       ...) {
   ### This function returns object needed to plot FeatureImportance in D3 ###
 
   if (is.null(x)) return(NULL)
@@ -353,7 +356,7 @@ prepare_feature_importance <- function(x, max_features = 10, show_boxplot = TRUE
   ret$x <- new_x
   ret$m <- m
   ret$x_min_max <- min_max
-  ret$x_title <- x_title
+  ret$x_title <- ifelse(is.null(x_title), "drop-out loss", x_title)
   ret$desc <- data.frame(type = "desc",
                          text = gsub("\n","</br>", desc))
 

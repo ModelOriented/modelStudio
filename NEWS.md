@@ -6,6 +6,10 @@ using new `widget_id` argument
 * modelStudio now works with `NA` in `data` [(#71)](https://github.com/ModelOriented/modelStudio/issues/71)
 * CP, PD and AD plots are now calculated with `variable_splits_type='uniform'` and CP plots are now calculated with `variable_splits_with_obs=TRUE` [(#74)](https://github.com/ModelOriented/modelStudio/issues/74)
 * By default the `loss_function` in FI is now different for each `explainer$model_info$type` [(#73)](https://github.com/ModelOriented/modelStudio/issues/73)
+* fixed a bug where passing additional parameters in `...` would cause an error
+* added a `max_vars` alias for the `max_features` parameter
+<!-- * TV plot uses boxplots and heatmap when the target `y` has only two unique
+values [(#76)](https://github.com/ModelOriented/modelStudio/issues/76) -->
 
 # modelStudio 1.2.0
 * remove redundant documentation resources so that the package weights less

@@ -6,8 +6,16 @@
 #' Easily save and share the HTML dashboard with others. Tools for model exploration unite with tools for
 #' Exploratory Data Analysis to give a broad overview of the model behavior.
 #'
-#' Theoretical introduction to the plots:
-#' \href{https://pbiecek.github.io/ema/}{Explanatory Model Analysis: Explore, Explain and Examine Predictive Models}
+#' The extensive documentation covers:
+#'
+#' \itemize{
+#'   \item Function parameters description -
+#'  \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html}{\bold{perks and features}}
+#'   \item Framework and model compatibility -
+#'  \href{https://modelstudio.drwhy.ai/articles/ms-r-python-examples.html}{\bold{R & Python examples}}
+#'   \item Theoretical introduction to the plots -
+#'  \href{https://pbiecek.github.io/ema/}{Explanatory Model Analysis: Explore, Explain and Examine Predictive Models}
+#' }
 #'
 #' Displayed variable can be changed by clicking on the bars of plots or with the first dropdown list,
 #'  and observation can be changed with the second dropdown list.
@@ -21,6 +29,7 @@
 #' @param time Time in ms. Set the animation length. Default is \code{500}.
 #' @param max_features Maximum number of features to be included in BD and SV plots.
 #'  Default is \code{10}.
+#' @param max_vars An alias for \code{max_features}. If provided, it will override the value.
 #' @param N Number of observations used for the calculation of PD and AD.
 #'  \code{10*N} is a number of observations used for the calculation of FI.
 #'  Default \code{N} is \code{300}.
@@ -34,12 +43,13 @@
 #'  See \href{https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html#parallel-computation}{\bold{vignette}}.
 #'  This might interfere with showing progress using \code{show_info}.
 #' @param options Customize \code{modelStudio}. See \code{\link{ms_options}} and
-#'  \href{https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html#plot-options}{\bold{vignette}}.
+#'  \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#additional-options-1}{\bold{vignette}}.
 #' @param viewer Default is \code{external} to display in an external RStudio window.
 #'  Use \code{browser} to display in an external browser or
 #'  \code{internal} to use the RStudio internal viewer pane for output.
 #' @param widget_id Use an explicit element ID for the widget (rather than an automatically generated one).
 #'  Useful e.g. when using \code{modelStudio} with Shiny.
+#'  See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#shiny-1}{\bold{vignette}}.
 #' @param telemetry The dashboard gathers useful, but not sensitive, information about how it is being used (e.g. computation length,
 #'  package version, dashboard dimensions). This is for the development purposes only and can be blocked by setting \code{telemetry} to \code{FALSE}.
 #' @param ... Other parameters.
@@ -167,6 +177,7 @@ modelStudio.explainer <- function(explainer,
                                   viewer = "external",
                                   widget_id = NULL,
                                   telemetry = TRUE,
+                                  max_vars = NULL,
                                   ...) {
 
   start_time <- Sys.time()
@@ -176,7 +187,6 @@ modelStudio.explainer <- function(explainer,
   y <- explainer$y
   predict_function <- explainer$predict_function
   label <- explainer$label
-  loss_function <- DALEX::loss_default(explainer$model_info$type)
 
   #:# checks
   if (is.null(rownames(data))) {
@@ -200,9 +210,23 @@ modelStudio.explainer <- function(explainer,
   if ("try-error" %in% class(check_single_prediction)) {
     stop("`explainer$predict_function` returns an error when executed on `new_observation[1,, drop = FALSE]` \n")
   }
+
+  if ('loss_function' %in% names(list(...))) {
+    loss_function <- list(...)[['loss_function']]
+  } else if (is.null(explainer$model_info$type)) {
+    if (is_y_binary(y)) {
+      loss_function <- DALEX::loss_one_minus_auc
+    } else {
+      loss_function <- DALEX::loss_root_mean_square
+    }
+  } else {
+    loss_function <- DALEX::loss_default(explainer$model_info$type)
+  }
+
+  if (!is.null(max_vars)) max_features <- max_vars
   #:#
 
-  ## get proper names of features that arent target
+  ## get proper names of features that aren't target
   is_y <- is_y_in_data(data, y)
   potential_variable_names <- names(is_y[!is_y])
   variable_names <- intersect(potential_variable_names, colnames(new_observation))
@@ -528,4 +552,9 @@ which_variables_are_numeric <- function(data) {
   } else {
     sapply(data[,, drop = FALSE], is.numeric)
   }
+}
+
+# check for binary target
+is_y_binary <- function(y) {
+  is.numeric(y) & length(unique(y)) == 2
 }

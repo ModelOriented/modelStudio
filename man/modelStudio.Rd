@@ -23,6 +23,7 @@ modelStudio(explainer, ...)
   viewer = "external",
   widget_id = NULL,
   telemetry = TRUE,
+  max_vars = NULL,
   ...
 )
 }
@@ -60,17 +61,20 @@ See \href{https://modeloriented.github.io/modelStudio/articles/ms-perks-features
 This might interfere with showing progress using \code{show_info}.}
 
 \item{options}{Customize \code{modelStudio}. See \code{\link{ms_options}} and
-\href{https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html#plot-options}{\bold{vignette}}.}
+\href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#additional-options-1}{\bold{vignette}}.}
 
 \item{viewer}{Default is \code{external} to display in an external RStudio window.
 Use \code{browser} to display in an external browser or
 \code{internal} to use the RStudio internal viewer pane for output.}
 
 \item{widget_id}{Use an explicit element ID for the widget (rather than an automatically generated one).
-Useful e.g. when using \code{modelStudio} with Shiny.}
+Useful e.g. when using \code{modelStudio} with Shiny.
+See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#shiny-1}{\bold{vignette}}.}
 
 \item{telemetry}{The dashboard gathers useful, but not sensitive, information about how it is being used (e.g. computation length,
 package version, dashboard dimensions). This is for the development purposes only and can be blocked by setting \code{telemetry} to \code{FALSE}.}
+
+\item{max_vars}{An alias for \code{max_features}. If provided, it will override the value.}
 }
 \value{
 An object of the \code{r2d3, htmlwidget, modelStudio} class.
@@ -81,8 +85,16 @@ customisable dashboard. It consists of multiple panels for plots with their shor
 Easily save and share the HTML dashboard with others. Tools for model exploration unite with tools for
 Exploratory Data Analysis to give a broad overview of the model behavior.
 
-Theoretical introduction to the plots:
-\href{https://pbiecek.github.io/ema/}{Explanatory Model Analysis: Explore, Explain and Examine Predictive Models}
+The extensive documentation covers:
+
+\itemize{
+  \item Function parameters description -
+ \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html}{\bold{perks and features}}
+  \item Framework and model compatibility -
+ \href{https://modelstudio.drwhy.ai/articles/ms-r-python-examples.html}{\bold{R & Python examples}}
+  \item Theoretical introduction to the plots -
+ \href{https://pbiecek.github.io/ema/}{Explanatory Model Analysis: Explore, Explain and Examine Predictive Models}
+}
 
 Displayed variable can be changed by clicking on the bars of plots or with the first dropdown list,
  and observation can be changed with the second dropdown list.

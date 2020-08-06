@@ -91,7 +91,7 @@ var TIME = options.time,
     atBarColor = options.at_bar_color || barColor,
     atLineColor = options.at_line_color || lineColor,
     atPointColor = options.at_point_color || pointColor,
-    telemetryData = options.telemetry;
+    telemetry = options.telemetry;
 
 /// for observation choice
 var observationIds = Object.keys(obsData);
