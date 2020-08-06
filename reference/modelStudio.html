@@ -57,8 +57,16 @@
 customisable dashboard. It consists of multiple panels for plots with their short descriptions.
 Easily save and share the HTML dashboard with others. Tools for model exploration unite with tools for
 Exploratory Data Analysis to give a broad overview of the model behavior.
-Theoretical introduction to the plots:
-Explanatory Model Analysis: Explore, Explain and Examine Predictive Models
+The extensive documentation covers:
+
+Function parameters description -
+ perks and features
+Framework and model compatibility -
+ R &amp;amp; Python examples
+Theoretical introduction to the plots -
+ Explanatory Model Analysis: Explore, Explain and Examine Predictive Models
+
+
 Displayed variable can be changed by clicking on the bars of plots or with the first dropdown list,
  and observation can be changed with the second dropdown list.
 The dashboard gathers useful, but not sensitive, information about how it is being used (e.g. computation length,
@@ -169,8 +177,16 @@ The dashboard gathers useful, but not sensitive, information about how it is bei
 customisable dashboard. It consists of multiple panels for plots with their short descriptions.
 Easily save and share the HTML dashboard with others. Tools for model exploration unite with tools for
 Exploratory Data Analysis to give a broad overview of the model behavior.</p>
-<p>Theoretical introduction to the plots:
-<a href='https://pbiecek.github.io/ema/'>Explanatory Model Analysis: Explore, Explain and Examine Predictive Models</a></p>
+<p>The extensive documentation covers:</p>
+<ul>
+<li><p>Function parameters description -
+ <a href='https://modelstudio.drwhy.ai/articles/ms-perks-features.html'><b>perks and features</b></a></p></li>
+<li><p>Framework and model compatibility -
+ <a href='https://modelstudio.drwhy.ai/articles/ms-r-python-examples.html'><b>R &amp; Python examples</b></a></p></li>
+<li><p>Theoretical introduction to the plots -
+ <a href='https://pbiecek.github.io/ema/'>Explanatory Model Analysis: Explore, Explain and Examine Predictive Models</a></p></li>
+</ul>
+
 <p>Displayed variable can be changed by clicking on the bars of plots or with the first dropdown list,
  and observation can be changed with the second dropdown list.
 The dashboard gathers useful, but not sensitive, information about how it is being used (e.g. computation length,
@@ -196,6 +212,7 @@ The dashboard gathers useful, but not sensitive, information about how it is bei
   <span class='kw'>viewer</span> <span class='kw'>=</span> <span class='st'>"external"</span>,
   <span class='kw'>widget_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>telemetry</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>max_vars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='no'>...</span>
 )</pre>
 
@@ -261,7 +278,7 @@ This might interfere with showing progress using <code>show_info</code>.</p></td
     <tr>
       <th>options</th>
       <td><p>Customize <code>modelStudio</code>. See <code><a href='ms_options.html'>ms_options</a></code> and
-<a href='https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html#plot-options'><b>vignette</b></a>.</p></td>
+<a href='https://modelstudio.drwhy.ai/articles/ms-perks-features.html#additional-options-1'><b>vignette</b></a>.</p></td>
     </tr>
     <tr>
       <th>viewer</th>
@@ -272,12 +289,17 @@ Use <code>browser</code> to display in an external browser or
     <tr>
       <th>widget_id</th>
       <td><p>Use an explicit element ID for the widget (rather than an automatically generated one).
-Useful e.g. when using <code>modelStudio</code> with Shiny.</p></td>
+Useful e.g. when using <code>modelStudio</code> with Shiny.
+See <a href='https://modelstudio.drwhy.ai/articles/ms-perks-features.html#shiny-1'><b>vignette</b></a>.</p></td>
     </tr>
     <tr>
       <th>telemetry</th>
       <td><p>The dashboard gathers useful, but not sensitive, information about how it is being used (e.g. computation length,
 package version, dashboard dimensions). This is for the development purposes only and can be blocked by setting <code>telemetry</code> to <code>FALSE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>max_vars</th>
+      <td><p>An alias for <code>max_features</code>. If provided, it will override the value.</p></td>
     </tr>
     </table>
 

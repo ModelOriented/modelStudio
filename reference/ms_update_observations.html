@@ -170,6 +170,7 @@ to a <code>modelStudio</code> object.</p>
   <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>10</span>,
   <span class='kw'>show_info</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>widget_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='no'>...</span>
 )</pre>
@@ -213,6 +214,12 @@ See <a href='https://modelstudio.drwhy.ai/articles/ms-perks-features.html#more-c
       <td><p>Speed up the computation using <code><a href='https://parallelmap.mlr-org.com/reference/parallelMap.html'>parallelMap::parallelMap()</a></code>.
 See <a href='https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html#parallel-computation'><b>vignette</b></a>.
 This might interfere with showing progress using <code>show_info</code>.</p></td>
+    </tr>
+    <tr>
+      <th>widget_id</th>
+      <td><p>Use an explicit element ID for the widget (rather than an automatically generated one).
+Useful e.g. when using <code>modelStudio</code> with Shiny.
+See <a href='https://modelstudio.drwhy.ai/articles/ms-perks-features.html#shiny-1'><b>vignette</b></a>.</p></td>
     </tr>
     <tr>
       <th>overwrite</th>
