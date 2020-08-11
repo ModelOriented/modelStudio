@@ -2420,6 +2420,16 @@ function tvCategoricalPlot(variableName, xData, xMinMax, yMinMax) {
           .attr("x", d => x(d.value.q1))
           .attr("y", d => y(d.key))
           .attr("height", y.bandwidth())
+          .style("fill", "#ceced9")
+          .transition()
+          .duration(TIME)
+          .delay(TIME)  // .delay((d,i) => i * TIME)
+          .attr("width", d => x(d.value.q3) - x(d.value.q1));
+
+  // show the median
+  boxplots.append("line")
+          .attr("class", "interceptLine")
+          .attr("y1", d => y(d.key))
           .attr("y2", d => y(d.key) + y.bandwidth())
           .attr("x1", d => x(d.value.median))
           .attr("x2", d => x(d.value.median))
