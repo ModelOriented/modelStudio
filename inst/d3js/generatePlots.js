@@ -380,7 +380,7 @@ function shapleyValues() {
   var y = d3.scaleBand()
             .rangeRound([margin.top - additionalHeight, margin.top + svPlotHeight])
             .padding(0.33)
-            .domain(bData.map(d => d.variable));
+            .domain(bData.map(d => d.variable_name));
 
   var xGrid = SV.append("g")
                 .attr("class", "grid")
@@ -440,7 +440,7 @@ function shapleyValues() {
 
   bars.append("rect")
       .attr("class", "SV-bars")
-      .attr("id", (d) => d.variable_name)
+      .attr("id", d => d.variable_name)
       .attr("fill", function(d) {
         switch (d.sign) {
           case "-1":
@@ -454,7 +454,7 @@ function shapleyValues() {
       .attr("fill-opacity", d => x(d.barSupport) - x(d.barStart) < 1.5
                                  ? 0 : 1) //invisible bar for clicking purpose
       .attr("x", d => d.contribution > 0 ? x(d.barStart) : x(d.barSupport))
-      .attr("y", d => y(d.variable))
+      .attr("y", d => y(d.variable_name))
       .attr("height", y.bandwidth())
       .on('mouseover', tooltip.show)
       .on('mouseout', tooltip.hide)
@@ -482,7 +482,7 @@ function shapleyValues() {
           .attr("class", "axisLabel")
           .attr("x", d => d.contribution > 0
                           ? x(d.barStart) - 5 : x(d.barSupport) + 5)
-          .attr("y", d => y(d.variable) + y.bandwidth()/2)
+          .attr("y", d => y(d.variable_name) + y.bandwidth()/2)
           .attr("dy", "0.4em")
           .attr("text-anchor", d => d.sign == "1" ? "end" : "start")
           .transition()
@@ -499,15 +499,15 @@ function shapleyValues() {
   lines.append("line")
         .attr("class", "interceptLine")
         .attr("x1", d => d.contribution < 0 ? x(d.barSupport) : x(d.barStart))
-        .attr("y1", d => y(d.variable))
+        .attr("y1", d => y(d.variable_name))
         .attr("x2", d => d.contribution < 0 ? x(d.barSupport) : x(d.barStart))
-        .attr("y2", d => y(d.variable))
+        .attr("y2", d => y(d.variable_name))
         .transition()
         .duration(TIME)
         .delay((d,i) => (i+1) * TIME)
         .attr("y2", (d,i) => i == svBarCount - 1
-                             ? y(d.variable) + y.bandwidth()
-                             : y(d.variable) + y.bandwidth()*2.5);
+                             ? y(d.variable_name) + y.bandwidth()
+                             : y(d.variable_name) + y.bandwidth()*2.5);
 
 
   // boxplots
@@ -517,8 +517,8 @@ function shapleyValues() {
         .attr("class", "interceptLine")
         .attr("x1", d => d.contribution < 0 ? x(d.max) : x(d.min))
         .attr("x2", d => d.contribution < 0 ? x(d.max) : x(d.min))
-        .attr("y1", d => y(d.variable) + y.bandwidth()/2)
-        .attr("y2", d => y(d.variable) + y.bandwidth()/2)
+        .attr("y1", d => y(d.variable_name) + y.bandwidth()/2)
+        .attr("y2", d => y(d.variable_name) + y.bandwidth()/2)
         .transition()
         .duration(TIME)
         .delay((d,i) => i * TIME)
@@ -528,14 +528,24 @@ function shapleyValues() {
     // rectangle for the main box
     bars.append("rect")
         .attr("x", d => d.contribution < 0 ? x(d.q3) : x(d.q1))
-        .attr("y", d => y(d.variable) + y.bandwidth()/3)
+        .attr("y", d => y(d.variable_name) + y.bandwidth()/3)
         .attr("height", y.bandwidth()/3)
         .style("fill", "#371ea3")
         .transition()
         .duration(TIME)
         .delay((d,i) => i * TIME)
         .attr("x", d => x(d.q1))
-        .attr("width", d => Math.abs(x(d.q3) - x(d.q1)));
+        .attr("width", d => x(d.q3) - x(d.q1));
+
+    // // show the median
+    // bars.append("line")
+    //     .attr("class", "interceptLine")
+    //     .attr("y1", d => y(d.variable_name) + y.bandwidth()/3)
+    //     .attr("y2", d => y(d.variable_name) + 2*y.bandwidth()/3)
+    //     .attr("x1", d => x(d.median))
+    //     .attr("x2", d => x(d.median))
+    //     .style("stroke", "#ceced9")
+    //     .style("stroke-width", "2px");
   }
 
   // description
@@ -741,7 +751,6 @@ function featureImportance() {
 
   // boxplots
   if (SHOW_BOXPLOT) {
-
     // main horizontal line
     bars.append("line")
         .attr("class", "interceptLine")
@@ -765,7 +774,17 @@ function featureImportance() {
         .duration(TIME)
         .delay((d,i) => i * TIME)
         .attr("x", d => x(d.q1))
-        .attr("width", d => Math.abs(x(d.q3) - x(d.q1)));
+        .attr("width", d => x(d.q3) - x(d.q1));
+
+    // // show the median
+    // bars.append("line")
+    //     .attr("class", "interceptLine")
+    //     .attr("y1", d => y(d.variable) + y.bandwidth()/3)
+    //     .attr("y2", d => y(d.variable) + 2*y.bandwidth()/3)
+    //     .attr("x1", d => x(d.median))
+    //     .attr("x2", d => x(d.median))
+    //     .style("stroke", "#ceced9")
+    //     .style("stroke-width", "2px");
   }
 
   // description
@@ -882,7 +901,7 @@ function targetVs() {
 
   let tVariableName = CLICKED_VARIABLE_NAME;
 
-  // scatterplot or violin?
+  // scatterplot or boxplot?
   if (isNumeric[tVariableName]) {
     tvNumericalPlot(tVariableName, xData, xMinMax[tVariableName], yMinMax);
   } else {
@@ -902,7 +921,7 @@ function averageTarget() {
 
   let tVariableName = CLICKED_VARIABLE_NAME;
 
-  // scatterplot or violin?
+  // lines or bars?
   if (isNumeric[tVariableName]) {
     atNumericalPlot(tVariableName, xData[tVariableName],
                     xMinMax[tVariableName], yMinMax[tVariableName], yMean);
@@ -2362,6 +2381,49 @@ function tvCategoricalPlot(variableName, xData, xMinMax, yMinMax) {
     .attr("class", "axisTitle")
     .attr("text-anchor", "middle")
     .text("target");
+
+  var sumstat = d3.nest()
+    .key(d => d[variableName])
+    .rollup(d => {
+      let target = d.map(g => g['_target_']).sort(d3.ascending),
+          q1 = d3.quantile(target, 0.25),
+          median = d3.quantile(target, 0.5),
+          q3 = d3.quantile(target, 0.75),
+          iqr = q3 - q1,
+          min = d3.min(target),
+          max = d3.max(target);
+      return {q1: q1, median: median, q3: q3, iqr: iqr,
+              min: d3.max([min, q1 - 1.5 * iqr]), max: d3.min([max, q3 + 1.5 * iqr])}
+    })
+    .entries(xData)
+
+  // add boxplots to
+  var boxplots = TV.selectAll()
+                   .data(sumstat)
+                   .enter()
+                   .append("g");
+
+  // main horizontal line
+  boxplots.append("line")
+          .attr("class", "interceptLine")
+          .attr("x1", d => x(d.value.min))
+          .attr("x2", d => x(d.value.min))
+          .attr("y1", d => y(d.key) + y.bandwidth()/2)
+          .attr("y2", d => y(d.key) + y.bandwidth()/2)
+          .transition()
+          .duration(TIME)
+          .delay(TIME)  // .delay((d,i) => i * TIME)
+          .attr("x2", d => x(d.value.max));
+
+  // rectangle for the main box
+  boxplots.append("rect")
+          .attr("x", d => x(d.value.q1))
+          .attr("y", d => y(d.key))
+          .attr("height", y.bandwidth())
+          .attr("y2", d => y(d.key) + y.bandwidth())
+          .attr("x1", d => x(d.value.median))
+          .attr("x2", d => x(d.value.median))
+          .style("stroke-width", "2px");
 
   TV.selectAll()
     .data(xData)

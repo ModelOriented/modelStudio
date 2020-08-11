@@ -1,6 +1,6 @@
 prepare_break_down <- function(x, max_features = 10, baseline = NA, digits = 3,
                                rounding_function = round, margin = 0.2, ...) {
-  ### This function returns object needed to plot BreakDown in D3 ###
+  ### This function the object for the BreakDown plot ###
 
   if (is.null(x)) return(NULL)
 
@@ -37,7 +37,7 @@ prepare_break_down <- function(x, max_features = 10, baseline = NA, digits = 3,
 
 prepare_break_down_df <- function(x, max_features = 10, baseline = NA, digits = 3,
                                   rounding_function = round) {
-  ### This function returns data as DF needed to plot BreakDown in D3 ###
+  ### This function returns data as DF needed for the BreakDown plot ###
 
   # fix df
   x[,'variable'] <- as.character(x[,'variable'])
@@ -96,7 +96,7 @@ prepare_shapley_values <- function(x, max_features = 10, show_boxplot = TRUE,
                                    baseline = NA,
                                    digits = 3, rounding_function = round,
                                    margin = 0.15, ...) {
-  ### This function returns object needed to plot ShapleyValues in D3 ###
+  ### This function the object for the ShapleyValues plot ###
 
   if (is.null(x)) return(NULL)
   B <- NULL
@@ -117,17 +117,17 @@ prepare_shapley_values <- function(x, max_features = 10, show_boxplot = TRUE,
       variable_name = levels(as.factor(x_df$variable_name)),
       min = as.numeric(tapply(x_df$contribution, x_df$variable_name, min, na.rm = TRUE)),
       q1 = as.numeric(tapply(x_df$contribution, x_df$variable_name, quantile, 0.25, na.rm = TRUE)),
+      median = as.numeric(tapply(x_df$contribution, x_df$variable_name, median, na.rm = TRUE)),
       q3 = as.numeric(tapply(x_df$contribution, x_df$variable_name, quantile, 0.75, na.rm = TRUE)),
       max = as.numeric(tapply(x_df$contribution, x_df$variable_name, max, na.rm = TRUE)),
       iqr = as.numeric(tapply(x_df$contribution, x_df$variable_name, IQR, na.rm = TRUE)),
       stringsAsFactors=TRUE
     )
 
-    x_stats$min <- pmax(x_stats$min, x_stats$q1 - 1.5*x_stats$iqr) + baseline
-    x_stats$max <- pmin(x_stats$max, x_stats$q3 + 1.5*x_stats$iqr) + baseline
-    x_stats$q1 <- x_stats$q1 + baseline
-    x_stats$q3 <- x_stats$q3 + baseline
+    x_stats$min <- pmax(x_stats$min, x_stats$q1 - 1.5*x_stats$iqr)
+    x_stats$max <- pmin(x_stats$max, x_stats$q3 + 1.5*x_stats$iqr)
     x_stats$iqr <- NULL
+    x_stats[,-1] <- x_stats[,-1] + baseline
 
     new_x <- merge(new_x, x_stats, by = "variable_name", sort = FALSE)
     #:#
@@ -163,7 +163,7 @@ prepare_shapley_values <- function(x, max_features = 10, show_boxplot = TRUE,
 
 prepare_shapley_values_df <- function(x, max_features = 10, baseline = NA, prediction,
                                       digits = 3, rounding_function = round) {
-  ### This function returns data as DF needed to plot ShapleyValues in D3 ###
+  ### This function returns data as DF needed for the ShapleyValues plot ###
 
   x <- as.data.frame(x, stringsAsFactors=TRUE)
   rownames(x) <- NULL
@@ -207,7 +207,7 @@ prepare_shapley_values_df <- function(x, max_features = 10, baseline = NA, predi
 }
 
 prepare_ceteris_paribus <- function(x, variables = NULL) {
-  ### This function returns object needed to plot CeterisParibus in D3 ###
+  ### This function the object for the CeterisParibus plot ###
 
   if (is.null(x)) return(NULL)
 
@@ -289,7 +289,7 @@ prepare_feature_importance <- function(x, max_features = 10, show_boxplot = TRUE
                                        x_title = NULL,
                                        margin = 0.15, digits = 3, rounding_function = round,
                                        ...) {
-  ### This function returns object needed to plot FeatureImportance in D3 ###
+  ### This function the object for the FeatureImportance plot ###
 
   if (is.null(x)) return(NULL)
   permutation <- NULL
@@ -323,6 +323,7 @@ prepare_feature_importance <- function(x, max_features = 10, show_boxplot = TRUE
       variable = levels(as.factor(x_df$variable)),
       min = as.numeric(tapply(x_df$dropout_loss, x_df$variable, min, na.rm = TRUE)),
       q1 = as.numeric(tapply(x_df$dropout_loss, x_df$variable, quantile, 0.25, na.rm = TRUE)),
+      median = as.numeric(tapply(x_df$dropout_loss, x_df$variable, median, na.rm = TRUE)),
       q3 = as.numeric(tapply(x_df$dropout_loss, x_df$variable, quantile, 0.75, na.rm = TRUE)),
       max = as.numeric(tapply(x_df$dropout_loss, x_df$variable, max, na.rm = TRUE)),
       iqr = as.numeric(tapply(x_df$dropout_loss, x_df$variable, IQR, na.rm = TRUE)),
@@ -364,7 +365,7 @@ prepare_feature_importance <- function(x, max_features = 10, show_boxplot = TRUE
 }
 
 prepare_partial_dependence <- function(x, y, variables = NULL) {
-  ### This function returns object needed to plot PartialDependence in D3 ###
+  ### This function the object for the PartialDependence plot ###
 
   if (is.null(x) & is.null(y)) return(NULL)
 
@@ -448,7 +449,7 @@ prepare_partial_dependence <- function(x, y, variables = NULL) {
 }
 
 prepare_accumulated_dependence <- function(x, y, variables = NULL) {
-  ### This function returns object needed to plot AccumulatedDependence in D3 ###
+  ### This function the object for the AccumulatedDependence plot ###
 
   if (is.null(x) & is.null(y)) return(NULL)
 
@@ -536,7 +537,7 @@ prepare_accumulated_dependence <- function(x, y, variables = NULL) {
 }
 
 prepare_feature_distribution <- function(x, y, variables = NULL) {
-  ### This function returns object needed to plot FeatureDistribution in D3 ###
+  ### This function the object for the FeatureDistribution plot ###
 
   if (is.null(x) | is.null(y)) return(NULL)
 
@@ -580,7 +581,7 @@ prepare_feature_distribution <- function(x, y, variables = NULL) {
 }
 
 prepare_average_target <- function(x, y, variables = NULL) {
-  ### This function returns object needed to plot TargetAverage in D3 ###
+  ### This function the object for the TargetAverage plot ###
 
   if (is.null(x) | is.null(y)) return(NULL)
 

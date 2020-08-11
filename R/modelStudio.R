@@ -413,6 +413,7 @@ modelStudio.explainer <- function(explainer,
   if (telemetry) {
     creation_time <- as.character(as.integer(as.numeric(ms_creation_date - start_time)*60))
     options$telemetry <- list(date = format(ms_creation_date, usetz = FALSE),
+                              showcaseName = options$showcase_name,
                               creationTime = creation_time,
                               facetRow = facet_dim[1],
                               facetCol = facet_dim[2],
@@ -434,7 +435,8 @@ modelStudio.explainer <- function(explainer,
                     footer_text = footer_text,
                     drop_down_data = jsonlite::toJSON(drop_down_data),
                     eda = eda,
-                    widget_id = widget_id
+                    widget_id = widget_id,
+                    is_target_binary = is_binary(y)
                     ), options)
 
   sizing_policy <- r2d3::sizingPolicy(padding = 10, browser.fill = TRUE)
@@ -455,7 +457,7 @@ modelStudio.explainer <- function(explainer,
                     ),
                     css = system.file("d3js/modelStudio.css", package = "modelStudio"),
                     options = options,
-                    d3_version = "4",
+                    d3_version = "4",  # v4 is important
                     viewer = viewer,
                     sizing = sizing_policy,
                     elementId = widget_id,
@@ -555,6 +557,6 @@ which_variables_are_numeric <- function(data) {
 }
 
 # check for binary target
-is_y_binary <- function(y) {
+is_binary <- function(y) {
   is.numeric(y) & length(unique(y)) == 2
 }

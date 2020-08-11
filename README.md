@@ -8,9 +8,9 @@
 
 ## Overview
 
-The `modelStudio` package **automates the Explanatory Analysis of Machine Learning predictive models**. Generate advanced interactive and animated model explanations in the form of a **serverless HTML site** with only one line of code. This tool is model agnostic, therefore compatible with most of the black box predictive models and frameworks (e.g.&nbsp;`mlr/mlr3`, `xgboost`, `caret`, `h2o`, `scikit-learn`, `lightgbm`, `keras/tensorflow`).
+The `modelStudio` package **automates the Explanatory Analysis of Machine Learning predictive models**. It generates advanced interactive model explanations in the form of a **serverless HTML site** with only one line of code. This tool is model agnostic, therefore compatible with most of the black box predictive models and frameworks (e.g.&nbsp;`mlr/mlr3`, `xgboost`, `caret`, `h2o`, `parsnip`, `scikit-learn`, `lightgbm`, `keras/tensorflow`).
 
-The main `modelStudio()` function computes various (instance and dataset level) model explanations and produces an&nbsp;**interactive,&nbsp;customisable dashboard**. It consists of multiple panels for plots with their short descriptions. Easily&nbsp;**save&nbsp;and&nbsp;share** the dashboard with others. Tools for model exploration unite with tools for EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.
+The main `modelStudio()` function computes various (instance and dataset level) model explanations and produces a&nbsp;**customisable dashboard**, which consists of multiple panels for plots with their short descriptions. Easily&nbsp;**save**&nbsp; the dashboard and&nbsp;**share** it with others. Tools for [Explanatory Model Analysis](https://pbiecek.github.io/ema) unite with tools for Exploratory Data Analysis to give a broad overview of the model behavior.
 
 <!--- [explain FIFA19](https://pbiecek.github.io/explainFIFA19/) &emsp; --->
 <!--- [explain Lung Cancer](https://github.com/hbaniecki/transparent_xai/) &emsp; --->
@@ -167,7 +167,7 @@ The `modelStudio()` function uses `dalex` explainers created with `dalex.Explain
 
 ```console
 :: package for Explainer object
-pip install dalex
+pip install dalex -U
 ```
 
 Use `pickle` Python module and `reticulate` R package to easily make a studio for a model.
@@ -323,21 +323,38 @@ or with [`r2d3::save_d3_html()`](https://rstudio.github.io/r2d3/articles/publish
   <img src="man/figures/controls.png">
 </p>
 
-## More Resources
+## Citation
 
-  - Citation: [JOSS](https://joss.theoj.org/papers/10.21105/joss.01798) More: a preprint of [The Grammar of Interactive Explanatory Model Analysis](https://arxiv.org/abs/2005.00497)
+If you use `modelStudio`, please cite our [JOSS article](https://joss.theoj.org/papers/10.21105/joss.01798):
+
+```
+@Article{modelStudio,
+  author = {Hubert Baniecki and Przemyslaw Biecek},
+  title = {{modelStudio}: Interactive Studio with Explanations for {ML} Predictive Models},
+  doi = {10.21105/joss.01798},
+  url = {https://doi.org/10.21105/joss.01798},
+  year = {2019},
+  month = {Nov},
+  volume = {4},
+  number = {43},
+  pages = {1798},
+  publisher = {The Open Journal},
+  journal = {Journal of Open Source Software}
+}
+```
+
+## More Resources
 
   - Theoretical introduction to the plots: [Explanatory Model Analysis. Explore, Explain and Examine Predictive Models.](https://pbiecek.github.io/ema)
 
   - Vignettes: [modelStudio - perks and features](https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html) and [modelStudio - R & Python examples](https://modeloriented.github.io/modelStudio/articles/ms-r-python-examples.html)  
   
   - Changelog: [NEWS](https://modeloriented.github.io/modelStudio/news/index.html)
-  
+    
   - Conference poster: [MLinPL2019](https://github.com/ModelOriented/modelStudio/blob/master/misc/MLinPL2019_modelStudio_poster.pdf)
-
-  <!--  - [Article about modelStudio](https://joss.theoj.org/papers/10.21105/joss.01798) -->
-
-
+  
+  - A preprint of [The Grammar of Interactive Explanatory Model Analysis](https://arxiv.org/abs/2005.00497)
+  
 ## Acknowledgments
 
 Work on this package was financially supported by the `NCN Opus grant 2016/21/B/ST6/02176`.
