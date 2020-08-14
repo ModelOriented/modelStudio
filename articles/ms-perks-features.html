@@ -106,7 +106,7 @@
       <h1 data-toc-skip>modelStudio - perks and features</h1>
                         <h4 class="author">Hubert Baniecki</h4>
             
-            <h4 class="date">2020-08-06</h4>
+            <h4 class="date">2020-08-14</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ModelOriented/modelStudio/blob/master/vignettes/ms-perks-features.Rmd"><code>vignettes/ms-perks-features.Rmd</code></a></small>
       <div class="hidden name"><code>ms-perks-features.Rmd</code></div>
@@ -380,8 +380,9 @@
                        <span class="kw">label</span> <span class="kw">=</span> <span class="st">"Titanic GLM"</span>,
                        <span class="kw">verbose</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
   <span class="no">ms</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="no">explainer</span>,
-                    <span class="kw">verbose</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
-                    <span class="kw">widget_id</span> <span class="kw">=</span> <span class="no">WIDGET_ID</span>) <span class="co">#:# use the widget_id (ignore warning)</span>
+                    <span class="kw">widget_id</span> <span class="kw">=</span> <span class="no">WIDGET_ID</span>,  <span class="co">#:# use the widget_id </span>
+                    <span class="kw">show_info</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
+  <span class="no">ms</span>$<span class="no">elementId</span> <span class="kw">&lt;-</span> <span class="kw">NULL</span>                      <span class="co">#:# remove elementId to stop the warning</span>
 
   <span class="co">#:# basic render d3 output</span>
   <span class="no">output</span><span class="kw">[[</span><span class="no">WIDGET_ID</span>]] <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/r2d3/man/d3-shiny.html">renderD3</a></span>({
