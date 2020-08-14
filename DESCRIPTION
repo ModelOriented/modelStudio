@@ -9,14 +9,14 @@ Authors@R:
              comment = c(ORCID = "0000-0001-8423-1823")),
       person("Piotr", "Piatyszek", role = c("ctb")))
 Description: Automate the explanatory analysis of machine learning predictive models.
-    Generate advanced interactive and animated model explanations in the form of
-    a serverless HTML site with only one line of code. This tool is model agnostic,
-    therefore compatible with most of the black box predictive models and frameworks.
-    The main function computes various (instance and dataset level) model explanations
-    and produces an interactive, customisable dashboard. It consists
-    of multiple panels for plots with their short descriptions. Easily save and share 
-    the dashboard with others. Tools for model exploration unite with tools for
-    Exploratory Data Analysis to give a broad overview of the model behavior.
+    Generate advanced interactive model explanations in the form of a serverless HTML
+    site with only one line of code. This tool is model agnostic, therefore compatible
+    with most of the black box predictive models and frameworks. The main function
+    computes various (instance and dataset level) model explanations and produces
+    a customisable dashboard, which consists of multiple panels for plots with their
+    short descriptions. Easily save the dashboard and share it with others. Tools
+    for Explanatory Model Analysis unite with tools for Exploratory Data Analysis
+    to give a broad overview of the model behavior.
 Depends: R (>= 3.5)
 License: GPL-3
 Encoding: UTF-8

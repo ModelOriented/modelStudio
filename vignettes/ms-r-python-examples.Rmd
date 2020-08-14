@@ -280,7 +280,7 @@ The `modelStudio()` function uses `dalex` explainers created with `dalex.Explain
 
 ```{bash, eval=FALSE, engine="sh"}
 # package for Explainer object
-pip install dalex
+pip install dalex -U
 ```
 
 Use `pickle` Python module and `reticulate` R package to easily make a studio for a model.

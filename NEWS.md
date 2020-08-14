@@ -8,8 +8,9 @@ using new `widget_id` argument
 * By default the `loss_function` in FI is now different for each `explainer$model_info$type` [(#73)](https://github.com/ModelOriented/modelStudio/issues/73)
 * fixed a bug where passing additional parameters in `...` would cause an error
 * added a `max_vars` alias for the `max_features` parameter
-<!-- * TV plot uses boxplots and heatmap when the target `y` has only two unique
-values [(#76)](https://github.com/ModelOriented/modelStudio/issues/76) -->
+* added median line to the boxplots in FI and SV plots, added boxplots to TV categorical plots (regression)
+* TV plot uses boxplots and barplot when the target `y` has only two unique
+values (classification) [(#76)](https://github.com/ModelOriented/modelStudio/issues/76)
 
 # modelStudio 1.2.0
 * remove redundant documentation resources so that the package weights less
