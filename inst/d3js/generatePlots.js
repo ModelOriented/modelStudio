@@ -2240,10 +2240,6 @@ function tvNumericalPlot(variableName, xData, xMinMax, yMinMax) {
     .attr("text-anchor", "middle")
     .text(variableName);
 
-  var y = d3.scaleLinear()
-            .range([margin.top + tvPlotHeight, margin.top - additionalHeight])
-            .domain(yMinMax);
-
   TV.append("text")
     .attr("class","smallTitle")
     .attr("x", margin.left)
@@ -2269,25 +2265,6 @@ function tvNumericalPlot(variableName, xData, xMinMax, yMinMax) {
             .attr("transform", "translate(0,"+ (margin.top + tvPlotHeight) + ")")
             .call(xAxis);
 
-  var yGrid = TV.append("g")
-                .attr("class", "grid")
-                .attr("transform", "translate(" + margin.left + ",0)")
-                .call(d3.axisLeft(y)
-                        .ticks(10)
-                        .tickSize(-tvPlotWidth)
-                        .tickFormat("")
-                ).call(g => g.select(".domain").remove());
-
-  var yAxis = d3.axisLeft(y)
-                .ticks(5)
-                .tickSize(0);
-
-  yAxis = TV.append("g")
-            .attr("class", "axisLabel")
-            .attr("transform","translate(" + margin.left + ",0)")
-            .call(yAxis)
-            .call(g => g.select(".domain").remove());
-
   TV.append("text")
     .attr("class", "axisTitle")
     .attr("transform", "rotate(-90)")
@@ -2296,18 +2273,130 @@ function tvNumericalPlot(variableName, xData, xMinMax, yMinMax) {
     .attr("text-anchor", "middle")
     .text("target");
 
-  TV.selectAll()
-    .data(xData)
-    .enter()
-    .append("circle")
-    .attr("class", "point")
-    .attr("cx", d => x(d[variableName]))
-    .attr("cy", d => y(d["_target_"]))
-    .attr("r", 0)
-    .style("fill", tvPointColor)
-    .transition()
-    .duration(TIME)
-    .attr("r", tvPointSize);
+  if (IS_TARGET_BINARY) {
+
+    var sumstat = d3.nest()
+      .key(d => d['_target_'])
+      .rollup(d => {
+        let target = d.map(g => g[variableName]).sort(d3.ascending),
+            q1 = d3.quantile(target, 0.25),
+            median = d3.quantile(target, 0.5),
+            q3 = d3.quantile(target, 0.75),
+            iqr = q3 - q1,
+            min = d3.min(target),
+            max = d3.max(target);
+        return {q1: q1, median: median, q3: q3, iqr: iqr,
+                min: d3.max([min, q1 - 1.5 * iqr]), max: d3.min([max, q3 + 1.5 * iqr])}
+      })
+      .entries(xData)
+
+    var y = d3.scaleBand()
+              .rangeRound([margin.top - additionalHeight, margin.top + tvPlotHeight])
+              .padding(0.33)
+              .domain(sumstat.map(d => d['key']));
+
+    var yGrid = TV.append("g")
+                  .attr("class", "grid")
+                  .attr("transform", "translate(" + margin.left + ",0)")
+                  .call(d3.axisLeft(y)
+                          .ticks(2)
+                          .tickSize(-tvPlotWidth)
+                          .tickFormat("")
+                  ).call(g => g.select(".domain").remove());
+
+    var yAxis = d3.axisLeft(y)
+                  .tickSize(0);
+
+    // add boxplots to
+    var boxplots = TV.selectAll()
+                     .data(sumstat)
+                     .enter()
+                     .append("g");
+
+    // main horizontal line
+    boxplots.append("line")
+            .attr("class", "interceptLine")
+            .attr("x1", d => x(d.value.min))
+            .attr("x2", d => x(d.value.min))
+            .attr("y1", d => y(d.key) + y.bandwidth()/2)
+            .attr("y2", d => y(d.key) + y.bandwidth()/2)
+            .transition()
+            .duration(TIME)
+            .delay(TIME)  // .delay((d,i) => i * TIME)
+            .attr("x2", d => x(d.value.max));
+
+    // rectangle for the main box
+    boxplots.append("rect")
+            .attr("x", d => x(d.value.q1))
+            .attr("y", d => y(d.key))
+            .attr("height", y.bandwidth())
+            .style("fill", "#ceced9")
+            .transition()
+            .duration(TIME)
+            .delay(TIME)  // .delay((d,i) => i * TIME)
+            .attr("width", d => x(d.value.q3) - x(d.value.q1));
+
+    // show the median
+    boxplots.append("line")
+            .attr("class", "interceptLine")
+            .attr("y1", d => y(d.key))
+            .attr("y2", d => y(d.key) + y.bandwidth())
+            .attr("x1", d => x(d.value.median))
+            .attr("x2", d => x(d.value.median))
+            .style("stroke-width", "2px");
+
+    TV.selectAll()
+      .data(xData)
+      .enter()
+      .append("circle")
+      .attr("class", "point")
+      .attr("cx", d => x(d[variableName]))
+      .attr("cy", d => y(d["_target_"]) + y.bandwidth()
+      - (0.1 + 0.8*Math.random()) * y.bandwidth())
+      .attr("r", 0)
+      .style("fill", tvPointColor)
+      .transition()
+      .duration(TIME)
+      .attr("r", tvPointSize);
+
+  } else {
+
+    var y = d3.scaleLinear()
+              .range([margin.top + tvPlotHeight, margin.top - additionalHeight])
+              .domain(yMinMax);
+
+    var yGrid = TV.append("g")
+                  .attr("class", "grid")
+                  .attr("transform", "translate(" + margin.left + ",0)")
+                  .call(d3.axisLeft(y)
+                          .ticks(10)
+                          .tickSize(-tvPlotWidth)
+                          .tickFormat("")
+                  ).call(g => g.select(".domain").remove());
+
+    var yAxis = d3.axisLeft(y)
+                  .ticks(5)
+                  .tickSize(0);
+
+    TV.selectAll()
+      .data(xData)
+      .enter()
+      .append("circle")
+      .attr("class", "point")
+      .attr("cx", d => x(d[variableName]))
+      .attr("cy", d => y(d["_target_"]))
+      .attr("r", 0)
+      .style("fill", tvPointColor)
+      .transition()
+      .duration(TIME)
+      .attr("r", tvPointSize);
+  }
+
+  yAxis = TV.append("g")
+            .attr("class", "axisLabel")
+            .attr("transform","translate(" + margin.left + ",0)")
+            .call(yAxis)
+            .call(g => g.select(".domain").remove());
 }
 
 function tvCategoricalPlot(variableName, xData, xMinMax, yMinMax) {

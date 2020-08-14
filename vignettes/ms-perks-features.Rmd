@@ -283,9 +283,10 @@ server <- function(input, output) {
                        label = "Titanic GLM",
                        verbose = FALSE)
   ms <- modelStudio(explainer,
-                    verbose = FALSE,
-                    widget_id = WIDGET_ID) #:# use the widget_id (ignore warning)
-  
+                    widget_id = WIDGET_ID,  #:# use the widget_id 
+                    show_info = FALSE)    
+  ms$elementId <- NULL                      #:# remove elementId to stop the warning
+
   #:# basic render d3 output
   output[[WIDGET_ID]] <- renderD3({
     ms
