@@ -1791,36 +1791,36 @@ function adNumericalPlot(variableName, lData, mData, yMinMax, yMean, desc) {
     .attr("text-anchor", "middle")
     .text("accumulated prediction");
 
-  var description = AD.append("g")
-                      .attr("transform", "translate(" +
-                            (margin.left + adPlotWidth - 4*margin.big - margin.small)
-                            + "," + (-margin.big) + ")");
-
-  description.selectAll()
-             .data(desc)
-             .enter()
-             .append("rect")
-             .attr("class", "descriptionBox")
-             .attr("width", 2*margin.big)
-             .attr("height", 2*margin.big)
-             .attr("rx", 2*margin.big)
-             .attr("ry", 2*margin.big)
-             .on('mouseover', tooltip.show)
-             .on('mouseout', tooltip.hide);
-
-  description.selectAll()
-             .data(desc)
-             .enter()
-             .append("text")
-             .attr("class", "descriptionLabel")
-             .attr("x", 6)
-             .attr("dy", "1.05em")
-             .text("D")
-             .on('mouseover', function(d) {
-               tooltip.show(d);
-               d3.select(this).style("cursor", "default");
-             })
-             .on('mouseout', tooltip.hide);
+  // var description = AD.append("g")
+  //                     .attr("transform", "translate(" +
+  //                           (margin.left + adPlotWidth - 4*margin.big - margin.small)
+  //                           + "," + (-margin.big) + ")");
+  //
+  // description.selectAll()
+  //            .data(desc)
+  //            .enter()
+  //            .append("rect")
+  //            .attr("class", "descriptionBox")
+  //            .attr("width", 2*margin.big)
+  //            .attr("height", 2*margin.big)
+  //            .attr("rx", 2*margin.big)
+  //            .attr("ry", 2*margin.big)
+  //            .on('mouseover', tooltip.show)
+  //            .on('mouseout', tooltip.hide);
+  //
+  // description.selectAll()
+  //            .data(desc)
+  //            .enter()
+  //            .append("text")
+  //            .attr("class", "descriptionLabel")
+  //            .attr("x", 6)
+  //            .attr("dy", "1.05em")
+  //            .text("D")
+  //            .on('mouseover', function(d) {
+  //              tooltip.show(d);
+  //              d3.select(this).style("cursor", "default");
+  //            })
+  //            .on('mouseout', tooltip.hide);
 }
 
 function adCategoricalPlot(variableName, bData, yMinMax, yMean, desc) {
@@ -1945,36 +1945,36 @@ function adCategoricalPlot(variableName, bData, yMinMax, yMean, desc) {
     .attr("text-anchor", "middle")
     .text("accumulated prediction");
 
-  var description = AD.append("g")
-                      .attr("transform", "translate(" +
-                            (margin.left + adPlotWidth - 4*margin.big - margin.small)
-                            + "," + (-margin.big) + ")");
-
-  description.selectAll()
-             .data(desc)
-             .enter()
-             .append("rect")
-             .attr("class", "descriptionBox")
-             .attr("width", 2*margin.big)
-             .attr("height", 2*margin.big)
-             .attr("rx", 2*margin.big)
-             .attr("ry", 2*margin.big)
-             .on('mouseover', tooltip.show)
-             .on('mouseout', tooltip.hide);
-
-  description.selectAll()
-             .data(desc)
-             .enter()
-             .append("text")
-             .attr("class", "descriptionLabel")
-             .attr("x", 6)
-             .attr("dy", "1.05em")
-             .text("D")
-             .on('mouseover', function(d) {
-               tooltip.show(d);
-               d3.select(this).style("cursor", "default");
-             })
-             .on('mouseout', tooltip.hide);
+  // var description = AD.append("g")
+  //                     .attr("transform", "translate(" +
+  //                           (margin.left + adPlotWidth - 4*margin.big - margin.small)
+  //                           + "," + (-margin.big) + ")");
+  //
+  // description.selectAll()
+  //            .data(desc)
+  //            .enter()
+  //            .append("rect")
+  //            .attr("class", "descriptionBox")
+  //            .attr("width", 2*margin.big)
+  //            .attr("height", 2*margin.big)
+  //            .attr("rx", 2*margin.big)
+  //            .attr("ry", 2*margin.big)
+  //            .on('mouseover', tooltip.show)
+  //            .on('mouseout', tooltip.hide);
+  //
+  // description.selectAll()
+  //            .data(desc)
+  //            .enter()
+  //            .append("text")
+  //            .attr("class", "descriptionLabel")
+  //            .attr("x", 6)
+  //            .attr("dy", "1.05em")
+  //            .text("D")
+  //            .on('mouseover', function(d) {
+  //              tooltip.show(d);
+  //              d3.select(this).style("cursor", "default");
+  //            })
+  //            .on('mouseout', tooltip.hide);
 }
 
 function fdNumericalPlot(variableName, dData, mData, nBin) {
