@@ -189,9 +189,11 @@ modelStudio.explainer <- function(explainer,
   label <- explainer$label
 
   #:# checks
-  if (is.null(rownames(data))) {
-    rownames(data) <- 1:nrow(data)
-  }
+  if (is.null(data)) stop('explainer$data is NULL - pass the `data` argument to the explain() function')
+  if (is.null(y)) stop('explainer$y is NULL - pass the `y` argument to the explain() function')
+  if (is.null(rownames(data))) rownames(data) <- 1:nrow(data)
+  if (is.null(colnames(data))) colnames(data) <- 1:ncol(data)
+  if (!is.null(max_vars)) max_features <- max_vars
 
   if (is.null(new_observation)) {
     if (show_info) message("`new_observation` argument is NULL.\n",
@@ -222,8 +224,6 @@ modelStudio.explainer <- function(explainer,
   } else {
     loss_function <- DALEX::loss_default(explainer$model_info$type)
   }
-
-  if (!is.null(max_vars)) max_features <- max_vars
   #:#
 
   ## get proper names of features that aren't target
@@ -413,6 +413,7 @@ modelStudio.explainer <- function(explainer,
   if (telemetry) {
     creation_time <- as.character(as.integer(as.numeric(ms_creation_date - start_time)*60))
     options$telemetry <- list(date = format(ms_creation_date, usetz = FALSE),
+                              version = ms_package_version,
                               showcaseName = options$showcase_name,
                               creationTime = creation_time,
                               facetRow = facet_dim[1],
@@ -420,7 +421,9 @@ modelStudio.explainer <- function(explainer,
                               width = options$w,
                               height = options$h,
                               animationTime = time,
-                              version = ms_package_version,
+                              parallel = parallel,
+                              N = N,
+                              B = B,
                               model = class(model)[1],
                               dataSize = nrow(data),
                               varCount = length(variable_names),
@@ -541,9 +544,11 @@ calculate <- function(expr, function_name, show_info = FALSE, pb = NULL, ticks =
 
 # returns the vector of logical: TRUE for variables identical with the target
 is_y_in_data <- function(data, y) {
-  apply(data, 2, function(x) {
-    all(as.character(x) == as.character(y))
-  })
+  if (is.matrix(data)) {
+    apply(data[,, drop = FALSE], 2, identical, y)
+  } else {
+    sapply(data[,, drop = FALSE], identical, y)
+  }
 }
 
 # check for numeric columns (works for data.frame AND matrix)
