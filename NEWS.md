@@ -11,6 +11,7 @@ using new `widget_id` argument
 * added median line to the boxplots in FI and SV plots, added boxplots to TV categorical plots (regression)
 * TV plot uses boxplots and barplot when the target `y` has only two unique
 values (classification) [(#76)](https://github.com/ModelOriented/modelStudio/issues/76)
+* added more checks for input
 
 # modelStudio 1.2.0
 * remove redundant documentation resources so that the package weights less

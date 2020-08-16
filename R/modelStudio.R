@@ -240,9 +240,10 @@ modelStudio.explainer <- function(explainer,
   ## later update progress bar after all explanation functions
   if (show_info) {
     pb <- progress_bar$new(
-      format = "  Calculating :what \n    Elapsed time: :elapsedfull ETA::eta", # :percent  [:bar]
+      format = "  Calculating :what \n    Elapsed time: :elapsedfull ETA::eta ", # :percent  [:bar]
       total = (3*B + 2 + 1)*obs_count + (2*B + 3*B + B) + 1,
-      show_after = 0
+      show_after = 0,
+      width = 110
     )
     pb$tick(0, tokens = list(what = "..."))
   }
@@ -329,16 +330,16 @@ modelStudio.explainer <- function(explainer,
       bd <- calculate(
         iBreakDown::local_attributions(
           model, data, predict_function, new_observation, label = label),
-        paste0("iBreakDown::local_attributions (", i, ")"), show_info, pb, 2)
+        paste0("iBreakDown::local_attributions (", i, ")      "), show_info, pb, 2)
       sv <- calculate(
         iBreakDown::shap(
           model, data, predict_function, new_observation, label = label, B = B),
-        paste0("iBreakDown::shap (", i, ")"), show_info, pb, 3*B)
+        paste0("iBreakDown::shap (", i, ")                    "), show_info, pb, 3*B)
       cp <- calculate(
         ingredients::ceteris_paribus(
           model, data, predict_function, new_observation, label = label,
           variable_splits_type='uniform', variable_splits_with_obs=TRUE),
-        paste0("ingredients::ceteris_paribus (", i, ")"), show_info, pb, 1)
+        paste0("ingredients::ceteris_paribus (", i, ")        "), show_info, pb, 1)
 
       bd_data <- prepare_break_down(bd, max_features, ...)
       sv_data <- prepare_shapley_values(sv, max_features, show_boxplot, ...)
@@ -368,16 +369,16 @@ modelStudio.explainer <- function(explainer,
       bd <- calculate(
         iBreakDown::local_attributions(
           model, data, predict_function, new_observation, label = label),
-        paste0("iBreakDown::local_attributions (", i, ")"), show_info, pb, 2)
+        paste0("iBreakDown::local_attributions (", i, ")      "), show_info, pb, 2)
       sv <- calculate(
         iBreakDown::shap(
           model, data, predict_function, new_observation, label = label, B = B),
-        paste0("iBreakDown::shap (", i, ")"), show_info, pb, 3*B)
+        paste0("iBreakDown::shap (", i, ")                    "), show_info, pb, 3*B)
       cp <- calculate(
         ingredients::ceteris_paribus(
           model, data, predict_function, new_observation, label = label,
           variable_splits_type='uniform', variable_splits_with_obs=TRUE),
-        paste0("ingredients::ceteris_paribus (", i, ")"), show_info, pb, 1)
+        paste0("ingredients::ceteris_paribus (", i, ")        "), show_info, pb, 1)
 
       bd_data <- prepare_break_down(bd, max_features, ...)
       sv_data <- prepare_shapley_values(sv, max_features, options$show_boxplot, ...)

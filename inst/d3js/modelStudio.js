@@ -479,7 +479,7 @@ function startTelemetrySession() {
     method: 'post',
     body: JSON.stringify({
       application: 'modelStudio',
-      application_version: 'telemetry_tests',
+      application_version: telemetry.version,
       data: JSON.stringify({
         ...telemetry
       })
