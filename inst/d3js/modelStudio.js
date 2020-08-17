@@ -14,7 +14,8 @@ r2d3.onResize(function() {
 /// load all data
 var obsData = data[0],
     fiData = data[1], pdData = data[2],
-    adData = data[3], fdData = data[4],
+    adData = data[3], rvData = data[4],
+    fdData = data[4],
     tvData = data[4], atData = data[5];
 
 /// load options
@@ -76,6 +77,10 @@ var TIME = options.time,
     adLineSize = options.ad_line_size || lineSize,
     adBarColor = options.ad_bar_color || barColor,
     adLineColor = options.ad_line_color || lineColor,
+    rvTitle = options.rv_title,
+    rvSubtitle = options.rv_subtitle || subTitle,
+    rvPointSize = options.rv_point_size || pointSize,
+    rvPointColor = options.tv_point_color || pointColor,
     fdTitle = options.fd_title,
     fdSubtitle = options.fd_subtitle || subTitle,
     fdBarWidth = options.fd_bar_width || barWidth,
@@ -128,6 +133,7 @@ if (!SHOW_SUBTITLE) {
   fiSubtitle = null;
   pdSubtitle = null;
   adSubtitle = null;
+  rvSubtitle = null;
   fdSubtitle = null;
   tvSubtitle = null;
   atSubtitle = null;
@@ -135,16 +141,17 @@ if (!SHOW_SUBTITLE) {
 
 /// for plot chosing
 var notVisiblePlots = EDA ?
-                       [{id:"BD", text: bdTitle + " [Local]"},
+                      [{id:"BD", text: bdTitle + " [Local]"},
                        {id:"SV", text: svTitle + " [Local]"},
                        {id:"CP", text: cpTitle + " [Local]"},
                        {id:"FI", text: fiTitle + " [Global]"},
                        {id:"PD", text: pdTitle + " [Global]"},
                        {id:"AD", text: adTitle + " [Global]"},
+                       {id:"RV", text: rvTitle + " [Global]"},
                        {id:"FD", text: fdTitle + " [EDA]"},
                        {id:"TV", text: tvTitle + " [EDA]"},
                        {id:"AT", text: atTitle + " [EDA]"}] :
-                       [{id:"BD", text: bdTitle + " [Local]"},
+                      [{id:"BD", text: bdTitle + " [Local]"},
                        {id:"SV", text: svTitle + " [Local]"},
                        {id:"CP", text: cpTitle + " [Local]"},
                        {id:"FI", text: fiTitle + " [Global]"},

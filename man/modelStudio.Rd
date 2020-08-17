@@ -52,7 +52,7 @@ See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#more-calc
 Default is \code{10}.
 See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#more-calculations-means-more-time}{\bold{vignette}}}
 
-\item{eda}{Compute EDA plots. Default is \code{TRUE}.}
+\item{eda}{Compute EDA plots and Residuals vs Feature plot, which adds the data to the dashboard. Default is \code{TRUE}.}
 
 \item{show_info}{Verbose a progress on the console. Default is \code{TRUE}.}
 
@@ -80,9 +80,10 @@ package version, dashboard dimensions). This is for the development purposes onl
 An object of the \code{r2d3, htmlwidget, modelStudio} class.
 }
 \description{
-This function computes various (instance and dataset level) model explanations and produces an interactive,
-customisable dashboard. It consists of multiple panels for plots with their short descriptions.
-Easily save and share the HTML dashboard with others. Tools for model exploration unite with tools for
+This function computes various (instance and dataset level) model explanations and
+produces a customisable dashboard, which consists of multiple panels for plots with their
+short descriptions. Easily save the dashboard and share it with others. Tools for
+\href{https://pbiecek.github.io/ema}{Explanatory Model Analysis} unite with tools for
 Exploratory Data Analysis to give a broad overview of the model behavior.
 
 The extensive documentation covers:
@@ -99,7 +100,8 @@ The extensive documentation covers:
 Displayed variable can be changed by clicking on the bars of plots or with the first dropdown list,
  and observation can be changed with the second dropdown list.
 The dashboard gathers useful, but not sensitive, information about how it is being used (e.g. computation length,
- package version, dashboard dimensions). This is for the development purposes only and can be blocked by setting \code{telemetry} to \code{FALSE}.
+ package version, dashboard dimensions). This is for the development purposes only and can be blocked
+ by setting \code{telemetry} to \code{FALSE}.
 }
 \examples{
 library("DALEX")
@@ -183,9 +185,9 @@ modelStudio(explainer_HR,
 \references{
 \itemize{
   \item The input object is implemented in \href{https://modeloriented.github.io/DALEX/}{\bold{DALEX}}
-  \item Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence plots
+  \item Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence explanations
    are implemented in \href{https://modeloriented.github.io/ingredients/}{\bold{ingredients}}
-  \item Break Down and Shapley Values plots are implemented in
+  \item Break Down and Shapley Values explanations are implemented in
    \href{https://modeloriented.github.io/iBreakDown/}{\bold{iBreakDown}}
 }
 }

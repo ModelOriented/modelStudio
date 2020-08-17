@@ -4,7 +4,7 @@
 // descriptions need to be IN plot functions because of tooltips
 
 /// initialize plots, select them if already there
-var BD, SV, CP, FI, PD, AD, FD, TV, AT;
+var BD, SV, CP, FI, PD, AD, RV, FD, TV, AT;
 
 /// later plot specific plotIds
 var mapIdPlotFunction = {};
@@ -68,6 +68,16 @@ if (svg.select("#AD").empty()) {
   AD = svg.select("#AD");
 }
 mapIdPlotFunction.AD = accumulatedDependence;
+
+if (svg.select("#RV").empty()) {
+  RV = svg.append("g")
+          .attr("class","plot")
+          .attr("id","RV")
+          .style("visibility", "hidden");
+} else {
+  RV = svg.select("#RV");
+}
+mapIdPlotFunction.RV = residualsVs;
 
 if (svg.select("#FD").empty()) {
   FD = svg.append("g")
@@ -868,11 +878,32 @@ function accumulatedDependence() {
   }
 }
 
+function residualsVs() {
+
+  if (rvData.x === undefined) return null;
+
+  let xData = rvData.x,
+      xMinMax = rvData.x_min_max_list,
+      yMinMax = rvData.residuals_min_max,
+      isNumeric = rvData.is_numeric;
+
+  let tVariableName = CLICKED_VARIABLE_NAME;
+
+  // scatterplot or boxplot?
+  if (isNumeric[tVariableName]) {
+    rvNumericalPlot(tVariableName, xData, xMinMax[tVariableName],
+                    yMinMax);
+  } else {
+    rvCategoricalPlot(tVariableName, xData, xMinMax[tVariableName],
+                      yMinMax);
+  }
+}
+
 function featureDistribution() {
 
   if (fdData.x === undefined) return null;
 
-  let dData = fdData.x,
+  let xData = fdData.x,
       xMinMax = fdData.x_min_max_list,
       xMax = fdData.x_max_list,
       nBin = fdData.nbin,
@@ -882,10 +913,10 @@ function featureDistribution() {
 
   // histogram or bars?
   if (isNumeric[tVariableName]) {
-    fdNumericalPlot(tVariableName, dData, xMinMax[tVariableName],
+    fdNumericalPlot(tVariableName, xData, xMinMax[tVariableName],
                     nBin[tVariableName]);
   } else {
-    fdCategoricalPlot(tVariableName, dData, xMinMax[tVariableName],
+    fdCategoricalPlot(tVariableName, xData, xMinMax[tVariableName],
                       xMax[tVariableName]);
   }
 }
@@ -907,6 +938,7 @@ function targetVs() {
   } else {
     if (IS_TARGET_BINARY) {
       // in this case show average target plot
+      if (atData.x === undefined) return null;
       let target = xData.map(g => g['_target_'])
       yMinMax = [d3.min(target), d3.max(target)]
       xData = atData.x[tVariableName]
@@ -1983,6 +2015,233 @@ function adCategoricalPlot(variableName, bData, yMinMax, yMean, desc) {
   //            .on('mouseout', tooltip.hide);
 }
 
+function rvNumericalPlot(variableName, xData, xMinMax, yMinMax) {
+
+  var rvPlotHeight = h,
+      rvPlotWidth = w;
+
+  var x = d3.scaleLinear()
+            .range([margin.left + 10, margin.left + rvPlotWidth - 10])
+            .domain(xMinMax);
+
+  RV.append("text")
+    .attr("transform",
+          "translate(" + (margin.left + rvPlotWidth/2) + " ," +
+                         (margin.top + rvPlotHeight + 45) + ")")
+    .attr("class", "axisTitle")
+    .attr("text-anchor", "middle")
+    .text(variableName);
+
+  RV.append("text")
+    .attr("class","smallTitle")
+    .attr("x", margin.left)
+    .attr("y", margin.top - 15)
+    .text(rvSubtitle);
+
+  RV.append("text")
+    .attr("class", "bigTitle")
+    .attr("x", margin.left)
+    .attr("y", margin.top - 40)
+    .text(rvTitle);
+
+  // find 5 nice ticks with max and min - do better than d3
+  var tickValues = getTickValues(x.domain());
+
+  var xAxis = d3.axisBottom(x)
+                .tickValues(tickValues)
+                .tickSizeInner(0)
+                .tickPadding(15);
+
+  xAxis = RV.append("g")
+            .attr("class", "axisLabel")
+            .attr("transform", "translate(0,"+ (margin.top + rvPlotHeight) + ")")
+            .call(xAxis);
+
+  RV.append("text")
+    .attr("class", "axisTitle")
+    .attr("transform", "rotate(-90)")
+    .attr("y", margin.left - margin.ytitle)
+    .attr("x", -(margin.top + rvPlotHeight/2))
+    .attr("text-anchor", "middle")
+    .text("residuals");
+
+  var y = d3.scaleLinear()
+            .range([margin.top + rvPlotHeight, margin.top - additionalHeight])
+            .domain(yMinMax);
+
+  var yGrid = RV.append("g")
+                .attr("class", "grid")
+                .attr("transform", "translate(" + margin.left + ",0)")
+                .call(d3.axisLeft(y)
+                        .ticks(10)
+                        .tickSize(-rvPlotWidth)
+                        .tickFormat("")
+                ).call(g => g.select(".domain").remove());
+
+  var yAxis = d3.axisLeft(y)
+                .ticks(5)
+                .tickSize(0);
+
+  RV.selectAll()
+    .data(xData)
+    .enter()
+    .append("circle")
+    .attr("class", "point")
+    .attr("cx", d => x(d[variableName]))
+    .attr("cy", d => y(d["_residuals_"]))
+    .attr("r", 0)
+    .style("fill", rvPointColor)
+    .transition()
+    .duration(TIME)
+    .attr("r", rvPointSize);
+
+  yAxis = RV.append("g")
+            .attr("class", "axisLabel")
+            .attr("transform","translate(" + margin.left + ",0)")
+            .call(yAxis)
+            .call(g => g.select(".domain").remove());
+}
+
+function rvCategoricalPlot(variableName, xData, xMinMax, yMinMax) {
+
+  var rvPlotHeight = h,
+      rvPlotWidth = w;
+
+  var y = d3.scaleBand()
+            .rangeRound([margin.top - additionalHeight, margin.top + rvPlotHeight])
+            .padding(0.33)
+            .domain(xMinMax);
+
+  var yGrid = RV.append("g")
+                .attr("class", "grid")
+                .attr("transform", "translate(" + margin.left + ",0)")
+                .call(d3.axisLeft(y)
+                        .tickSize(-rvPlotWidth)
+                        .tickFormat("")
+                ).call(g => g.select(".domain").remove());
+
+  var yAxis = d3.axisLeft(y)
+                .tickSize(0);
+
+  yAxis = RV.append("g")
+            .attr("class", "axisLabel")
+            .attr("transform","translate(" + (margin.left - 10) + ",0)")
+            .call(yAxis)
+            .call(g => g.select(".domain").remove());
+
+  yAxis.selectAll("text").call(wrapText, margin.left - 15);
+
+  RV.append("text")
+    .attr("x", margin.left)
+    .attr("y", margin.top - 15)
+    .attr("class", "smallTitle")
+    .text(rvSubtitle);
+
+  RV.append("text")
+    .attr("x", margin.left)
+    .attr("y", margin.top - 40)
+    .attr("class", "bigTitle")
+    .text(rvTitle);
+
+  var x = d3.scaleLinear()
+            .range([margin.left, margin.left + rvPlotWidth])
+            .domain(yMinMax);
+
+  var xAxis = d3.axisBottom(x)
+                .ticks(5)
+                .tickSize(0);
+
+  xAxis = RV.append("g")
+            .attr("class", "axisLabel")
+            .attr("transform", "translate(0," + (margin.top + rvPlotHeight) + ")")
+            .call(xAxis)
+            .call(g => g.select(".domain").remove());
+
+  var xGrid = RV.append("g")
+                .attr("class", "grid")
+                .attr("transform", "translate(0," + (margin.top + rvPlotHeight) + ")")
+                .call(d3.axisBottom(x)
+                        .ticks(10)
+                        .tickSize(-rvPlotHeight - additionalHeight)
+                        .tickFormat("")
+                ).call(g => g.select(".domain").remove());
+
+  var sumstat = d3.nest()
+    .key(d => d[variableName])
+    .rollup(d => {
+      let target = d.map(g => g['_residuals_']).sort(d3.ascending),
+          q1 = d3.quantile(target, 0.25),
+          median = d3.quantile(target, 0.5),
+          q3 = d3.quantile(target, 0.75),
+          iqr = q3 - q1,
+          min = d3.min(target),
+          max = d3.max(target);
+      return {q1: q1, median: median, q3: q3, iqr: iqr,
+              min: d3.max([min, q1 - 1.5 * iqr]), max: d3.min([max, q3 + 1.5 * iqr])}
+    })
+    .entries(xData)
+
+  // add boxplots to
+  var boxplots = RV.selectAll()
+                   .data(sumstat)
+                   .enter()
+                   .append("g");
+
+  // main horizontal line
+  boxplots.append("line")
+          .attr("class", "interceptLine")
+          .attr("x1", d => x(d.value.min))
+          .attr("x2", d => x(d.value.min))
+          .attr("y1", d => y(d.key) + y.bandwidth()/2)
+          .attr("y2", d => y(d.key) + y.bandwidth()/2)
+          .transition()
+          .duration(TIME)
+          .delay(TIME)  // .delay((d,i) => i * TIME)
+          .attr("x2", d => x(d.value.max));
+
+  // rectangle for the main box
+  boxplots.append("rect")
+          .attr("x", d => x(d.value.q1))
+          .attr("y", d => y(d.key))
+          .attr("height", y.bandwidth())
+          .style("fill", "#ceced9")
+          .transition()
+          .duration(TIME)
+          .delay(TIME)  // .delay((d,i) => i * TIME)
+          .attr("width", d => x(d.value.q3) - x(d.value.q1));
+
+  // show the median
+  boxplots.append("line")
+          .attr("class", "interceptLine")
+          .attr("y1", d => y(d.key))
+          .attr("y2", d => y(d.key) + y.bandwidth())
+          .attr("x1", d => x(d.value.median))
+          .attr("x2", d => x(d.value.median))
+          .style("stroke-width", "2px");
+
+  RV.selectAll()
+    .data(xData)
+    .enter()
+    .append("circle")
+    .attr("class", "point")
+    .attr("cx", d => x(d["_residuals_"]))
+    .attr("cy", d => y(d[variableName]) + y.bandwidth()
+    - (0.1 + 0.8*Math.random()) * y.bandwidth())
+    .attr("r", 0)
+    .style("fill", rvPointColor)
+    .transition()
+    .duration(TIME)
+    .attr("r", rvPointSize);
+
+  RV.append("text")
+    .attr("transform",
+          "translate(" + (margin.left + rvPlotWidth/2) + " ," +
+                         (margin.top + rvPlotHeight + 45) + ")")
+    .attr("class", "axisTitle")
+    .attr("text-anchor", "middle")
+    .text("residuals");
+}
+
 function fdNumericalPlot(variableName, dData, mData, nBin) {
 
   var fdPlotHeight = h,
@@ -2852,8 +3111,8 @@ function updatePlots(event, variableName, observationId, plotId) {
       if (variableName == "prediction" || variableName == "intercept" ||
           variableName == "other") { return; }
       CLICKED_VARIABLE_NAME = variableName;
-      removePlots(["CP", "PD", "AD", "FD", "TV", "AT"]);
-      generatePlots(["CP", "PD", "AD", "FD", "TV", "AT"]);
+      removePlots(["CP", "PD", "AD", "RV", "FD", "TV", "AT"]);
+      generatePlots(["CP", "PD", "AD", "RV", "FD", "TV", "AT"]);
       break;
 
     case "chosePlot":

@@ -508,10 +508,12 @@ library(modelStudio)
 modelStudio(explainer)
 ```
 
+-------------------------------------------------------------------
+
 ## References
 
 * Theoretical introduction to the plots: [Explanatory Model Analysis. Explore, Explain and Examine Predictive Models.](https://pbiecek.github.io/ema)
 * The input object is implemented in [DALEX](https://modeloriented.github.io/DALEX/)
-* Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence plots
+* Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence explanations
 are implemented in [ingredients](https://modeloriented.github.io/ingredients/)
-* Break Down and Shapley Values plots are implemented in [iBreakDown](https://modeloriented.github.io/iBreakDown/)
+* Break Down and Shapley Values explanations are implemented in [iBreakDown](https://modeloriented.github.io/iBreakDown/)

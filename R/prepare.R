@@ -536,7 +536,7 @@ prepare_accumulated_dependence <- function(x, y, variables = NULL) {
   ret
 }
 
-prepare_feature_distribution <- function(x, y, variables = NULL) {
+prepare_feature_distribution <- function(x, y, variables = NULL, residuals = NULL) {
   ### Return the object for the FeatureDistribution plot ###
 
   if (is.null(x) | is.null(y)) return(NULL)
@@ -562,17 +562,24 @@ prepare_feature_distribution <- function(x, y, variables = NULL) {
     }
   }
 
-  X <- as.data.frame(cbind(x[,variables], y), stringsAsFactors=TRUE)
-  colnames(X) <- c(variables, "_target_")
+  #:# add residuals
+  X <- as.data.frame(cbind(x[,variables], y, residuals), stringsAsFactors=TRUE)
+  colnames(X) <- c(variables, "_target_", "_residuals_")
 
   y_max <- max(y)
   y_min <- min(y)
   y_margin <- abs(y_max - y_min)*0.1
 
+  residuals_max <- max(residuals)
+  residuals_min <- min(residuals)
+  residuals_margin <- abs(residuals_max - residuals_min)*0.1
+
   ret <- NULL
   ret$x <- X
   ret$x_min_max_list <- x_min_max_list
   ret$y_min_max <- c(y_min - y_margin, y_max + y_margin)
+  ret$residuals_min_max <- c(residuals_min - residuals_margin,
+                             residuals_max + residuals_margin)
   ret$x_max_list <- x_max_list
   ret$nbin <- nbin
   ret$is_numeric <- as.list(is_numeric)

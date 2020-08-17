@@ -345,7 +345,7 @@ If you use `modelStudio`, please cite our [JOSS article](https://joss.theoj.org/
 
 ## More Resources
 
-  - Theoretical introduction to the plots: [Explanatory Model Analysis. Explore, Explain and Examine Predictive Models](https://pbiecek.github.io/ema)
+  - Theoretical introduction to the plots: [Explanatory Model Analysis: Explore, Explain and Examine Predictive Models](https://pbiecek.github.io/ema)
 
   - Vignettes: [modelStudio - perks and features](https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html) and [modelStudio - R & Python examples](https://modeloriented.github.io/modelStudio/articles/ms-r-python-examples.html)  
   

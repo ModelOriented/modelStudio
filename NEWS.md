@@ -1,5 +1,5 @@
 # modelStudio (development)
-* this version requires `DALEX v1.3.0`, `iBreakDown v1.2.1` and `ingredients v1.3.1`
+* this version requires `DALEX v1.3.0`, `iBreakDown v1.3.1` and `ingredients v1.3.1`
 * The dashboard gathers useful, but not sensitive, information about how it is being used (e.g. computation length, package version, dashboard dimensions). This is for the development purposes only and can be blocked by setting `telemetry` to `FALSE`.
 * add support for `modelStudio` in Shiny [(#77)](https://github.com/ModelOriented/modelStudio/issues/77)
 using new `widget_id` argument
@@ -12,6 +12,7 @@ using new `widget_id` argument
 * TV plot uses boxplots and barplot when the target `y` has only two unique
 values (classification) [(#76)](https://github.com/ModelOriented/modelStudio/issues/76)
 * added more checks for input
+* added the Residuals vs Feature plot (RV) [#(84)](https://github.com/ModelOriented/modelStudio/issues/84)
 
 # modelStudio 1.2.0
 * remove redundant documentation resources so that the package weights less

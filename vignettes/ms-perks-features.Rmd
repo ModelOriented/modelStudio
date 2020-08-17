@@ -18,10 +18,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-The `modelStudio()` function computes various (instance and dataset level) model explanations and produces
-an interactive, customisable dashboard. It consists of multiple panels for plots with their short descriptions.
-Easily save and share the HTML dashboard with others. Tools for model exploration unite with tools for
-EDA (Exploratory Data Analysis) to give a broad overview of the model behavior.
+The `modelStudio()` function computes various (instance and dataset level) model explanations 
+and produces a customisable dashboard, which consists of multiple panels for plots with their
+short descriptions. Easily save the dashboard and share it with others. Tools for
+[Explanatory Model Analysis](https://pbiecek.github.io/ema) unite with tools for Exploratory Data Analysis 
+to give a broad overview of the model behavior.
 
 Let's use `HR` dataset to explore `modelStudio` parameters:
 
@@ -335,6 +336,6 @@ modelStudio(explainer_mlr)
 
 * Theoretical introduction to the plots: [Explanatory Model Analysis. Explore, Explain and Examine Predictive Models.](https://pbiecek.github.io/ema)
 * The input object is implemented in [DALEX](https://modeloriented.github.io/DALEX/)
-* Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence plots
+* Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence explanations
 are implemented in [ingredients](https://modeloriented.github.io/ingredients/)
-* Break Down and Shapley Values plots are implemented in [iBreakDown](https://modeloriented.github.io/iBreakDown/)
+* Break Down and Shapley Values explanations are implemented in [iBreakDown](https://modeloriented.github.io/iBreakDown/)

@@ -95,9 +95,10 @@ ms
 \references{
 \itemize{
   \item The input object is implemented in \href{https://modeloriented.github.io/DALEX/}{\bold{DALEX}}
-  \item Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence plots
-are implemented in \href{https://modeloriented.github.io/ingredients/}{\bold{ingredients}}
-  \item Break Down and Shapley Values plots are implemented in \href{https://modeloriented.github.io/iBreakDown/}{\bold{iBreakDown}}
+  \item Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence explanations
+   are implemented in \href{https://modeloriented.github.io/ingredients/}{\bold{ingredients}}
+  \item Break Down and Shapley Values explanations are implemented in
+   \href{https://modeloriented.github.io/iBreakDown/}{\bold{iBreakDown}}
 }
 }
 \seealso{
