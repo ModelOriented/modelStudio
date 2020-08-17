@@ -53,9 +53,10 @@
 
 
 <meta property="og:title" content="Interactive Studio for Explanatory Model Analysis — modelStudio" />
-<meta property="og:description" content="This function computes various (instance and dataset level) model explanations and produces an interactive,
-customisable dashboard. It consists of multiple panels for plots with their short descriptions.
-Easily save and share the HTML dashboard with others. Tools for model exploration unite with tools for
+<meta property="og:description" content="This function computes various (instance and dataset level) model explanations and
+produces a customisable dashboard, which consists of multiple panels for plots with their
+short descriptions. Easily save the dashboard and share it with others. Tools for
+Explanatory Model Analysis unite with tools for
 Exploratory Data Analysis to give a broad overview of the model behavior.
 The extensive documentation covers:
 
@@ -70,7 +71,8 @@ Theoretical introduction to the plots -
 Displayed variable can be changed by clicking on the bars of plots or with the first dropdown list,
  and observation can be changed with the second dropdown list.
 The dashboard gathers useful, but not sensitive, information about how it is being used (e.g. computation length,
- package version, dashboard dimensions). This is for the development purposes only and can be blocked by setting telemetry to FALSE." />
+ package version, dashboard dimensions). This is for the development purposes only and can be blocked
+ by setting telemetry to FALSE." />
 <meta property="og:image" content="/logo.png" />
 
 <meta name="robots" content="noindex" />
@@ -173,9 +175,10 @@ The dashboard gathers useful, but not sensitive, information about how it is bei
     </div>
 
     <div class="ref-description">
-    <p>This function computes various (instance and dataset level) model explanations and produces an interactive,
-customisable dashboard. It consists of multiple panels for plots with their short descriptions.
-Easily save and share the HTML dashboard with others. Tools for model exploration unite with tools for
+    <p>This function computes various (instance and dataset level) model explanations and
+produces a customisable dashboard, which consists of multiple panels for plots with their
+short descriptions. Easily save the dashboard and share it with others. Tools for
+<a href='https://pbiecek.github.io/ema'>Explanatory Model Analysis</a> unite with tools for
 Exploratory Data Analysis to give a broad overview of the model behavior.</p>
 <p>The extensive documentation covers:</p>
 <ul>
@@ -190,7 +193,8 @@ Exploratory Data Analysis to give a broad overview of the model behavior.</p>
 <p>Displayed variable can be changed by clicking on the bars of plots or with the first dropdown list,
  and observation can be changed with the second dropdown list.
 The dashboard gathers useful, but not sensitive, information about how it is being used (e.g. computation length,
- package version, dashboard dimensions). This is for the development purposes only and can be blocked by setting <code>telemetry</code> to <code>FALSE</code>.</p>
+ package version, dashboard dimensions). This is for the development purposes only and can be blocked
+ by setting <code>telemetry</code> to <code>FALSE</code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>modelStudio</span>(<span class='no'>explainer</span>, <span class='no'>...</span>)
@@ -263,7 +267,7 @@ See <a href='https://modelstudio.drwhy.ai/articles/ms-perks-features.html#more-c
     </tr>
     <tr>
       <th>eda</th>
-      <td><p>Compute EDA plots. Default is <code>TRUE</code>.</p></td>
+      <td><p>Compute EDA plots and Residuals vs Feature plot, which adds the data to the dashboard. Default is <code>TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>show_info</th>
@@ -311,9 +315,9 @@ package version, dashboard dimensions). This is for the development purposes onl
     
 <ul>
 <li><p>The input object is implemented in <a href='https://modeloriented.github.io/DALEX/'><b>DALEX</b></a></p></li>
-<li><p>Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence plots
+<li><p>Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence explanations
    are implemented in <a href='https://modeloriented.github.io/ingredients/'><b>ingredients</b></a></p></li>
-<li><p>Break Down and Shapley Values plots are implemented in
+<li><p>Break Down and Shapley Values explanations are implemented in
    <a href='https://modeloriented.github.io/iBreakDown/'><b>iBreakDown</b></a></p></li>
 </ul>
 
@@ -422,9 +426,10 @@ and <a href='https://modeloriented.github.io/modelStudio/articles/ms-perks-featu
 <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>new_observation</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"id1"</span>, <span class='st'>"id2"</span>)
 <span class='co'># make a studio for the model</span>
 <span class='fu'>modelStudio</span>(<span class='no'>explainer_HR</span>,
-            <span class='no'>new_observation</span>)
+            <span class='no'>new_observation</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Coercing LHS to a list</span></div><div class='input'>
+# }
 
-<span class='co'># }</span></div></span></pre>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
