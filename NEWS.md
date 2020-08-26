@@ -12,7 +12,8 @@ using new `widget_id` argument
 * TV plot uses boxplots and barplot when the target `y` has only two unique
 values (classification) [(#76)](https://github.com/ModelOriented/modelStudio/issues/76)
 * added more checks for input
-* added the Residuals vs Feature plot (RV) [#(84)](https://github.com/ModelOriented/modelStudio/issues/84)
+* added the Residuals vs Feature plot (RV) [(#84)](https://github.com/ModelOriented/modelStudio/issues/84)
+* added model performance measures to the footnote [#(85)](https://github.com/ModelOriented/modelStudio/issues/85)
 
 # modelStudio 1.2.0
 * remove redundant documentation resources so that the package weights less

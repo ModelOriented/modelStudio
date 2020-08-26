@@ -314,6 +314,7 @@ modelStudio.explainer <- function(explainer,
                                         attr(loss_function, "loss_name"), ...)
   pd_data <- prepare_partial_dependence(pd_n, pd_c, variables = variable_names)
   ad_data <- prepare_accumulated_dependence(ad_n, ad_c, variables = variable_names)
+  mp_data <- DALEX::model_performance(explainer)$measures
 
   if (eda) {
     #:# fd_data is used by targetVs and residualsVs plots
@@ -411,10 +412,13 @@ modelStudio.explainer <- function(explainer,
   # prepare footer text and ms title
   ms_package_version <- as.character(packageVersion("modelStudio"))
   ms_creation_date <- Sys.time()
-  footer_text <- paste0("Site built with modelStudio v",
-                        ms_package_version,
-                        " on ",
-                        format(ms_creation_date, usetz = FALSE))
+  version_text <- paste0("Site built with modelStudio v",
+                         ms_package_version,
+                         " on ",
+                         format(ms_creation_date, usetz = FALSE))
+  measure_text <- paste(names(mp_data),
+                        round(unlist(mp_data), 3),
+                        sep = ": ", collapse=" | ")
 
   if (telemetry) {
     creation_time <- as.character(as.integer(as.numeric(ms_creation_date - start_time)*60))
@@ -441,7 +445,8 @@ modelStudio.explainer <- function(explainer,
                     model_name = label,
                     variable_names = variable_names,
                     facet_dim = facet_dim,
-                    footer_text = footer_text,
+                    version_text = version_text,
+                    measure_text = measure_text,
                     drop_down_data = jsonlite::toJSON(drop_down_data),
                     eda = eda,
                     widget_id = widget_id,

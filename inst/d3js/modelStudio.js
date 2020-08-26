@@ -23,7 +23,8 @@ var TIME = options.time,
     modelName = options.model_name,
     variableNames = options.variable_names,
     dim = options.facet_dim,
-    footerText = options.footer_text,
+    versionText = options.version_text,
+    measureText = options.measure_text,
     dropDownData = options.drop_down_data,
     EDA = options.eda,
     WIDGET_ID = options.widget_id,
@@ -275,9 +276,15 @@ function initializeStudio() {
 
   BOTTOM_G.append("text")
           .attr("class", "footerTitle")
-          .attr("x", studioWidth - 15 - getTextWidth(footerText, 12, 'Fira Sans, sans-serif'))
+          .attr("x", studioWidth - 15 - getTextWidth(versionText, 12, 'Fira Sans, sans-serif'))
           .attr("y", studioHeight - studioMargin.bottom + 25)
-          .text(footerText);
+          .text(versionText);
+
+  BOTTOM_G.append("text")
+          .attr("class", "footerTitle")
+          .attr("x", 15)
+          .attr("y", studioHeight - studioMargin.bottom + 25)
+          .text(measureText);
 
   BOTTOM_G.append("line")
           .attr("class", "footerLine")
