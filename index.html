@@ -163,11 +163,7 @@
 <p>The <code><a href="reference/modelStudio.html">modelStudio()</a></code> function uses <code>DALEX</code> explainers created with <code><a href="https://rdrr.io/pkg/DALEX/man/explain.html">DALEX::explain()</a></code> or <code>DALEXtra::explain_*()</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="r"><span class="co"># packages for explainer objects</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"DALEX"</span>)
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"DALEXtra"</span>)
-
-<span class="co"># update main dependencies</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"ingredients"</span>)
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"iBreakDown"</span>)</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"DALEXtra"</span>)</pre></div>
 <div id="mlr-dashboard" class="section level3">
 <h3 class="hasAnchor">
 <a href="#mlr-dashboard" class="anchor"></a>mlr <a href="https://modeloriented.github.io/modelStudio/mlr.html">dashboard</a>
@@ -252,11 +248,7 @@
 pip install dalex -U</code></pre>
 <p>Use <code>pickle</code> Python module and <code>reticulate</code> R package to easily make a studio for a model.</p>
 <div class="sourceCode" id="cb7"><pre class="r"><span class="co"># package for pickle load</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"reticulate"</span>)
-
-<span class="co"># update main dependencies</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"ingredients"</span>)
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"iBreakDown"</span>)</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"reticulate"</span>)</pre></div>
 </div>
 <div id="scikit-learn-dashboard" class="section level3">
 <h3 class="hasAnchor">
@@ -383,19 +375,19 @@ pip install dalex -U</code></pre>
 <h2 class="hasAnchor">
 <a href="#citation" class="anchor"></a>Citation</h2>
 <p>If you use <code>modelStudio</code>, please cite our <a href="https://joss.theoj.org/papers/10.21105/joss.01798">JOSS article</a>:</p>
-<pre><code>@Article{modelStudio,
-  author = {Hubert Baniecki and Przemyslaw Biecek},
-  title = {{modelStudio}: Interactive Studio with Explanations for {ML} Predictive Models},
-  doi = {10.21105/joss.01798},
-  url = {https://doi.org/10.21105/joss.01798},
-  year = {2019},
-  month = {Nov},
-  volume = {4},
-  number = {43},
-  pages = {1798},
-  publisher = {The Open Journal},
-  journal = {Journal of Open Source Software}
-}</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a><span class="at">@Article</span>{modelStudio,</span>
+<span id="cb12-2"><a href="#cb12-2"></a>  author <span class="op">=</span> {Hubert Baniecki <span class="kw">and</span> Przemyslaw Biecek},</span>
+<span id="cb12-3"><a href="#cb12-3"></a>  title <span class="op">=</span> {{modelStudio}: Interactive Studio <span class="cf">with</span> Explanations <span class="cf">for</span> {ML} Predictive Models},</span>
+<span id="cb12-4"><a href="#cb12-4"></a>  doi <span class="op">=</span> {<span class="fl">10.21105</span><span class="op">/</span>joss<span class="fl">.01798</span>},</span>
+<span id="cb12-5"><a href="#cb12-5"></a>  url <span class="op">=</span> {https:<span class="op">//</span>doi.org<span class="op">/</span><span class="fl">10.21105</span><span class="op">/</span>joss<span class="fl">.01798</span>},</span>
+<span id="cb12-6"><a href="#cb12-6"></a>  year <span class="op">=</span> {<span class="dv">2019</span>},</span>
+<span id="cb12-7"><a href="#cb12-7"></a>  month <span class="op">=</span> {Nov},</span>
+<span id="cb12-8"><a href="#cb12-8"></a>  volume <span class="op">=</span> {<span class="dv">4</span>},</span>
+<span id="cb12-9"><a href="#cb12-9"></a>  number <span class="op">=</span> {<span class="dv">43</span>},</span>
+<span id="cb12-10"><a href="#cb12-10"></a>  pages <span class="op">=</span> {<span class="dv">1798</span>},</span>
+<span id="cb12-11"><a href="#cb12-11"></a>  publisher <span class="op">=</span> {The Open Journal},</span>
+<span id="cb12-12"><a href="#cb12-12"></a>  journal <span class="op">=</span> {Journal of Open Source Software}</span>
+<span id="cb12-13"><a href="#cb12-13"></a>}</span></code></pre></div>
 </div>
 <div id="more-resources" class="section level2">
 <h2 class="hasAnchor">
