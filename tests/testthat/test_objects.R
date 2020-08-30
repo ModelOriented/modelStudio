@@ -20,7 +20,7 @@ explain_titanic_glm <- DALEX::explain(model_titanic_glm,
                                       verbose = v)
 
 # Pick some data points
-new_observations <- titanic_imputed[1:4,]
+new_observations <- DALEX::titanic_imputed[1:4,]
 rownames(new_observations) <- c("Lucas", "James", "Thomas", "Nancy")
 
 
@@ -76,7 +76,7 @@ explain_rf <- DALEX::explain(model_rf,
 
 ### data/new_observation permutations
 
-titanic_small <- titanic_imputed[1:500,]
+titanic_small <- DALEX::titanic_imputed[1:500,]
 x <- titanic_small[,-8]
 nx <- titanic_small[1,-8]
 
@@ -136,10 +136,11 @@ explain_artifficial <- DALEX::explain(model_artifficial,
 model_matrix_train <- model.matrix(status == "fired" ~ . -1, DALEX::HR)
 data_train <- xgboost::xgb.DMatrix(model_matrix_train, label = DALEX::HR$status == "fired")
 
-param <- list(max_depth = 2, eta = 1, silent = 1, nthread = 2,
+param <- list(max_depth = 2, eta = 1, nthread = 2,
               objective = "binary:logistic", eval_metric = "auc")
 HR_xgb_model <- xgboost::xgb.train(param, data_train, nrounds = 50)
 
 explainer_xgb <- DALEX::explain(HR_xgb_model, data = model_matrix_train,
                                 y = DALEX::HR$status == "fired", label = "xgboost",
                                 verbose = v)
+

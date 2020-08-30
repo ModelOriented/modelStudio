@@ -193,7 +193,7 @@ ms_options <- function(...) {
 #' @export
 #' @rdname ms_options
 modelStudioOptions <- function(...) {
-  warning("The 'modelStudioOptions()' function is deprecated; please use 'ms_options()' instead.")
+  warning("The 'modelStudioOptions()' function is deprecated; use 'ms_options()' instead.")
   ret <- ms_options(...)
   ret
 }

@@ -566,12 +566,12 @@ prepare_feature_distribution <- function(x, y, variables = NULL, residuals = NUL
   X <- as.data.frame(cbind(x[,variables], y, residuals), stringsAsFactors=TRUE)
   colnames(X) <- c(variables, "_target_", "_residuals_")
 
-  y_max <- max(y)
-  y_min <- min(y)
+  y_max <- max(y, na.rm = TRUE)
+  y_min <- min(y, na.rm = TRUE)
   y_margin <- abs(y_max - y_min)*0.1
 
-  residuals_max <- max(residuals)
-  residuals_min <- min(residuals)
+  residuals_max <- max(residuals, na.rm = TRUE)
+  residuals_min <- min(residuals, na.rm = TRUE)
   residuals_margin <- abs(residuals_max - residuals_min)*0.1
 
   ret <- NULL
@@ -601,7 +601,7 @@ prepare_average_target <- function(x, y, variables = NULL) {
 
   x_min_max_list <- y_min_max_list <- X <- list()
 
-  y_mean <- mean(y)
+  y_mean <- mean(y, na.rm = TRUE)
 
   for (name in names(is_numeric)) {
     index <- !is.na(x[,name])
@@ -621,7 +621,7 @@ prepare_average_target <- function(x, y, variables = NULL) {
       x_bin <- cut(variable_column_nona,
                    variable_splits,
                    include.lowest = TRUE)
-      y_mean_aggr <- aggregate(y_nona, by = list(x_bin), mean)
+      y_mean_aggr <- aggregate(y_nona, by = list(x_bin), mean, na.rm = TRUE)
 
       ci <- y_mean_aggr[, 1]
       ci2 <- substr(as.character(ci), 2, nchar(as.character(ci)) - 1)
@@ -639,7 +639,7 @@ prepare_average_target <- function(x, y, variables = NULL) {
     } else {
       x_min_max_list[[name]] <- sort(unique(variable_column_nona))
 
-      y_mean_aggr <- aggregate(y_nona, by = list(variable_column_nona), mean)
+      y_mean_aggr <- aggregate(y_nona, by = list(variable_column_nona), mean, na.rm = TRUE)
 
       temp <- as.data.frame(y_mean_aggr, stringsAsFactors=TRUE)
       colnames(temp) <- c("y", "x0")
@@ -655,8 +655,8 @@ prepare_average_target <- function(x, y, variables = NULL) {
     X[[name]] <- temp
   }
 
-  y_max <- max(y)
-  y_min <- min(y)
+  y_max <- max(y, na.rm = TRUE)
+  y_min <- min(y, na.rm = TRUE)
   y_margin <- abs(y_max - y_min)*0.1
 
   ret <- NULL
