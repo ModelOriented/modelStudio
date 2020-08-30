@@ -67,10 +67,6 @@ The `modelStudio()` function uses `DALEX` explainers created with `DALEX::explai
 # packages for explainer objects
 install.packages("DALEX")
 install.packages("DALEXtra")
-
-# update main dependencies
-install.packages("ingredients")
-install.packages("iBreakDown")
 ```
 
 ### mlr [dashboard](https://modeloriented.github.io/modelStudio/mlr.html)
@@ -175,10 +171,6 @@ Use `pickle` Python module and `reticulate` R package to easily make a studio fo
 ```r
 # package for pickle load
 install.packages("reticulate")
-
-# update main dependencies
-install.packages("ingredients")
-install.packages("iBreakDown")
 ```
 
 ### scikit-learn [dashboard](https://modeloriented.github.io/modelStudio/scikitlearn.html)
@@ -327,7 +319,7 @@ or with [`r2d3::save_d3_html()`](https://rstudio.github.io/r2d3/articles/publish
 
 If you use `modelStudio`, please cite our [JOSS article](https://joss.theoj.org/papers/10.21105/joss.01798):
 
-```
+```python
 @Article{modelStudio,
   author = {Hubert Baniecki and Przemyslaw Biecek},
   title = {{modelStudio}: Interactive Studio with Explanations for {ML} Predictive Models},

@@ -29,10 +29,6 @@ The `modelStudio()` function uses `DALEX` explainers created with `DALEX::explai
 # packages for explainer objects
 install.packages("DALEX")
 install.packages("DALEXtra")
-
-# update main dependencies
-install.packages("ingredients")
-install.packages("iBreakDown")
 ```
 
 ### mlr [dashboard](https://modeloriented.github.io/modelStudio/mlr.html)
@@ -288,10 +284,6 @@ Use `pickle` Python module and `reticulate` R package to easily make a studio fo
 ```{r eval = FALSE}
 # package for pickle load
 install.packages("reticulate")
-
-# update main dependencies
-install.packages("ingredients")
-install.packages("iBreakDown")
 ```
 
 ### scikit-learn [dashboard](https://modeloriented.github.io/modelStudio/scikitlearn.html)
