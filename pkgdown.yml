@@ -1,8 +1,6 @@
 pandoc: 2.7.3
-pkgdown: 1.5.1
+pkgdown: 1.6.0
 pkgdown_sha: ~
-articles:
-  ms-perks-features: ms-perks-features.html
-  ms-r-python-examples: ms-r-python-examples.html
-last_built: 2020-08-30T20:41Z
+articles: []
+last_built: 2020-09-07T19:35Z
 
