@@ -83,7 +83,7 @@ An object of the \code{r2d3, htmlwidget, modelStudio} class.
 This function computes various (instance and dataset level) model explanations and
 produces a customisable dashboard, which consists of multiple panels for plots with their
 short descriptions. Easily save the dashboard and share it with others. Tools for
-\href{https://pbiecek.github.io/ema}{Explanatory Model Analysis} unite with tools for
+\href{https://pbiecek.github.io/ema/}{Explanatory Model Analysis} unite with tools for
 Exploratory Data Analysis to give a broad overview of the model behavior.
 
 The extensive documentation covers:

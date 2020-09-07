@@ -8,7 +8,7 @@
 
 ## Overview
 
-The `modelStudio` package **automates the Explanatory Analysis of Machine Learning predictive models**. It generates advanced interactive model explanations in the form of a **serverless HTML site** with only one line of code. This tool is model agnostic, therefore compatible with most of the black box predictive models and frameworks (e.g.&nbsp;`mlr/mlr3`, `xgboost`, `caret`, `h2o`, `parsnip`, `scikit-learn`, `lightgbm`, `keras/tensorflow`).
+The `modelStudio` package **automates the Explanatory Analysis of Machine Learning predictive models**. It generates advanced interactive model explanations in the form of a **serverless HTML site** with only one line of code. This tool is model agnostic, therefore compatible with most of the black box predictive models and frameworks (e.g.&nbsp;`mlr/mlr3`, `xgboost`, `caret`, `h2o`, `parsnip`, `tidymodels`, `scikit-learn`, `lightgbm`, `keras/tensorflow`).
 
 The main `modelStudio()` function computes various (instance and dataset level) model explanations and produces a&nbsp;**customisable dashboard**, which consists of multiple panels for plots with their short descriptions. Easily&nbsp;**save**&nbsp; the dashboard and&nbsp;**share** it with others. Tools for [Explanatory Model Analysis](https://pbiecek.github.io/ema) unite with tools for Exploratory Data Analysis to give a broad overview of the model behavior.
 
@@ -64,7 +64,7 @@ modelStudio(explainer)
 The `modelStudio()` function uses `DALEX` explainers created with `DALEX::explain()` or `DALEXtra::explain_*()`.
 
 ```r
-# packages for explainer objects
+# packages for the explainer objects
 install.packages("DALEX")
 install.packages("DALEXtra")
 ```
@@ -162,7 +162,7 @@ modelStudio(explainer,
 The `modelStudio()` function uses `dalex` explainers created with `dalex.Explainer()`.
 
 ```console
-:: package for Explainer object
+:: package for the Explainer object
 pip install dalex -U
 ```
 

@@ -1,5 +1,5 @@
-# modelStudio (development)
-* this version requires `DALEX v1.3.0`, `iBreakDown v1.3.1` and `ingredients v1.3.1`
+# modelStudio 2.0.0
+* this version requires `DALEX v2.0`, `ingredients v2.0` and `iBreakDown v1.3.1`
 * The dashboard gathers useful, but not sensitive, information about how it is being used (e.g. computation length, package version, dashboard dimensions). This is for the development purposes only and can be blocked by setting `telemetry` to `FALSE`.
 * add support for `modelStudio` in Shiny [(#77)](https://github.com/ModelOriented/modelStudio/issues/77)
 using new `widget_id` argument

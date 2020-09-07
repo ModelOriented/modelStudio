@@ -4,7 +4,7 @@
 #' This function computes various (instance and dataset level) model explanations and
 #' produces a customisable dashboard, which consists of multiple panels for plots with their
 #' short descriptions. Easily save the dashboard and share it with others. Tools for
-#' \href{https://pbiecek.github.io/ema}{Explanatory Model Analysis} unite with tools for
+#' \href{https://pbiecek.github.io/ema/}{Explanatory Model Analysis} unite with tools for
 #' Exploratory Data Analysis to give a broad overview of the model behavior.
 #'
 #' The extensive documentation covers:
@@ -184,6 +184,9 @@ modelStudio.explainer <- function(explainer,
 
   start_time <- Sys.time()
 
+  #:# checks
+  explainer <- check_explainer(explainer)
+
   model <- explainer$model
   data <- explainer$data
   y <- explainer$y
@@ -191,14 +194,6 @@ modelStudio.explainer <- function(explainer,
   label <- explainer$label
   model_type <- explainer$model_info$type
 
-  #:# checks
-  if (is.null(data)) stop('explainer$data is NULL - pass the `data` argument to the explain() function')
-  if (is.null(y)) stop('explainer$y is NULL - pass the `y` argument to the explain() function')
-  if (!is.null(model_type) && model_type == 'multiclass')
-    stop('explainer$model_info$type is multiclass - modelStudio supports regression and classification',
-         ' use predict_function that returns one value per observation')
-  if (is.null(rownames(data))) rownames(data) <- 1:nrow(data)
-  if (is.null(colnames(data))) colnames(data) <- 1:ncol(data)
   if (!is.null(max_vars)) max_features <- max_vars
 
   if (is.null(new_observation)) {
@@ -593,4 +588,32 @@ which_variables_are_numeric <- function(data) {
 # check for binary target
 is_binary <- function(y) {
   is.numeric(y) & length(unique(y)) == 2
+}
+
+check_explainer <- function(explainer) {
+
+  if (is.null(explainer$data))
+    stop('explainer$data is NULL - pass the `data` argument to the explain() function')
+  if (is.null(explainer$y))
+    stop('explainer$y is NULL - pass the `y` argument to the explain() function')
+  if (!is.null(explainer$model_info$type) && explainer$model_info$type == 'multiclass')
+    stop('explainer$model_info$type is multiclass - modelStudio supports regression and classification',
+         ' use predict_function that returns one value per observation')
+  if (is.null(rownames(explainer$data)))
+    rownames(explainer$data) <- 1:nrow(explainer$data)
+  if (is.null(colnames(explainer$data)))
+    colnames(explainer$data) <- 1:ncol(explainer$data)
+
+  # this check is to be removed with DALEX>=2.0.1 dependency
+  if ("dalex._explainer.object.Explainer" %in% class(explainer)) {
+    if (is.null(explainer$y_hat) || is.null(explainer$residuals))
+      stop('For Python support, use precalculate=True in Explainer init')
+    class(explainer) <- c('explainer', class(explainer))
+  }
+  if ("array" %in% class(explainer$y_hat) && length(dim(explainer$y_hat)) == 1)
+    explainer$y_hat <- as.vector(explainer$y_hat)
+  if ("array" %in% class(explainer$residuals) && length(dim(explainer$residuals)) == 1)
+    explainer$residuals <- as.vector(explainer$residuals)
+
+  explainer
 }

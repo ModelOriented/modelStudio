@@ -26,7 +26,7 @@ knitr::opts_chunk$set(
 The `modelStudio()` function uses `DALEX` explainers created with `DALEX::explain()` or `DALEXtra::explain_*()`.   
 
 ```{r eval = FALSE}
-# packages for explainer objects
+# packages for the explainer objects
 install.packages("DALEX")
 install.packages("DALEXtra")
 ```
@@ -255,9 +255,9 @@ test <- data[-index,]
 
 # fit a model
 model <- rand_forest() %>%
-  set_engine("ranger", importance = "impurity") %>%
-  set_mode("regression") %>%
-  fit(m2.price ~ ., data = train)
+         set_engine("ranger", importance = "impurity") %>%
+         set_mode("regression") %>%
+         fit(m2.price ~ ., data = train)
 
 # create an explainer for the model
 explainer <- explain(model,
@@ -269,13 +269,61 @@ explainer <- explain(model,
 modelStudio(explainer)
 ```
 
+### tidymodels [dashboard](https://modeloriented.github.io/modelStudio/tidymodels.html)
+
+In this example we will make a studio for the `ranger` model on `titanic` data.
+
+```{r eval=FALSE}
+# load packages and data
+library(tidymodels)
+library(DALEXtra)
+library(modelStudio)
+
+data <- DALEX::titanic_imputed
+
+# split the data
+index <- sample(1:nrow(data), 0.7*nrow(data))
+train <- data[index,]
+test <- data[-index,]
+
+# tidymodels fit takes target as factor
+train$survived <- as.factor(train$survived)
+
+# fit a model
+rec <- recipe(survived ~ ., data = train) %>%
+       step_normalize(fare)
+
+clf <- rand_forest(mtry = 2) %>%
+       set_engine("ranger") %>%
+       set_mode("classification")
+
+wflow <- workflow() %>%
+         add_recipe(rec) %>%
+         add_model(clf)
+
+model <- wflow %>% fit(data = train)
+
+# create an explainer for the model
+explainer <- explain_tidymodels(model,
+                                data = test,
+                                y = test$survived,
+                                label = "tidymodels")
+
+# pick observations
+new_observation <- test[1:2,]
+rownames(new_observation) <- c("id1", "id2")
+
+# make a studio for the model
+modelStudio(explainer,
+            new_observation)
+```
 
 ## Python
 
 The `modelStudio()` function uses `dalex` explainers created with `dalex.Explainer()`.
 
 ```{bash, eval=FALSE, engine="sh"}
-# package for Explainer object
+# package for the Explainer object
 pip install dalex -U
 ```
 
@@ -329,7 +377,7 @@ explainer <- py_load_object("explainer_scikitlearn.pickle", pickle = "pickle")
 # make a studio for the model
 library(modelStudio)
 modelStudio(explainer, B = 5,
-            options = ms_options(margin_left = 160))
+            options = ms_options(margin_left = 160, showcase_name='scikitlearn'))
 ```
 
 ### lightgbm [dashboard](https://modeloriented.github.io/modelStudio/lightgbm.html)
@@ -404,7 +452,7 @@ explainer <- py_load_object("explainer_lightgbm.pickle", pickle = "pickle")
 
 # make a studio for the model
 library(modelStudio)
-modelStudio(explainer)
+modelStudio(explainer, options = ms_options(showcase_name='lightgbm'))
 ```
 
 ### keras/tensorflow [dashboard](https://modeloriented.github.io/modelStudio/keras.html)
@@ -497,14 +545,14 @@ explainer <- py_load_object("explainer_keras.pickle", pickle = "pickle")
 
 # make a studio for the model
 library(modelStudio)
-modelStudio(explainer)
+modelStudio(explainer, options = ms_options(showcase_name='keras'))
 ```
 
 -------------------------------------------------------------------
 
 ## References
 
-* Theoretical introduction to the plots: [Explanatory Model Analysis. Explore, Explain and Examine Predictive Models.](https://pbiecek.github.io/ema)
+* Theoretical introduction to the plots: [Explanatory Model Analysis. Explore, Explain and Examine Predictive Models.](https://pbiecek.github.io/ema/)
 * The input object is implemented in [DALEX](https://modeloriented.github.io/DALEX/)
 * Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence explanations
 are implemented in [ingredients](https://modeloriented.github.io/ingredients/)

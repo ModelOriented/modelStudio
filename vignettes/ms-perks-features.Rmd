@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 The `modelStudio()` function computes various (instance and dataset level) model explanations 
 and produces a customisable dashboard, which consists of multiple panels for plots with their
 short descriptions. Easily save the dashboard and share it with others. Tools for
-[Explanatory Model Analysis](https://pbiecek.github.io/ema) unite with tools for Exploratory Data Analysis 
+[Explanatory Model Analysis](https://pbiecek.github.io/ema/) unite with tools for Exploratory Data Analysis 
 to give a broad overview of the model behavior.
 
 Let's use `HR` dataset to explore `modelStudio` parameters:
@@ -306,7 +306,7 @@ shinyApp(ui = ui, server = server)
 
 ## DALEXtra
 
-Use `explain_*()` functions from the [DALEXtra](https://github.com/ModelOriented/DALEXtra)
+Use `explain_*()` functions from the [DALEXtra](https://github.com/ModelOriented/DALEXtra/)
 package to explain various models.
 
 Bellow basic example of making `modelStudio` for a `mlr` model using `explain_mlr()`.
@@ -334,7 +334,7 @@ modelStudio(explainer_mlr)
 
 ## References
 
-* Theoretical introduction to the plots: [Explanatory Model Analysis. Explore, Explain and Examine Predictive Models.](https://pbiecek.github.io/ema)
+* Theoretical introduction to the plots: [Explanatory Model Analysis. Explore, Explain and Examine Predictive Models.](https://pbiecek.github.io/ema/)
 * The input object is implemented in [DALEX](https://modeloriented.github.io/DALEX/)
 * Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence explanations
 are implemented in [ingredients](https://modeloriented.github.io/ingredients/)
