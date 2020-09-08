@@ -377,7 +377,7 @@ explainer <- py_load_object("explainer_scikitlearn.pickle", pickle = "pickle")
 # make a studio for the model
 library(modelStudio)
 modelStudio(explainer, B = 5,
-            options = ms_options(margin_left = 160, showcase_name='scikitlearn'))
+            options = ms_options(margin_left = 160))
 ```
 
 ### lightgbm [dashboard](https://modeloriented.github.io/modelStudio/lightgbm.html)
@@ -452,7 +452,7 @@ explainer <- py_load_object("explainer_lightgbm.pickle", pickle = "pickle")
 
 # make a studio for the model
 library(modelStudio)
-modelStudio(explainer, options = ms_options(showcase_name='lightgbm'))
+modelStudio(explainer)
 ```
 
 ### keras/tensorflow [dashboard](https://modeloriented.github.io/modelStudio/keras.html)
@@ -545,7 +545,7 @@ explainer <- py_load_object("explainer_keras.pickle", pickle = "pickle")
 
 # make a studio for the model
 library(modelStudio)
-modelStudio(explainer, options = ms_options(showcase_name='keras'))
+modelStudio(explainer)
 ```
 
 -------------------------------------------------------------------

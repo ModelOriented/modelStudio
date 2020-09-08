@@ -47,3 +47,8 @@ modelStudio.Rproj
 docs/*
 
 *.pickle
+
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+**.ipynb
+**.pickle
