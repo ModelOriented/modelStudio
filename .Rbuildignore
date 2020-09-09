@@ -18,6 +18,10 @@ modelStudio_my_test.R
 ^LICENSE$
 ^CONTRIBUTING.md
 ^\.github$
-^pickle$
 ^.*\.gif
 ^.*\.png
+^pkgdown$
+^\.ipynb_checkpoints$
+[.]pkl$
+[.]pickle$
+[.]ipynb$

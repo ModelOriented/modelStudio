@@ -2,7 +2,7 @@
 #'
 #' @description
 #' This function calculates local explanations on new observations and adds them
-#' to a \code{modelStudio} object.
+#' to the \code{modelStudio} object.
 #'
 #' @param object A \code{modelStudio} created with \code{modelStudio()}.
 #' @param explainer An \code{explainer} created with \code{DALEX::explain()}.

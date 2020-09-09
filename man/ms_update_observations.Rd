@@ -54,7 +54,7 @@ An object of the \code{r2d3, htmlwidget, modelStudio} class.
 }
 \description{
 This function calculates local explanations on new observations and adds them
-to a \code{modelStudio} object.
+to the \code{modelStudio} object.
 }
 \examples{
 library("DALEX")
