@@ -106,7 +106,7 @@
       <h1 data-toc-skip>modelStudio - perks and features</h1>
                         <h4 class="author">Hubert Baniecki</h4>
             
-            <h4 class="date">2020-09-09</h4>
+            <h4 class="date">2020-09-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ModelOriented/modelStudio/blob/master/vignettes/ms-perks-features.Rmd"><code>vignettes/ms-perks-features.Rmd</code></a></small>
       <div class="hidden name"><code>ms-perks-features.Rmd</code></div>
@@ -305,7 +305,7 @@
 <h2 class="hasAnchor">
 <a href="#parallel-computation" class="anchor"></a>parallel computation</h2>
 <p>Speed up <code>modelStudio</code> computation by setting <code>parallel</code> parameter to <code>TRUE</code>. It uses <a href="https://www.rdocumentation.org/packages/parallelMap"><code>parallelMap</code></a> package to calculate local explainers faster. It is really useful when using <code>modelStudio</code> with complicated models, vast datasets or <strong>many observations are being processed</strong>.</p>
-<p>All options can be set outside of the function call. <a href="https://github.com/berndbischl/parallelMap#being-lazy-configuration">How to use parallelMap</a>.</p>
+<p>All options can be set outside of the function call. <a href="https://github.com/mlr-org/parallelMap#being-lazy-configuration">How to use parallelMap</a>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit">
 <span class="co"># set up the cluster</span>
 <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span>(
@@ -324,7 +324,7 @@
 <div id="additional-options" class="section level2">
 <h2 class="hasAnchor">
 <a href="#additional-options" class="anchor"></a>additional options</h2>
-<p>Customize some of the <code>modelStudio</code> looks by overwriting default options returned by the <code><a href="../reference/ms_options.html">ms_options()</a></code> function. <a href="http://modelstudio.drwhy.ai/reference/ms_options.html">Full list of options</a>.</p>
+<p>Customize some of the <code>modelStudio</code> looks by overwriting default options returned by the <code><a href="../reference/ms_options.html">ms_options()</a></code> function. <a href="https://modelstudio.drwhy.ai/reference/ms_options.html">Full list of options</a>.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit">
 <span class="co"># set additional graphical parameters</span>
 <span class="kw">new_options</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ms_options.html">ms_options</a></span>(
