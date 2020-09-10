@@ -57,7 +57,7 @@ See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#more-calc
 \item{show_info}{Verbose a progress on the console. Default is \code{TRUE}.}
 
 \item{parallel}{Speed up the computation using \code{parallelMap::parallelMap()}.
-See \href{https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html#parallel-computation}{\bold{vignette}}.
+See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#parallel-computation}{\bold{vignette}}.
 This might interfere with showing progress using \code{show_info}.}
 
 \item{options}{Customize \code{modelStudio}. See \code{\link{ms_options}} and
@@ -124,7 +124,8 @@ rownames(new_observations) <- c("Lucas","James")
 
 # make a studio for the model
 modelStudio(explainer_titanic,
-            new_observations)
+            new_observations,
+            N = 200,  B = 5) # faster example
 
 \donttest{
 
@@ -192,6 +193,6 @@ modelStudio(explainer_HR,
 }
 }
 \seealso{
-Vignettes: \href{https://modeloriented.github.io/modelStudio/articles/ms-r-python-examples.html}{\bold{modelStudio - R & Python examples}}
-and \href{https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html}{\bold{modelStudio - perks and features}}
+Vignettes: \href{https://modelstudio.drwhy.ai/articles/ms-r-python-examples.html}{\bold{modelStudio - R & Python examples}}
+and \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html}{\bold{modelStudio - perks and features}}
 }

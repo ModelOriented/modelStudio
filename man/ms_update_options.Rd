@@ -70,7 +70,8 @@ explainer_titanic <- explain(model_titanic,
                              y = titanic_imputed$survived)
 
 # make a studio for the model
-ms <- modelStudio(explainer_titanic)
+ms <- modelStudio(explainer_titanic,
+                  N = 200,  B = 5) # faster example
 
 # update the options
 new_ms <- ms_update_options(ms,
@@ -90,6 +91,6 @@ new_ms
 }
 }
 \seealso{
-Vignettes: \href{https://modeloriented.github.io/modelStudio/articles/ms-r-python-examples.html}{\bold{modelStudio - R & Python examples}}
-and \href{https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html}{\bold{modelStudio - perks and features}}
+Vignettes: \href{https://modelstudio.drwhy.ai/articles/ms-r-python-examples.html}{\bold{modelStudio - R & Python examples}}
+and \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html}{\bold{modelStudio - perks and features}}
 }

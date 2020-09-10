@@ -15,7 +15,7 @@
 #'  See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#more-calculations-means-more-time}{\bold{vignette}}
 #' @param show_info Verbose a progress on the console. Default is \code{TRUE}.
 #' @param parallel Speed up the computation using \code{parallelMap::parallelMap()}.
-#'  See \href{https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html#parallel-computation}{\bold{vignette}}.
+#'  See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#parallel-computation}{\bold{vignette}}.
 #'  This might interfere with showing progress using \code{show_info}.
 #' @param widget_id Use an explicit element ID for the widget (rather than an automatically generated one).
 #'  Useful e.g. when using \code{modelStudio} with Shiny.
@@ -37,8 +37,8 @@
 #' }
 #'
 #' @seealso
-#' Vignettes: \href{https://modeloriented.github.io/modelStudio/articles/ms-r-python-examples.html}{\bold{modelStudio - R & Python examples}}
-#' and \href{https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html}{\bold{modelStudio - perks and features}}
+#' Vignettes: \href{https://modelstudio.drwhy.ai/articles/ms-r-python-examples.html}{\bold{modelStudio - R & Python examples}}
+#' and \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html}{\bold{modelStudio - perks and features}}
 #'
 #' @examples
 #' library("DALEX")
@@ -53,7 +53,8 @@
 #'                              y = titanic_imputed$survived)
 #'
 #' # make a studio for the model
-#' ms <- modelStudio(explainer_titanic)
+#' ms <- modelStudio(explainer_titanic,
+#'                   N = 200,  B = 5) # faster example
 #'
 #' \donttest{
 #'

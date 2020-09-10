@@ -40,7 +40,8 @@ testthat::expect_true(!isTRUE(case1$x$options$telemetry))
 case2 <- testthat::expect_silent(
   modelStudio::modelStudio(exp_fifa, data_fifa[1:2,],
                            max_vars = 5, rounding_funtion = signif,
-                           digits = 3, show_info = v))
+                           digits = 3,
+                           N = 5, B = 2, show_info = v))
 testthat::expect_true(
   all(c("mse:", "rmse:", "r2:", "mad:") %in%
         strsplit(case2$x$options$measure_text, split=" ")[[1]]))

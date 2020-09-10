@@ -31,7 +31,7 @@ install.packages("DALEX")
 install.packages("DALEXtra")
 ```
 
-### mlr [dashboard](https://modeloriented.github.io/modelStudio/mlr.html)
+### mlr [dashboard](https://modelstudio.drwhy.ai/mlr.html)
 
 In this example we will make a studio for the `ranger` model on `apartments` data.
 
@@ -68,7 +68,7 @@ modelStudio(explainer,
             new_observation)
 ```
 
-### mlr3 [dashboard](https://modeloriented.github.io/modelStudio/mlr3.html)
+### mlr3 [dashboard](https://modelstudio.drwhy.ai/mlr3.html)
 
 In this example we will make a studio for the `ranger` model on `titanic` data.
 
@@ -109,7 +109,7 @@ modelStudio(explainer,
             new_observation)
 ```
 
-### xgboost [dashboard](https://modeloriented.github.io/modelStudio/xgboost.html)
+### xgboost [dashboard](https://modelstudio.drwhy.ai/xgboost.html)
 
 In this example we will make a studio for the `xgboost` model on `titanic` data.
 
@@ -150,7 +150,7 @@ modelStudio(explainer,
             options = ms_options(margin_left = 140))
 ```
 
-### caret [dashboard](https://modeloriented.github.io/modelStudio/caret.html)
+### caret [dashboard](https://modelstudio.drwhy.ai/caret.html)
 
 In this example we will make a studio for the `gbm` model on `titanic` data.
 
@@ -189,7 +189,7 @@ modelStudio(explainer,
             new_observation)
 ```
 
-### h2o [dashboard](https://modeloriented.github.io/modelStudio/h2o.html)
+### h2o [dashboard](https://modelstudio.drwhy.ai/h2o.html)
 
 In this example we will make a studio for the `h2o.automl` model on `titanic` data.
 
@@ -236,7 +236,7 @@ modelStudio(explainer,
 h2o.shutdown(prompt = FALSE)
 ```
 
-### parsnip [dashboard](https://modeloriented.github.io/modelStudio/parsnip.html)
+### parsnip [dashboard](https://modelstudio.drwhy.ai/parsnip.html)
 
 In this example we will make a studio for the `ranger` model on `apartments` data.
 
@@ -269,7 +269,7 @@ explainer <- explain(model,
 modelStudio(explainer)
 ```
 
-### tidymodels [dashboard](https://modeloriented.github.io/modelStudio/tidymodels.html)
+### tidymodels [dashboard](https://modelstudio.drwhy.ai/tidymodels.html)
 
 In this example we will make a studio for the `ranger` model on `titanic` data.
 
@@ -334,7 +334,7 @@ Use `pickle` Python module and `reticulate` R package to easily make a studio fo
 install.packages("reticulate")
 ```
 
-### scikit-learn [dashboard](https://modeloriented.github.io/modelStudio/scikitlearn.html)
+### scikit-learn [dashboard](https://modelstudio.drwhy.ai/scikitlearn.html)
 
 In this example we will make a studio for the `Pipeline SVR` model on `fifa` data.
 
@@ -380,7 +380,7 @@ modelStudio(explainer, B = 5,
             options = ms_options(margin_left = 160))
 ```
 
-### lightgbm [dashboard](https://modeloriented.github.io/modelStudio/lightgbm.html)
+### lightgbm [dashboard](https://modelstudio.drwhy.ai/lightgbm.html)
 
 In this example we will make a studio for the `Pipeline LGBMClassifier` model on `titanic` data.
 
@@ -455,7 +455,7 @@ library(modelStudio)
 modelStudio(explainer)
 ```
 
-### keras/tensorflow [dashboard](https://modeloriented.github.io/modelStudio/keras.html)
+### keras/tensorflow [dashboard](https://modelstudio.drwhy.ai/keras.html)
 
 In this example we will make a studio for the `Pipeline KerasClassifier` model on `titanic` data.
 

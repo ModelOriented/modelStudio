@@ -172,7 +172,7 @@ to calculate local explainers faster. It is really useful when using `modelStudi
 complicated models, vast datasets or **many observations are being processed**.
 
 All options can be set outside of the function call.
-[How to use parallelMap](https://github.com/berndbischl/parallelMap#being-lazy-configuration).
+[How to use parallelMap](https://github.com/mlr-org/parallelMap#being-lazy-configuration).
 
 ```{r eval = FALSE}
 # set up the cluster
@@ -194,7 +194,7 @@ modelStudio(explainer,
 
 Customize some of the `modelStudio` looks by overwriting default options returned
 by the `ms_options()` function.
-[Full list of options](http://modelstudio.drwhy.ai/reference/ms_options.html).
+[Full list of options](https://modelstudio.drwhy.ai/reference/ms_options.html).
 
 ```{r eval = FALSE}
 # set additional graphical parameters

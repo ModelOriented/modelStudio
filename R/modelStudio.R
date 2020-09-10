@@ -42,7 +42,7 @@
 #' @param eda Compute EDA plots and Residuals vs Feature plot, which adds the data to the dashboard. Default is \code{TRUE}.
 #' @param show_info Verbose a progress on the console. Default is \code{TRUE}.
 #' @param parallel Speed up the computation using \code{parallelMap::parallelMap()}.
-#'  See \href{https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html#parallel-computation}{\bold{vignette}}.
+#'  See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#parallel-computation}{\bold{vignette}}.
 #'  This might interfere with showing progress using \code{show_info}.
 #' @param options Customize \code{modelStudio}. See \code{\link{ms_options}} and
 #'  \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#additional-options-1}{\bold{vignette}}.
@@ -74,8 +74,8 @@
 #' }
 #'
 #' @seealso
-#' Vignettes: \href{https://modeloriented.github.io/modelStudio/articles/ms-r-python-examples.html}{\bold{modelStudio - R & Python examples}}
-#' and \href{https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html}{\bold{modelStudio - perks and features}}
+#' Vignettes: \href{https://modelstudio.drwhy.ai/articles/ms-r-python-examples.html}{\bold{modelStudio - R & Python examples}}
+#' and \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html}{\bold{modelStudio - perks and features}}
 #'
 #' @examples
 #' library("DALEX")
@@ -98,7 +98,8 @@
 #'
 #' # make a studio for the model
 #' modelStudio(explainer_titanic,
-#'             new_observations)
+#'             new_observations,
+#'             N = 200,  B = 5) # faster example
 #'
 #' \donttest{
 #'

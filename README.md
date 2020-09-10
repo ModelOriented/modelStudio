@@ -53,11 +53,11 @@ explainer <- explain(model,
 modelStudio(explainer)
 ```
 
-[Save the output](http://modelstudio.drwhy.ai/#save--share) in the form of a HTML file - [**Demo Dashboard**](https://modeloriented.github.io/modelStudio/demo.html).
+[Save the output](http://modelstudio.drwhy.ai/#save--share) in the form of a HTML file - [**Demo Dashboard**](https://modelstudio.drwhy.ai/demo.html).
 
 ![](man/figures/long.gif)
 
-## R & Python Examples [more](http://modelstudio.drwhy.ai/articles/ms-r-python-examples.html)
+## R & Python Examples [more](https://modelstudio.drwhy.ai/articles/ms-r-python-examples.html)
 
 -------------------------------
 
@@ -69,7 +69,7 @@ install.packages("DALEX")
 install.packages("DALEXtra")
 ```
 
-### mlr [dashboard](https://modeloriented.github.io/modelStudio/mlr.html)
+### mlr [dashboard](https://modelstudio.drwhy.ai/mlr.html)
 
 Make a studio for the regression `ranger` model on `apartments` data.
 
@@ -111,7 +111,7 @@ modelStudio(explainer,
 
 </details>
 
-### xgboost [dashboard](https://modeloriented.github.io/modelStudio/xgboost.html)
+### xgboost [dashboard](https://modelstudio.drwhy.ai/xgboost.html)
 
 Make a studio for the classification `xgboost` model on `titanic` data.
 
@@ -173,7 +173,7 @@ Use `pickle` Python module and `reticulate` R package to easily make a studio fo
 install.packages("reticulate")
 ```
 
-### scikit-learn [dashboard](https://modeloriented.github.io/modelStudio/scikitlearn.html)
+### scikit-learn [dashboard](https://modelstudio.drwhy.ai/scikitlearn.html)
 
 Make a studio for the regression `Pipeline SVR` model on `fifa` data.
 
@@ -224,7 +224,7 @@ modelStudio(explainer, B = 5,
 
 </details>
 
-### lightgbm [dashboard](https://modeloriented.github.io/modelStudio/lightgbm.html)
+### lightgbm [dashboard](https://modelstudio.drwhy.ai/lightgbm.html)
 
 Make a studio for the classification `Pipeline LGBMClassifier` model on `titanic` data.
 
@@ -339,9 +339,9 @@ If you use `modelStudio`, please cite our [JOSS article](https://joss.theoj.org/
 
   - Theoretical introduction to the plots: [Explanatory Model Analysis: Explore, Explain and Examine Predictive Models](https://pbiecek.github.io/ema)
 
-  - Vignettes: [modelStudio - perks and features](https://modeloriented.github.io/modelStudio/articles/ms-perks-features.html) and [modelStudio - R & Python examples](https://modeloriented.github.io/modelStudio/articles/ms-r-python-examples.html)  
+  - Vignettes: [modelStudio - perks and features](https://modelstudio.drwhy.ai/articles/ms-perks-features.html) and [modelStudio - R & Python examples](https://modelstudio.drwhy.ai/articles/ms-r-python-examples.html)  
   
-  - Changelog: [NEWS](https://modeloriented.github.io/modelStudio/news/index.html)
+  - Changelog: [NEWS](https://modelstudio.drwhy.ai/news/index.html)
     
   - Conference poster: [MLinPL2019](https://github.com/ModelOriented/modelStudio/blob/master/misc/MLinPL2019_modelStudio_poster.pdf)
   
