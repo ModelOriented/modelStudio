@@ -99,7 +99,7 @@ WARNING: Editing default options may cause unintended behavior." />
         <div class="info">
           <span class="partof">part of the <a href="https://github.com/ModelOriented/DrWhy">DrWhy.AI</a>
            developed by the <a href="https://mi2.mini.pw.edu.pl/">MI^2 DataLab</a> </span>
-          <span class="version version-default">2.0.0</span>
+          <span class="version version-default">2.0.0.9000</span>
         </div>
       </div>
     </div>
@@ -161,7 +161,7 @@ WARNING: Editing default options may cause unintended behavior." />
 <strong>WARNING: Editing default options may cause unintended behavior.</strong></p>
     </div>
 
-    <pre class="usage"><span class='fu'>ms_update_options</span>(<span class='kw'>object</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>ms_update_options</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -192,6 +192,8 @@ e.g. <code>time = 0</code>, <code>facet_dim = c(1,2)</code>.</p></td>
 <dt>show_subtitle</dt><dd><p><code>TRUE</code> Should the subtitle be displayed?</p></dd>
 <dt>subtitle</dt><dd><p><code>label</code> parameter from <code>explainer</code>.</p></dd>
 <dt>ms_title</dt><dd><p>Title of the dashboard.</p></dd>
+<dt>ms_subtitle</dt><dd><p>Subtitle of the dashboard (makes space between the title and line).</p></dd>
+<dt>ms_margin_*</dt><dd><p>Dashboard margins. Change <code>margin_top</code> for more <code>ms_subtitle</code> space.</p></dd>
 <dt>margin_*</dt><dd><p>Plot margins. Change <code>margin_left</code> for longer/shorter axis labels.</p></dd>
 <dt>w</dt><dd><p><code>420</code> in px. Inner plot width.</p></dd>
 <dt>h</dt><dd><p><code>280</code> in px. Inner plot height.</p></dd>
@@ -238,37 +240,37 @@ ignored when <code>scale_plot = TRUE</code>.</p></dd>
 and <a href='https://modelstudio.drwhy.ai/articles/ms-perks-features.html'><b>modelStudio - perks and features</b></a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'><a href='https://ModelOriented.github.io/DALEX'>"DALEX"</a></span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'><a href='https://modelstudio.drwhy.ai'>"modelStudio"</a></span>)
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='st'><a href='https://ModelOriented.github.io/DALEX/'>"DALEX"</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='st'><a href='https://modelstudio.drwhy.ai'>"modelStudio"</a></span><span class='op'>)</span>
 
 <span class='co'># fit a model</span>
-<span class='kw'>model_titanic</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='kw'>survived</span> <span class='op'>~</span><span class='kw'>.</span>, data = <span class='kw'>titanic_imputed</span>, family = <span class='st'>"binomial"</span>)
+<span class='va'>model_titanic</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span><span class='op'>(</span><span class='va'>survived</span> <span class='op'>~</span><span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>titanic_imputed</span>, family <span class='op'>=</span> <span class='st'>"binomial"</span><span class='op'>)</span>
 
 <span class='co'># create an explainer for the model</span>
-<span class='kw'>explainer_titanic</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='kw'>model_titanic</span>,
-                             data = <span class='kw'>titanic_imputed</span>,
-                             y = <span class='kw'>titanic_imputed</span><span class='op'>$</span><span class='kw'>survived</span>)
+<span class='va'>explainer_titanic</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ModelOriented.github.io/DALEX/reference/explain.html'>explain</a></span><span class='op'>(</span><span class='va'>model_titanic</span>,
+                             data <span class='op'>=</span> <span class='va'>titanic_imputed</span>,
+                             y <span class='op'>=</span> <span class='va'>titanic_imputed</span><span class='op'>$</span><span class='va'>survived</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Preparation of a new explainer is initiated
 #&gt;   -&gt; model label       :  lm  ( <span style='color: #BBBB00;'> default </span><span> )
 #&gt;   -&gt; data              :  2207  rows  8  cols 
 #&gt;   -&gt; target variable   :  2207  values 
 #&gt;   -&gt; predict function  :  yhat.glm  will be used ( </span><span style='color: #BBBB00;'> default </span><span> )
 #&gt;   -&gt; predicted values  :  numerical, min =  0.008128381 , mean =  0.3221568 , max =  0.9731431  
-#&gt;   -&gt; model_info        :  package stats , ver. 4.0.2 , task classification ( </span><span style='color: #BBBB00;'> default </span><span> ) 
+#&gt;   -&gt; model_info        :  package stats , ver. 4.0.3 , task classification ( </span><span style='color: #BBBB00;'> default </span><span> ) 
 #&gt;   -&gt; residual function :  difference between y and yhat ( </span><span style='color: #BBBB00;'> default </span><span> )
 #&gt;   -&gt; residuals         :  numerical, min =  -0.9628583 , mean =  -2.569729e-10 , max =  0.9663346  
 #&gt;  </span><span style='color: #00BB00;'> A new explainer has been created! </span><span> </div><div class='input'>
 <span class='co'># make a studio for the model</span>
-<span class='kw'>ms</span> <span class='op'>&lt;-</span> <span class='fu'><a href='modelStudio.html'>modelStudio</a></span>(<span class='kw'>explainer_titanic</span>,
-                  N = <span class='fl'>200</span>,  B = <span class='fl'>5</span>) <span class='co'># faster example</span>
+<span class='va'>ms</span> <span class='op'>&lt;-</span> <span class='fu'><a href='modelStudio.html'>modelStudio</a></span><span class='op'>(</span><span class='va'>explainer_titanic</span>,
+                  N <span class='op'>=</span> <span class='fl'>200</span>,  B <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span> <span class='co'># faster example</span>
 </div><div class='output co'>#&gt; <span class='message'>`new_observation` argument is NULL.</span>
 #&gt; <span class='message'>Observations needed to calculate local explanations are taken at random from the data.</span></div><div class='input'>
 <span class='co'># update the options</span>
-<span class='kw'>new_ms</span> <span class='op'>&lt;-</span> <span class='fu'>ms_update_options</span>(<span class='kw'>ms</span>,
-                            time = <span class='fl'>0</span>,
-                            facet_dim = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>),
-                            margin_left = <span class='fl'>150</span>)
-<span class='kw'>new_ms</span>
+<span class='va'>new_ms</span> <span class='op'>&lt;-</span> <span class='fu'>ms_update_options</span><span class='op'>(</span><span class='va'>ms</span>,
+                            time <span class='op'>=</span> <span class='fl'>0</span>,
+                            facet_dim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span>,
+                            margin_left <span class='op'>=</span> <span class='fl'>150</span><span class='op'>)</span>
+<span class='va'>new_ms</span>
 
 </div></span></pre>
   </div>

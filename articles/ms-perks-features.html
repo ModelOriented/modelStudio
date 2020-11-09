@@ -51,7 +51,7 @@
         <div class="info">
           <span class="partof">part of the <a href="https://github.com/ModelOriented/DrWhy">DrWhy.AI</a>
            developed by the <a href="https://mi2.mini.pw.edu.pl/">MI^2 DataLab</a> </span>
-          <span class="version version-default">2.0.0</span>
+          <span class="version version-default">2.0.0.9000</span>
         </div>
       </div>
     </div>
@@ -100,13 +100,14 @@
 
       
 
-      </header><script src="ms-perks-features_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="ms-perks-features_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="ms-perks-features_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="ms-perks-features_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>modelStudio - perks and features</h1>
                         <h4 class="author">Hubert Baniecki</h4>
             
-            <h4 class="date">2020-09-10</h4>
+            <h4 class="date">2020-11-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ModelOriented/modelStudio/blob/master/vignettes/ms-perks-features.Rmd"><code>vignettes/ms-perks-features.Rmd</code></a></small>
       <div class="hidden name"><code>ms-perks-features.Rmd</code></div>
@@ -117,13 +118,12 @@
     
 <p>The <code><a href="../reference/modelStudio.html">modelStudio()</a></code> function computes various (instance and dataset level) model explanations and produces a customisable dashboard, which consists of multiple panels for plots with their short descriptions. Easily save the dashboard and share it with others. Tools for <a href="https://pbiecek.github.io/ema/">Explanatory Model Analysis</a> unite with tools for Exploratory Data Analysis to give a broad overview of the model behavior.</p>
 <p>Let’s use <code>HR</code> dataset to explore <code>modelStudio</code> parameters:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="kw">train</span> <span class="op">&lt;-</span> <span class="kw">DALEX</span>::<span class="kw"><a href="https://rdrr.io/pkg/DALEX/man/HR.html">HR</a></span>
-<span class="kw">train</span><span class="op">$</span><span class="kw">fired</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="kw">train</span><span class="op">$</span><span class="kw">status</span> <span class="op">==</span> <span class="st">"fired"</span>, <span class="fl">1</span>, <span class="fl">0</span>))
-<span class="kw">train</span><span class="op">$</span><span class="kw">status</span> <span class="op">&lt;-</span> <span class="kw">NULL</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">train</span> <span class="op">&lt;-</span> <span class="fu">DALEX</span><span class="fu">::</span><span class="va"><a href="https://ModelOriented.github.io/DALEX/reference/HR.html">HR</a></span>
+<span class="va">train</span><span class="op">$</span><span class="va">fired</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">train</span><span class="op">$</span><span class="va">status</span> <span class="op">==</span> <span class="st">"fired"</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span>
+<span class="va">train</span><span class="op">$</span><span class="va">status</span> <span class="op">&lt;-</span> <span class="cn">NULL</span>
 
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">train</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">train</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <caption>DALEX::HR dataset</caption>
 <thead><tr class="header">
@@ -186,24 +186,23 @@
 </tbody>
 </table>
 <p>Prepare <code>HR_test</code> data and a <code>ranger</code> model for the explainer:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="co"># fit a ranger model</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st"><a href="https://github.com/imbs-hl/ranger">"ranger"</a></span>)
-<span class="kw">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ranger/man/ranger.html">ranger</a></span>(<span class="kw">fired</span> <span class="op">~</span><span class="kw">.</span>, data = <span class="kw">train</span>, probability = <span class="fl">TRUE</span>)
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># fit a ranger model</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/imbs-hl/ranger">"ranger"</a></span><span class="op">)</span>
+<span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ranger/man/ranger.html">ranger</a></span><span class="op">(</span><span class="va">fired</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">train</span>, probability <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="co"># prepare validation dataset</span>
-<span class="kw">test</span> <span class="op">&lt;-</span> <span class="kw">DALEX</span>::<span class="kw"><a href="https://rdrr.io/pkg/DALEX/man/HR.html">HR_test</a></span>[<span class="fl">1</span><span class="op">:</span><span class="fl">1000</span>,]
-<span class="kw">test</span><span class="op">$</span><span class="kw">fired</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="kw">test</span><span class="op">$</span><span class="kw">status</span> <span class="op">==</span> <span class="st">"fired"</span>, <span class="fl">1</span>, <span class="fl">0</span>)
-<span class="kw">test</span><span class="op">$</span><span class="kw">status</span> <span class="op">&lt;-</span> <span class="kw">NULL</span>
+<span class="va">test</span> <span class="op">&lt;-</span> <span class="fu">DALEX</span><span class="fu">::</span><span class="va"><a href="https://ModelOriented.github.io/DALEX/reference/HR.html">HR_test</a></span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">1000</span>,<span class="op">]</span>
+<span class="va">test</span><span class="op">$</span><span class="va">fired</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">test</span><span class="op">$</span><span class="va">status</span> <span class="op">==</span> <span class="st">"fired"</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>
+<span class="va">test</span><span class="op">$</span><span class="va">status</span> <span class="op">&lt;-</span> <span class="cn">NULL</span>
 
 <span class="co"># create an explainer for the model</span>
-<span class="kw">explainer</span> <span class="op">&lt;-</span> <span class="kw">DALEX</span>::<span class="fu"><a href="https://rdrr.io/pkg/DALEX/man/explain.html">explain</a></span>(<span class="kw">model</span>,
-                            data = <span class="kw">test</span>,
-                            y = <span class="kw">test</span><span class="op">$</span><span class="kw">fired</span>)
+<span class="va">explainer</span> <span class="op">&lt;-</span> <span class="fu">DALEX</span><span class="fu">::</span><span class="fu"><a href="https://ModelOriented.github.io/DALEX/reference/explain.html">explain</a></span><span class="op">(</span><span class="va">model</span>,
+                            data <span class="op">=</span> <span class="va">test</span>,
+                            y <span class="op">=</span> <span class="va">test</span><span class="op">$</span><span class="va">fired</span><span class="op">)</span>
 
 <span class="co"># start modelStudio</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st"><a href="https://modelstudio.drwhy.ai">"modelStudio"</a></span>)
-</pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://modelstudio.drwhy.ai">"modelStudio"</a></span><span class="op">)</span></code></pre></div>
 <hr>
 <div id="modelstudio-parameters" class="section level2">
 <h2 class="hasAnchor">
@@ -212,92 +211,87 @@
 <h3 class="hasAnchor">
 <a href="#instance-explanations" class="anchor"></a>instance explanations</h3>
 <p>Pass data points to the <code>new_observation</code> parameter for instance explanations such as <a href="https://pbiecek.github.io/ema/breakDown.html">Break Down</a>, <a href="https://pbiecek.github.io/ema/shapley.html">Shapley Values</a> and <a href="https://pbiecek.github.io/ema/ceterisParibus.html">Ceteris Paribus</a> Profiles. Use <code>new_observation_y</code> to show their true labels.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw">new_observation</span> <span class="op">&lt;-</span> <span class="kw">test</span>[<span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,]
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="kw">new_observation</span>) <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"John Snow"</span>, <span class="st">"Arya Stark"</span>, <span class="st">"Samwell Tarly"</span>)
-<span class="kw">true_labels</span> <span class="op">&lt;-</span> <span class="kw">test</span>[<span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,]<span class="op">$</span><span class="kw">fired</span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">new_observation</span> <span class="op">&lt;-</span> <span class="va">test</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,<span class="op">]</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">new_observation</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"John Snow"</span>, <span class="st">"Arya Stark"</span>, <span class="st">"Samwell Tarly"</span><span class="op">)</span>
+<span class="va">true_labels</span> <span class="op">&lt;-</span> <span class="va">test</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,<span class="op">]</span><span class="op">$</span><span class="va">fired</span>
 
-<span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="kw">explainer</span>,
-            new_observation = <span class="kw">new_observation</span>,
-            new_observation_y  = <span class="kw">true_labels</span>)
-</pre></div>
+<span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>,
+            new_observation <span class="op">=</span> <span class="va">new_observation</span>,
+            new_observation_y  <span class="op">=</span> <span class="va">true_labels</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="grid-size" class="section level3">
 <h3 class="hasAnchor">
 <a href="#grid-size" class="anchor"></a>grid size</h3>
 <p>Achieve bigger or smaller <code>modelStudio</code> grid with <code>facet_dim</code> parameter.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="co"># small dashboard with 2 panels</span>
-<span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="kw">explainer</span>,
-            facet_dim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>,<span class="fl">2</span>))
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># small dashboard with 2 panels</span>
+<span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>,
+            facet_dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co"># large dashboard with 9 panels</span>
-<span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="kw">explainer</span>,
-            facet_dim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">3</span>,<span class="fl">3</span>))
-</pre></div>
+<span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>,
+            facet_dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">3</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="animations" class="section level3">
 <h3 class="hasAnchor">
 <a href="#animations" class="anchor"></a>animations</h3>
 <p>Manipulate <code>time</code> parameter to set animation length. Value 0 will make them invisible.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="co"># slow down animations</span>
-<span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="kw">explainer</span>,
-            time = <span class="fl">1000</span>)
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># slow down animations</span>
+<span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>,
+            time <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span>
 
 <span class="co"># turn off animations</span>
-<span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="kw">explainer</span>,
-            time = <span class="fl">0</span>)
-</pre></div>
+<span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>,
+            time <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="more-calculations-means-more-time" class="section level3">
 <h3 class="hasAnchor">
 <a href="#more-calculations-means-more-time" class="anchor"></a>more calculations means more time</h3>
 <ul>
 <li>
-<code>N</code> is a number of observations used for calculation of <a href="https://pbiecek.github.io/ema/partialDependenceProfiles.html">Partial Dependence</a> and <a href="https://pbiecek.github.io/ema/accumulatedLocalProfiles.html">Accumulated Dependence</a> Profiles.</li>
+<code>N</code> is a number of observations used for calculation of <a href="https://pbiecek.github.io/ema/partialDependenceProfiles.html">Partial Dependence</a> and <a href="https://pbiecek.github.io/ema/accumulatedLocalProfiles.html">Accumulated Dependence</a> Profiles (default is <code>300</code>).</li>
 <li>
-<code>10*N</code> is a number of observations used for calculation of <a href="https://pbiecek.github.io/ema/featureImportance.html">Feature Importance</a>.</li>
+<code>N_fi</code> is a number of observations used for calculation of <a href="https://pbiecek.github.io/ema/featureImportance.html">Feature Importance</a> (default is <code>10*N</code>).</li>
 <li>
-<code>B</code> is a number of permutation rounds used for calculation of <a href="https://pbiecek.github.io/ema/shapley.html">Shapley Values</a> and <a href="https://pbiecek.github.io/ema/featureImportance.html">Feature Importance</a>.</li>
+<code>B</code> is a number of permutation rounds used for calculation of <a href="https://pbiecek.github.io/ema/shapley.html">Shapley Values</a> (default is <code>10</code>).</li>
+<li>
+<code>B_fi</code> is a number of permutation rounds used for calculation of <a href="https://pbiecek.github.io/ema/featureImportance.html">Feature Importance</a> (default is <code>B</code>).</li>
 </ul>
 <p>Decrease <code>N</code> and <code>B</code> parameters to lower the computation time or increase them to get more accurate empirical results.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="co"># faster, less precise</span>
-<span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="kw">explainer</span>,
-            N = <span class="fl">200</span>, B = <span class="fl">5</span>)
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># faster, less precise</span>
+<span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>,
+            N <span class="op">=</span> <span class="fl">200</span>, B <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
 
 <span class="co"># slower, more precise</span>
-<span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="kw">explainer</span>,
-            N = <span class="fl">500</span>, B = <span class="fl">15</span>)
-</pre></div>
+<span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>,
+            N <span class="op">=</span> <span class="fl">500</span>, B <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="no-eda-mode" class="section level3">
 <h3 class="hasAnchor">
 <a href="#no-eda-mode" class="anchor"></a>no EDA mode</h3>
 <p>Don’t compute the EDA plots if they are not needed. Set the <code>eda</code> parameter to <code>FALSE</code>.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="kw">explainer</span>,
-            eda = <span class="fl">FALSE</span>)
-</pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>,
+            eda <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="progress-bar" class="section level3">
 <h3 class="hasAnchor">
 <a href="#progress-bar" class="anchor"></a>progress bar</h3>
 <p>Hide computation progress bar messages with <code>show_info</code> parameter.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="kw">explainer</span>,
-            show_info = <span class="fl">FALSE</span>)
-</pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>,
+            show_info <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="viewer-or-browser" class="section level3">
 <h3 class="hasAnchor">
 <a href="#viewer-or-browser" class="anchor"></a>viewer or browser?</h3>
 <p>Change <code>viewer</code> parameter to set where to display <code>modelStudio</code>. <a href="https://rstudio.github.io/r2d3/articles/visualization_options.html#viewer">Best described in <code>r2d3</code> documentation</a>.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="kw">explainer</span>,
-            viewer = <span class="st">"browser"</span>)
-</pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>,
+            viewer <span class="op">=</span> <span class="st">"browser"</span><span class="op">)</span></code></pre></div>
 <hr>
 </div>
 </div>
@@ -306,124 +300,119 @@
 <a href="#parallel-computation" class="anchor"></a>parallel computation</h2>
 <p>Speed up <code>modelStudio</code> computation by setting <code>parallel</code> parameter to <code>TRUE</code>. It uses <a href="https://www.rdocumentation.org/packages/parallelMap"><code>parallelMap</code></a> package to calculate local explainers faster. It is really useful when using <code>modelStudio</code> with complicated models, vast datasets or <strong>many observations are being processed</strong>.</p>
 <p>All options can be set outside of the function call. <a href="https://github.com/mlr-org/parallelMap#being-lazy-configuration">How to use parallelMap</a>.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="co"># set up the cluster</span>
-<span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span>(
-  parallelMap.default.mode        = <span class="st">"socket"</span>,
-  parallelMap.default.cpus        = <span class="fl">4</span>,
-  parallelMap.default.show.info   = <span class="fl">FALSE</span>
-)
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># set up the cluster</span>
+<span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>
+  parallelMap.default.mode        <span class="op">=</span> <span class="st">"socket"</span>,
+  parallelMap.default.cpus        <span class="op">=</span> <span class="fl">4</span>,
+  parallelMap.default.show.info   <span class="op">=</span> <span class="cn">FALSE</span>
+<span class="op">)</span>
 
 <span class="co"># calculations of local explanations will be distributed into 4 cores</span>
-<span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="kw">explainer</span>,
-            new_observation = <span class="kw">test</span>[<span class="fl">1</span><span class="op">:</span><span class="fl">16</span>,],
-            parallel = <span class="fl">TRUE</span>)
-</pre></div>
+<span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>,
+            new_observation <span class="op">=</span> <span class="va">test</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">16</span>,<span class="op">]</span>,
+            parallel <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <hr>
 </div>
 <div id="additional-options" class="section level2">
 <h2 class="hasAnchor">
 <a href="#additional-options" class="anchor"></a>additional options</h2>
 <p>Customize some of the <code>modelStudio</code> looks by overwriting default options returned by the <code><a href="../reference/ms_options.html">ms_options()</a></code> function. <a href="https://modelstudio.drwhy.ai/reference/ms_options.html">Full list of options</a>.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="co"># set additional graphical parameters</span>
-<span class="kw">new_options</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ms_options.html">ms_options</a></span>(
-  show_subtitle = <span class="fl">TRUE</span>,
-  bd_subtitle = <span class="st">"Hello World"</span>,
-  line_size = <span class="fl">5</span>,
-  point_size = <span class="fl">9</span>,
-  line_color = <span class="st">"pink"</span>,
-  point_color = <span class="st">"purple"</span>,
-  bd_positive_color = <span class="st">"yellow"</span>,
-  bd_negative_color = <span class="st">"orange"</span>
-)
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># set additional graphical parameters</span>
+<span class="va">new_options</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ms_options.html">ms_options</a></span><span class="op">(</span>
+  show_subtitle <span class="op">=</span> <span class="cn">TRUE</span>,
+  bd_subtitle <span class="op">=</span> <span class="st">"Hello World"</span>,
+  line_size <span class="op">=</span> <span class="fl">5</span>,
+  point_size <span class="op">=</span> <span class="fl">9</span>,
+  line_color <span class="op">=</span> <span class="st">"pink"</span>,
+  point_color <span class="op">=</span> <span class="st">"purple"</span>,
+  bd_positive_color <span class="op">=</span> <span class="st">"yellow"</span>,
+  bd_negative_color <span class="op">=</span> <span class="st">"orange"</span>
+<span class="op">)</span>
 
-<span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="kw">explainer</span>,
-            options = <span class="kw">new_options</span>)
-</pre></div>
+<span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>,
+            options <span class="op">=</span> <span class="va">new_options</span><span class="op">)</span></code></pre></div>
 <p>All visual options can be changed after the calculations using <code><a href="../reference/ms_update_options.html">ms_update_options()</a></code>.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="kw">old_ms</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="kw">explainer</span>)
-<span class="kw">old_ms</span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">old_ms</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span><span class="op">)</span>
+<span class="va">old_ms</span>
 
 <span class="co"># update the options</span>
-<span class="kw">new_ms</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ms_update_options.html">ms_update_options</a></span>(<span class="kw">old_ms</span>,
-                            time = <span class="fl">0</span>,
-                            facet_dim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>,<span class="fl">2</span>),
-                            margin_left = <span class="fl">150</span>)
-<span class="kw">new_ms</span>
-</pre></div>
+<span class="va">new_ms</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ms_update_options.html">ms_update_options</a></span><span class="op">(</span><span class="va">old_ms</span>,
+                            time <span class="op">=</span> <span class="fl">0</span>,
+                            facet_dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>,
+                            margin_left <span class="op">=</span> <span class="fl">150</span><span class="op">)</span>
+<span class="va">new_ms</span></code></pre></div>
 <hr>
 </div>
 <div id="update-observations" class="section level2">
 <h2 class="hasAnchor">
 <a href="#update-observations" class="anchor"></a>update observations</h2>
 <p>Use <code><a href="../reference/ms_update_observations.html">ms_update_observations()</a></code> to add more observations with their local explanations to the <code>modelStudio</code>.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="kw">old_ms</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="kw">explainer</span>)
-<span class="kw">old_ms</span>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">old_ms</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span><span class="op">)</span>
+<span class="va">old_ms</span>
 
 <span class="co"># add new observations</span>
-<span class="kw">plus_ms</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ms_update_observations.html">ms_update_observations</a></span>(<span class="kw">old_ms</span>,
-                                  <span class="kw">explainer</span>,
-                                  new_observation = <span class="kw">test</span>[<span class="fl">101</span><span class="op">:</span><span class="fl">102</span>,])
-<span class="kw">plus_ms</span>
+<span class="va">plus_ms</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ms_update_observations.html">ms_update_observations</a></span><span class="op">(</span><span class="va">old_ms</span>,
+                                  <span class="va">explainer</span>,
+                                  new_observation <span class="op">=</span> <span class="va">test</span><span class="op">[</span><span class="fl">101</span><span class="op">:</span><span class="fl">102</span>,<span class="op">]</span><span class="op">)</span>
+<span class="va">plus_ms</span>
 
 <span class="co"># overwrite old observations</span>
-<span class="kw">new_ms</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ms_update_observations.html">ms_update_observations</a></span>(<span class="kw">old_ms</span>,
-                                 <span class="kw">explainer</span>,
-                                 new_observation = <span class="kw">test</span>[<span class="fl">103</span><span class="op">:</span><span class="fl">104</span>,],
-                                 overwrite = <span class="fl">TRUE</span>)
-<span class="kw">new_ms</span>
-</pre></div>
+<span class="va">new_ms</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ms_update_observations.html">ms_update_observations</a></span><span class="op">(</span><span class="va">old_ms</span>,
+                                 <span class="va">explainer</span>,
+                                 new_observation <span class="op">=</span> <span class="va">test</span><span class="op">[</span><span class="fl">103</span><span class="op">:</span><span class="fl">104</span>,<span class="op">]</span>,
+                                 overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">new_ms</span></code></pre></div>
 <hr>
 </div>
 <div id="shiny" class="section level2">
 <h2 class="hasAnchor">
 <a href="#shiny" class="anchor"></a>Shiny</h2>
 <p>Use the <code>widget_id</code> argument and <code>r2d3</code> package to render the <code>modelStudio</code> output in Shiny. See <a href="https://rstudio.github.io/r2d3/articles/shiny.html">Using r2d3 with Shiny</a> and consider the following example:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">shiny</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/rstudio/r2d3">r2d3</a></span>)
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">shiny</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/r2d3">r2d3</a></span><span class="op">)</span>
 
 
-<span class="kw">ui</span> <span class="op">&lt;-</span> <span class="fu">fluidPage</span>(
-  <span class="fu">textInput</span>(<span class="st">"text"</span>, <span class="fu">h3</span>(<span class="st">"Text input"</span>), 
-            value = <span class="st">"Enter text..."</span>),
-  <span class="fu">uiOutput</span>(<span class="st">'dashboard'</span>)
-)
+<span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu">fluidPage</span><span class="op">(</span>
+  <span class="fu">textInput</span><span class="op">(</span><span class="st">"text"</span>, <span class="fu">h3</span><span class="op">(</span><span class="st">"Text input"</span><span class="op">)</span>, 
+            value <span class="op">=</span> <span class="st">"Enter text..."</span><span class="op">)</span>,
+  <span class="fu">uiOutput</span><span class="op">(</span><span class="st">'dashboard'</span><span class="op">)</span>
+<span class="op">)</span>
 
-<span class="kw">server</span> <span class="op">&lt;-</span> <span class="fu">function</span>(<span class="kw">input</span>, <span class="kw">output</span>) {
+<span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span><span class="op">)</span> <span class="op">{</span>
   <span class="co">#:# id of div where modelStudio will appear</span>
-  <span class="kw">WIDGET_ID</span> <span class="op">=</span> <span class="st">'MODELSTUDIO'</span>
+  <span class="va">WIDGET_ID</span> <span class="op">=</span> <span class="st">'MODELSTUDIO'</span>
   
   <span class="co">#:# create modelStudio </span>
-  <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://modelstudio.drwhy.ai">modelStudio</a></span>)
-  <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://ModelOriented.github.io/DALEX">DALEX</a></span>)
-  <span class="kw">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span>(<span class="kw">survived</span> <span class="op">~</span><span class="kw">.</span>, data = <span class="kw">titanic_imputed</span>, family = <span class="st">"binomial"</span>)
-  <span class="kw">explainer</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DALEX/man/explain.html">explain</a></span>(<span class="kw">model</span>,
-                       data = <span class="kw">titanic_imputed</span>,
-                       y = <span class="kw">titanic_imputed</span><span class="op">$</span><span class="kw">survived</span>,
-                       label = <span class="st">"Titanic GLM"</span>,
-                       verbose = <span class="fl">FALSE</span>)
-  <span class="kw">ms</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="kw">explainer</span>,
-                    widget_id = <span class="kw">WIDGET_ID</span>,  <span class="co">#:# use the widget_id </span>
-                    show_info = <span class="fl">FALSE</span>)    
-  <span class="kw">ms</span><span class="op">$</span><span class="kw">elementId</span> <span class="op">&lt;-</span> <span class="kw">NULL</span>                      <span class="co">#:# remove elementId to stop the warning</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://modelstudio.drwhy.ai">modelStudio</a></span><span class="op">)</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ModelOriented.github.io/DALEX/">DALEX</a></span><span class="op">)</span>
+  <span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">survived</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">titanic_imputed</span>, family <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span>
+  <span class="va">explainer</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ModelOriented.github.io/DALEX/reference/explain.html">explain</a></span><span class="op">(</span><span class="va">model</span>,
+                       data <span class="op">=</span> <span class="va">titanic_imputed</span>,
+                       y <span class="op">=</span> <span class="va">titanic_imputed</span><span class="op">$</span><span class="va">survived</span>,
+                       label <span class="op">=</span> <span class="st">"Titanic GLM"</span>,
+                       verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+  <span class="va">ms</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>,
+                    widget_id <span class="op">=</span> <span class="va">WIDGET_ID</span>,  <span class="co">#:# use the widget_id </span>
+                    show_info <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>    
+  <span class="va">ms</span><span class="op">$</span><span class="va">elementId</span> <span class="op">&lt;-</span> <span class="cn">NULL</span>                      <span class="co">#:# remove elementId to stop the warning</span>
 
   <span class="co">#:# basic render d3 output</span>
-  <span class="kw">output</span>[[<span class="kw">WIDGET_ID</span>]] <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/r2d3/man/d3-shiny.html">renderD3</a></span>({
-    <span class="kw">ms</span>
-  })
+  <span class="va">output</span><span class="op">[[</span><span class="va">WIDGET_ID</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/r2d3/man/d3-shiny.html">renderD3</a></span><span class="op">(</span><span class="op">{</span>
+    <span class="va">ms</span>
+  <span class="op">}</span><span class="op">)</span>
   
   <span class="co">#:# use render ui to set proper width and height</span>
-  <span class="kw">output</span><span class="op">$</span><span class="kw">dashboard</span> <span class="op">&lt;-</span> <span class="fu">renderUI</span>({
-    <span class="fu"><a href="https://rdrr.io/pkg/r2d3/man/d3-shiny.html">d3Output</a></span>(<span class="kw">WIDGET_ID</span>, width=<span class="kw">ms</span><span class="op">$</span><span class="kw">width</span>, height=<span class="kw">ms</span><span class="op">$</span><span class="kw">height</span>)
-  })
-}
+  <span class="va">output</span><span class="op">$</span><span class="va">dashboard</span> <span class="op">&lt;-</span> <span class="fu">renderUI</span><span class="op">(</span><span class="op">{</span>
+    <span class="fu"><a href="https://rdrr.io/pkg/r2d3/man/d3-shiny.html">d3Output</a></span><span class="op">(</span><span class="va">WIDGET_ID</span>, width<span class="op">=</span><span class="va">ms</span><span class="op">$</span><span class="va">width</span>, height<span class="op">=</span><span class="va">ms</span><span class="op">$</span><span class="va">height</span><span class="op">)</span>
+  <span class="op">}</span><span class="op">)</span>
+<span class="op">}</span>
 
-<span class="fu">shinyApp</span>(ui = <span class="kw">ui</span>, server = <span class="kw">server</span>)
-</pre></div>
+<span class="fu">shinyApp</span><span class="op">(</span>ui <span class="op">=</span> <span class="va">ui</span>, server <span class="op">=</span> <span class="va">server</span><span class="op">)</span></code></pre></div>
 <hr>
 </div>
 <div id="dalextra" class="section level2">
@@ -431,24 +420,23 @@
 <a href="#dalextra" class="anchor"></a>DALEXtra</h2>
 <p>Use <code>explain_*()</code> functions from the <a href="https://github.com/ModelOriented/DALEXtra/">DALEXtra</a> package to explain various models.</p>
 <p>Bellow basic example of making <code>modelStudio</code> for a <code>mlr</code> model using <code>explain_mlr()</code>.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">DALEXtra</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">mlr</span>)
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">DALEXtra</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">mlr</span><span class="op">)</span>
 
 <span class="co"># fit a model</span>
-<span class="kw">task</span> <span class="op">&lt;-</span> <span class="fu">makeClassifTask</span>(id = <span class="st">"task"</span>, data = <span class="kw">train</span>, target = <span class="st">"fired"</span>)
-<span class="kw">learner</span> <span class="op">&lt;-</span> <span class="fu">makeLearner</span>(<span class="st">"classif.ranger"</span>, predict.type = <span class="st">"prob"</span>)
-<span class="kw">model</span> <span class="op">&lt;-</span> <span class="fu">train</span>(<span class="kw">learner</span>, <span class="kw">task</span>)
+<span class="va">task</span> <span class="op">&lt;-</span> <span class="fu">makeClassifTask</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"task"</span>, data <span class="op">=</span> <span class="va">train</span>, target <span class="op">=</span> <span class="st">"fired"</span><span class="op">)</span>
+<span class="va">learner</span> <span class="op">&lt;-</span> <span class="fu">makeLearner</span><span class="op">(</span><span class="st">"classif.ranger"</span>, predict.type <span class="op">=</span> <span class="st">"prob"</span><span class="op">)</span>
+<span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">train</span><span class="op">(</span><span class="va">learner</span>, <span class="va">task</span><span class="op">)</span>
 
 <span class="co"># create an explainer for the model</span>
-<span class="kw">explainer_mlr</span> <span class="op">&lt;-</span> <span class="fu">explain_mlr</span>(<span class="kw">model</span>,
-                             data = <span class="kw">test</span>,
-                             y = <span class="kw">test</span><span class="op">$</span><span class="kw">fired</span>,
-                             label = <span class="st">"mlr"</span>)
+<span class="va">explainer_mlr</span> <span class="op">&lt;-</span> <span class="fu">explain_mlr</span><span class="op">(</span><span class="va">model</span>,
+                             data <span class="op">=</span> <span class="va">test</span>,
+                             y <span class="op">=</span> <span class="va">test</span><span class="op">$</span><span class="va">fired</span>,
+                             label <span class="op">=</span> <span class="st">"mlr"</span><span class="op">)</span>
 
 <span class="co"># make a studio for the model</span>
-<span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span>(<span class="kw">explainer_mlr</span>)
-</pre></div>
+<span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer_mlr</span><span class="op">)</span></code></pre></div>
 <hr>
 </div>
 <div id="references" class="section level2">

@@ -99,7 +99,7 @@ to the modelStudio object." />
         <div class="info">
           <span class="partof">part of the <a href="https://github.com/ModelOriented/DrWhy">DrWhy.AI</a>
            developed by the <a href="https://mi2.mini.pw.edu.pl/">MI^2 DataLab</a> </span>
-          <span class="version version-default">2.0.0</span>
+          <span class="version version-default">2.0.0.9000</span>
         </div>
       </div>
     </div>
@@ -161,19 +161,19 @@ to the modelStudio object." />
 to the <code>modelStudio</code> object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ms_update_observations</span>(
-  <span class='kw'>object</span>,
-  <span class='kw'>explainer</span>,
-  new_observation = <span class='kw'>NULL</span>,
-  new_observation_y = <span class='kw'>NULL</span>,
-  max_features = <span class='fl'>10</span>,
-  B = <span class='fl'>10</span>,
-  show_info = <span class='fl'>TRUE</span>,
-  parallel = <span class='fl'>FALSE</span>,
-  widget_id = <span class='kw'>NULL</span>,
-  overwrite = <span class='fl'>FALSE</span>,
-  <span class='kw'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>ms_update_observations</span><span class='op'>(</span>
+  <span class='va'>object</span>,
+  <span class='va'>explainer</span>,
+  new_observation <span class='op'>=</span> <span class='cn'>NULL</span>,
+  new_observation_y <span class='op'>=</span> <span class='cn'>NULL</span>,
+  max_features <span class='op'>=</span> <span class='fl'>10</span>,
+  B <span class='op'>=</span> <span class='fl'>10</span>,
+  show_info <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  parallel <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  widget_id <span class='op'>=</span> <span class='cn'>NULL</span>,
+  overwrite <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -184,7 +184,7 @@ to the <code>modelStudio</code> object.</p>
     </tr>
     <tr>
       <th>explainer</th>
-      <td><p>An <code>explainer</code> created with <code><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>DALEX::explain()</a></code>.</p></td>
+      <td><p>An <code>explainer</code> created with <code><a href='https://ModelOriented.github.io/DALEX/reference/explain.html'>DALEX::explain()</a></code>.</p></td>
     </tr>
     <tr>
       <th>new_observation</th>
@@ -252,48 +252,48 @@ Default is <code>FALSE</code> which means add new observations to the existing o
 and <a href='https://modelstudio.drwhy.ai/articles/ms-perks-features.html'><b>modelStudio - perks and features</b></a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'><a href='https://ModelOriented.github.io/DALEX'>"DALEX"</a></span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'><a href='https://modelstudio.drwhy.ai'>"modelStudio"</a></span>)
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='st'><a href='https://ModelOriented.github.io/DALEX/'>"DALEX"</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='st'><a href='https://modelstudio.drwhy.ai'>"modelStudio"</a></span><span class='op'>)</span>
 
 <span class='co'># fit a model</span>
-<span class='kw'>model_titanic</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='kw'>survived</span> <span class='op'>~</span><span class='kw'>.</span>, data = <span class='kw'>titanic_imputed</span>, family = <span class='st'>"binomial"</span>)
+<span class='va'>model_titanic</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span><span class='op'>(</span><span class='va'>survived</span> <span class='op'>~</span><span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>titanic_imputed</span>, family <span class='op'>=</span> <span class='st'>"binomial"</span><span class='op'>)</span>
 
 <span class='co'># create an explainer for the model</span>
-<span class='kw'>explainer_titanic</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='kw'>model_titanic</span>,
-                             data = <span class='kw'>titanic_imputed</span>,
-                             y = <span class='kw'>titanic_imputed</span><span class='op'>$</span><span class='kw'>survived</span>)
+<span class='va'>explainer_titanic</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ModelOriented.github.io/DALEX/reference/explain.html'>explain</a></span><span class='op'>(</span><span class='va'>model_titanic</span>,
+                             data <span class='op'>=</span> <span class='va'>titanic_imputed</span>,
+                             y <span class='op'>=</span> <span class='va'>titanic_imputed</span><span class='op'>$</span><span class='va'>survived</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Preparation of a new explainer is initiated
 #&gt;   -&gt; model label       :  lm  ( <span style='color: #BBBB00;'> default </span><span> )
 #&gt;   -&gt; data              :  2207  rows  8  cols 
 #&gt;   -&gt; target variable   :  2207  values 
 #&gt;   -&gt; predict function  :  yhat.glm  will be used ( </span><span style='color: #BBBB00;'> default </span><span> )
 #&gt;   -&gt; predicted values  :  numerical, min =  0.008128381 , mean =  0.3221568 , max =  0.9731431  
-#&gt;   -&gt; model_info        :  package stats , ver. 4.0.2 , task classification ( </span><span style='color: #BBBB00;'> default </span><span> ) 
+#&gt;   -&gt; model_info        :  package stats , ver. 4.0.3 , task classification ( </span><span style='color: #BBBB00;'> default </span><span> ) 
 #&gt;   -&gt; residual function :  difference between y and yhat ( </span><span style='color: #BBBB00;'> default </span><span> )
 #&gt;   -&gt; residuals         :  numerical, min =  -0.9628583 , mean =  -2.569729e-10 , max =  0.9663346  
 #&gt;  </span><span style='color: #00BB00;'> A new explainer has been created! </span><span> </div><div class='input'>
 <span class='co'># make a studio for the model</span>
-<span class='kw'>ms</span> <span class='op'>&lt;-</span> <span class='fu'><a href='modelStudio.html'>modelStudio</a></span>(<span class='kw'>explainer_titanic</span>,
-                  N = <span class='fl'>200</span>,  B = <span class='fl'>5</span>) <span class='co'># faster example</span>
+<span class='va'>ms</span> <span class='op'>&lt;-</span> <span class='fu'><a href='modelStudio.html'>modelStudio</a></span><span class='op'>(</span><span class='va'>explainer_titanic</span>,
+                  N <span class='op'>=</span> <span class='fl'>200</span>,  B <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span> <span class='co'># faster example</span>
 </div><div class='output co'>#&gt; <span class='message'>`new_observation` argument is NULL.</span>
 #&gt; <span class='message'>Observations needed to calculate local explanations are taken at random from the data.</span></div><div class='input'>
 <span class='co'># \donttest{</span>
 
 <span class='co'># add new observations</span>
-<span class='kw'>ms</span> <span class='op'>&lt;-</span> <span class='fu'>ms_update_observations</span>(<span class='kw'>ms</span>,
-                             <span class='kw'>explainer_titanic</span>,
-                             new_observation = <span class='kw'>titanic_imputed</span>[<span class='fl'>100</span><span class='op'>:</span><span class='fl'>101</span>,],
-                             new_observation_y = <span class='kw'>titanic_imputed</span><span class='op'>$</span><span class='kw'>survived</span>[<span class='fl'>100</span><span class='op'>:</span><span class='fl'>101</span>])
-<span class='kw'>ms</span>
+<span class='va'>ms</span> <span class='op'>&lt;-</span> <span class='fu'>ms_update_observations</span><span class='op'>(</span><span class='va'>ms</span>,
+                             <span class='va'>explainer_titanic</span>,
+                             new_observation <span class='op'>=</span> <span class='va'>titanic_imputed</span><span class='op'>[</span><span class='fl'>100</span><span class='op'>:</span><span class='fl'>101</span>,<span class='op'>]</span>,
+                             new_observation_y <span class='op'>=</span> <span class='va'>titanic_imputed</span><span class='op'>$</span><span class='va'>survived</span><span class='op'>[</span><span class='fl'>100</span><span class='op'>:</span><span class='fl'>101</span><span class='op'>]</span><span class='op'>)</span>
+<span class='va'>ms</span>
 
 
 
 <span class='co'># overwrite the observations with new ones</span>
-<span class='kw'>ms</span> <span class='op'>&lt;-</span> <span class='fu'>ms_update_observations</span>(<span class='kw'>ms</span>,
-                             <span class='kw'>explainer_titanic</span>,
-                             new_observation = <span class='kw'>titanic_imputed</span>[<span class='fl'>100</span><span class='op'>:</span><span class='fl'>101</span>,],
-                             overwrite = <span class='fl'>TRUE</span>)
-<span class='kw'>ms</span>
+<span class='va'>ms</span> <span class='op'>&lt;-</span> <span class='fu'>ms_update_observations</span><span class='op'>(</span><span class='va'>ms</span>,
+                             <span class='va'>explainer_titanic</span>,
+                             new_observation <span class='op'>=</span> <span class='va'>titanic_imputed</span><span class='op'>[</span><span class='fl'>100</span><span class='op'>:</span><span class='fl'>101</span>,<span class='op'>]</span>,
+                             overwrite <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>ms</span>
 
 <span class='co'># }</span>
 
