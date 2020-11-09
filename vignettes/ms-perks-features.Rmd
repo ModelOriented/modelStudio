@@ -114,12 +114,13 @@ modelStudio(explainer,
 
 - `N` is a number of observations used for calculation of
 [Partial Dependence](https://pbiecek.github.io/ema/partialDependenceProfiles.html)
-and [Accumulated Dependence](https://pbiecek.github.io/ema/accumulatedLocalProfiles.html) Profiles. 
-- `10*N` is a number of observations used for calculation of
-[Feature Importance](https://pbiecek.github.io/ema/featureImportance.html).
+and [Accumulated Dependence](https://pbiecek.github.io/ema/accumulatedLocalProfiles.html) Profiles (default is `300`). 
+- `N_fi` is a number of observations used for calculation of
+[Feature Importance](https://pbiecek.github.io/ema/featureImportance.html) (default is `10*N`).
 - `B` is a number of permutation rounds used for calculation of
-[Shapley Values](https://pbiecek.github.io/ema/shapley.html) and
-[Feature Importance](https://pbiecek.github.io/ema/featureImportance.html).
+[Shapley Values](https://pbiecek.github.io/ema/shapley.html) (default is `10`).
+- `B_fi` is a number of permutation rounds used for calculation of
+[Feature Importance](https://pbiecek.github.io/ema/featureImportance.html) (default is `B`).
 
 Decrease `N` and `B` parameters to lower the computation time or increase
 them to get more accurate empirical results.

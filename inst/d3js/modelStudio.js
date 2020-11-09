@@ -34,6 +34,7 @@ var TIME = options.time,
     SHOW_SUBTITLE = options.show_subtitle,
     subTitle = options.subtitle || modelName,
     msTitle = options.ms_title,
+    msSubtitle = options.ms_subtitle,
     barWidth = options.bar_width,
     lineSize = options.line_size,
     pointSize = options.point_size,
@@ -120,7 +121,7 @@ var w = options.w, h = options.h;
 var plotWidth = w + margin.left + margin.right,
     plotHeight = h + margin.top + margin.bottom;
 
-var studioMargin = {top: 50, bottom: 50},
+var studioMargin = {top: options.ms_margin_top, bottom: options.ms_margin_bottom},
     studioWidth = dim[1]*plotWidth,
     studioHeight = studioMargin.top + dim[0]*plotHeight + studioMargin.bottom;
 
@@ -196,6 +197,15 @@ function initializeStudio() {
        .attr("x", 15)
        .attr("y", 30)
        .text(msTitle);
+
+  if (msSubtitle !== null) {
+      TOP_G.append("text")
+           .attr("class", "subTitle")
+           .attr("x", 15)
+           .attr("y", 40)
+           .text(msSubtitle)
+           .call(wrapText, studioWidth - 15);
+  }
 
   TOP_G.append("line")
        .attr("class", "mainLine")

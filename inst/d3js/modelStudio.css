@@ -92,6 +92,14 @@ text {
   font-weight: 500;
 }
 
+.subTitle {
+  font-family:'Fira Sans';
+  font-style: normal;
+  font-size: 18px;
+  font-weight: 500;
+  dominant-baseline: hanging;
+}
+
 .mainLine {
   stroke: #371ea3;
   stroke-width: 1.5px;

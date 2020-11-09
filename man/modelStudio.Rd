@@ -15,7 +15,9 @@ modelStudio(explainer, ...)
   time = 500,
   max_features = 10,
   N = 300,
+  N_fi = N * 10,
   B = 10,
+  B_fi = B,
   eda = TRUE,
   show_info = TRUE,
   parallel = FALSE,
@@ -43,14 +45,15 @@ modelStudio(explainer, ...)
 \item{max_features}{Maximum number of features to be included in BD and SV plots.
 Default is \code{10}.}
 
-\item{N}{Number of observations used for the calculation of PD and AD.
-\code{10*N} is a number of observations used for the calculation of FI.
-Default \code{N} is \code{300}.
+\item{N}{Number of observations used for the calculation of PD and AD. Default is \code{300}.
 See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#more-calculations-means-more-time}{\bold{vignette}}}
 
-\item{B}{Number of permutation rounds used for calculation of SV and FI.
-Default is \code{10}.
+\item{N_fi}{Number of observations used for the calculation of FI. Default is \code{10*N}.}
+
+\item{B}{Number of permutation rounds used for calculation of SV. Default is \code{10}.
 See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#more-calculations-means-more-time}{\bold{vignette}}}
+
+\item{B_fi}{Number of permutation rounds used for calculation of FI. Default is \code{B}.}
 
 \item{eda}{Compute EDA plots and Residuals vs Feature plot, which adds the data to the dashboard. Default is \code{TRUE}.}
 

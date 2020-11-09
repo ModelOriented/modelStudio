@@ -32,13 +32,12 @@
 #' @param max_features Maximum number of features to be included in BD and SV plots.
 #'  Default is \code{10}.
 #' @param max_vars An alias for \code{max_features}. If provided, it will override the value.
-#' @param N Number of observations used for the calculation of PD and AD.
-#'  \code{10*N} is a number of observations used for the calculation of FI.
-#'  Default \code{N} is \code{300}.
+#' @param N Number of observations used for the calculation of PD and AD. Default is \code{300}.
 #'  See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#more-calculations-means-more-time}{\bold{vignette}}
-#' @param B Number of permutation rounds used for calculation of SV and FI.
-#'  Default is \code{10}.
+#' @param N_fi Number of observations used for the calculation of FI. Default is \code{10*N}.
+#' @param B Number of permutation rounds used for calculation of SV. Default is \code{10}.
 #'  See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#more-calculations-means-more-time}{\bold{vignette}}
+#' @param B_fi Number of permutation rounds used for calculation of FI. Default is \code{B}.
 #' @param eda Compute EDA plots and Residuals vs Feature plot, which adds the data to the dashboard. Default is \code{TRUE}.
 #' @param show_info Verbose a progress on the console. Default is \code{TRUE}.
 #' @param parallel Speed up the computation using \code{parallelMap::parallelMap()}.
@@ -172,7 +171,9 @@ modelStudio.explainer <- function(explainer,
                                   time = 500,
                                   max_features = 10,
                                   N = 300,
+                                  N_fi = N*10,
                                   B = 10,
+                                  B_fi = B,
                                   eda = TRUE,
                                   show_info = TRUE,
                                   parallel = FALSE,
@@ -196,6 +197,7 @@ modelStudio.explainer <- function(explainer,
   model_type <- explainer$model_info$type
 
   if (!is.null(max_vars)) max_features <- max_vars
+  if (identical(N_fi, numeric(0))) N_fi <- NULL
 
   if (is.null(new_observation)) {
     if (show_info) message("`new_observation` argument is NULL.\n",
@@ -255,7 +257,7 @@ modelStudio.explainer <- function(explainer,
   if (show_info) {
     pb <- progress_bar$new(
       format = "  Calculating :what \n    Elapsed time: :elapsedfull ETA::eta ", # :percent  [:bar]
-      total = (3*B + 2 + 1)*obs_count + (2*B + 3*B + B) + 1,
+      total = (3*B + 2 + 1)*obs_count + (2*B_fi + 3*B_fi + B_fi) + 1,
       show_after = 0,
       width = 110
     )
@@ -265,10 +267,10 @@ modelStudio.explainer <- function(explainer,
   ## count only once
   fi <- calculate(
     ingredients::feature_importance(
-        model, data, y, predict_function, variables = variable_names, B = B, N = 10*N,
+        model, data, y, predict_function, variables = variable_names, B = B_fi, N = N_fi,
         loss_function = loss_function
         ),
-    "ingredients::feature_importance", show_info, pb, 2*B)
+    "ingredients::feature_importance", show_info, pb, 2*B_fi)
 
   which_numerical <- which_variables_are_numeric(data)
 
@@ -455,6 +457,8 @@ modelStudio.explainer <- function(explainer,
   }
 
   if (is.null(options$ms_title)) options$ms_title <- paste0("Interactive Studio for ", label, " Model")
+  if (!is.null(options$ms_subtitle)) options$ms_margin_top <- options$ms_margin_top + 40
+
   options <- c(list(time = time,
                     model_name = label,
                     variable_names = variable_names,
@@ -490,7 +494,8 @@ modelStudio.explainer <- function(explainer,
                     sizing = sizing_policy,
                     elementId = widget_id,
                     width = facet_dim[2]*(options$w + options$margin_left + options$margin_right),
-                    height = 100 + facet_dim[1]*(options$h + options$margin_top + options$margin_bottom)
+                    height = options$ms_margin_top + options$ms_margin_bottom +
+                             facet_dim[1]*(options$h + options$margin_top + options$margin_bottom)
                   )
 
   model_studio$x$script <- remove_file_paths(model_studio$x$script, "js")

@@ -1,3 +1,8 @@
+# modelStudio (development)
+* This version requires `DALEX v2.0.1`
+* added new options to `ms_options`: `ms_subtitle`, `ms_margin_top` and `ms_margin_bottom`
+* added new parameters to `modelStudio()`: `N_fi = 10*N` and `B_fi = B`
+
 # modelStudio 2.0.0
 * this version requires `DALEX v2.0`, `ingredients v2.0` and `iBreakDown v1.3.1`
 * The dashboard gathers useful, but not sensitive, information about how it is being used (e.g. computation length, package version, dashboard dimensions). This is for the development purposes only and can be blocked by setting `telemetry` to `FALSE`.

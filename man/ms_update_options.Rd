@@ -28,6 +28,8 @@ This function updates the options of a \code{\link{modelStudio}} object.
 \item{show_subtitle}{\code{TRUE} Should the subtitle be displayed?}
 \item{subtitle}{\code{label} parameter from \code{explainer}.}
 \item{ms_title}{Title of the dashboard.}
+\item{ms_subtitle}{Subtitle of the dashboard (makes space between the title and line).}
+\item{ms_margin_*}{Dashboard margins. Change \code{margin_top} for more \code{ms_subtitle} space.}
 \item{margin_*}{Plot margins. Change \code{margin_left} for longer/shorter axis labels.}
 \item{w}{\code{420} in px. Inner plot width.}
 \item{h}{\code{280} in px. Inner plot height.}
