@@ -75,7 +75,7 @@ Use \code{browser} to display in an external browser or
 Useful e.g. when using \code{modelStudio} with Shiny.
 See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#shiny-1}{\bold{vignette}}.}
 
-\item{license}{Path to the file containing the license (\code{con} parameter passed to \code{readLines()}).
+\item{license}{Path to the file containing the license (\code{con} parameter passed to \code{readLines}).
 It can be used e.g. to include the license for \code{data} as a comment in the source of \code{.html} output file.}
 
 \item{telemetry}{The dashboard gathers useful, but not sensitive, information about how it is being used (e.g. computation length,
