@@ -99,7 +99,8 @@ var TIME = options.time,
     atBarColor = options.at_bar_color || barColor,
     atLineColor = options.at_line_color || lineColor,
     atPointColor = options.at_point_color || pointColor,
-    telemetry = options.telemetry;
+    telemetry = options.telemetry,
+    license = options.license;
 
 /// for observation choice
 var observationIds = Object.keys(obsData);
@@ -174,6 +175,7 @@ for (let i = 0; i < dim[0]; i++) {
 }
 
 ///:\\\
+if (license) document.head.appendChild(document.createComment(license));
 if (telemetry) startTelemetrySession();
 initializeStudio();
 ///:\\\

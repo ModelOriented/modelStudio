@@ -2,6 +2,7 @@
 * This version requires `DALEX v2.0.1`
 * added new options to `ms_options`: `ms_subtitle`, `ms_margin_top` and `ms_margin_bottom`
 * added new parameters to `modelStudio()`: `N_fi = 10*N` and `B_fi = B`
+* added new `license` parameter to `modelStudio()` which allows to specify the connection for `readLines()` (e.g. `'LICENSE'`) which will add file contents into the HTML output as a comment
 
 # modelStudio 2.0.0
 * this version requires `DALEX v2.0`, `ingredients v2.0` and `iBreakDown v1.3.1`

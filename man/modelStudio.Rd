@@ -24,6 +24,7 @@ modelStudio(explainer, ...)
   options = ms_options(),
   viewer = "external",
   widget_id = NULL,
+  license = NULL,
   telemetry = TRUE,
   max_vars = NULL,
   ...
@@ -73,6 +74,9 @@ Use \code{browser} to display in an external browser or
 \item{widget_id}{Use an explicit element ID for the widget (rather than an automatically generated one).
 Useful e.g. when using \code{modelStudio} with Shiny.
 See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#shiny-1}{\bold{vignette}}.}
+
+\item{license}{Path to the file containing the license (\code{con} parameter passed to \code{readLines()}).
+It can be used e.g. to include the license for \code{explainer$data} as a comment in the source of \codE{.html} output file.}
 
 \item{telemetry}{The dashboard gathers useful, but not sensitive, information about how it is being used (e.g. computation length,
 package version, dashboard dimensions). This is for the development purposes only and can be blocked by setting \code{telemetry} to \code{FALSE}.}
