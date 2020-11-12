@@ -33,6 +33,7 @@ jobs:
           remotes::install_deps(dependencies = TRUE)
           install.packages("pkgdown")
           remotes::install_github("ModelOriented/DrWhyTemplate")
+          install.packages("textshaping")
         shell: Rscript {0}
 
       - name: Install package
