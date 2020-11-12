@@ -52,7 +52,7 @@
 #'  Useful e.g. when using \code{modelStudio} with Shiny.
 #'  See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#shiny-1}{\bold{vignette}}.
 #' @param license Path to the file containing the license (\code{con} parameter passed to \code{readLines()}).
-#'  It can be used e.g. to include the license for \code{explainer$data} as a comment in the source of \code{.html} output file.
+#'  It can be used e.g. to include the license for \code{data} as a comment in the source of \code{.html} output file.
 #' @param telemetry The dashboard gathers useful, but not sensitive, information about how it is being used (e.g. computation length,
 #'  package version, dashboard dimensions). This is for the development purposes only and can be blocked by setting \code{telemetry} to \code{FALSE}.
 #' @param ... Other parameters.
@@ -627,3 +627,5 @@ check_explainer <- function(explainer) {
 
   explainer
 }
+
+
