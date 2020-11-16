@@ -646,23 +646,12 @@ sample_new_observation <- function(explainer, new_observation_n = 3) {
     y_hat <- explainer$y_hat
   }
 
-  n <- dim(explainer$data)[1]
-
-  if (new_observation_n >= n) {
-    new_observation_n <- n
+  if (new_observation_n >= dim(explainer$data)[1]) {
+    new_observation_n <- dim(explainer$data)[1]
   }
 
-  if (new_observation_n == 1) {
-    ids <- which.min(y_hat)
-  } else if (new_observation_n == 2) {
-    ids <- c(which.min(y_hat), which.max(y_hat))
-  } else if (new_observation_n == 3) {
-    ids <- c(which.min(y_hat), as.integer(n/2), which.max(y_hat))
-  } else {
-    y_hat_coded <- cut(y_hat, new_observation_n - 2, labels=FALSE)
-    ids <- sapply(1:(new_observation_n - 2), FUN = function (x) match(x, y_hat_coded))
-    ids <- c(which.min(y_hat), ids, which.max(y_hat))
-  }
+  ids <- unique(quantile(seq_along(y_hat), seq(0, 1, length.out = new_observation_n), type = 4))
+  new_observation_ids <- order(y_hat)[ids]
 
-  list(no = explainer$data[ids,], no_y = explainer$y[ids])
+  list(no = explainer$data[new_observation_ids,], no_y = explainer$y[new_observation_ids])
 }
