@@ -99,7 +99,7 @@ WARNING: Editing default options may cause unintended behavior." />
         <div class="info">
           <span class="partof">part of the <a href="https://github.com/ModelOriented/DrWhy">DrWhy.AI</a>
            developed by the <a href="https://mi2.mini.pw.edu.pl/">MI^2 DataLab</a> </span>
-          <span class="version version-default">2.0.0.9000</span>
+          <span class="version version-default">2.1.0</span>
         </div>
       </div>
     </div>
@@ -264,7 +264,7 @@ and <a href='https://modelstudio.drwhy.ai/articles/ms-perks-features.html'><b>mo
 <span class='va'>ms</span> <span class='op'>&lt;-</span> <span class='fu'><a href='modelStudio.html'>modelStudio</a></span><span class='op'>(</span><span class='va'>explainer_titanic</span>,
                   N <span class='op'>=</span> <span class='fl'>200</span>,  B <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span> <span class='co'># faster example</span>
 </div><div class='output co'>#&gt; <span class='message'>`new_observation` argument is NULL.</span>
-#&gt; <span class='message'>Observations needed to calculate local explanations are taken at random from the data.</span></div><div class='input'>
+#&gt; <span class='message'>`new_observation_n` observations needed to calculate local explanations are taken from the data.</span></div><div class='input'>
 <span class='co'># update the options</span>
 <span class='va'>new_ms</span> <span class='op'>&lt;-</span> <span class='fu'>ms_update_options</span><span class='op'>(</span><span class='va'>ms</span>,
                             time <span class='op'>=</span> <span class='fl'>0</span>,

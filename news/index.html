@@ -97,7 +97,7 @@
         <div class="info">
           <span class="partof">part of the <a href="https://github.com/ModelOriented/DrWhy">DrWhy.AI</a>
            developed by the <a href="https://mi2.mini.pw.edu.pl/">MI^2 DataLab</a> </span>
-          <span class="version version-default">2.0.0.9000</span>
+          <span class="version version-default">2.1.0</span>
         </div>
       </div>
     </div>
@@ -153,6 +153,23 @@
       <small>Source: <a href='https://github.com/ModelOriented/modelStudio/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="modelstudio-210" class="section level1">
+<h1 class="page-header" data-toc-text="2.1.0">
+<a href="#modelstudio-210" class="anchor"></a>modelStudio 2.1.0<small> Unreleased </small>
+</h1>
+<ul>
+<li>
+<strong>DEFAULTS CHANGES</strong>: if <code>new_observation = NULL</code> then choose <code>new_observation_n = 3</code> observations, evenly spread by the histogram bins of <code>y_hat</code>. This shall always include the observations, which ids are <code><a href="https://rdrr.io/r/base/which.min.html">which.min(y_hat)</a></code> and <code><a href="https://rdrr.io/r/base/which.min.html">which.max(y_hat)</a></code>. Additionally, improve the observation dropdown text in dashboard. <a href="https://github.com/ModelOriented/modelStudio/issues/94">(<a href='https://github.com/ModelOriented/modelStudio/issues/94'>#94</a>)</a>
+</li>
+<li>This version requires <code>DALEX v2.0.1</code>
+</li>
+<li>added new options to <code>ms_options</code>: <code>ms_subtitle</code>, <code>ms_margin_top</code> and <code>ms_margin_bottom</code>
+</li>
+<li>added new parameters to <code><a href="../reference/modelStudio.html">modelStudio()</a></code>: <code>N_fi = 10*N</code> and <code>B_fi = B</code>
+</li>
+<li>added new <code>license</code> parameter to <code><a href="../reference/modelStudio.html">modelStudio()</a></code> which allows to specify the connection for <code><a href="https://rdrr.io/r/base/readLines.html">readLines()</a></code> (e.g. <code>'LICENSE'</code>) which will add file contents into the HTML output as a comment</li>
+</ul>
+</div>
     <div id="modelstudio-200" class="section level1">
 <h1 class="page-header" data-toc-text="2.0.0">
 <a href="#modelstudio-200" class="anchor"></a>modelStudio 2.0.0<small> 2020-09-10 </small>

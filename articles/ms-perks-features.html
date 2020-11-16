@@ -51,7 +51,7 @@
         <div class="info">
           <span class="partof">part of the <a href="https://github.com/ModelOriented/DrWhy">DrWhy.AI</a>
            developed by the <a href="https://mi2.mini.pw.edu.pl/">MI^2 DataLab</a> </span>
-          <span class="version version-default">2.0.0.9000</span>
+          <span class="version version-default">2.1.0</span>
         </div>
       </div>
     </div>
@@ -107,7 +107,7 @@
       <h1 data-toc-skip>modelStudio - perks and features</h1>
                         <h4 class="author">Hubert Baniecki</h4>
             
-            <h4 class="date">2020-11-09</h4>
+            <h4 class="date">2020-11-16</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ModelOriented/modelStudio/blob/master/vignettes/ms-perks-features.Rmd"><code>vignettes/ms-perks-features.Rmd</code></a></small>
       <div class="hidden name"><code>ms-perks-features.Rmd</code></div>
@@ -219,12 +219,15 @@
 <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>,
             new_observation <span class="op">=</span> <span class="va">new_observation</span>,
             new_observation_y  <span class="op">=</span> <span class="va">true_labels</span><span class="op">)</span></code></pre></div>
+<p>If <code>new_observation = NULL</code>, then choose <code>new_observation_n</code> observations, evenly spread by the histogram bins of <code>y_hat</code>. This shall always include the observations, which ids are <code><a href="https://rdrr.io/r/base/which.min.html">which.min(y_hat)</a></code> and <code><a href="https://rdrr.io/r/base/which.min.html">which.max(y_hat)</a></code>.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>, new_observation_n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="co"># default is 3</span></code></pre></div>
 </div>
 <div id="grid-size" class="section level3">
 <h3 class="hasAnchor">
 <a href="#grid-size" class="anchor"></a>grid size</h3>
 <p>Achieve bigger or smaller <code>modelStudio</code> grid with <code>facet_dim</code> parameter.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># small dashboard with 2 panels</span>
 <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>,
             facet_dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span>
@@ -237,7 +240,7 @@
 <h3 class="hasAnchor">
 <a href="#animations" class="anchor"></a>animations</h3>
 <p>Manipulate <code>time</code> parameter to set animation length. Value 0 will make them invisible.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># slow down animations</span>
 <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>,
             time <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span>
@@ -260,7 +263,7 @@
 <code>B_fi</code> is a number of permutation rounds used for calculation of <a href="https://pbiecek.github.io/ema/featureImportance.html">Feature Importance</a> (default is <code>B</code>).</li>
 </ul>
 <p>Decrease <code>N</code> and <code>B</code> parameters to lower the computation time or increase them to get more accurate empirical results.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># faster, less precise</span>
 <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>,
             N <span class="op">=</span> <span class="fl">200</span>, B <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
@@ -273,7 +276,7 @@
 <h3 class="hasAnchor">
 <a href="#no-eda-mode" class="anchor"></a>no EDA mode</h3>
 <p>Don’t compute the EDA plots if they are not needed. Set the <code>eda</code> parameter to <code>FALSE</code>.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>,
             eda <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 </div>
@@ -281,7 +284,7 @@
 <h3 class="hasAnchor">
 <a href="#progress-bar" class="anchor"></a>progress bar</h3>
 <p>Hide computation progress bar messages with <code>show_info</code> parameter.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>,
             show_info <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 </div>
@@ -289,7 +292,7 @@
 <h3 class="hasAnchor">
 <a href="#viewer-or-browser" class="anchor"></a>viewer or browser?</h3>
 <p>Change <code>viewer</code> parameter to set where to display <code>modelStudio</code>. <a href="https://rstudio.github.io/r2d3/articles/visualization_options.html#viewer">Best described in <code>r2d3</code> documentation</a>.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>,
             viewer <span class="op">=</span> <span class="st">"browser"</span><span class="op">)</span></code></pre></div>
 <hr>
@@ -300,7 +303,7 @@
 <a href="#parallel-computation" class="anchor"></a>parallel computation</h2>
 <p>Speed up <code>modelStudio</code> computation by setting <code>parallel</code> parameter to <code>TRUE</code>. It uses <a href="https://www.rdocumentation.org/packages/parallelMap"><code>parallelMap</code></a> package to calculate local explainers faster. It is really useful when using <code>modelStudio</code> with complicated models, vast datasets or <strong>many observations are being processed</strong>.</p>
 <p>All options can be set outside of the function call. <a href="https://github.com/mlr-org/parallelMap#being-lazy-configuration">How to use parallelMap</a>.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># set up the cluster</span>
 <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>
   parallelMap.default.mode        <span class="op">=</span> <span class="st">"socket"</span>,
@@ -318,7 +321,7 @@
 <h2 class="hasAnchor">
 <a href="#additional-options" class="anchor"></a>additional options</h2>
 <p>Customize some of the <code>modelStudio</code> looks by overwriting default options returned by the <code><a href="../reference/ms_options.html">ms_options()</a></code> function. <a href="https://modelstudio.drwhy.ai/reference/ms_options.html">Full list of options</a>.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># set additional graphical parameters</span>
 <span class="va">new_options</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ms_options.html">ms_options</a></span><span class="op">(</span>
   show_subtitle <span class="op">=</span> <span class="cn">TRUE</span>,
@@ -334,7 +337,7 @@
 <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>,
             options <span class="op">=</span> <span class="va">new_options</span><span class="op">)</span></code></pre></div>
 <p>All visual options can be changed after the calculations using <code><a href="../reference/ms_update_options.html">ms_update_options()</a></code>.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">old_ms</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span><span class="op">)</span>
 <span class="va">old_ms</span>
 
@@ -350,7 +353,7 @@
 <h2 class="hasAnchor">
 <a href="#update-observations" class="anchor"></a>update observations</h2>
 <p>Use <code><a href="../reference/ms_update_observations.html">ms_update_observations()</a></code> to add more observations with their local explanations to the <code>modelStudio</code>.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">old_ms</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span><span class="op">)</span>
 <span class="va">old_ms</span>
 
@@ -372,7 +375,7 @@
 <h2 class="hasAnchor">
 <a href="#shiny" class="anchor"></a>Shiny</h2>
 <p>Use the <code>widget_id</code> argument and <code>r2d3</code> package to render the <code>modelStudio</code> output in Shiny. See <a href="https://rstudio.github.io/r2d3/articles/shiny.html">Using r2d3 with Shiny</a> and consider the following example:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">shiny</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/r2d3">r2d3</a></span><span class="op">)</span>
 
@@ -420,7 +423,7 @@
 <a href="#dalextra" class="anchor"></a>DALEXtra</h2>
 <p>Use <code>explain_*()</code> functions from the <a href="https://github.com/ModelOriented/DALEXtra/">DALEXtra</a> package to explain various models.</p>
 <p>Bellow basic example of making <code>modelStudio</code> for a <code>mlr</code> model using <code>explain_mlr()</code>.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">DALEXtra</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">mlr</span><span class="op">)</span>
 
