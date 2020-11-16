@@ -81,6 +81,12 @@ modelStudio(explainer,
             new_observation_y  = true_labels)
 ```
 
+If `new_observation = NULL`, then choose `new_observation_n` observations, evenly spread by the histogram bins of `y_hat`. This shall always include the observations, which ids are `which.min(y_hat)` and `which.max(y_hat)`.
+
+```{r eval = FALSE}
+modelStudio(explainer, new_observation_n = 5) # default is 3
+```
+
 ### grid size
 
 Achieve bigger or smaller `modelStudio` grid with `facet_dim` parameter.

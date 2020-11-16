@@ -27,6 +27,8 @@
 #' @param explainer An \code{explainer} created with \code{DALEX::explain()}.
 #' @param new_observation New observations with columns that correspond to variables used in the model.
 #' @param new_observation_y True label for \code{new_observation} (optional).
+#' @param new_observation_n Number of observations to be taken from the \code{explainer$data} if \code{new_observation = NULL}.
+#'  See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#instance-explanations}{\bold{vignette}}
 #' @param facet_dim Dimensions of the grid. Default is \code{c(2,2)}.
 #' @param time Time in ms. Set the animation length. Default is \code{500}.
 #' @param max_features Maximum number of features to be included in BD and SV plots.
@@ -169,6 +171,7 @@ modelStudio <- function(explainer, ...) {
 modelStudio.explainer <- function(explainer,
                                   new_observation = NULL,
                                   new_observation_y = NULL,
+                                  new_observation_n = 3,
                                   facet_dim = c(2,2),
                                   time = 500,
                                   max_features = 10,
@@ -204,8 +207,10 @@ modelStudio.explainer <- function(explainer,
 
   if (is.null(new_observation)) {
     if (show_info) message("`new_observation` argument is NULL.\n",
-                           "Observations needed to calculate local explanations are taken at random from the data.\n")
-    new_observation <- ingredients::select_sample(data, 3)
+                           "`new_observation_n` observations needed to calculate local explanations are taken from the data.\n")
+    ret <- sample_new_observation(explainer, new_observation_n)
+    new_observation <- ret[['no']]
+    new_observation_y <- ret[['no_y']]
 
   } else if (is.null(dim(new_observation))) {
     warning("`new_observation` argument is not a data.frame nor a matrix, coerced to data.frame\n")
@@ -421,11 +426,13 @@ modelStudio.explainer <- function(explainer,
                       paste0("widget-", digest::digest(temp)))
 
   # prepare observation data for drop down
-  between <- " - "
-  if (is.null(new_observation_y)) new_observation_y <- between <- ""
-  drop_down_data <- as.data.frame(cbind(rownames(obs_data),
-                                        paste0(rownames(obs_data), between, new_observation_y)),
-                                  stringsAsFactors=TRUE)
+  str_between <- " | y: "
+  str_before <- "id: "
+  if (is.null(new_observation_y)) new_observation_y <- str_between <- str_before <- ""
+  drop_down_data <- as.data.frame(
+    cbind(rownames(obs_data),
+    paste0(str_before, rownames(obs_data), str_between, new_observation_y)),
+    stringsAsFactors=TRUE)
   colnames(drop_down_data) <- c("id", "text")
 
   # prepare footer text and ms title
@@ -600,6 +607,7 @@ is_binary <- function(y) {
   is.numeric(y) & length(unique(y)) == 2
 }
 
+# safety check for explainer
 check_explainer <- function(explainer) {
 
   if (is.null(explainer$data))
@@ -628,4 +636,33 @@ check_explainer <- function(explainer) {
   explainer
 }
 
+# choose observations
+sample_new_observation <- function(explainer, new_observation_n = 3) {
+  if (is.null(explainer$y_hat)) {
+    y_hat <- try(predict(explainer), silent = TRUE)
+    if (class(y_hat)[1] == "try-error")
+      stop('`predict(explainer)` returns an error')
+  } else {
+    y_hat <- explainer$y_hat
+  }
 
+  n <- dim(explainer$data)[1]
+
+  if (new_observation_n >= n) {
+    new_observation_n <- n
+  }
+
+  if (new_observation_n == 1) {
+    ids <- which.min(y_hat)
+  } else if (new_observation_n == 2) {
+    ids <- c(which.min(y_hat), which.max(y_hat))
+  } else if (new_observation_n == 3) {
+    ids <- c(which.min(y_hat), as.integer(n/2), which.max(y_hat))
+  } else {
+    y_hat_coded <- cut(y_hat, new_observation_n - 2, labels=FALSE)
+    ids <- sapply(1:(new_observation_n - 2), FUN = function (x) match(x, y_hat_coded))
+    ids <- c(which.min(y_hat), ids, which.max(y_hat))
+  }
+
+  list(no = explainer$data[ids,], no_y = explainer$y[ids])
+}

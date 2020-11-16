@@ -11,6 +11,7 @@ modelStudio(explainer, ...)
   explainer,
   new_observation = NULL,
   new_observation_y = NULL,
+  new_observation_n = 3,
   facet_dim = c(2, 2),
   time = 500,
   max_features = 10,
@@ -38,6 +39,9 @@ modelStudio(explainer, ...)
 \item{new_observation}{New observations with columns that correspond to variables used in the model.}
 
 \item{new_observation_y}{True label for \code{new_observation} (optional).}
+
+\item{new_observation_n}{Number of observations to be taken from the \code{explainer$data} if \code{new_observation = NULL}.
+See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#instance-explanations}{\bold{vignette}}}
 
 \item{facet_dim}{Dimensions of the grid. Default is \code{c(2,2)}.}
 
