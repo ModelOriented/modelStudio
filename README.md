@@ -15,7 +15,7 @@ The main `modelStudio()` function computes various (instance and dataset level) 
 <!--- [explain FIFA19](https://pbiecek.github.io/explainFIFA19/) &emsp; --->
 <!--- [explain Lung Cancer](https://github.com/hbaniecki/transparent_xai/) &emsp; --->
 &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
-[**explain FIFA20**](https://pbiecek.github.io/explainFIFA20/) &emsp;
+[**explain COVID-19**](https://rai-covid.drwhy.ai) &emsp;
 [**R & Python examples**](http://modelstudio.drwhy.ai/articles/ms-r-python-examples.html) &emsp;
 [**More Resources**](http://modelstudio.drwhy.ai/#more-resources) &emsp;
 [**FAQ & Troubleshooting**](https://github.com/ModelOriented/modelStudio/issues/54)
@@ -318,7 +318,7 @@ or with [`r2d3::save_d3_html()`](https://rstudio.github.io/r2d3/articles/publish
 If you use `modelStudio`, please cite our [JOSS article](https://joss.theoj.org/papers/10.21105/joss.01798):
 
 ```
-@Article{modelStudio,
+@article{modelStudio,
   author = {Hubert Baniecki and Przemyslaw Biecek},
   title = {{modelStudio}: Interactive Studio with Explanations for {ML} Predictive Models},
   doi = {10.21105/joss.01798},
