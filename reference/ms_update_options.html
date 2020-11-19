@@ -263,8 +263,7 @@ and <a href='https://modelstudio.drwhy.ai/articles/ms-perks-features.html'><b>mo
 <span class='co'># make a studio for the model</span>
 <span class='va'>ms</span> <span class='op'>&lt;-</span> <span class='fu'><a href='modelStudio.html'>modelStudio</a></span><span class='op'>(</span><span class='va'>explainer_titanic</span>,
                   N <span class='op'>=</span> <span class='fl'>200</span>,  B <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span> <span class='co'># faster example</span>
-</div><div class='output co'>#&gt; <span class='message'>`new_observation` argument is NULL.</span>
-#&gt; <span class='message'>`new_observation_n` observations needed to calculate local explanations are taken from the data.</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>`new_observation` argument is NULL. `new_observation_n` observations needed to calculate local explanations are taken from the data.</span></div><div class='input'>
 <span class='co'># update the options</span>
 <span class='va'>new_ms</span> <span class='op'>&lt;-</span> <span class='fu'>ms_update_options</span><span class='op'>(</span><span class='va'>ms</span>,
                             time <span class='op'>=</span> <span class='fl'>0</span>,

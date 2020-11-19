@@ -159,9 +159,10 @@
 </h1>
 <ul>
 <li>
-<strong>DEFAULTS CHANGES</strong>: if <code>new_observation = NULL</code> then choose <code>new_observation_n = 3</code> observations, evenly spread by the histogram bins of <code>y_hat</code>. This shall always include the observations, which ids are <code><a href="https://rdrr.io/r/base/which.min.html">which.min(y_hat)</a></code> and <code><a href="https://rdrr.io/r/base/which.min.html">which.max(y_hat)</a></code>. Additionally, improve the observation dropdown text in dashboard. <a href="https://github.com/ModelOriented/modelStudio/issues/94">(<a href='https://github.com/ModelOriented/modelStudio/issues/94'>#94</a>)</a>
+<strong>DEFAULTS CHANGES</strong>: if <code>new_observation = NULL</code> then choose <code>new_observation_n = 3</code> observations, evenly spread by the order of <code>y_hat</code>. This shall always include the observations, which ids are <code><a href="https://rdrr.io/r/base/which.min.html">which.min(y_hat)</a></code> and <code><a href="https://rdrr.io/r/base/which.min.html">which.max(y_hat)</a></code>. Additionally, improve the observation dropdown text in dashboard. <a href="https://github.com/ModelOriented/modelStudio/issues/94">(<a href='https://github.com/ModelOriented/modelStudio/issues/94'>#94</a>)</a>
 </li>
-<li>This version requires <code>DALEX v2.0.1</code>
+<li>updated the progress printing</li>
+<li>this version requires <code>DALEX v2.0.1</code>
 </li>
 <li>added new options to <code>ms_options</code>: <code>ms_subtitle</code>, <code>ms_margin_top</code> and <code>ms_margin_bottom</code>
 </li>

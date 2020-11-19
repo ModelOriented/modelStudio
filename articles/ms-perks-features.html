@@ -107,7 +107,7 @@
       <h1 data-toc-skip>modelStudio - perks and features</h1>
                         <h4 class="author">Hubert Baniecki</h4>
             
-            <h4 class="date">2020-11-16</h4>
+            <h4 class="date">2020-11-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ModelOriented/modelStudio/blob/master/vignettes/ms-perks-features.Rmd"><code>vignettes/ms-perks-features.Rmd</code></a></small>
       <div class="hidden name"><code>ms-perks-features.Rmd</code></div>
@@ -219,7 +219,7 @@
 <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>,
             new_observation <span class="op">=</span> <span class="va">new_observation</span>,
             new_observation_y  <span class="op">=</span> <span class="va">true_labels</span><span class="op">)</span></code></pre></div>
-<p>If <code>new_observation = NULL</code>, then choose <code>new_observation_n</code> observations, evenly spread by the histogram bins of <code>y_hat</code>. This shall always include the observations, which ids are <code><a href="https://rdrr.io/r/base/which.min.html">which.min(y_hat)</a></code> and <code><a href="https://rdrr.io/r/base/which.min.html">which.max(y_hat)</a></code>.</p>
+<p>If <code>new_observation = NULL</code>, then choose <code>new_observation_n</code> observations, evenly spread by the order of <code>y_hat</code>. This shall always include the observations, which ids are <code><a href="https://rdrr.io/r/base/which.min.html">which.min(y_hat)</a></code> and <code><a href="https://rdrr.io/r/base/which.min.html">which.max(y_hat)</a></code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>, new_observation_n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="co"># default is 3</span></code></pre></div>
 </div>
@@ -394,11 +394,11 @@
   <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://modelstudio.drwhy.ai">modelStudio</a></span><span class="op">)</span>
   <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ModelOriented.github.io/DALEX/">DALEX</a></span><span class="op">)</span>
   <span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">survived</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">titanic_imputed</span>, family <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span>
-  <span class="va">explainer</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ModelOriented.github.io/DALEX/reference/explain.html">explain</a></span><span class="op">(</span><span class="va">model</span>,
-                       data <span class="op">=</span> <span class="va">titanic_imputed</span>,
-                       y <span class="op">=</span> <span class="va">titanic_imputed</span><span class="op">$</span><span class="va">survived</span>,
-                       label <span class="op">=</span> <span class="st">"Titanic GLM"</span>,
-                       verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+  <span class="va">explainer</span> <span class="op">&lt;-</span> <span class="fu">DALEX</span><span class="fu">::</span><span class="fu"><a href="https://ModelOriented.github.io/DALEX/reference/explain.html">explain</a></span><span class="op">(</span><span class="va">model</span>,
+                              data <span class="op">=</span> <span class="va">titanic_imputed</span>,
+                              y <span class="op">=</span> <span class="va">titanic_imputed</span><span class="op">$</span><span class="va">survived</span>,
+                              label <span class="op">=</span> <span class="st">"Titanic GLM"</span>,
+                              verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
   <span class="va">ms</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>,
                     widget_id <span class="op">=</span> <span class="va">WIDGET_ID</span>,  <span class="co">#:# use the widget_id </span>
                     show_info <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>    
