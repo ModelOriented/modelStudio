@@ -73,7 +73,7 @@ install.packages("DALEXtra")
 
 Make a studio for the regression `ranger` model on `apartments` data.
 
-<details>
+<details open>
 <summary><strong><em>code</em></strong></summary>
 
 ```r
@@ -105,8 +105,7 @@ new_observation <- test[1:2,]
 rownames(new_observation) <- c("id1", "id2")
 
 # make a studio for the model
-modelStudio(explainer,
-            new_observation)
+modelStudio(explainer, new_observation)
 ```
 
 </details>
@@ -150,8 +149,7 @@ new_observation <- test_matrix[1:2, , drop=FALSE]
 rownames(new_observation) <- c("id1", "id2")
 
 # make a studio for the model
-modelStudio(explainer,
-            new_observation,
+modelStudio(explainer, new_observation,
             options = ms_options(margin_left = 140))
 ```
 
@@ -319,7 +317,7 @@ or with [`r2d3::save_d3_html()`](https://rstudio.github.io/r2d3/articles/publish
 
 If you use `modelStudio`, please cite our [JOSS article](https://joss.theoj.org/papers/10.21105/joss.01798):
 
-```python
+```
 @Article{modelStudio,
   author = {Hubert Baniecki and Przemyslaw Biecek},
   title = {{modelStudio}: Interactive Studio with Explanations for {ML} Predictive Models},

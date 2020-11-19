@@ -64,8 +64,7 @@ new_observation <- test[1:2,]
 rownames(new_observation) <- c("id1", "id2")
 
 # make a studio for the model
-modelStudio(explainer,
-            new_observation)
+modelStudio(explainer, new_observation)
 ```
 
 ### mlr3 [dashboard](https://modelstudio.drwhy.ai/mlr3.html)
@@ -105,8 +104,7 @@ new_observation <- test[1:2,]
 rownames(new_observation) <- c("id1", "id2")
 
 # make a studio for the model
-modelStudio(explainer,
-            new_observation)
+modelStudio(explainer, new_observation)
 ```
 
 ### xgboost [dashboard](https://modelstudio.drwhy.ai/xgboost.html)
@@ -145,8 +143,7 @@ new_observation <- test_matrix[1:2, , drop=FALSE]
 rownames(new_observation) <- c("id1", "id2")
 
 # make a studio for the model
-modelStudio(explainer,
-            new_observation,
+modelStudio(explainer, new_observation,
             options = ms_options(margin_left = 140))
 ```
 
@@ -185,8 +182,7 @@ new_observation <- test[1:2,]
 rownames(new_observation) <- c("id1", "id2")
 
 # make a studio for the model
-modelStudio(explainer,
-            new_observation)
+modelStudio(explainer, new_observation)
 ```
 
 ### h2o [dashboard](https://modelstudio.drwhy.ai/h2o.html)
@@ -228,8 +224,7 @@ new_observation <- test[1:2,]
 rownames(new_observation) <- c("id1", "id2")
 
 # make a studio for the model
-modelStudio(explainer,
-            new_observation,
+modelStudio(explainer, new_observation,
             B = 5)
 
 # shutdown h2o
@@ -314,8 +309,7 @@ new_observation <- test[1:2,]
 rownames(new_observation) <- c("id1", "id2")
 
 # make a studio for the model
-modelStudio(explainer,
-            new_observation)
+modelStudio(explainer, new_observation)
 ```
 
 ## Python

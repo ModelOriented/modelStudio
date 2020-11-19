@@ -81,7 +81,7 @@ modelStudio(explainer,
             new_observation_y  = true_labels)
 ```
 
-If `new_observation = NULL`, then choose `new_observation_n` observations, evenly spread by the histogram bins of `y_hat`. This shall always include the observations, which ids are `which.min(y_hat)` and `which.max(y_hat)`.
+If `new_observation = NULL`, then choose `new_observation_n` observations, evenly spread by the order of `y_hat`. This shall always include the observations, which ids are `which.min(y_hat)` and `which.max(y_hat)`.
 
 ```{r eval = FALSE}
 modelStudio(explainer, new_observation_n = 5) # default is 3
@@ -285,11 +285,11 @@ server <- function(input, output) {
   library(modelStudio)
   library(DALEX)
   model <- glm(survived ~., data = titanic_imputed, family = "binomial")
-  explainer <- explain(model,
-                       data = titanic_imputed,
-                       y = titanic_imputed$survived,
-                       label = "Titanic GLM",
-                       verbose = FALSE)
+  explainer <- DALEX::explain(model,
+                              data = titanic_imputed,
+                              y = titanic_imputed$survived,
+                              label = "Titanic GLM",
+                              verbose = FALSE)
   ms <- modelStudio(explainer,
                     widget_id = WIDGET_ID,  #:# use the widget_id 
                     show_info = FALSE)    

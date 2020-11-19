@@ -203,11 +203,13 @@ modelStudio.explainer <- function(explainer,
   model_type <- explainer$model_info$type
 
   if (!is.null(max_vars)) max_features <- max_vars
-  if (identical(N_fi, numeric(0))) N_fi <- NULL
+  if (is.null(N)) stop("`N` argument must be an integer")
+  #if (identical(N_fi, numeric(0))) N_fi <- NULL
 
   if (is.null(new_observation)) {
-    if (show_info) message("`new_observation` argument is NULL.\n",
-                           "`new_observation_n` observations needed to calculate local explanations are taken from the data.\n")
+    if (show_info) message(paste0("`new_observation` argument is NULL. ",
+                                  "`new_observation_n` observations needed to ",
+                                  "calculate local explanations are taken from the data.\n"))
     ret <- sample_new_observation(explainer, new_observation_n)
     new_observation <- ret[['no']]
     new_observation_y <- ret[['no_y']]
@@ -263,9 +265,11 @@ modelStudio.explainer <- function(explainer,
 
   ## later update progress bar after all explanation functions
   if (show_info) {
+    increment <- ifelse(eda, 1, 0)
+
     pb <- progress_bar$new(
       format = "  Calculating :what \n    Elapsed time: :elapsedfull ETA::eta ", # :percent  [:bar]
-      total = (3*B + 2 + 1)*obs_count + (2*B_fi + 3*B_fi + B_fi) + 1,
+      total = 1 + increment + (3*B + 2 + 1)*obs_count + (2*B_fi + N/30 + N/10) + 2,
       show_after = 0,
       width = 110
     )
@@ -288,13 +292,13 @@ modelStudio.explainer <- function(explainer,
       ingredients::partial_dependence(
           model, data, predict_function, variable_type = "numerical", N = N,
           variable_splits_type=variable_splits_type),
-      "ingredients::partial_dependence (numerical)", show_info, pb, B)
+      "ingredients::partial_dependence (numerical)", show_info, pb, N/30)
     pd_c <- NULL
     ad_n <- calculate(
       ingredients::accumulated_dependence(
           model, data, predict_function, variable_type = "numerical", N = N,
           variable_splits_type=variable_splits_type),
-      "ingredients::accumulated_dependence (numerical)", show_info, pb, 3*B)
+      "ingredients::accumulated_dependence (numerical)", show_info, pb, N/10)
     ad_c <- NULL
   } else if (all(!which_numerical)) {
     pd_n <- NULL
@@ -302,45 +306,51 @@ modelStudio.explainer <- function(explainer,
       ingredients::partial_dependence(
           model, data, predict_function, variable_type = "categorical", N = N,
           variable_splits_type=variable_splits_type),
-      "ingredients::partial_dependence (categorical)", show_info, pb, B)
+      "ingredients::partial_dependence (categorical)", show_info, pb, N/30)
     ad_n <- NULL
     ad_c <- calculate(
       ingredients::accumulated_dependence(
           model, data, predict_function, variable_type = "categorical", N = N,
           variable_splits_type=variable_splits_type),
-      "ingredients::accumulated_dependence (categorical)", show_info, pb, 3*B)
+      "ingredients::accumulated_dependence (categorical)", show_info, pb, N/10)
   } else {
     pd_n <- calculate(
       ingredients::partial_dependence(
         model, data, predict_function, variable_type = "numerical", N = N,
         variable_splits_type=variable_splits_type),
-      "ingredients::partial_dependence (numerical)", show_info, pb, B/2)
+      "ingredients::partial_dependence (numerical)", show_info, pb, N/60)
     pd_c <- calculate(
       ingredients::partial_dependence(
         model, data, predict_function, variable_type = "categorical", N = N,
         variable_splits_type=variable_splits_type),
-      "ingredients::partial_dependence (categorical)", show_info, pb, B/2)
+      "ingredients::partial_dependence (categorical)", show_info, pb, N/60)
     ad_n <- calculate(
       ingredients::accumulated_dependence(
         model, data, predict_function, variable_type = "numerical", N = N,
         variable_splits_type=variable_splits_type),
-      "ingredients::accumulated_dependence (numerical)", show_info, pb, 2*B)
+      "ingredients::accumulated_dependence (numerical)", show_info, pb, 2*N/30)
     ad_c <- calculate(
       ingredients::accumulated_dependence(
         model, data, predict_function, variable_type = "categorical", N = N,
         variable_splits_type=variable_splits_type),
-      "ingredients::accumulated_dependence (categorical)", show_info, pb, B)
+      "ingredients::accumulated_dependence (categorical)", show_info, pb, N/30)
   }
 
   fi_data <- prepare_feature_importance(fi, max_features, options$show_boxplot,
                                         attr(loss_function, "loss_name"), ...)
   pd_data <- prepare_partial_dependence(pd_n, pd_c, variables = variable_names)
   ad_data <- prepare_accumulated_dependence(ad_n, ad_c, variables = variable_names)
-  mp_data <- DALEX::model_performance(explainer)$measures
+  mp_ret <- calculate(
+    DALEX::model_performance(explainer),
+    "DALEX::model_performance", show_info, pb, 1)
+  mp_data <- mp_ret$measures
 
   if (eda) {
     #:# fd_data is used by targetVs and residualsVs plots
-    residuals <- DALEX::model_diagnostics(explainer)$residuals
+    md_ret <- calculate(
+      DALEX::model_diagnostics(explainer),
+      "DALEX::model_diagnostics", show_info, pb, 1)
+    residuals <- md_ret$residuals
     fd_data <- prepare_feature_distribution(data, y, variables = variable_names,
                                             residuals = residuals)
     at_data <- prepare_average_target(data, y, variables = variable_names)
@@ -514,6 +524,8 @@ modelStudio.explainer <- function(explainer,
 
   class(model_studio) <- c(class(model_studio), "modelStudio")
 
+  if (show_info) pb$tick(1, tokens = list(what = "..."))
+
   model_studio
 }
 
@@ -650,7 +662,7 @@ sample_new_observation <- function(explainer, new_observation_n = 3) {
     new_observation_n <- dim(explainer$data)[1]
   }
 
-  ids <- unique(quantile(seq_along(y_hat), seq(0, 1, length.out = new_observation_n), type = 4))
+  ids <- unique(round(seq(1, length(y_hat), length.out = new_observation_n)))
   new_observation_ids <- order(y_hat)[ids]
 
   list(no = explainer$data[new_observation_ids,], no_y = explainer$y[new_observation_ids])
