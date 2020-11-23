@@ -495,6 +495,11 @@ function initializeStudio() {
 
   if (facetData.length >= 2) {
     svg.selectAll('.enterChoiceButton').filter('#enterChoiceButton1').dispatch('click');
+    svg.select("#chosePlotButton1").select("#CP").dispatch('click');
+  }
+
+  if (facetData.length >= 3) {
+    svg.selectAll('.enterChoiceButton').filter('#enterChoiceButton2').dispatch('click');
   }
 }
 
