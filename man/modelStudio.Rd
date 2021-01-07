@@ -94,7 +94,7 @@ An object of the \code{r2d3, htmlwidget, modelStudio} class.
 This function computes various (instance and dataset level) model explanations and
 produces a customisable dashboard, which consists of multiple panels for plots with their
 short descriptions. Easily save the dashboard and share it with others. Tools for
-\href{https://pbiecek.github.io/ema/}{Explanatory Model Analysis} unite with tools for
+\href{https://ema.drwhy.ai/}{Explanatory Model Analysis} unite with tools for
 Exploratory Data Analysis to give a broad overview of the model behavior.
 
 The extensive documentation covers:
@@ -105,7 +105,7 @@ The extensive documentation covers:
   \item Framework and model compatibility -
  \href{https://modelstudio.drwhy.ai/articles/ms-r-python-examples.html}{\bold{R & Python examples}}
   \item Theoretical introduction to the plots -
- \href{https://pbiecek.github.io/ema/}{Explanatory Model Analysis: Explore, Explain and Examine Predictive Models}
+ \href{https://ema.drwhy.ai/}{Explanatory Model Analysis: Explore, Explain, and Examine Predictive Models}
 }
 
 Displayed variable can be changed by clicking on the bars of plots or with the first dropdown list,
