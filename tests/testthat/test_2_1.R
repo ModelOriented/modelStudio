@@ -8,7 +8,8 @@ model <- glm(survived ~., data = DALEX::titanic_imputed, family = "binomial")
 explainer <- DALEX::explain(model,
                             data = DALEX::titanic_imputed,
                             y = DALEX::titanic_imputed$survived,
-                            label = "Titanic GLM")
+                            label = "Titanic GLM",
+                            verbose=v)
 
 testthat::test_that("ms_options parameters", {
   ms1 <- testthat::expect_silent(
