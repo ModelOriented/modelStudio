@@ -115,7 +115,7 @@
 
     
     
-<p>The <code><a href="../reference/modelStudio.html">modelStudio()</a></code> function computes various (instance and dataset level) model explanations and produces a customisable dashboard, which consists of multiple panels for plots with their short descriptions. Easily save the dashboard and share it with others. Tools for <a href="https://pbiecek.github.io/ema/">Explanatory Model Analysis</a> unite with tools for Exploratory Data Analysis to give a broad overview of the model behavior.</p>
+<p>The <code><a href="../reference/modelStudio.html">modelStudio()</a></code> function computes various (instance and dataset level) model explanations and produces a customisable dashboard, which consists of multiple panels for plots with their short descriptions. Easily save the dashboard and share it with others. Tools for <a href="https://ema.drwhy.ai/">Explanatory Model Analysis</a> unite with tools for Exploratory Data Analysis to give a broad overview of the model behavior.</p>
 <p>Let’s use <code>HR</code> dataset to explore <code>modelStudio</code> parameters:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">train</span> <span class="op">&lt;-</span> <span class="fu">DALEX</span><span class="fu">::</span><span class="va"><a href="https://ModelOriented.github.io/DALEX/reference/HR.html">HR</a></span>
@@ -209,7 +209,7 @@
 <div id="instance-explanations" class="section level3">
 <h3 class="hasAnchor">
 <a href="#instance-explanations" class="anchor"></a>instance explanations</h3>
-<p>Pass data points to the <code>new_observation</code> parameter for instance explanations such as <a href="https://pbiecek.github.io/ema/breakDown.html">Break Down</a>, <a href="https://pbiecek.github.io/ema/shapley.html">Shapley Values</a> and <a href="https://pbiecek.github.io/ema/ceterisParibus.html">Ceteris Paribus</a> Profiles. Use <code>new_observation_y</code> to show their true labels.</p>
+<p>Pass data points to the <code>new_observation</code> parameter for instance explanations such as <a href="https://ema.drwhy.ai/breakDown.html">Break Down</a>, <a href="https://ema.drwhy.ai/shapley.html">Shapley Values</a> and <a href="https://ema.drwhy.ai/ceterisParibus.html">Ceteris Paribus</a> Profiles. Use <code>new_observation_y</code> to show their true labels.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">new_observation</span> <span class="op">&lt;-</span> <span class="va">test</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,<span class="op">]</span>
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">new_observation</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"John Snow"</span>, <span class="st">"Arya Stark"</span>, <span class="st">"Samwell Tarly"</span><span class="op">)</span>
@@ -253,13 +253,13 @@
 <a href="#more-calculations-means-more-time" class="anchor"></a>more calculations means more time</h3>
 <ul>
 <li>
-<code>N</code> is a number of observations used for calculation of <a href="https://pbiecek.github.io/ema/partialDependenceProfiles.html">Partial Dependence</a> and <a href="https://pbiecek.github.io/ema/accumulatedLocalProfiles.html">Accumulated Dependence</a> Profiles (default is <code>300</code>).</li>
+<code>N</code> is a number of observations used for calculation of <a href="https://ema.drwhy.ai/partialDependenceProfiles.html">Partial Dependence</a> and <a href="https://ema.drwhy.ai/accumulatedLocalProfiles.html">Accumulated Dependence</a> Profiles (default is <code>300</code>).</li>
 <li>
-<code>N_fi</code> is a number of observations used for calculation of <a href="https://pbiecek.github.io/ema/featureImportance.html">Feature Importance</a> (default is <code>10*N</code>).</li>
+<code>N_fi</code> is a number of observations used for calculation of <a href="https://ema.drwhy.ai/featureImportance.html">Feature Importance</a> (default is <code>10*N</code>).</li>
 <li>
-<code>B</code> is a number of permutation rounds used for calculation of <a href="https://pbiecek.github.io/ema/shapley.html">Shapley Values</a> (default is <code>10</code>).</li>
+<code>B</code> is a number of permutation rounds used for calculation of <a href="https://ema.drwhy.ai/shapley.html">Shapley Values</a> (default is <code>10</code>).</li>
 <li>
-<code>B_fi</code> is a number of permutation rounds used for calculation of <a href="https://pbiecek.github.io/ema/featureImportance.html">Feature Importance</a> (default is <code>B</code>).</li>
+<code>B_fi</code> is a number of permutation rounds used for calculation of <a href="https://ema.drwhy.ai/featureImportance.html">Feature Importance</a> (default is <code>B</code>).</li>
 </ul>
 <p>Decrease <code>N</code> and <code>B</code> parameters to lower the computation time or increase them to get more accurate empirical results.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -445,7 +445,7 @@
 <h2 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h2>
 <ul>
-<li>Theoretical introduction to the plots: <a href="https://pbiecek.github.io/ema/">Explanatory Model Analysis. Explore, Explain and Examine Predictive Models.</a>
+<li>Theoretical introduction to the plots: <a href="https://ema.drwhy.ai/">Explanatory Model Analysis. Explore, Explain, and Examine Predictive Models.</a>
 </li>
 <li>The input object is implemented in <a href="https://modeloriented.github.io/DALEX/">DALEX</a>
 </li>
