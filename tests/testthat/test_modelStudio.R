@@ -115,9 +115,11 @@ testthat::test_that("parallel", {
   testthat::expect_is(ms_parallel, "r2d3")
 })
 
-testthat::test_that("parallel rf", {
-  testthat::expect_is(ms_parallel_rf, "r2d3")
-})
+if (requireNamespace("ranger", quietly=TRUE)) {
+  testthat::test_that("parallel rf", {
+    testthat::expect_is(ms_parallel_rf, "r2d3")
+  })
+}
 
 testthat::test_that("show_info_and_new_observation_y", {
   testthat::expect_is(modelStudio::modelStudio(explain_glm,
@@ -131,7 +133,9 @@ testthat::test_that("eda = FALSE", {
                                                N = N, B = B, show_info = v), "r2d3")
 })
 
-testthat::test_that("xgboost matrix", {
-  testthat::expect_is(modelStudio::modelStudio(explainer_xgb,
-                                               N = N, B = B, show_info = v), "r2d3")
-})
+if (requireNamespace("xgboost", quietly=TRUE)) {
+  testthat::test_that("xgboost matrix", {
+    testthat::expect_is(modelStudio::modelStudio(explainer_xgb,
+                                                 N = N, B = B, show_info = v), "r2d3")
+  })
+}
