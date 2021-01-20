@@ -48,7 +48,7 @@ model <- ranger(survived ~., data = titanic_imputed)
 explainer <- explain(model,
                      data = titanic_imputed,
                      y = titanic_imputed$survived,
-                     label = "Titanic RF")
+                     label = "Random Forest")
 
 # make a studio for the model
 modelStudio(explainer)
