@@ -38,16 +38,17 @@ devtools::install_github("ModelOriented/modelStudio")
 
 ```r
 library("DALEX")
+library("ranger")
 library("modelStudio")
 
 # fit a model
-model <- glm(survived ~., data = titanic_imputed, family = "binomial")
+model <- ranger(survived ~., data = titanic_imputed)
 
 # create an explainer for the model    
 explainer <- explain(model,
                      data = titanic_imputed,
                      y = titanic_imputed$survived,
-                     label = "Titanic GLM")
+                     label = "Titanic RF")
 
 # make a studio for the model
 modelStudio(explainer)
