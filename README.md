@@ -14,13 +14,13 @@ The main `modelStudio()` function computes various (instance and dataset level) 
 
 <!--- [explain FIFA19](https://pbiecek.github.io/explainFIFA19/) &emsp; --->
 <!--- [explain Lung Cancer](https://github.com/hbaniecki/transparent_xai/) &emsp; --->
-&emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
+&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; 
 [**explain COVID-19**](https://rai-covid.drwhy.ai) &emsp;
 [**R & Python examples**](http://modelstudio.drwhy.ai/articles/ms-r-python-examples.html) &emsp;
 [**More Resources**](http://modelstudio.drwhy.ai/#more-resources) &emsp;
-[**FAQ & Troubleshooting**](https://github.com/ModelOriented/modelStudio/issues/54)
+[**IEMA**](https://iema.drwhy.ai)
 
-![](man/figures/short.gif)
+[![](man/figures/short.gif)](https://rai-covid.drwhy.ai)
 
 The `modelStudio` package is a part of the [**DrWhy.AI**](http://drwhy.ai) universe.
 
@@ -56,7 +56,7 @@ modelStudio(explainer)
 
 [Save the output](https://modelstudio.drwhy.ai/#save--share) in the form of a HTML file - [**Demo Dashboard**](https://modelstudio.drwhy.ai/demo.html).
 
-![](man/figures/long.gif)
+[![](man/figures/long.gif)](https://rai-covid.drwhy.ai)
 
 ## R & Python Examples [more](https://modelstudio.drwhy.ai/articles/ms-r-python-examples.html)
 
@@ -348,4 +348,4 @@ If you use `modelStudio`, please cite our [JOSS article](https://joss.theoj.org/
   
 ## Acknowledgments
 
-Work on this package was financially supported by the `NCN Opus grant 2016/21/B/ST6/02176`.
+Work on this package was financially supported by the `NCN Opus grant 2016/21/B/ST6/02176` and `NCBR grant POIR.01.01.01-00-0328/17`.
