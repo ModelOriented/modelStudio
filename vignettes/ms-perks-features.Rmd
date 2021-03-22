@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 The `modelStudio()` function computes various (instance and dataset level) model explanations 
 and produces a customisable dashboard, which consists of multiple panels for plots with their
 short descriptions. Easily save the dashboard and share it with others. Tools for
-[Explanatory Model Analysis](https://pbiecek.github.io/ema/) unite with tools for Exploratory Data Analysis 
+[Explanatory Model Analysis](https://ema.drwhy.ai/) unite with tools for Exploratory Data Analysis 
 to give a broad overview of the model behavior.
 
 Let's use `HR` dataset to explore `modelStudio` parameters:
@@ -66,9 +66,9 @@ library("modelStudio")
 ### instance explanations
 
 Pass data points to the `new_observation` parameter for instance explanations
-such as [Break Down](https://pbiecek.github.io/ema/breakDown.html),
-[Shapley Values](https://pbiecek.github.io/ema/shapley.html) and
-[Ceteris Paribus](https://pbiecek.github.io/ema/ceterisParibus.html) Profiles.
+such as [Break Down](https://ema.drwhy.ai/breakDown.html),
+[Shapley Values](https://ema.drwhy.ai/shapley.html) and
+[Ceteris Paribus](https://ema.drwhy.ai/ceterisParibus.html) Profiles.
 Use `new_observation_y` to show their true labels.
 
 ```{r eval = FALSE}
@@ -119,14 +119,14 @@ modelStudio(explainer,
 ### more calculations means more time
 
 - `N` is a number of observations used for calculation of
-[Partial Dependence](https://pbiecek.github.io/ema/partialDependenceProfiles.html)
-and [Accumulated Dependence](https://pbiecek.github.io/ema/accumulatedLocalProfiles.html) Profiles (default is `300`). 
+[Partial Dependence](https://ema.drwhy.ai/partialDependenceProfiles.html)
+and [Accumulated Dependence](https://ema.drwhy.ai/accumulatedLocalProfiles.html) Profiles (default is `300`). 
 - `N_fi` is a number of observations used for calculation of
-[Feature Importance](https://pbiecek.github.io/ema/featureImportance.html) (default is `10*N`).
+[Feature Importance](https://ema.drwhy.ai/featureImportance.html) (default is `10*N`).
 - `B` is a number of permutation rounds used for calculation of
-[Shapley Values](https://pbiecek.github.io/ema/shapley.html) (default is `10`).
+[Shapley Values](https://ema.drwhy.ai/shapley.html) (default is `10`).
 - `B_fi` is a number of permutation rounds used for calculation of
-[Feature Importance](https://pbiecek.github.io/ema/featureImportance.html) (default is `B`).
+[Feature Importance](https://ema.drwhy.ai/featureImportance.html) (default is `B`).
 
 Decrease `N` and `B` parameters to lower the computation time or increase
 them to get more accurate empirical results.
@@ -341,7 +341,7 @@ modelStudio(explainer_mlr)
 
 ## References
 
-* Theoretical introduction to the plots: [Explanatory Model Analysis. Explore, Explain and Examine Predictive Models.](https://pbiecek.github.io/ema/)
+* Theoretical introduction to the plots: [Explanatory Model Analysis. Explore, Explain, and Examine Predictive Models.](https://ema.drwhy.ai/)
 * The input object is implemented in [DALEX](https://modeloriented.github.io/DALEX/)
 * Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence explanations
 are implemented in [ingredients](https://modeloriented.github.io/ingredients/)

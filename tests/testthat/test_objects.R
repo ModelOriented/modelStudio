@@ -67,11 +67,13 @@ explain_model_small <- DALEX::explain(model_small,
 
 ### ranger + apartments
 
-model_rf <- ranger::ranger(m2.price ~. , data = apartments)
-explain_rf <- DALEX::explain(model_rf,
-                      data = apartments,
-                      y = apartments$m2.price,
-                      verbose = v)
+if (requireNamespace("ranger", quietly=TRUE)) {
+  model_rf <- ranger::ranger(m2.price ~. , data = apartments)
+  explain_rf <- DALEX::explain(model_rf,
+                               data = apartments,
+                               y = apartments$m2.price,
+                               verbose = v)
+}
 
 
 ### data/new_observation permutations
@@ -132,15 +134,16 @@ explain_artifficial <- DALEX::explain(model_artifficial,
                                       y = artifficial[,12],
                                       verbose = v)
 
-### xgboost matrix
-model_matrix_train <- model.matrix(status == "fired" ~ . -1, DALEX::HR)
-data_train <- xgboost::xgb.DMatrix(model_matrix_train, label = DALEX::HR$status == "fired")
+if (requireNamespace("xgboost", quietly=TRUE)) {
+  ### xgboost matrix
+  model_matrix_train <- model.matrix(status == "fired" ~ . -1, DALEX::HR)
+  data_train <- xgboost::xgb.DMatrix(model_matrix_train, label = DALEX::HR$status == "fired")
 
-param <- list(max_depth = 2, eta = 1, nthread = 2,
-              objective = "binary:logistic", eval_metric = "auc")
-HR_xgb_model <- xgboost::xgb.train(param, data_train, nrounds = 50)
+  param <- list(max_depth = 2, eta = 1, nthread = 2,
+                objective = "binary:logistic", eval_metric = "auc")
+  HR_xgb_model <- xgboost::xgb.train(param, data_train, nrounds = 50)
 
-explainer_xgb <- DALEX::explain(HR_xgb_model, data = model_matrix_train,
-                                y = DALEX::HR$status == "fired", label = "xgboost",
-                                verbose = v)
-
+  explainer_xgb <- DALEX::explain(HR_xgb_model, data = model_matrix_train,
+                                  y = DALEX::HR$status == "fired", label = "xgboost",
+                                  verbose = v)
+}

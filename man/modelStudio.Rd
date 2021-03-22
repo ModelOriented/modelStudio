@@ -94,7 +94,7 @@ An object of the \code{r2d3, htmlwidget, modelStudio} class.
 This function computes various (instance and dataset level) model explanations and
 produces a customisable dashboard, which consists of multiple panels for plots with their
 short descriptions. Easily save the dashboard and share it with others. Tools for
-\href{https://pbiecek.github.io/ema/}{Explanatory Model Analysis} unite with tools for
+\href{https://ema.drwhy.ai/}{Explanatory Model Analysis} unite with tools for
 Exploratory Data Analysis to give a broad overview of the model behavior.
 
 The extensive documentation covers:
@@ -105,7 +105,7 @@ The extensive documentation covers:
   \item Framework and model compatibility -
  \href{https://modelstudio.drwhy.ai/articles/ms-r-python-examples.html}{\bold{R & Python examples}}
   \item Theoretical introduction to the plots -
- \href{https://pbiecek.github.io/ema/}{Explanatory Model Analysis: Explore, Explain and Examine Predictive Models}
+ \href{https://ema.drwhy.ai/}{Explanatory Model Analysis: Explore, Explain, and Examine Predictive Models}
 }
 
 Displayed variable can be changed by clicking on the bars of plots or with the first dropdown list,
@@ -141,56 +141,57 @@ modelStudio(explainer_titanic,
 \donttest{
 
 #:# ex2 regression on 'apartments' data
-library("ranger")
+if (requireNamespace("ranger", quietly=TRUE)) {
+  library("ranger")
+  model_apartments <- ranger(m2.price ~. ,data = apartments)
 
-model_apartments <- ranger(m2.price ~. ,data = apartments)
+  explainer_apartments <- explain(model_apartments,
+                                  data = apartments,
+                                  y = apartments$m2.price)
 
-explainer_apartments <- explain(model_apartments,
-                                data = apartments,
-                                y = apartments$m2.price)
+  new_apartments <- apartments[1:2,]
+  rownames(new_apartments) <- c("ap1","ap2")
 
-new_apartments <- apartments[1:2,]
-rownames(new_apartments) <- c("ap1","ap2")
+  # change dashboard dimensions and animation length
+  modelStudio(explainer_apartments,
+              new_apartments,
+              facet_dim = c(2, 3),
+              time = 800)
 
-# change dashboard dimensions and animation length
-modelStudio(explainer_apartments,
-            new_apartments,
-            facet_dim = c(2, 3),
-            time = 800)
+  # add information about true labels
+  modelStudio(explainer_apartments,
+              new_apartments,
+              new_observation_y = new_apartments$m2.price)
 
-# add information about true labels
-modelStudio(explainer_apartments,
-            new_apartments,
-            new_observation_y = new_apartments$m2.price)
-
-# don't compute EDA plots
-modelStudio(explainer_apartments,
-            eda = FALSE)
-
+  # don't compute EDA plots
+  modelStudio(explainer_apartments,
+              eda = FALSE)
+}
 
 #:# ex3 xgboost model on 'HR' dataset
-library("xgboost")
+if (requireNamespace("xgboost", quietly=TRUE)) {
+  library("xgboost")
+  HR_matrix <- model.matrix(status == "fired" ~ . -1, HR)
 
-HR_matrix <- model.matrix(status == "fired" ~ . -1, HR)
+  # fit a model
+  xgb_matrix <- xgb.DMatrix(HR_matrix, label = HR$status == "fired")
+  params <- list(max_depth = 3, objective = "binary:logistic", eval_metric = "auc")
+  model_HR <- xgb.train(params, xgb_matrix, nrounds = 300)
 
-# fit a model
-xgb_matrix <- xgb.DMatrix(HR_matrix, label = HR$status == "fired")
-params <- list(max_depth = 3, objective = "binary:logistic", eval_metric = "auc")
-model_HR <- xgb.train(params, xgb_matrix, nrounds = 300)
+  # create an explainer for the model
+  explainer_HR <- explain(model_HR,
+                          data = HR_matrix,
+                          y = HR$status == "fired",
+                          label = "xgboost")
 
-# create an explainer for the model
-explainer_HR <- explain(model_HR,
-                        data = HR_matrix,
-                        y = HR$status == "fired",
-                        label = "xgboost")
+  # pick observations
+  new_observation <- HR_matrix[1:2, , drop=FALSE]
+  rownames(new_observation) <- c("id1", "id2")
 
-# pick observations
-new_observation <- HR_matrix[1:2, , drop=FALSE]
-rownames(new_observation) <- c("id1", "id2")
-# make a studio for the model
-modelStudio(explainer_HR,
-            new_observation)
-
+  # make a studio for the model
+  modelStudio(explainer_HR,
+              new_observation)
+}
 }
 
 }

@@ -3,24 +3,24 @@
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/modelStudio)](https://cran.r-project.org/package=modelStudio)
 [![R build status](https://github.com/ModelOriented/modelStudio/workflows/R-CMD-check/badge.svg)](https://github.com/ModelOriented/modelStudio/actions?query=workflow%3AR-CMD-check)
 [![Coverage Status](https://codecov.io/gh/ModelOriented/modelStudio/branch/master/graph/badge.svg)](https://codecov.io/github/ModelOriented/modelStudio?branch=master)
-[![DrWhy-eXtrAI](https://img.shields.io/badge/DrWhy-AutoMat-ae2c87)](http://drwhy.ai/#AutoMat)
+[![](https://cranlogs.r-pkg.org/badges/grand-total/modelStudio)](https://cranlogs.r-pkg.org/badges/grand-total/modelStudio)
 [![JOSS-status](https://joss.theoj.org/papers/9eec8c9d1969fbd44b3ea438a74af911/status.svg)](https://joss.theoj.org/papers/9eec8c9d1969fbd44b3ea438a74af911)
 
 ## Overview
 
 The `modelStudio` package **automates the Explanatory Analysis of Machine Learning predictive models**. It generates advanced interactive model explanations in the form of a **serverless HTML site** with only one line of code. This tool is model agnostic, therefore compatible with most of the black box predictive models and frameworks (e.g.&nbsp;`mlr/mlr3`, `xgboost`, `caret`, `h2o`, `parsnip`, `tidymodels`, `scikit-learn`, `lightgbm`, `keras/tensorflow`).
 
-The main `modelStudio()` function computes various (instance and dataset level) model explanations and produces a&nbsp;**customisable dashboard**, which consists of multiple panels for plots with their short descriptions. Easily&nbsp;**save**&nbsp; the dashboard and&nbsp;**share** it with others. Tools for [Explanatory Model Analysis](https://pbiecek.github.io/ema) unite with tools for Exploratory Data Analysis to give a broad overview of the model behavior.
+The main `modelStudio()` function computes various (instance and dataset level) model explanations and produces a&nbsp;**customisable dashboard**, which consists of multiple panels for plots with their short descriptions. Easily&nbsp;**save**&nbsp; the dashboard and&nbsp;**share** it with others. Tools for [Explanatory Model Analysis](https://ema.drwhy.ai/) unite with tools for Exploratory Data Analysis to give a broad overview of the model behavior.
 
 <!--- [explain FIFA19](https://pbiecek.github.io/explainFIFA19/) &emsp; --->
 <!--- [explain Lung Cancer](https://github.com/hbaniecki/transparent_xai/) &emsp; --->
-&emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
+&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; 
 [**explain COVID-19**](https://rai-covid.drwhy.ai) &emsp;
 [**R & Python examples**](http://modelstudio.drwhy.ai/articles/ms-r-python-examples.html) &emsp;
 [**More Resources**](http://modelstudio.drwhy.ai/#more-resources) &emsp;
-[**FAQ & Troubleshooting**](https://github.com/ModelOriented/modelStudio/issues/54)
+[**IEMA**](https://iema.drwhy.ai)
 
-![](man/figures/short.gif)
+[![](man/figures/short.gif)](https://rai-covid.drwhy.ai)
 
 The `modelStudio` package is a part of the [**DrWhy.AI**](http://drwhy.ai) universe.
 
@@ -38,24 +38,25 @@ devtools::install_github("ModelOriented/modelStudio")
 
 ```r
 library("DALEX")
+library("ranger")
 library("modelStudio")
 
 # fit a model
-model <- glm(survived ~., data = titanic_imputed, family = "binomial")
+model <- ranger(survived ~., data = titanic_imputed)
 
 # create an explainer for the model    
 explainer <- explain(model,
                      data = titanic_imputed,
                      y = titanic_imputed$survived,
-                     label = "Titanic GLM")
+                     label = "Random Forest")
 
 # make a studio for the model
 modelStudio(explainer)
 ```
 
-[Save the output](http://modelstudio.drwhy.ai/#save--share) in the form of a HTML file - [**Demo Dashboard**](https://modelstudio.drwhy.ai/demo.html).
+[Save the output](https://modelstudio.drwhy.ai/#save--share) in the form of a HTML file - [**Demo Dashboard**](https://modelstudio.drwhy.ai/demo.html).
 
-![](man/figures/long.gif)
+[![](man/figures/long.gif)](https://rai-covid.drwhy.ai)
 
 ## R & Python Examples [more](https://modelstudio.drwhy.ai/articles/ms-r-python-examples.html)
 
@@ -335,7 +336,7 @@ If you use `modelStudio`, please cite our [JOSS article](https://joss.theoj.org/
 
 ## More Resources
 
-  - Theoretical introduction to the plots: [Explanatory Model Analysis: Explore, Explain and Examine Predictive Models](https://pbiecek.github.io/ema)
+  - Theoretical introduction to the plots: [Explanatory Model Analysis: Explore, Explain, and Examine Predictive Models](https://ema.drwhy.ai/)
 
   - Vignettes: [modelStudio - perks and features](https://modelstudio.drwhy.ai/articles/ms-perks-features.html) and [modelStudio - R & Python examples](https://modelstudio.drwhy.ai/articles/ms-r-python-examples.html)  
   
@@ -347,4 +348,4 @@ If you use `modelStudio`, please cite our [JOSS article](https://joss.theoj.org/
   
 ## Acknowledgments
 
-Work on this package was financially supported by the `NCN Opus grant 2016/21/B/ST6/02176`.
+Work on this package was financially supported by the `NCN Opus grant 2016/21/B/ST6/02176` and `NCBR grant POIR.01.01.01-00-0328/17`.

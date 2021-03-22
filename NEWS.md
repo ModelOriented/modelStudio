@@ -1,3 +1,6 @@
+# modelStudio 2.1.1
+* fix CRAN checks
+
 # modelStudio 2.1.0
 * **DEFAULTS CHANGES**: if `new_observation = NULL` then choose `new_observation_n = 3` observations, evenly spread by the order of `y_hat`. This shall always include the observations, which ids are `which.min(y_hat)` and `which.max(y_hat)`. Additionally, improve the observation dropdown text in dashboard. [(#94)](https://github.com/ModelOriented/modelStudio/issues/94)
 * updated the progress printing

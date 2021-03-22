@@ -1,7 +1,7 @@
 library("testthat")
 library("modelStudio")
 library("DALEX")
-library("ranger")
-library("xgboost")
+requireNamespace("ranger", quietly=TRUE)
+requireNamespace("xgboost", quietly=TRUE)
 
 test_check("modelStudio")
