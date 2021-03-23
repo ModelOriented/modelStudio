@@ -490,22 +490,22 @@ function initializeStudio() {
 
   if (facetData.length >= 1) {
     svg.selectAll('.enterChoiceButton').filter('#enterChoiceButton0').dispatch('click');
-    svg.select("#chosePlotButton0").select("#FI").dispatch('click');
+    svg.select("#chosePlotButton0").select("#SV").dispatch('click');
   }
 
   if (facetData.length >= 2) {
     svg.selectAll('.enterChoiceButton').filter('#enterChoiceButton1').dispatch('click');
-    svg.select("#chosePlotButton1").select("#PD").dispatch('click');
+    svg.select("#chosePlotButton1").select("#CP").dispatch('click');
   }
 
   if (facetData.length >= 3) {
     svg.selectAll('.enterChoiceButton').filter('#enterChoiceButton2').dispatch('click');
-    svg.select("#chosePlotButton2").select("#SV").dispatch('click');
+    svg.select("#chosePlotButton2").select("#FI").dispatch('click');
   }
 
   if (facetData.length >= 3) {
     svg.selectAll('.enterChoiceButton').filter('#enterChoiceButton3').dispatch('click');
-    svg.select("#chosePlotButton3").select("#AT").dispatch('click');
+    svg.select("#chosePlotButton3").select("#FD").dispatch('click');
   }
 }
 
