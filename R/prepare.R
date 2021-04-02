@@ -563,7 +563,7 @@ prepare_feature_distribution <- function(x, y, variables = NULL, residuals = NUL
   }
 
   #:# add residuals
-  X <- as.data.frame(cbind(x[,variables], y, residuals), stringsAsFactors=TRUE)
+  X <- as.data.frame(cbind(x[,variables, drop = FALSE], y, residuals), stringsAsFactors=TRUE)
   colnames(X) <- c(variables, "_target_", "_residuals_")
 
   y_max <- max(y, na.rm = TRUE)

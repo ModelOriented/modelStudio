@@ -1,3 +1,6 @@
+# modelStudio 2.1.2
+* fixed an error in `modelStudio()` when data had only one variable [(#99)](https://github.com/ModelOriented/modelStudio/issues/99)
+
 # modelStudio 2.1.1
 * fix CRAN checks
 

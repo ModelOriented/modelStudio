@@ -257,7 +257,7 @@ modelStudio.explainer <- function(explainer,
   potential_variable_names <- names(is_y[!is_y])
   variable_names <- intersect(potential_variable_names, colnames(new_observation))
   ## get rid of target in data
-  data <- data[,!is_y]
+  data <- data[, !is_y, drop = FALSE]
 
   obs_count <- dim(new_observation)[1]
   obs_data <- new_observation
@@ -482,7 +482,7 @@ modelStudio.explainer <- function(explainer,
 
   options <- c(list(time = time,
                     model_name = label,
-                    variable_names = variable_names,
+                    variable_names = as.list(variable_names),
                     facet_dim = facet_dim,
                     version_text = version_text,
                     measure_text = measure_text,
