@@ -6,7 +6,7 @@ docs/* linguist-documentation
 man/* linguist-documentation
 misc/* linguist-documentation
 pkgdown/* linguist-documentation
-pkgdown/favicon/* linguist-documentation
+pkgdown/favicon/*.html linguist-documentation
 
-*.html linguist-documentation
-*.htm linguist-documentation
+**.html linguist-documentation
+**.htm linguist-documentation
