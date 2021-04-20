@@ -42,7 +42,7 @@ library("ranger")
 library("modelStudio")
 
 # fit a model
-model <- ranger(survived ~., data = titanic_imputed)
+model <- ranger(survived ~., data = titanic_imputed, probability = TRUE)
 
 # create an explainer for the model    
 explainer <- explain(model,
