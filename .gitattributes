@@ -1,7 +1,12 @@
 inst/d3js/modelStudio.js linguist-vendored=false
 
+tests/testthat/test_warnings_and_errors.R linguist-documentation
+
 docs/* linguist-documentation
 man/* linguist-documentation
 misc/* linguist-documentation
 pkgdown/* linguist-documentation
-tests/testthat/test_warnings_and_errors.R linguist-documentation
+pkgdown/favicon/* linguist-documentation
+
+*.html linguist-documentation
+*.htm linguist-documentation
