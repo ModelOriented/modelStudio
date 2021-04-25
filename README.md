@@ -8,17 +8,16 @@
 
 ## Overview
 
-The `modelStudio` package **automates the Explanatory Analysis of Machine Learning predictive models**. It generates advanced interactive model explanations in the form of a **serverless HTML site** with only one line of code. This tool is model agnostic, therefore compatible with most of the black box predictive models and frameworks (e.g.&nbsp;`mlr/mlr3`, `xgboost`, `caret`, `h2o`, `parsnip`, `tidymodels`, `scikit-learn`, `lightgbm`, `keras/tensorflow`).
+The `modelStudio` package **automates the explanatory analysis of machine learning predictive models**. It generates advanced interactive model explanations in the form of a **serverless HTML site** with only one line of code. This tool is model-agnostic, therefore compatible with most of the black-box predictive models and frameworks (e.g.&nbsp;`mlr/mlr3`, `xgboost`, `caret`, `h2o`, `parsnip`, `tidymodels`, `scikit-learn`, `lightgbm`, `keras/tensorflow`).
 
-The main `modelStudio()` function computes various (instance and dataset level) model explanations and produces a&nbsp;**customisable dashboard**, which consists of multiple panels for plots with their short descriptions. Easily&nbsp;**save**&nbsp; the dashboard and&nbsp;**share** it with others. Tools for [Explanatory Model Analysis](https://ema.drwhy.ai/) unite with tools for Exploratory Data Analysis to give a broad overview of the model behavior.
+The main `modelStudio()` function computes various (instance and model-level) explanations and produces a&nbsp;**customisable dashboard**, which consists of multiple panels for plots with their short descriptions. Easily&nbsp;**save**&nbsp; the dashboard and&nbsp;**share** it with others. Tools for [Explanatory Model Analysis](https://ema.drwhy.ai/) unite with tools for Exploratory Data Analysis to give a broad overview of the model behavior.
 
-<!--- [explain FIFA19](https://pbiecek.github.io/explainFIFA19/) &emsp; --->
-<!--- [explain Lung Cancer](https://github.com/hbaniecki/transparent_xai/) &emsp; --->
-&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; 
-[**explain COVID-19**](https://rai-covid.drwhy.ai) &emsp;
-[**R & Python examples**](http://modelstudio.drwhy.ai/articles/ms-r-python-examples.html) &emsp;
-[**More Resources**](http://modelstudio.drwhy.ai/#more-resources) &emsp;
-[**IEMA**](https://iema.drwhy.ai)
+<p align="center"><b>
+<a href="https://rai-covid.drwhy.ai">explain COVID-19<a> &emsp;
+<a href="http://modelstudio.drwhy.ai/articles/ms-r-python-examples.html">R & Python examples<a> &emsp;
+<a href="http://modelstudio.drwhy.ai/#more-resources">More resources<a> &emsp;
+<a href="https://iema.drwhy.ai">Interactive EMA<a> &emsp;
+</b></p>
 
 [![](man/figures/short.gif)](https://rai-covid.drwhy.ai)
 
@@ -34,7 +33,7 @@ install.packages("modelStudio")
 devtools::install_github("ModelOriented/modelStudio")
 ```
 
-## Simple Demo
+## Simple demo
 
 ```r
 library("DALEX")
@@ -58,7 +57,7 @@ modelStudio(explainer)
 
 [![](man/figures/long.gif)](https://rai-covid.drwhy.ai)
 
-## R & Python Examples [more](https://modelstudio.drwhy.ai/articles/ms-r-python-examples.html)
+## R & Python examples [more](https://modelstudio.drwhy.ai/articles/ms-r-python-examples.html)
 
 -------------------------------
 
@@ -305,7 +304,7 @@ modelStudio(explainer)
 
 -------------------------------
 
-## Save & Share
+## Save & share
 
 Save `modelStudio` as a HTML file using buttons on the top of the RStudio Viewer
 or with [`r2d3::save_d3_html()`](https://rstudio.github.io/r2d3/articles/publishing.html#save-as-html).
@@ -334,7 +333,7 @@ If you use `modelStudio`, please cite our [JOSS article](https://joss.theoj.org/
 }
 ```
 
-## More Resources
+## More resources
 
   - Theoretical introduction to the plots: [Explanatory Model Analysis: Explore, Explain, and Examine Predictive Models](https://ema.drwhy.ai/)
 
