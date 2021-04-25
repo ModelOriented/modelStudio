@@ -22,9 +22,9 @@
 <script src="pkgdown.js"></script><meta property="og:title" content="Interactive Studio for Explanatory Model Analysis">
 <meta property="og:description" content="Automate the explanatory analysis of machine learning predictive models.
     Generate advanced interactive model explanations in the form of a serverless HTML
-    site with only one line of code. This tool is model agnostic, therefore compatible
-    with most of the black box predictive models and frameworks. The main function
-    computes various (instance and dataset level) model explanations and produces
+    site with only one line of code. This tool is model-agnostic, therefore compatible
+    with most of the black-box predictive models and frameworks. The main function
+    computes various (instance and model-level) explanations and produces
     a customisable dashboard, which consists of multiple panels for plots with their
     short descriptions. Easily save the dashboard and share it with others. Tools
     for Explanatory Model Analysis unite with tools for Exploratory Data Analysis
@@ -118,11 +118,11 @@
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
-<p>The <code>modelStudio</code> package <strong>automates the Explanatory Analysis of Machine Learning predictive models</strong>. It generates advanced interactive model explanations in the form of a <strong>serverless HTML site</strong> with only one line of code. This tool is model agnostic, therefore compatible with most of the black box predictive models and frameworks (e.g. <code>mlr/mlr3</code>, <code>xgboost</code>, <code>caret</code>, <code>h2o</code>, <code>parsnip</code>, <code>tidymodels</code>, <code>scikit-learn</code>, <code>lightgbm</code>, <code>keras/tensorflow</code>).</p>
-<p>The main <code><a href="reference/modelStudio.html">modelStudio()</a></code> function computes various (instance and dataset level) model explanations and produces a <strong>customisable dashboard</strong>, which consists of multiple panels for plots with their short descriptions. Easily <strong>save</strong>  the dashboard and <strong>share</strong> it with others. Tools for <a href="https://ema.drwhy.ai/">Explanatory Model Analysis</a> unite with tools for Exploratory Data Analysis to give a broad overview of the model behavior.</p>
-<!--- [explain FIFA19](https://pbiecek.github.io/explainFIFA19/) &emsp; --->
-<!--- [explain Lung Cancer](https://github.com/hbaniecki/transparent_xai/) &emsp; --->
-<p>            <a href="https://rai-covid.drwhy.ai"><strong>explain COVID-19</strong></a>   <a href="http://modelstudio.drwhy.ai/articles/ms-r-python-examples.html"><strong>R &amp; Python examples</strong></a>   <a href="http://modelstudio.drwhy.ai/#more-resources"><strong>More Resources</strong></a>   <a href="https://iema.drwhy.ai"><strong>IEMA</strong></a></p>
+<p>The <code>modelStudio</code> package <strong>automates the explanatory analysis of machine learning predictive models</strong>. It generates advanced interactive model explanations in the form of a <strong>serverless HTML site</strong> with only one line of code. This tool is model-agnostic, therefore compatible with most of the black-box predictive models and frameworks (e.g. <code>mlr/mlr3</code>, <code>xgboost</code>, <code>caret</code>, <code>h2o</code>, <code>parsnip</code>, <code>tidymodels</code>, <code>scikit-learn</code>, <code>lightgbm</code>, <code>keras/tensorflow</code>).</p>
+<p>The main <code><a href="reference/modelStudio.html">modelStudio()</a></code> function computes various (instance and model-level) explanations and produces a <strong>customisable dashboard</strong>, which consists of multiple panels for plots with their short descriptions. Easily <strong>save</strong>  the dashboard and <strong>share</strong> it with others. Tools for <a href="https://ema.drwhy.ai/">Explanatory Model Analysis</a> unite with tools for Exploratory Data Analysis to give a broad overview of the model behavior.</p>
+<p align="center">
+<b> <a href="https://rai-covid.drwhy.ai">explain COVID-19</a><a>   </a><a href="http://modelstudio.drwhy.ai/articles/ms-r-python-examples.html">R &amp; Python examples</a><a>   </a><a href="http://modelstudio.drwhy.ai/#more-resources">More resources</a><a>   </a><a href="https://iema.drwhy.ai">Interactive EMA</a><a>   </a></b>
+</p>
 <p><a href="https://rai-covid.drwhy.ai"><img src="reference/figures/short.gif"></a></p>
 <p>The <code>modelStudio</code> package is a part of the <a href="http://drwhy.ai"><strong>DrWhy.AI</strong></a> universe.</p>
 </div>
@@ -138,7 +138,7 @@
 </div>
 <div id="simple-demo" class="section level2">
 <h2 class="hasAnchor">
-<a href="#simple-demo" class="anchor"></a>Simple Demo</h2>
+<a href="#simple-demo" class="anchor"></a>Simple demo</h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://dalex.drwhy.ai">"DALEX"</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/imbs-hl/ranger">"ranger"</a></span><span class="op">)</span>
@@ -160,7 +160,7 @@
 </div>
 <div id="r--python-examples-more" class="section level2">
 <h2 class="hasAnchor">
-<a href="#r--python-examples-more" class="anchor"></a>R &amp; Python Examples <a href="https://modelstudio.drwhy.ai/articles/ms-r-python-examples.html">more</a>
+<a href="#r--python-examples-more" class="anchor"></a>R &amp; Python examples <a href="https://modelstudio.drwhy.ai/articles/ms-r-python-examples.html">more</a>
 </h2>
 <hr>
 <p>The <code><a href="reference/modelStudio.html">modelStudio()</a></code> function uses <code>DALEX</code> explainers created with <code><a href="https://dalex.drwhy.ai/reference/explain.html">DALEX::explain()</a></code> or <code>DALEXtra::explain_*()</code>.</p>
@@ -373,7 +373,7 @@ pip install dalex -U</code></pre>
 </div>
 <div id="save--share" class="section level2">
 <h2 class="hasAnchor">
-<a href="#save--share" class="anchor"></a>Save &amp; Share</h2>
+<a href="#save--share" class="anchor"></a>Save &amp; share</h2>
 <p>Save <code>modelStudio</code> as a HTML file using buttons on the top of the RStudio Viewer or with <a href="https://rstudio.github.io/r2d3/articles/publishing.html#save-as-html"><code>r2d3::save_d3_html()</code></a>.</p>
 <p align="center" style="text-align: center;">
   <img src="reference/figures/controls.png"></p>
@@ -398,7 +398,7 @@ pip install dalex -U</code></pre>
 </div>
 <div id="more-resources" class="section level2">
 <h2 class="hasAnchor">
-<a href="#more-resources" class="anchor"></a>More Resources</h2>
+<a href="#more-resources" class="anchor"></a>More resources</h2>
 <ul>
 <li><p>Theoretical introduction to the plots: <a href="https://ema.drwhy.ai/">Explanatory Model Analysis: Explore, Explain, and Examine Predictive Models</a></p></li>
 <li><p>Vignettes: <a href="https://modelstudio.drwhy.ai/articles/ms-perks-features.html">modelStudio - perks and features</a> and <a href="https://modelstudio.drwhy.ai/articles/ms-r-python-examples.html">modelStudio - R &amp; Python examples</a></p></li>
