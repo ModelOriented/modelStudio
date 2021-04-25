@@ -320,16 +320,13 @@ If you use `modelStudio`, please cite our [JOSS article](https://joss.theoj.org/
 ```
 @article{modelStudio,
   author = {Hubert Baniecki and Przemyslaw Biecek},
-  title = {{modelStudio}: Interactive Studio with Explanations for {ML} Predictive Models},
-  doi = {10.21105/joss.01798},
-  url = {https://doi.org/10.21105/joss.01798},
+  title = {{modelStudio: Interactive Studio with Explanations for ML Predictive Models}},
   year = {2019},
-  month = {Nov},
+  journal = {Journal of Open Source Software},
   volume = {4},
   number = {43},
   pages = {1798},
-  publisher = {The Open Journal},
-  journal = {Journal of Open Source Software}
+  url = {https://doi.org/10.21105/joss.01798}
 }
 ```
 
