@@ -165,6 +165,8 @@
 </li>
 <li>the deprecated alias <code>modelStudioOptions()</code> is removed from this version of the package; after being deprecated for over a year since <strong>v1.1.0</strong>. Use the recommended <code><a href="../reference/ms_options.html">ms_options()</a></code> instead.</li>
 <li>added new parameter to <code><a href="../reference/modelStudio.html">modelStudio()</a></code>: <code>N_sv = 3*N</code>, which by default decreases the number of observations used for the calculation of <code>Shapley Values</code> (rows in <code>data</code>)</li>
+<li>
+<code>margin_left = NULL</code> by default and it is adjusted based on the length of variable names</li>
 </ul>
 </li>
 <li>add the <code>verbose</code> parameter to <code><a href="../reference/modelStudio.html">modelStudio()</a></code> as an alias to <code>show_info</code> <a href="https://github.com/ModelOriented/modelStudio/issues/101">(<a href='https://github.com/ModelOriented/modelStudio/issues/101'>#101</a>)</a>
