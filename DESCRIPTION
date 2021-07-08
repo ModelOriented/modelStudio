@@ -1,6 +1,6 @@
 Package: modelStudio
 Title: Interactive Studio for Explanatory Model Analysis
-Version: 2.1.2.9000
+Version: 3.0.0
 Authors@R:
     c(person("Hubert", "Baniecki", role = c("aut", "cre"),
              email = "hbaniecki@gmail.com",
@@ -17,14 +17,14 @@ Description: Automate the explanatory analysis of machine learning predictive mo
     short descriptions. Easily save the dashboard and share it with others. Tools
     for Explanatory Model Analysis unite with tools for Exploratory Data Analysis
     to give a broad overview of the model behavior.
-Depends: R (>= 3.5)
+Depends: R (>= 3.6)
 License: GPL-3
 Encoding: UTF-8
 RoxygenNote: 7.1.1
 Imports:  
-    DALEX (>= 2.0.1),
-    ingredients (>= 2.0),
-    iBreakDown (>= 1.3.1),
+    DALEX (>= 2.2.1),
+    ingredients (>= 2.2.0),
+    iBreakDown (>= 2.0.1),
     r2d3,
     jsonlite,
     progress,

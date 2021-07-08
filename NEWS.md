@@ -1,6 +1,10 @@
-# development
-* **BREAKING CHANGE**: the deprecated alias `modelStudioOptions()` is removed from this version of the package; after being deprecated for over a year since **v1.1.0**. Use the recommended `ms_options()` instead.
+# modelStudio 3.0.0
+* **BREAKING CHANGES**: 
+  * this version requires `R >=3.6`, `DALEX >=2.2.1`, `ingredients >=2.2.0` and `iBreakDown >=2.0.1`
+  * the deprecated alias `modelStudioOptions()` is removed from this version of the package; after being deprecated for over a year since **v1.1.0**. Use the recommended `ms_options()` instead.
+  * added new parameter to `modelStudio()`: `N_sv = 3*N`, which by default decreases the number of observations used for the calculation of `Shapley Values` (rows in `data`)
 * add the `verbose` parameter to `modelStudio()` as an alias to `show_info` [(#101)](https://github.com/ModelOriented/modelStudio/issues/101)
+
 
 # modelStudio 2.1.2
 * fixed an error in `modelStudio()` when data had only one variable [(#99)](https://github.com/ModelOriented/modelStudio/issues/99)

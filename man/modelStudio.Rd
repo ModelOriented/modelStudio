@@ -17,6 +17,7 @@ modelStudio(explainer, ...)
   max_features = 10,
   N = 300,
   N_fi = N * 10,
+  N_sv = N * 3,
   B = 10,
   B_fi = B,
   eda = TRUE,
@@ -55,6 +56,8 @@ Default is \code{10}.}
 See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#more-calculations-means-more-time}{\bold{vignette}}}
 
 \item{N_fi}{Number of observations used for the calculation of FI. Default is \code{10*N}.}
+
+\item{N_sv}{Number of observations used for the calculation of SV. Default is \code{3*N}.}
 
 \item{B}{Number of permutation rounds used for calculation of SV. Default is \code{10}.
 See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#more-calculations-means-more-time}{\bold{vignette}}}

@@ -122,7 +122,9 @@ modelStudio(explainer,
 [Partial Dependence](https://ema.drwhy.ai/partialDependenceProfiles.html)
 and [Accumulated Dependence](https://ema.drwhy.ai/accumulatedLocalProfiles.html) Profiles (default is `300`). 
 - `N_fi` is a number of observations used for calculation of
-[Feature Importance](https://ema.drwhy.ai/featureImportance.html) (default is `10*N`).
+[Feature Importance](https://ema.drwhy.ai/featureImportance.html) (default is `N*10`).
+- `N_sv` is a number of observations used for calculation of
+[Shapley Values](https://ema.drwhy.ai/shapley.html) (default is `N*3`).
 - `B` is a number of permutation rounds used for calculation of
 [Shapley Values](https://ema.drwhy.ai/shapley.html) (default is `10`).
 - `B_fi` is a number of permutation rounds used for calculation of
