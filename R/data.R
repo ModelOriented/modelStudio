@@ -6,7 +6,7 @@
 #' while \code{happiness_test} is the data from the year 2019, which imitates the 
 #' out-of-time validation.
 #' 
-#' Source: \href{https://www.kaggle.com/unsdsn/world-happiness}
+#' Source: \href{https://www.kaggle.com/unsdsn/world-happiness}{World Happiness Report at Kaggle.com}
 #' 
 #' The following columns: GDP per Capita, Social Support, Life Expectancy, 
 #' Freedom, Generosity, Corruption describe the extent to which these factors
@@ -22,10 +22,9 @@
 #' \item perceptions_of_corruption
 #' }
 #'
-#' @aliases happiness_test
+#' @aliases happiness_train happiness_test
 #' @docType data
 #' @name happiness_train
 #' @usage data(happiness_train); data(happiness_test)
-#' @format \code{happiness_train}: a data frame with 625 rows and 7 columns,
-#'  \code{happiness_test}: a data frame with 156 rows and 7 columns
+#' @format \code{happiness_train}: a data frame with 625 rows and 7 columns, \code{happiness_test}: a data frame with 156 rows and 7 columns
 NULL
