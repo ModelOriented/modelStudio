@@ -172,7 +172,7 @@
 <h3 class="hasAnchor">
 <a href="#mlr-dashboard" class="anchor"></a>mlr <a href="https://modelstudio.drwhy.ai/mlr.html">dashboard</a>
 </h3>
-<p>Make a studio for the regression <code>ranger</code> model on <code>apartments</code> data.</p>
+<p>Make a studio for the regression <code>ranger</code> model on the <code>apartments</code> data.</p>
 <details open><p><summary><strong><em>code</em></strong></summary></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load packages and data</span>
@@ -210,7 +210,7 @@
 <h3 class="hasAnchor">
 <a href="#xgboost-dashboard" class="anchor"></a>xgboost <a href="https://modelstudio.drwhy.ai/xgboost.html">dashboard</a>
 </h3>
-<p>Make a studio for the classification <code>xgboost</code> model on <code>titanic</code> data.</p>
+<p>Make a studio for the classification <code>xgboost</code> model on the <code>titanic</code> data.</p>
 <details><p><summary><strong><em>code</em></strong></summary></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load packages and data</span>
@@ -245,8 +245,7 @@
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">new_observation</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id1"</span>, <span class="st">"id2"</span><span class="op">)</span>
 
 <span class="co"># make a studio for the model</span>
-<span class="fu"><a href="reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>, <span class="va">new_observation</span>,
-            options <span class="op">=</span> <span class="fu"><a href="reference/ms_options.html">ms_options</a></span><span class="op">(</span>margin_left <span class="op">=</span> <span class="fl">140</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>, <span class="va">new_observation</span><span class="op">)</span></code></pre></div>
 </details><hr>
 <p>The <code><a href="reference/modelStudio.html">modelStudio()</a></code> function uses <code>dalex</code> explainers created with <code>dalex.Explainer()</code>.</p>
 <pre class="console"><code>:: package for the Explainer object
@@ -260,7 +259,7 @@ pip install dalex -U</code></pre>
 <h3 class="hasAnchor">
 <a href="#scikit-learn-dashboard" class="anchor"></a>scikit-learn <a href="https://modelstudio.drwhy.ai/scikitlearn.html">dashboard</a>
 </h3>
-<p>Make a studio for the regression <code>Pipeline SVR</code> model on <code>fifa</code> data.</p>
+<p>Make a studio for the regression <code>Pipeline SVR</code> model on the <code>fifa</code> data.</p>
 <details><p><summary><strong><em>code</em></strong></summary></p>
 <p>First, use <code>dalex</code> in Python:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># load packages and data</span></span>
@@ -295,15 +294,14 @@ pip install dalex -U</code></pre>
 
 <span class="co"># make a studio for the model</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://modelstudio.drwhy.ai">modelStudio</a></span><span class="op">)</span>
-<span class="fu"><a href="reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>, B <span class="op">=</span> <span class="fl">5</span>,
-            options <span class="op">=</span> <span class="fu"><a href="reference/ms_options.html">ms_options</a></span><span class="op">(</span>margin_left <span class="op">=</span> <span class="fl">160</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>, B <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></code></pre></div>
 </details>
 </div>
 <div id="lightgbm-dashboard" class="section level3">
 <h3 class="hasAnchor">
 <a href="#lightgbm-dashboard" class="anchor"></a>lightgbm <a href="https://modelstudio.drwhy.ai/lightgbm.html">dashboard</a>
 </h3>
-<p>Make a studio for the classification <code>Pipeline LGBMClassifier</code> model on <code>titanic</code> data.</p>
+<p>Make a studio for the classification <code>Pipeline LGBMClassifier</code> model on the <code>titanic</code> data.</p>
 <details><p><summary><strong><em>code</em></strong></summary></p>
 <p>First, use <code>dalex</code> in Python:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># load packages and data</span></span>
