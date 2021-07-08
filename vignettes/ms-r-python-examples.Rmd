@@ -33,7 +33,7 @@ install.packages("DALEXtra")
 
 ### mlr [dashboard](https://modelstudio.drwhy.ai/mlr.html)
 
-In this example we will make a studio for the `ranger` model on `apartments` data.
+In this example, we make a studio for the `ranger` model on the `apartments` data.
 
 ```{r eval = FALSE}
 # load packages and data
@@ -69,7 +69,7 @@ modelStudio(explainer, new_observation)
 
 ### mlr3 [dashboard](https://modelstudio.drwhy.ai/mlr3.html)
 
-In this example we will make a studio for the `ranger` model on `titanic` data.
+In this example, we make a studio for the `ranger` model on the `titanic` data.
 
 ```{r eval = FALSE}
 # load packages and data
@@ -109,7 +109,7 @@ modelStudio(explainer, new_observation)
 
 ### xgboost [dashboard](https://modelstudio.drwhy.ai/xgboost.html)
 
-In this example we will make a studio for the `xgboost` model on `titanic` data.
+In this example, we make a studio for the `xgboost` model on the `titanic` data.
 
 ```{r eval = FALSE}
 # load packages and data
@@ -144,13 +144,12 @@ new_observation <- test_matrix[1:2, , drop=FALSE]
 rownames(new_observation) <- c("id1", "id2")
 
 # make a studio for the model
-modelStudio(explainer, new_observation,
-            options = ms_options(margin_left = 140))
+modelStudio(explainer, new_observation)
 ```
 
 ### caret [dashboard](https://modelstudio.drwhy.ai/caret.html)
 
-In this example we will make a studio for the `gbm` model on `titanic` data.
+In this example, we make a studio for the `gbm` model on the `titanic` data.
 
 ```{r eval = FALSE}
 # load packages and data
@@ -188,7 +187,7 @@ modelStudio(explainer, new_observation)
 
 ### h2o [dashboard](https://modelstudio.drwhy.ai/h2o.html)
 
-In this example we will make a studio for the `h2o.automl` model on `titanic` data.
+In this example, we make a studio for the `h2o.automl` model on the `titanic` data.
 
 ```{r eval = FALSE}
 # load packages and data
@@ -234,7 +233,7 @@ h2o.shutdown(prompt = FALSE)
 
 ### parsnip [dashboard](https://modelstudio.drwhy.ai/parsnip.html)
 
-In this example we will make a studio for the `ranger` model on `apartments` data.
+In this example, we make a studio for the `ranger` model on the `apartments` data.
 
 ```{r eval=FALSE}
 # load packages and data
@@ -267,7 +266,7 @@ modelStudio(explainer)
 
 ### tidymodels [dashboard](https://modelstudio.drwhy.ai/tidymodels.html)
 
-In this example we will make a studio for the `ranger` model on `titanic` data.
+In this example, we make a studio for the `ranger` model on the `titanic` data.
 
 ```{r eval=FALSE}
 # load packages and data
@@ -331,7 +330,7 @@ install.packages("reticulate")
 
 ### scikit-learn [dashboard](https://modelstudio.drwhy.ai/scikitlearn.html)
 
-In this example we will make a studio for the `Pipeline SVR` model on `fifa` data.
+In this example, we make a studio for the `Pipeline SVR` model on the `fifa` data.
 
 First, use `dalex` in Python:
 
@@ -371,13 +370,12 @@ explainer <- py_load_object("explainer_scikitlearn.pickle", pickle = "pickle")
 
 # make a studio for the model
 library(modelStudio)
-modelStudio(explainer, B = 5,
-            options = ms_options(margin_left = 160))
+modelStudio(explainer, B = 5)
 ```
 
 ### lightgbm [dashboard](https://modelstudio.drwhy.ai/lightgbm.html)
 
-In this example we will make a studio for the `Pipeline LGBMClassifier` model on `titanic` data.
+In this example, we make a studio for the `Pipeline LGBMClassifier` model on the `titanic` data.
 
 First, use `dalex` in Python:
 
@@ -452,7 +450,7 @@ modelStudio(explainer)
 
 ### keras/tensorflow [dashboard](https://modelstudio.drwhy.ai/keras.html)
 
-In this example we will make a studio for the `Pipeline KerasClassifier` model on `titanic` data.
+In this example, we make a studio for the `Pipeline KerasClassifier` model on the `titanic` data.
 
 First, use `dalex` in Python:
 

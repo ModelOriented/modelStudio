@@ -71,7 +71,7 @@ install.packages("DALEXtra")
 
 ### mlr [dashboard](https://modelstudio.drwhy.ai/mlr.html)
 
-Make a studio for the regression `ranger` model on `apartments` data.
+Make a studio for the regression `ranger` model on the `apartments` data.
 
 <details open>
 <summary><strong><em>code</em></strong></summary>
@@ -112,7 +112,7 @@ modelStudio(explainer, new_observation)
 
 ### xgboost [dashboard](https://modelstudio.drwhy.ai/xgboost.html)
 
-Make a studio for the classification `xgboost` model on `titanic` data.
+Make a studio for the classification `xgboost` model on the `titanic` data.
 
 <details>
 <summary><strong><em>code</em></strong></summary>
@@ -150,8 +150,7 @@ new_observation <- test_matrix[1:2, , drop=FALSE]
 rownames(new_observation) <- c("id1", "id2")
 
 # make a studio for the model
-modelStudio(explainer, new_observation,
-            options = ms_options(margin_left = 140))
+modelStudio(explainer, new_observation)
 ```
 
 </details>
@@ -174,7 +173,7 @@ install.packages("reticulate")
 
 ### scikit-learn [dashboard](https://modelstudio.drwhy.ai/scikitlearn.html)
 
-Make a studio for the regression `Pipeline SVR` model on `fifa` data.
+Make a studio for the regression `Pipeline SVR` model on the `fifa` data.
 
 <details>
 <summary><strong><em>code</em></strong></summary>
@@ -217,15 +216,14 @@ explainer <- py_load_object("explainer_scikitlearn.pickle", pickle = "pickle")
 
 # make a studio for the model
 library(modelStudio)
-modelStudio(explainer, B = 5,
-            options = ms_options(margin_left = 160))
+modelStudio(explainer, B = 5)
 ```
 
 </details>
 
 ### lightgbm [dashboard](https://modelstudio.drwhy.ai/lightgbm.html)
 
-Make a studio for the classification `Pipeline LGBMClassifier` model on `titanic` data.
+Make a studio for the classification `Pipeline LGBMClassifier` model on the `titanic` data.
 
 <details>
 <summary><strong><em>code</em></strong></summary>

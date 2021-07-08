@@ -491,7 +491,7 @@ modelStudio.explainer <- function(explainer,
   if (!is.null(license)) options$license <- paste(readLines(license), collapse=" ")
   if (is.null(options$ms_title)) options$ms_title <- paste0("Interactive Studio for ", label, " Model")
   if (!is.null(options$ms_subtitle)) options$ms_margin_top <- options$ms_margin_top + 40
-  if (is.null(options$margin_left)) options$margin_left <- 7*max(nchar(variable_names))
+  if (is.null(options$margin_left)) options$margin_left <- max(105, 7*max(nchar(variable_names)))
   
   options <- c(list(time = time,
                     model_name = label,
