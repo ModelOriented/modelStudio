@@ -27,6 +27,12 @@ if (requireNamespace("xgboost", quietly=TRUE)) {
 #     ms <- modelStudio::modelStudioOptions()
 #   )
 # })
+testthat::test_that("removed modelStudioOptions", {
+  testthat::expect_error(
+    ms <- modelStudio::modelStudioOptions()
+  )
+})
+
 
 if (requireNamespace("ranger", quietly=TRUE)) {
   ms <- modelStudio::modelStudio(explain_rf, apartments[1:2,], N = 5, B = 2, show_info = v)
