@@ -142,6 +142,7 @@ model <- xgb.train(params, xgb_matrix, nrounds = 500)
 explainer <- explain(model,
                      data = test_matrix,
                      y = test$survived,
+                     type = "classification",
                      label = "xgboost")
 
 # pick observations

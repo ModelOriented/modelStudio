@@ -41,3 +41,4 @@ VignetteBuilder: knitr
 URL: https://modelstudio.drwhy.ai, https://github.com/ModelOriented/modelStudio
 BugReports: https://github.com/ModelOriented/modelStudio/issues
 Language: en-US
+LazyData: true

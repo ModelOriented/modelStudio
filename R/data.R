@@ -5,12 +5,15 @@
 #' social support, etc. \code{happiness_train} accumulates the data from years 2015-2018,
 #' while \code{happiness_test} is the data from the year 2019, which imitates the 
 #' out-of-time validation.
-#'
+#' 
+#' Source: \href{https://www.kaggle.com/unsdsn/world-happiness}
+#' 
 #' The following columns: GDP per Capita, Social Support, Life Expectancy, 
 #' Freedom, Generosity, Corruption describe the extent to which these factors
 #' contribute in evaluating the happiness in each country.
+#' 
 #' \itemize{
-#' \item \textbf{score} - target variable, continuous value between 0 and 10 (regression) 
+#' \item \strong{score} - target variable, continuous value between 0 and 10 (regression) 
 #' \item gdp_per_capita
 #' \item social_support
 #' \item healthy_life_expectancy

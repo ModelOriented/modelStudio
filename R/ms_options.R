@@ -113,7 +113,7 @@ ms_options <- function(...) {
     margin_top = 50,
     margin_right = 20,
     margin_bottom = 70,
-    margin_left = 105,
+    margin_left = NULL, # 105,
     margin_inner = 40,
     margin_small = 5,
     margin_big = 10,

@@ -178,6 +178,17 @@ function getTextWidth(text, fontSize, fontFace) {
   return context.measureText(text).width;
 }
 
+function getMaxTextWidth(textArray, fontSize, fontFace) {
+  let maxTextWidth = 0;
+  for (let i = 0; i < textArray.length; i++) {
+    let textWidth = getTextWidth(textArray[i], fontSize, fontFace)
+    if (textWidth > maxTextWidth) {
+      maxTextWidth = textWidth
+    }
+  }
+  return maxTextWidth
+}
+
 function wrapText(text, width) {
   // this function wraps text
   text.each(function () {
