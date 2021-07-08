@@ -97,7 +97,7 @@
         <div class="info">
           <span class="partof">part of the <a href="https://github.com/ModelOriented/DrWhy">DrWhy.AI</a>
            developed by the <a href="https://mi2.mini.pw.edu.pl/">MI^2 DataLab</a> </span>
-          <span class="version version-default">2.1.2.9000</span>
+          <span class="version version-default">3.0.0</span>
         </div>
       </div>
     </div>
@@ -153,6 +153,24 @@
       <small>Source: <a href='https://github.com/ModelOriented/modelStudio/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="modelstudio-300" class="section level1">
+<h1 class="page-header" data-toc-text="3.0.0">
+<a href="#modelstudio-300" class="anchor"></a>modelStudio 3.0.0<small> Unreleased </small>
+</h1>
+<ul>
+<li>
+<strong>BREAKING CHANGES</strong>:
+<ul>
+<li>this version requires <code>R &gt;=3.6</code>, <code>DALEX &gt;=2.2.1</code>, <code>ingredients &gt;=2.2.0</code> and <code>iBreakDown &gt;=2.0.1</code>
+</li>
+<li>the deprecated alias <code>modelStudioOptions()</code> is removed from this version of the package; after being deprecated for over a year since <strong>v1.1.0</strong>. Use the recommended <code><a href="../reference/ms_options.html">ms_options()</a></code> instead.</li>
+<li>added new parameter to <code><a href="../reference/modelStudio.html">modelStudio()</a></code>: <code>N_sv = 3*N</code>, which by default decreases the number of observations used for the calculation of <code>Shapley Values</code> (rows in <code>data</code>)</li>
+</ul>
+</li>
+<li>add the <code>verbose</code> parameter to <code><a href="../reference/modelStudio.html">modelStudio()</a></code> as an alias to <code>show_info</code> <a href="https://github.com/ModelOriented/modelStudio/issues/101">(<a href='https://github.com/ModelOriented/modelStudio/issues/101'>#101</a>)</a>
+</li>
+</ul>
+</div>
     <div id="modelstudio-212" class="section level1">
 <h1 class="page-header" data-toc-text="2.1.2">
 <a href="#modelstudio-212" class="anchor"></a>modelStudio 2.1.2<small> 2021-04-20 </small>

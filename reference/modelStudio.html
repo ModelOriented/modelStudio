@@ -117,7 +117,7 @@ The dashboard gathers useful, but not sensitive, information about how it is bei
         <div class="info">
           <span class="partof">part of the <a href="https://github.com/ModelOriented/DrWhy">DrWhy.AI</a>
            developed by the <a href="https://mi2.mini.pw.edu.pl/">MI^2 DataLab</a> </span>
-          <span class="version version-default">2.1.2.9000</span>
+          <span class="version version-default">3.0.0</span>
         </div>
       </div>
     </div>
@@ -210,6 +210,7 @@ The dashboard gathers useful, but not sensitive, information about how it is bei
   max_features <span class='op'>=</span> <span class='fl'>10</span>,
   N <span class='op'>=</span> <span class='fl'>300</span>,
   N_fi <span class='op'>=</span> <span class='va'>N</span> <span class='op'>*</span> <span class='fl'>10</span>,
+  N_sv <span class='op'>=</span> <span class='va'>N</span> <span class='op'>*</span> <span class='fl'>3</span>,
   B <span class='op'>=</span> <span class='fl'>10</span>,
   B_fi <span class='op'>=</span> <span class='va'>B</span>,
   eda <span class='op'>=</span> <span class='cn'>TRUE</span>,
@@ -270,6 +271,10 @@ See <a href='https://modelstudio.drwhy.ai/articles/ms-perks-features.html#more-c
     <tr>
       <th>N_fi</th>
       <td><p>Number of observations used for the calculation of FI. Default is <code>10*N</code>.</p></td>
+    </tr>
+    <tr>
+      <th>N_sv</th>
+      <td><p>Number of observations used for the calculation of SV. Default is <code>3*N</code>.</p></td>
     </tr>
     <tr>
       <th>B</th>
@@ -423,9 +428,9 @@ and <a href='https://modelstudio.drwhy.ai/articles/ms-perks-features.html'><b>mo
 #&gt;   -&gt; predict function  :  yhat.ranger  will be used ( <span style='color: #BBBB00;'> default </span> )
 #&gt;   -&gt; predicted values  :  No value for predict function target column. ( <span style='color: #BBBB00;'> default </span> )
 #&gt;   -&gt; model_info        :  package ranger , ver. 0.12.1 , task regression ( <span style='color: #BBBB00;'> default </span> ) 
-#&gt;   -&gt; predicted values  :  numerical, min =  1852.093 , mean =  3489.113 , max =  6141.653  
+#&gt;   -&gt; predicted values  :  numerical, min =  1891.337 , mean =  3487.468 , max =  6159.943  
 #&gt;   -&gt; residual function :  difference between y and yhat ( <span style='color: #BBBB00;'> default </span> )
-#&gt;   -&gt; residuals         :  numerical, min =  -399.2476 , mean =  -2.094116 , max =  587.1217  
+#&gt;   -&gt; residuals         :  numerical, min =  -385.142 , mean =  -0.4492081 , max =  615.8898  
 #&gt;  <span style='color: #00BB00;'> A new explainer has been created! </span> </div><div class='output co'>#&gt; <span class='message'>`new_observation` argument is NULL. `new_observation_n` observations needed to calculate local explanations are taken from the data.</span></div><div class='input'>
 <span class='co'>#:# ex3 xgboost model on 'HR' dataset</span>
 <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span><span class='op'>(</span><span class='st'>"xgboost"</span>, quietly<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
