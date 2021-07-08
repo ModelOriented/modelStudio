@@ -1,0 +1,2 @@
+LICENSE: CC0: Public Domain
+SOURCE: https://www.kaggle.com/unsdsn/world-happiness

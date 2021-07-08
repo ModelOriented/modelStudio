@@ -1,0 +1,28 @@
+#' World Happiness Report
+#'
+#' Datasets \code{happiness_train} and \code{happiness_test} are real data from the
+#' World Happiness Reports. Happiness is scored according to economic production,
+#' social support, etc. \code{happiness_train} accumulates the data from years 2015-2018,
+#' while \code{happiness_test} is the data from the year 2019, which imitates the 
+#' out-of-time validation.
+#'
+#' The following columns: GDP per Capita, Social Support, Life Expectancy, 
+#' Freedom, Generosity, Corruption describe the extent to which these factors
+#' contribute in evaluating the happiness in each country.
+#' \itemize{
+#' \item \textbf{score} - target variable, continuous value between 0 and 10 (regression) 
+#' \item gdp_per_capita
+#' \item social_support
+#' \item healthy_life_expectancy
+#' \item freedom_life_choices
+#' \item generosity
+#' \item perceptions_of_corruption
+#' }
+#'
+#' @aliases happiness_test
+#' @docType data
+#' @name happiness_train
+#' @usage data(happiness_train); data(happiness_test)
+#' @format \code{happiness_train}: a data frame with 625 rows and 7 columns,
+#'  \code{happiness_test}: a data frame with 156 rows and 7 columns
+NULL

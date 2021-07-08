@@ -25,3 +25,4 @@ modelStudio_my_test.R
 [.]pkl$
 [.]pickle$
 [.]ipynb$
+^data-raw$

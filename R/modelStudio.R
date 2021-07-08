@@ -150,6 +150,7 @@
 #'   explainer_HR <- explain(model_HR,
 #'                           data = HR_matrix,
 #'                           y = HR$status == "fired",
+#'                           type = "classification",
 #'                           label = "xgboost")
 #'
 #'   # pick observations

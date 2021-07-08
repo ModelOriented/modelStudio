@@ -41,12 +41,12 @@ library("ranger")
 library("modelStudio")
 
 # fit a model
-model <- ranger(survived ~., data = titanic_imputed, probability = TRUE)
+model <- ranger(score ~., data = happiness_train)
 
 # create an explainer for the model    
 explainer <- explain(model,
-                     data = titanic_imputed,
-                     y = titanic_imputed$survived,
+                     data = happiness_test,
+                     y = happiness_test$score,
                      label = "Random Forest")
 
 # make a studio for the model
