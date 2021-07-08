@@ -194,11 +194,12 @@ ms_options <- function(...) {
   default_options
 }
 
-#' deprecated since v1.1
+#' deprecated since v1.1 (May 2020)
+#' removed in v2.2 (July 2021)
 #' @export
 #' @rdname ms_options
-modelStudioOptions <- function(...) {
-  warning("The 'modelStudioOptions()' function is deprecated; use 'ms_options()' instead.")
-  ret <- ms_options(...)
-  ret
-}
+# modelStudioOptions <- function(...) {
+#   warning("The 'modelStudioOptions()' function is deprecated; use 'ms_options()' instead.")
+#   ret <- ms_options(...)
+#   ret
+# }

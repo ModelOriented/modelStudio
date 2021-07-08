@@ -1,5 +1,6 @@
 # development
-* ...
+* **BREAKING CHANGE**: the deprecated alias `modelStudioOptions()` is removed from this version of the package; after being deprecated for over a year since **v1.1.0**. Use the recommended `ms_options()` instead.
+* add the `verbose` parameter to `modelStudio()` as an alias to `show_info` [(#101)](https://github.com/ModelOriented/modelStudio/issues/101)
 
 # modelStudio 2.1.2
 * fixed an error in `modelStudio()` when data had only one variable [(#99)](https://github.com/ModelOriented/modelStudio/issues/99)

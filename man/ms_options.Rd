@@ -2,12 +2,9 @@
 % Please edit documentation in R/ms_options.R
 \name{ms_options}
 \alias{ms_options}
-\alias{modelStudioOptions}
 \title{Modify default options and pass them to modelStudio}
 \usage{
 ms_options(...)
-
-modelStudioOptions(...)
 }
 \arguments{
 \item{...}{Options to change in the form \code{option_name = value}.}

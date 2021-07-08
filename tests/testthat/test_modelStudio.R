@@ -28,7 +28,7 @@ ms_readme <-  testthat::expect_silent(modelStudio::modelStudio(explain_titanic_g
                                                                new_observations,
                                                                facet_dim = c(2,2),
                                                                N = N, B = B, time = 0,
-                                                               show_info = v))
+                                                               verbose = v))
 
 ms_rf_apartments <- testthat::expect_silent(modelStudio::modelStudio(explain_rf,
                                                                      new_observation = apartments[1:2,-1],

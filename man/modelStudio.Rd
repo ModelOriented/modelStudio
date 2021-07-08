@@ -28,6 +28,7 @@ modelStudio(explainer, ...)
   license = NULL,
   telemetry = TRUE,
   max_vars = NULL,
+  verbose = NULL,
   ...
 )
 }
@@ -86,6 +87,8 @@ It can be used e.g. to include the license for \code{explainer$data} as a commen
 package version, dashboard dimensions). This is for the development purposes only and can be blocked by setting \code{telemetry} to \code{FALSE}.}
 
 \item{max_vars}{An alias for \code{max_features}. If provided, it will override the value.}
+
+\item{verbose}{An alias for \code{show_info}. If provided, it will override the value.}
 }
 \value{
 An object of the \code{r2d3, htmlwidget, modelStudio} class.

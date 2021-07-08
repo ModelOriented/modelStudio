@@ -42,6 +42,7 @@
 #' @param B_fi Number of permutation rounds used for calculation of FI. Default is \code{B}.
 #' @param eda Compute EDA plots and Residuals vs Feature plot, which adds the data to the dashboard. Default is \code{TRUE}.
 #' @param show_info Verbose a progress on the console. Default is \code{TRUE}.
+#' @param verbose An alias for \code{show_info}. If provided, it will override the value.
 #' @param parallel Speed up the computation using \code{parallelMap::parallelMap()}.
 #'  See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#parallel-computation}{\bold{vignette}}.
 #'  This might interfere with showing progress using \code{show_info}.
@@ -188,6 +189,7 @@ modelStudio.explainer <- function(explainer,
                                   license = NULL,
                                   telemetry = TRUE,
                                   max_vars = NULL,
+                                  verbose = NULL,
                                   ...) {
 
   start_time <- Sys.time()
@@ -203,6 +205,7 @@ modelStudio.explainer <- function(explainer,
   model_type <- explainer$model_info$type
 
   if (!is.null(max_vars)) max_features <- max_vars
+  if (!is.null(verbose)) show_info <- verbose
   if (is.null(N)) stop("`N` argument must be an integer")
   #if (identical(N_fi, numeric(0))) N_fi <- NULL
 
