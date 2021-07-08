@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • modelStudio</title>
+<title>World Happiness Report — happiness_train • modelStudio</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,7 +52,12 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="World Happiness Report — happiness_train" />
+<meta property="og:description" content="Datasets happiness_train and happiness_test are real data from the
+World Happiness Reports. Happiness is scored according to economic production,
+social support, etc. happiness_train accumulates the data from years 2015-2018,
+while happiness_test is the data from the year 2019, which imitates the 
+out-of-time validation." />
 <meta property="og:image" content="/logo.png" />
 
 <meta name="robots" content="noindex" />
@@ -80,7 +85,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -147,66 +152,44 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>World Happiness Report</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ModelOriented/modelStudio/blob/master/R/data.R'><code>R/data.R</code></a></small>
+    <div class="hidden name"><code>happiness_train.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Datasets <code>happiness_train</code> and <code>happiness_test</code> are real data from the
+World Happiness Reports. Happiness is scored according to economic production,
+social support, etc. <code>happiness_train</code> accumulates the data from years 2015-2018,
+while <code>happiness_test</code> is the data from the year 2019, which imitates the 
+out-of-time validation.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>happiness_train</span><span class='op'>)</span>; <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>happiness_test</span><span class='op'>)</span></pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="happiness_train.html">happiness_train</a></code> <code><a href="happiness_train.html">happiness_test</a></code> </p>
-        </td>
-        <td><p>World Happiness Report</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="modelStudio.html">modelStudio()</a></code> </p>
-        </td>
-        <td><p>Interactive Studio for Explanatory Model Analysis</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ms_options.html">ms_options()</a></code> </p>
-        </td>
-        <td><p>Modify default options and pass them to modelStudio</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ms_update_observations.html">ms_update_observations()</a></code> </p>
-        </td>
-        <td><p>Update the observations of a modelStudio object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ms_update_options.html">ms_update_options()</a></code> </p>
-        </td>
-        <td><p>Update the options of a modelStudio object</p></td>
-      </tr>
-    </tbody>
-    </table>
+
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+
+    <p><code>happiness_train</code>: a data frame with 625 rows and 7 columns,
+ <code>happiness_test</code>: a data frame with 156 rows and 7 columns</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The following columns: GDP per Capita, Social Support, Life Expectancy, 
+Freedom, Generosity, Corruption describe the extent to which these factors
+contribute in evaluating the happiness in each country.</p><ul>
+<li><p>score - target variable, continuous value between 0 and 10 (regression)</p></li>
+<li><p>gdp_per_capita</p></li>
+<li><p>social_support</p></li>
+<li><p>healthy_life_expectancy</p></li>
+<li><p>freedom_life_choices</p></li>
+<li><p>generosity</p></li>
+<li><p>perceptions_of_corruption</p></li>
+</ul>
+
+
   </div>
-
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
