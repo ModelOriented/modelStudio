@@ -25,6 +25,26 @@
 #' library("DALEX")
 #' library("modelStudio")
 #' 
+#' # fit a model
+#' model_happiness <- glm(score ~., data = happiness_train)
+#' 
+#' # create an explainer for the model
+#' explainer_happiness <- explain(model_happiness,
+#'                                data = happiness_test,
+#'                                y = happiness_test$score)
+#' 
+#' # make studios for the model
+#' ms1 <- modelStudio(explainer_happiness,
+#'                    N = 200,  B = 5) # faster example
+#' 
+#' ms2 <- modelStudio(explainer_happiness,
+#'                    new_observation = head(happiness_test, 3),
+#'                    N = 200,  B = 5)
+#' 
+#' # merge 
+#' ms <- ms_merge_observations(ms1, ms2)
+#' ms
+#' 
 #'
 #' @export
 #' @rdname ms_merge_observations
