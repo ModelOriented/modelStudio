@@ -1,0 +1,76 @@
+---
+title: "modelStudio in R Markdown HTML"
+author: "Hubert Baniecki"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{modelStudio in R Markdown HTML}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<!-- STYLES FOR modelStudio -->
+<style type="text/css">
+.r2d3 {
+  position: relative !important;
+  left: -250px !important;
+}
+</style>
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+To properly generate `modelStudio` in R Markdown HTML, add additional CSS into the `.Rmd` file.
+
+One can either make the space wider, e.g.:
+
+```
+<!-- STYLES FOR modelStudio -->
+<style type="text/css">
+
+.body {
+  max-width: 1200px;
+}
+
+.main-container {
+  max-width: 1200px;
+}
+
+</style>
+```
+
+Or/and move the dashboard to the left, e.g.:
+
+```
+<style type="text/css">
+
+.r2d3 {
+  position: relative !important;
+  left: -250px !important;
+}
+
+</style>
+```
+
+Then, proceed to generate the `modelStudio`:
+
+```{r warning = FALSE, message = FALSE}
+library("DALEX")
+library("ranger")
+library("modelStudio")
+
+# fit a model
+model <- ranger(score ~., data = happiness_train)
+
+# create an explainer for the model    
+explainer <- explain(model,
+                     data = happiness_test,
+                     y = happiness_test$score,
+                     label = "Random Forest",
+                     verbose = FALSE)
+
+# make a studio for the model
+modelStudio(explainer)
+```
