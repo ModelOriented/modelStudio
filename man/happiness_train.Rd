@@ -23,7 +23,7 @@ Source: \href{https://www.kaggle.com/unsdsn/world-happiness}{World Happiness Rep
 
 The following columns: GDP per Capita, Social Support, Life Expectancy, 
 Freedom, Generosity, Corruption describe the extent to which these factors
-contribute in evaluating the happiness in each country.
+contribute in evaluating the happiness in each country. Variables:
 
 \itemize{
 \item \strong{score} - target variable, continuous value between 0 and 10 (regression) 

@@ -19,7 +19,7 @@ The main `modelStudio()` function computes various (instance and model-level) ex
 <a href="https://iema.drwhy.ai">Interactive EMA<a> &emsp;
 </b></p>
 
-[![](man/figures/demo_small.gif)](https://rai-covid.drwhy.ai)
+[![](man/figures/demo_small.gif)](https://modelstudio.drwhy.ai/demo.html)
 
 The `modelStudio` package is a part of the [**DrWhy.AI**](http://drwhy.ai) universe.
 
@@ -55,7 +55,7 @@ modelStudio(explainer)
 
 [Save the output](https://modelstudio.drwhy.ai/#save--share) in the form of a HTML file - [**Demo Dashboard**](https://modelstudio.drwhy.ai/demo.html).
 
-[![](man/figures/demo_big.gif)](https://rai-covid.drwhy.ai)
+[![](man/figures/demo_big.gif)](https://modelstudio.drwhy.ai/demo.html)
 
 ## R & Python examples [more](https://modelstudio.drwhy.ai/articles/ms-r-python-examples.html)
 

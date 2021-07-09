@@ -5,8 +5,8 @@
   * added new parameter to `modelStudio()`: `N_sv = 3*N`, which by default decreases the number of observations used for the calculation of `Shapley Values` (rows in `data`)
   * `margin_left = NULL` by default and it is adjusted based on the length of variable names 
   * the first plot opened in the dashboard is now `FI` instead of `BD` by default
-* add the `verbose` parameter to `modelStudio()` as an alias to `show_info` [(#101)](https://github.com/ModelOriented/modelStudio/issues/101)
-
+* added the `verbose` parameter to `modelStudio()` as an alias to `show_info` [(#101)](https://github.com/ModelOriented/modelStudio/issues/101)
+* add new `ms_merge_observations()` function that merges local explanation of observations from multiple `modelStudio` objects [(#102)](https://github.com/ModelOriented/modelStudio/issues/102)
 
 # modelStudio 2.1.2
 * fixed an error in `modelStudio()` when data had only one variable [(#99)](https://github.com/ModelOriented/modelStudio/issues/99)

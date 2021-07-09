@@ -10,25 +10,26 @@ if (requireNamespace("ranger", quietly=TRUE)) {
     testthat::expect_silent(ms)
   })
 
-  new_ms1 <- modelStudio::ms_update_observations(ms, explain_rf, B = 2, show_info = v)
-  new_ms2 <- modelStudio::ms_update_observations(ms, explain_rf, B = 2, show_info = v,
-                                                 new_observation = apartments[100:101,],
-                                                 overwrite = FALSE)
-  new_ms3 <- modelStudio::ms_update_observations(ms, explain_rf, B = 2, show_info = v,
-                                                 new_observation = apartments[1:2,],
-                                                 overwrite = TRUE)
-
   testthat::test_that("ms_update_observations", {
+    testthat::expect_silent(new_ms1 <- modelStudio::ms_update_observations(ms, explain_rf, B = 2,
+                                                                           show_info = v))
     testthat::expect_is(new_ms1, "modelStudio")
-    testthat::expect_silent(modelStudio::ms_update_observations(ms, explain_rf, B = 2, show_info = v))
-    testthat::expect_is(new_ms2, "modelStudio")
-    testthat::expect_silent(modelStudio::ms_update_observations(ms, explain_rf, B = 2, show_info = v,
+    
+    testthat::expect_silent(new_ms2 <- modelStudio::ms_update_observations(ms, explain_rf, B = 2,
+                                                                           show_info = v,
                                                                 new_observation = apartments[100:101,],
                                                                 overwrite = FALSE))
-    testthat::expect_is(new_ms3, "modelStudio")
-    testthat::expect_silent(modelStudio::ms_update_observations(ms, explain_rf, B = 2, show_info = v,
+    testthat::expect_is(new_ms2, "modelStudio")
+
+    testthat::expect_silent(new_ms3 <- modelStudio::ms_update_observations(ms, explain_rf, B = 2,
+                                                                           show_info = v,
                                                                 new_observation = apartments[1:2,],
                                                                 overwrite = TRUE))
+    testthat::expect_is(new_ms3, "modelStudio")
+    
+    testthat::test_that("ms_merge_observations", {
+      testthat::expect_silent(merged_ms <- ms_merge_observations(new_ms1, new_ms2, new_ms3))
+      testthat::expect_is(merged_ms, "modelStudio")
+    })
   })
-
 }
