@@ -196,6 +196,36 @@ and <a href='https://modelstudio.drwhy.ai/articles/ms-perks-features.html'><b>mo
     <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='st'><a href='https://dalex.drwhy.ai'>"DALEX"</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='st'><a href='https://modelstudio.drwhy.ai'>"modelStudio"</a></span><span class='op'>)</span>
 
+<span class='co'># fit a model</span>
+<span class='va'>model_happiness</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span><span class='op'>(</span><span class='va'>score</span> <span class='op'>~</span><span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>happiness_train</span><span class='op'>)</span>
+
+<span class='co'># create an explainer for the model</span>
+<span class='va'>explainer_happiness</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://dalex.drwhy.ai/reference/explain.html'>explain</a></span><span class='op'>(</span><span class='va'>model_happiness</span>,
+                               data <span class='op'>=</span> <span class='va'>happiness_test</span>,
+                               y <span class='op'>=</span> <span class='va'>happiness_test</span><span class='op'>$</span><span class='va'>score</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Preparation of a new explainer is initiated
+#&gt;   -&gt; model label       :  lm  ( <span style='color: #BBBB00;'> default </span> )
+#&gt;   -&gt; data              :  156  rows  7  cols 
+#&gt;   -&gt; target variable   :  156  values 
+#&gt;   -&gt; predict function  :  yhat.glm  will be used ( <span style='color: #BBBB00;'> default </span> )
+#&gt;   -&gt; predicted values  :  No value for predict function target column. ( <span style='color: #BBBB00;'> default </span> )
+#&gt;   -&gt; model_info        :  package stats , ver. 4.1.0 , task regression ( <span style='color: #BBBB00;'> default </span> ) 
+#&gt;   -&gt; predicted values  :  numerical, min =  2.726257 , mean =  5.553508 , max =  7.560368  
+#&gt;   -&gt; residual function :  difference between y and yhat ( <span style='color: #BBBB00;'> default </span> )
+#&gt;   -&gt; residuals         :  numerical, min =  -1.976856 , mean =  -0.1464115 , max =  0.9116971  
+#&gt;  <span style='color: #00BB00;'> A new explainer has been created! </span> </div><div class='input'>
+<span class='co'># make studios for the model</span>
+<span class='va'>ms1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='modelStudio.html'>modelStudio</a></span><span class='op'>(</span><span class='va'>explainer_happiness</span>,
+                   N <span class='op'>=</span> <span class='fl'>200</span>,  B <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span> <span class='co'># faster example</span>
+</div><div class='output co'>#&gt; <span class='message'>`new_observation` argument is NULL. `new_observation_n` observations needed to calculate local explanations are taken from the data.</span></div><div class='input'>
+<span class='va'>ms2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='modelStudio.html'>modelStudio</a></span><span class='op'>(</span><span class='va'>explainer_happiness</span>,
+                   new_observation <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>happiness_test</span>, <span class='fl'>3</span><span class='op'>)</span>,
+                   N <span class='op'>=</span> <span class='fl'>200</span>,  B <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
+
+<span class='co'># merge </span>
+<span class='va'>ms</span> <span class='op'>&lt;-</span> <span class='fu'>ms_merge_observations</span><span class='op'>(</span><span class='va'>ms1</span>, <span class='va'>ms2</span><span class='op'>)</span>
+<span class='va'>ms</span>
+
 
 </div></pre>
   </div>
