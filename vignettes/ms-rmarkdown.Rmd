@@ -13,7 +13,7 @@ vignette: >
 <style type="text/css">
 .r2d3 {
   position: relative !important;
-  left: -250px !important;
+  left: -180px !important;
 }
 </style>
 
@@ -27,7 +27,6 @@ To properly generate `modelStudio` in R Markdown HTML, add additional CSS into t
 One can either make the space wider, e.g.:
 
 ```
-<!-- STYLES FOR modelStudio -->
 <style type="text/css">
 
 .body {
@@ -48,7 +47,7 @@ Or/and move the dashboard to the left, e.g.:
 
 .r2d3 {
   position: relative !important;
-  left: -250px !important;
+  left: -180px !important;
 }
 
 </style>

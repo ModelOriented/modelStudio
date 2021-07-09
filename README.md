@@ -333,7 +333,7 @@ If you use `modelStudio`, please cite our [JOSS article](https://joss.theoj.org/
 
   - Theoretical introduction to the plots: [Explanatory Model Analysis: Explore, Explain, and Examine Predictive Models](https://ema.drwhy.ai/)
 
-  - Vignettes: [modelStudio - perks and features](https://modelstudio.drwhy.ai/articles/ms-perks-features.html) and [modelStudio - R & Python examples](https://modelstudio.drwhy.ai/articles/ms-r-python-examples.html)  
+  - Vignettes: [perks and features](https://modelstudio.drwhy.ai/articles/ms-perks-features.html), [R & Python examples](https://modelstudio.drwhy.ai/articles/ms-r-python-examples.html), [modelStudio in R Markdown HTML](https://modelstudio.drwhy.ai/articles/ms-rmarkdown.html)   
   
   - Changelog: [NEWS](https://modelstudio.drwhy.ai/news/index.html)
     
