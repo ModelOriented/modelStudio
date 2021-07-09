@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • modelStudio</title>
+<title>Merge the observations of modelStudio objects — ms_merge_observations • modelStudio</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,7 +52,8 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Merge the observations of modelStudio objects — ms_merge_observations" />
+<meta property="og:description" content="This function merges local explanations from multiple modelStudio objects into one." />
 <meta property="og:image" content="/logo.png" />
 
 <meta name="robots" content="noindex" />
@@ -80,7 +81,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -150,72 +151,54 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Merge the observations of modelStudio objects</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ModelOriented/modelStudio/blob/master/R/ms_merge_observations.R'><code>R/ms_merge_observations.R</code></a></small>
+    <div class="hidden name"><code>ms_merge_observations.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>This function merges local explanations from multiple <code>modelStudio</code> objects into one.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>ms_merge_observations</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="happiness_train.html">happiness_train</a></code> <code><a href="happiness_train.html">happiness_test</a></code> </p>
-        </td>
-        <td><p>World Happiness Report</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="modelStudio.html">modelStudio()</a></code> </p>
-        </td>
-        <td><p>Interactive Studio for Explanatory Model Analysis</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ms_merge_observations.html">ms_merge_observations()</a></code> </p>
-        </td>
-        <td><p>Merge the observations of modelStudio objects</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ms_options.html">ms_options()</a></code> </p>
-        </td>
-        <td><p>Modify default options and pass them to modelStudio</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ms_update_observations.html">ms_update_observations()</a></code> </p>
-        </td>
-        <td><p>Update the observations of a modelStudio object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ms_update_options.html">ms_update_options()</a></code> </p>
-        </td>
-        <td><p>Update the options of a modelStudio object</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>...</th>
+      <td><p><code>modelStudio</code> objects created with <code><a href='modelStudio.html'>modelStudio()</a></code>.</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>An object of the <code>r2d3, htmlwidget, modelStudio</code> class.</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    
+<ul>
+<li><p>The input object is implemented in <a href='https://modeloriented.github.io/DALEX/'><b>DALEX</b></a></p></li>
+<li><p>Feature Importance, Ceteris Paribus, Partial Dependence and Accumulated Dependence explanations
+   are implemented in <a href='https://modeloriented.github.io/ingredients/'><b>ingredients</b></a></p></li>
+<li><p>Break Down and Shapley Values explanations are implemented in
+   <a href='https://modeloriented.github.io/iBreakDown/'><b>iBreakDown</b></a></p></li>
+</ul>
+
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Vignettes: <a href='https://modelstudio.drwhy.ai/articles/ms-r-python-examples.html'><b>modelStudio - R &amp; Python examples</b></a>
+and <a href='https://modelstudio.drwhy.ai/articles/ms-perks-features.html'><b>modelStudio - perks and features</b></a></p></div>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='st'><a href='https://dalex.drwhy.ai'>"DALEX"</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='st'><a href='https://modelstudio.drwhy.ai'>"modelStudio"</a></span><span class='op'>)</span>
+
+
+</div></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
