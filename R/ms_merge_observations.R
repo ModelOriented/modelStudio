@@ -22,6 +22,7 @@
 #' and \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html}{\bold{modelStudio - perks and features}}
 #'
 #' @examples
+#' \donttest{
 #' library("DALEX")
 #' library("modelStudio")
 #' 
@@ -35,7 +36,7 @@
 #' 
 #' # make studios for the model
 #' ms1 <- modelStudio(explainer_happiness,
-#'                    N = 200,  B = 5) # faster example
+#'                    N = 200,  B = 5)
 #' 
 #' ms2 <- modelStudio(explainer_happiness,
 #'                    new_observation = head(happiness_test, 3),
@@ -44,7 +45,7 @@
 #' # merge 
 #' ms <- ms_merge_observations(ms1, ms2)
 #' ms
-#' 
+#' }
 #'
 #' @export
 #' @rdname ms_merge_observations

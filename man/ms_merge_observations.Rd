@@ -16,6 +16,7 @@ An object of the \code{r2d3, htmlwidget, modelStudio} class.
 This function merges local explanations from multiple \code{modelStudio} objects into one.
 }
 \examples{
+\donttest{
 library("DALEX")
 library("modelStudio")
 
@@ -29,7 +30,7 @@ explainer_happiness <- explain(model_happiness,
 
 # make studios for the model
 ms1 <- modelStudio(explainer_happiness,
-                   N = 200,  B = 5) # faster example
+                   N = 200,  B = 5)
 
 ms2 <- modelStudio(explainer_happiness,
                    new_observation = head(happiness_test, 3),
@@ -38,7 +39,7 @@ ms2 <- modelStudio(explainer_happiness,
 # merge 
 ms <- ms_merge_observations(ms1, ms2)
 ms
-
+}
 
 }
 \references{
