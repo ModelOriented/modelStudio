@@ -1,3 +1,6 @@
+# modelStudio (development)
+* added new parameter to `modelStudio()`: `max_features_fi = max_features`, which allows displaying a distinctive number of features in `FI` plot (other than in `BD` and `SV`)
+
 # modelStudio 3.0.0
 * **BREAKING CHANGES**: 
   * this version requires `R >=3.6`, `DALEX >=2.2.1`, `ingredients >=2.2.0` and `iBreakDown >=2.0.1`

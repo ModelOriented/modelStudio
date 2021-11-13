@@ -15,6 +15,7 @@ modelStudio(explainer, ...)
   facet_dim = c(2, 2),
   time = 500,
   max_features = 10,
+  max_features_fi = NULL,
   N = 300,
   N_fi = N * 10,
   N_sv = N * 3,
@@ -49,8 +50,10 @@ See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#instance-
 
 \item{time}{Time in ms. Set the animation length. Default is \code{500}.}
 
-\item{max_features}{Maximum number of features to be included in BD and SV plots.
+\item{max_features}{Maximum number of features to be included in BD, SV, and FI plots.
 Default is \code{10}.}
+
+\item{max_features_fi}{Maximum number of features to be included in FI plot. Default is \code{max_features}.}
 
 \item{N}{Number of observations used for the calculation of PD and AD. Default is \code{300}.
 See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#more-calculations-means-more-time}{\bold{vignette}}}
