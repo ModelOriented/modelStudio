@@ -211,6 +211,7 @@ The dashboard gathers useful, but not sensitive, information about how it is bei
   facet_dim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span>,
   time <span class='op'>=</span> <span class='fl'>500</span>,
   max_features <span class='op'>=</span> <span class='fl'>10</span>,
+  max_features_fi <span class='op'>=</span> <span class='cn'>NULL</span>,
   N <span class='op'>=</span> <span class='fl'>300</span>,
   N_fi <span class='op'>=</span> <span class='va'>N</span> <span class='op'>*</span> <span class='fl'>10</span>,
   N_sv <span class='op'>=</span> <span class='va'>N</span> <span class='op'>*</span> <span class='fl'>3</span>,
@@ -263,8 +264,12 @@ See <a href='https://modelstudio.drwhy.ai/articles/ms-perks-features.html#instan
     </tr>
     <tr>
       <th>max_features</th>
-      <td><p>Maximum number of features to be included in BD and SV plots.
+      <td><p>Maximum number of features to be included in BD, SV, and FI plots.
 Default is <code>10</code>.</p></td>
+    </tr>
+    <tr>
+      <th>max_features_fi</th>
+      <td><p>Maximum number of features to be included in FI plot. Default is <code>max_features</code>.</p></td>
     </tr>
     <tr>
       <th>N</th>
