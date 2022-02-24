@@ -1,6 +1,6 @@
 Package: modelStudio
 Title: Interactive Studio for Explanatory Model Analysis
-Version: 3.0.0.9000
+Version: 3.1.0
 Authors@R:
     c(person("Hubert", "Baniecki", role = c("aut", "cre"),
              email = "hbaniecki@gmail.com",

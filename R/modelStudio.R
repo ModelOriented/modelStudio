@@ -350,9 +350,8 @@ modelStudio.explainer <- function(explainer,
         variable_splits_type=variable_splits_type),
       "ingredients::accumulated_dependence (categorical)", show_info, pb, N/30)
   }
-
-  fi_data <- prepare_feature_importance(fi, max_features_fi, options$show_boxplot,
-                                        attr(loss_function, "loss_name"), ...)
+  
+  fi_data <- prepare_feature_importance(fi, max_features_fi, options$show_boxplot, ...)
   pd_data <- prepare_partial_dependence(pd_n, pd_c, variables = variable_names)
   ad_data <- prepare_accumulated_dependence(ad_n, ad_c, variables = variable_names)
   mp_ret <- calculate(
@@ -495,6 +494,8 @@ modelStudio.explainer <- function(explainer,
   if (is.null(options$ms_title)) options$ms_title <- paste0("Interactive Studio for ", label, " Model")
   if (!is.null(options$ms_subtitle)) options$ms_margin_top <- options$ms_margin_top + 40
   if (is.null(options$margin_left)) options$margin_left <- max(105, 7*max(nchar(variable_names)))
+  if (is.null(options$fi_axis_title)) options$fi_axis_title <- 
+    ifelse(is.null(attr(loss_function, "loss_name")), "drop-out loss", attr(loss_function, "loss_name"))
   
   options <- c(list(time = time,
                     model_name = label,

@@ -42,18 +42,19 @@ ignored when \code{scale_plot = TRUE}.}
 \item{default_color}{\code{#371ea3} for Break Down bar and highlighted line.}
 }
 }
-\subsection{Plot specific options:}{
+\subsection{Plot-specific options:}{
 \code{**} is a two letter code unique to each plot, might be
 one of \code{[bd,sv,cp,fi,pd,ad,rv,fd,tv,at]}.\cr
 
 \describe{
-\item{**_title}{Plot specific title. Default varies.}
-\item{**_subtitle}{Plot specific subtitle. Default is \code{subtitle}.}
-\item{**_bar_width}{Plot specific width of bars. Default is \code{bar_width},
+\item{**_title}{Plot-specific title. Default varies.}
+\item{**_subtitle}{Plot-specific subtitle. Default is \code{subtitle}.}
+\item{**_axis_title}{Plot-specific axis title. Default varies.}
+\item{**_bar_width}{Plot-specific width of bars. Default is \code{bar_width},
 ignored when \code{scale_plot = TRUE}.}
-\item{**_line_size}{\code{line_size} Plot specific width of lines. Default is \code{line_size}.}
-\item{**_point_size}{Plot specific point radius. Default is \code{point_size}.}
-\item{**_*_color}{Plot specific \code{[bar,line,point]} color. Default is \code{[bar,line,point]_color}.}
+\item{**_line_size}{Plot-specific width of lines. Default is \code{line_size}.}
+\item{**_point_size}{Plot-specific point radius. Default is \code{point_size}.}
+\item{**_*_color}{Plot-specific \code{[bar,line,point]} color. Default is \code{[bar,line,point]_color}.}
 }
 }
 }

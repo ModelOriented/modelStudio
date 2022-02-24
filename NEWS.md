@@ -1,5 +1,7 @@
-# modelStudio (development)
+# modelStudio 3.1.0
+* changed y-axis variable labels in `SV` to the same as in `BD`
 * added new parameter to `modelStudio()`: `max_features_fi = max_features`, which allows displaying a distinctive number of features in `FI` plot (other than in `BD` and `SV`)
+* added new options to `ms_options()`: `**_axis_title`, which allow changing plot-specific axis title (default varies)
 
 # modelStudio 3.0.0
 * **BREAKING CHANGES**: 

@@ -137,7 +137,7 @@ function breakDown() {
                          (margin.top + bdPlotHeight + 45) + ")")
     .attr("class", "axisTitle")
     .attr("text-anchor", "middle")
-    .text("contribution");
+    .text(bdAxisTitle);
 
   var xAxis = d3.axisBottom(x)
                 .ticks(5)
@@ -375,7 +375,7 @@ function shapleyValues() {
                          (margin.top + svPlotHeight + 45) + ")")
     .attr("class", "axisTitle")
     .attr("text-anchor", "middle")
-    .text("contribution");
+    .text(svAxisTitle);
 
   var xAxis = d3.axisBottom(x)
                 .ticks(5)
@@ -390,7 +390,7 @@ function shapleyValues() {
   var y = d3.scaleBand()
             .rangeRound([margin.top - additionalHeight, margin.top + svPlotHeight])
             .padding(0.33)
-            .domain(bData.map(d => d.variable_name));
+            .domain(bData.map(d => d.variable));
 
   var xGrid = SV.append("g")
                 .attr("class", "grid")
@@ -464,7 +464,7 @@ function shapleyValues() {
       .attr("fill-opacity", d => x(d.barSupport) - x(d.barStart) < 1.5
                                  ? 0 : 1) //invisible bar for clicking purpose
       .attr("x", d => d.contribution > 0 ? x(d.barStart) : x(d.barSupport))
-      .attr("y", d => y(d.variable_name))
+      .attr("y", d => y(d.variable))
       .attr("height", y.bandwidth())
       .on('mouseover', tooltip.show)
       .on('mouseout', tooltip.hide)
@@ -492,7 +492,7 @@ function shapleyValues() {
           .attr("class", "axisLabel")
           .attr("x", d => d.contribution > 0
                           ? x(d.barStart) - 5 : x(d.barSupport) + 5)
-          .attr("y", d => y(d.variable_name) + y.bandwidth()/2)
+          .attr("y", d => y(d.variable) + y.bandwidth()/2)
           .attr("dy", "0.4em")
           .attr("text-anchor", d => d.sign == "1" ? "end" : "start")
           .transition()
@@ -509,15 +509,15 @@ function shapleyValues() {
   lines.append("line")
         .attr("class", "interceptLine")
         .attr("x1", d => d.contribution < 0 ? x(d.barSupport) : x(d.barStart))
-        .attr("y1", d => y(d.variable_name))
+        .attr("y1", d => y(d.variable))
         .attr("x2", d => d.contribution < 0 ? x(d.barSupport) : x(d.barStart))
-        .attr("y2", d => y(d.variable_name))
+        .attr("y2", d => y(d.variable))
         .transition()
         .duration(TIME)
         .delay((d,i) => (i+1) * TIME)
         .attr("y2", (d,i) => i == svBarCount - 1
-                             ? y(d.variable_name) + y.bandwidth()
-                             : y(d.variable_name) + y.bandwidth()*2.5);
+                             ? y(d.variable) + y.bandwidth()
+                             : y(d.variable) + y.bandwidth()*2.5);
 
 
   // boxplots
@@ -527,8 +527,8 @@ function shapleyValues() {
         .attr("class", "interceptLine")
         .attr("x1", d => d.contribution < 0 ? x(d.max) : x(d.min))
         .attr("x2", d => d.contribution < 0 ? x(d.max) : x(d.min))
-        .attr("y1", d => y(d.variable_name) + y.bandwidth()/2)
-        .attr("y2", d => y(d.variable_name) + y.bandwidth()/2)
+        .attr("y1", d => y(d.variable) + y.bandwidth()/2)
+        .attr("y2", d => y(d.variable) + y.bandwidth()/2)
         .transition()
         .duration(TIME)
         .delay((d,i) => i * TIME)
@@ -538,7 +538,7 @@ function shapleyValues() {
     // rectangle for the main box
     bars.append("rect")
         .attr("x", d => d.contribution < 0 ? x(d.q3) : x(d.q1))
-        .attr("y", d => y(d.variable_name) + y.bandwidth()/3)
+        .attr("y", d => y(d.variable) + y.bandwidth()/3)
         .attr("height", y.bandwidth()/3)
         .style("fill", "#371ea3")
         .transition()
@@ -550,8 +550,8 @@ function shapleyValues() {
     // // show the median
     // bars.append("line")
     //     .attr("class", "interceptLine")
-    //     .attr("y1", d => y(d.variable_name) + y.bandwidth()/3)
-    //     .attr("y2", d => y(d.variable_name) + 2*y.bandwidth()/3)
+    //     .attr("y1", d => y(d.variable) + y.bandwidth()/3)
+    //     .attr("y2", d => y(d.variable) + 2*y.bandwidth()/3)
     //     .attr("x1", d => x(d.median))
     //     .attr("x2", d => x(d.median))
     //     .style("stroke", "#ceced9")
@@ -626,7 +626,6 @@ function featureImportance() {
   var fiBarCount = fiData.m,
       bData = fiData.x,
       xMinMax = fiData.x_min_max,
-      xTitle = fiData.x_title,
       desc = fiData.desc;
 
   var fiPlotHeight = SCALE_PLOT ? h : fiBarCount*fiBarWidth + (fiBarCount+1)*fiBarWidth/2,
@@ -642,7 +641,7 @@ function featureImportance() {
                          (margin.top + fiPlotHeight + 45) + ")")
     .attr("class", "axisTitle")
     .attr("text-anchor", "middle")
-    .text(xTitle);
+    .text(fiAxisTitle);
 
   var xAxis = d3.axisBottom(x)
                 .ticks(5)
@@ -1165,7 +1164,7 @@ function cpNumericalPlot(variableName, lData, mData, yMinMax, pData, desc) {
     .attr("y", margin.left - margin.ytitle)
     .attr("x", -(margin.top + cpPlotHeight/2))
     .attr("text-anchor", "middle")
-    .text("prediction");
+    .text(cpAxisTitle);
 
   var description = CP.append("g")
                       .attr("transform", "translate(" +
@@ -1321,8 +1320,16 @@ function cpCategoricalPlot(variableName, bData, yMinMax, lData, desc) {
                          (margin.top + cpPlotHeight + 45) + ")")
     .attr("class", "axisTitle")
     .attr("text-anchor", "middle")
-    .text("prediction");
+    .text(cpAxisTitle);
 
+/*  CP.append("text")
+    .attr("class", "axisTitle")
+    .attr("y", margin.top - additionalHeight)
+    .attr("x", margin.small)
+    .attr("text-anchor", "start")
+    .attr("dominant-baseline", "hanging")
+    .text(variableName + " = " + lData[0][variableName]);*/
+    
   var description = CP.append("g")
                       .attr("transform", "translate(" +
                             (margin.left + cpPlotWidth - 4*margin.big - margin.small)
@@ -1496,7 +1503,7 @@ function pdNumericalPlot(variableName, lData, mData, yMinMax, yMean, desc) {
     .attr("y", margin.left - margin.ytitle)
     .attr("x", -(margin.top + pdPlotHeight/2))
     .attr("text-anchor", "middle")
-    .text("average prediction");
+    .text(pdAxisTitle);
 
   var description = PD.append("g")
                       .attr("transform", "translate(" +
@@ -1652,7 +1659,7 @@ function pdCategoricalPlot(variableName, bData, yMinMax, yMean, desc) {
                          (margin.top + pdPlotHeight + 45) + ")")
     .attr("class", "axisTitle")
     .attr("text-anchor", "middle")
-    .text("average prediction");
+    .text(pdAxisTitle);
 
   var description = PD.append("g")
                       .attr("transform", "translate(" +
@@ -1827,7 +1834,7 @@ function adNumericalPlot(variableName, lData, mData, yMinMax, yMean, desc) {
     .attr("y", margin.left - margin.ytitle)
     .attr("x", -(margin.top + adPlotHeight/2))
     .attr("text-anchor", "middle")
-    .text("accumulated prediction");
+    .text(adAxisTitle);
 
   // var description = AD.append("g")
   //                     .attr("transform", "translate(" +
@@ -1981,7 +1988,7 @@ function adCategoricalPlot(variableName, bData, yMinMax, yMean, desc) {
                          (margin.top + adPlotHeight + 45) + ")")
     .attr("class", "axisTitle")
     .attr("text-anchor", "middle")
-    .text("accumulated prediction");
+    .text(adAxisTitle);
 
   // var description = AD.append("g")
   //                     .attr("transform", "translate(" +
@@ -2063,7 +2070,7 @@ function rvNumericalPlot(variableName, xData, xMinMax, yMinMax) {
     .attr("y", margin.left - margin.ytitle)
     .attr("x", -(margin.top + rvPlotHeight/2))
     .attr("text-anchor", "middle")
-    .text("residuals");
+    .text(rvAxisTitle);
 
   var y = d3.scaleLinear()
             .range([margin.top + rvPlotHeight, margin.top - additionalHeight])
@@ -2239,7 +2246,7 @@ function rvCategoricalPlot(variableName, xData, xMinMax, yMinMax) {
                          (margin.top + rvPlotHeight + 45) + ")")
     .attr("class", "axisTitle")
     .attr("text-anchor", "middle")
-    .text("residuals");
+    .text(rvAxisTitle);
 }
 
 function fdNumericalPlot(variableName, dData, mData, nBin) {
@@ -2265,7 +2272,7 @@ function fdNumericalPlot(variableName, dData, mData, nBin) {
     .attr("y", margin.left - margin.ytitle)
     .attr("x", -(margin.top + fdPlotHeight/2))
     .attr("text-anchor", "middle")
-    .text("count");
+    .text(fdAxisTitle);
 
   var y = d3.scaleLinear()
         .range([margin.top + fdPlotHeight - 5, margin.top]);
@@ -2485,7 +2492,7 @@ function fdCategoricalPlot(variableName, dData, xMinMax, mData) {
                          (margin.top + fdPlotHeight + 45) + ")")
     .attr("class", "axisTitle")
     .attr("text-anchor", "middle")
-    .text("count");
+    .text(fdAxisTitle);
 }
 
 function tvNumericalPlot(variableName, xData, xMinMax, yMinMax) {
@@ -2536,7 +2543,7 @@ function tvNumericalPlot(variableName, xData, xMinMax, yMinMax) {
     .attr("y", margin.left - margin.ytitle)
     .attr("x", -(margin.top + tvPlotHeight/2))
     .attr("text-anchor", "middle")
-    .text("target");
+    .text(tvAxisTitle);
 
   if (IS_TARGET_BINARY) {
 
@@ -2711,7 +2718,7 @@ function tvCategoricalPlot(variableName, xData, xMinMax, yMinMax) {
   var xTitle;
 
   if (IS_TARGET_BINARY) {
-    xTitle = "average target"
+    xTitle = tvAxisTitle == "target" ? "average target" : tvAxisTitle;
 
     // find 5 nice ticks with max and min - do better than d3
     var tickValues = getTickValues(x.domain());
@@ -2763,7 +2770,7 @@ function tvCategoricalPlot(variableName, xData, xMinMax, yMinMax) {
       .attr("x2", x(0))
       .attr("y2", maximumY + y.bandwidth());
   } else {
-    xTitle = "target";
+    xTitle = tvAxisTitle;
 
     var xAxis = d3.axisBottom(x)
                   .ticks(5)
@@ -2932,7 +2939,7 @@ function atNumericalPlot(variableName, xData, xMinMax, yMinMax, yMean) {
     .attr("y", margin.left - margin.ytitle)
     .attr("x", -(margin.top + atPlotHeight/2))
     .attr("text-anchor", "middle")
-    .text("average target");
+    .text(atAxisTitle);
 
   AT.append("line")
     .attr("class", "interceptLine")
@@ -3054,7 +3061,7 @@ function atCategoricalPlot(variableName, xData, xMinMax, yMinMax, yMean) {
                          (margin.top + atPlotHeight + 45) + ")")
     .attr("class", "axisTitle")
     .attr("text-anchor", "middle")
-    .text("average target");
+    .text(atAxisTitle);
 
   var bars = AT.selectAll()
                .data(xData)

@@ -33,18 +33,19 @@
 #' \item{default_color}{\code{#371ea3} for Break Down bar and highlighted line.}
 #' }
 #' }
-#' \subsection{Plot specific options:}{
+#' \subsection{Plot-specific options:}{
 #' \code{**} is a two letter code unique to each plot, might be
 #' one of \code{[bd,sv,cp,fi,pd,ad,rv,fd,tv,at]}.\cr
 #'
 #' \describe{
-#' \item{**_title}{Plot specific title. Default varies.}
-#' \item{**_subtitle}{Plot specific subtitle. Default is \code{subtitle}.}
-#' \item{**_bar_width}{Plot specific width of bars. Default is \code{bar_width},
+#' \item{**_title}{Plot-specific title. Default varies.}
+#' \item{**_subtitle}{Plot-specific subtitle. Default is \code{subtitle}.}
+#' \item{**_axis_title}{Plot-specific axis title. Default varies.}
+#' \item{**_bar_width}{Plot-specific width of bars. Default is \code{bar_width},
 #' ignored when \code{scale_plot = TRUE}.}
-#' \item{**_line_size}{\code{line_size} Plot specific width of lines. Default is \code{line_size}.}
-#' \item{**_point_size}{Plot specific point radius. Default is \code{point_size}.}
-#' \item{**_*_color}{Plot specific \code{[bar,line,point]} color. Default is \code{[bar,line,point]_color}.}
+#' \item{**_line_size}{Plot-specific width of lines. Default is \code{line_size}.}
+#' \item{**_point_size}{Plot-specific point radius. Default is \code{point_size}.}
+#' \item{**_*_color}{Plot-specific \code{[bar,line,point]} color. Default is \code{[bar,line,point]_color}.}
 #' }
 #' }
 #'
@@ -131,18 +132,21 @@ ms_options <- function(...) {
     default_color = "#371ea3",
     bd_title = "Break Down",
     bd_subtitle = NULL,
+    bd_axis_title = "contribution",
     bd_bar_width = NULL,
     bd_positive_color = NULL,
     bd_negative_color = NULL,
     bd_default_color = NULL,
     sv_title = "Shapley Values",
     sv_subtitle = NULL,
+    sv_axis_title = "contribution",
     sv_bar_width = NULL,
     sv_positive_color = NULL,
     sv_negative_color = NULL,
     sv_default_color = NULL,
     cp_title = "Ceteris Paribus",
     cp_subtitle = NULL,
+    cp_axis_title = "prediction",
     cp_bar_width = NULL,
     cp_line_size = NULL,
     cp_point_size = 3,
@@ -151,34 +155,41 @@ ms_options <- function(...) {
     cp_point_color = "#371ea3",
     fi_title = "Feature Importance",
     fi_subtitle = NULL,
+    fi_axis_title = NULL,
     fi_bar_width = NULL,
     fi_bar_color = NULL,
     pd_title = "Partial Dependence",
     pd_subtitle = NULL,
+    pd_axis_title = "average prediction",
     pd_bar_width = NULL,
     pd_line_size = NULL,
     pd_bar_color = NULL,
     pd_line_color = NULL,
     ad_title = "Accumulated Dependence",
     ad_subtitle = NULL,
+    ad_axis_title = "accumulated prediction",
     ad_bar_width = NULL,
     ad_line_size = NULL,
     ad_bar_color = NULL,
     ad_line_color = NULL,
     rv_title = "Residuals vs Feature",
     rv_subtitle = NULL,
+    rv_axis_title = "residuals",
     rv_point_size = NULL,
     rv_point_color = NULL,
     fd_title = "Feature Distribution",
     fd_subtitle = NULL,
+    fd_axis_title = "count",
     fd_bar_width = NULL,
     fd_bar_color = NULL,
     tv_title = "Target vs Feature",
     tv_subtitle = NULL,
+    tv_axis_title = "target",
     tv_point_size = NULL,
     tv_point_color = NULL,
     at_title = "Average Target vs Feature",
     at_subtitle = NULL,
+    at_axis_title = "average target",
     at_bar_width = NULL,
     at_line_size = NULL,
     at_point_size = 3,
