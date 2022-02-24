@@ -51,7 +51,7 @@
         <div class="info">
           <span class="partof">part of the <a href="https://github.com/ModelOriented/DrWhy" class="external-link">DrWhy.AI</a>
            developed by the <a href="https://mi2.mini.pw.edu.pl/" class="external-link">MI^2 DataLab</a> </span>
-          <span class="version version-default">3.0.0.9000</span>
+          <span class="version version-default">3.1.0</span>
         </div>
       </div>
     </div>
@@ -103,7 +103,7 @@
       <h1 data-toc-skip>modelStudio - R &amp; Python examples</h1>
                         <h4 data-toc-skip class="author">Hubert Baniecki</h4>
             
-            <h4 data-toc-skip class="date">2021-12-07</h4>
+            <h4 data-toc-skip class="date">2022-02-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ModelOriented/modelStudio/blob/HEAD/vignettes/ms-r-python-examples.Rmd" class="external-link"><code>vignettes/ms-r-python-examples.Rmd</code></a></small>
       <div class="hidden name"><code>ms-r-python-examples.Rmd</code></div>
@@ -112,20 +112,20 @@
 
     
     
-<div class="section level1">
-<h1 id="r-python-examples">R &amp; Python Examples<a class="anchor" aria-label="anchor" href="#r-python-examples"></a>
-</h1>
 <div class="section level2">
-<h2 id="r">R<a class="anchor" aria-label="anchor" href="#r"></a>
+<h2 id="r-python-examples">R &amp; Python Examples<a class="anchor" aria-label="anchor" href="#r-python-examples"></a>
 </h2>
+<div class="section level3">
+<h3 id="r">R<a class="anchor" aria-label="anchor" href="#r"></a>
+</h3>
 <p>The <code><a href="../reference/modelStudio.html">modelStudio()</a></code> function uses <code>DALEX</code> explainers created with <code><a href="https://dalex.drwhy.ai/reference/explain.html" class="external-link">DALEX::explain()</a></code> or <code>DALEXtra::explain_*()</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># packages for the explainer objects</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"DALEX"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"DALEXtra"</span><span class="op">)</span></code></pre></div>
-<div class="section level3">
-<h3 id="mlr-dashboard">mlr <a href="https://modelstudio.drwhy.ai/mlr.html" class="external-link">dashboard</a><a class="anchor" aria-label="anchor" href="#mlr-dashboard"></a>
-</h3>
+<div class="section level4">
+<h4 id="mlr-dashboard">mlr <a href="https://modelstudio.drwhy.ai/mlr.html" class="external-link">dashboard</a><a class="anchor" aria-label="anchor" href="#mlr-dashboard"></a>
+</h4>
 <p>In this example, we make a studio for the <code>ranger</code> model on the <code>apartments</code> data.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load packages and data</span>
@@ -158,9 +158,9 @@
 <span class="co"># make a studio for the model</span>
 <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>, <span class="va">new_observation</span><span class="op">)</span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="mlr3-dashboard">mlr3 <a href="https://modelstudio.drwhy.ai/mlr3.html" class="external-link">dashboard</a><a class="anchor" aria-label="anchor" href="#mlr3-dashboard"></a>
-</h3>
+<div class="section level4">
+<h4 id="mlr3-dashboard">mlr3 <a href="https://modelstudio.drwhy.ai/mlr3.html" class="external-link">dashboard</a><a class="anchor" aria-label="anchor" href="#mlr3-dashboard"></a>
+</h4>
 <p>In this example, we make a studio for the <code>ranger</code> model on the <code>titanic</code> data.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load packages and data</span>
@@ -197,9 +197,9 @@
 <span class="co"># make a studio for the model</span>
 <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>, <span class="va">new_observation</span><span class="op">)</span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="xgboost-dashboard">xgboost <a href="https://modelstudio.drwhy.ai/xgboost.html" class="external-link">dashboard</a><a class="anchor" aria-label="anchor" href="#xgboost-dashboard"></a>
-</h3>
+<div class="section level4">
+<h4 id="xgboost-dashboard">xgboost <a href="https://modelstudio.drwhy.ai/xgboost.html" class="external-link">dashboard</a><a class="anchor" aria-label="anchor" href="#xgboost-dashboard"></a>
+</h4>
 <p>In this example, we make a studio for the <code>xgboost</code> model on the <code>titanic</code> data.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load packages and data</span>
@@ -236,9 +236,9 @@
 <span class="co"># make a studio for the model</span>
 <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>, <span class="va">new_observation</span><span class="op">)</span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="caret-dashboard">caret <a href="https://modelstudio.drwhy.ai/caret.html" class="external-link">dashboard</a><a class="anchor" aria-label="anchor" href="#caret-dashboard"></a>
-</h3>
+<div class="section level4">
+<h4 id="caret-dashboard">caret <a href="https://modelstudio.drwhy.ai/caret.html" class="external-link">dashboard</a><a class="anchor" aria-label="anchor" href="#caret-dashboard"></a>
+</h4>
 <p>In this example, we make a studio for the <code>gbm</code> model on the <code>titanic</code> data.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load packages and data</span>
@@ -273,9 +273,9 @@
 <span class="co"># make a studio for the model</span>
 <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>, <span class="va">new_observation</span><span class="op">)</span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="h2o-dashboard">h2o <a href="https://modelstudio.drwhy.ai/h2o.html" class="external-link">dashboard</a><a class="anchor" aria-label="anchor" href="#h2o-dashboard"></a>
-</h3>
+<div class="section level4">
+<h4 id="h2o-dashboard">h2o <a href="https://modelstudio.drwhy.ai/h2o.html" class="external-link">dashboard</a><a class="anchor" aria-label="anchor" href="#h2o-dashboard"></a>
+</h4>
 <p>In this example, we make a studio for the <code>h2o.automl</code> model on the <code>titanic</code> data.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load packages and data</span>
@@ -318,9 +318,9 @@
 <span class="co"># shutdown h2o</span>
 <span class="fu">h2o.shutdown</span><span class="op">(</span>prompt <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="parsnip-dashboard">parsnip <a href="https://modelstudio.drwhy.ai/parsnip.html" class="external-link">dashboard</a><a class="anchor" aria-label="anchor" href="#parsnip-dashboard"></a>
-</h3>
+<div class="section level4">
+<h4 id="parsnip-dashboard">parsnip <a href="https://modelstudio.drwhy.ai/parsnip.html" class="external-link">dashboard</a><a class="anchor" aria-label="anchor" href="#parsnip-dashboard"></a>
+</h4>
 <p>In this example, we make a studio for the <code>ranger</code> model on the <code>apartments</code> data.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load packages and data</span>
@@ -350,9 +350,9 @@
 <span class="co"># make a studio for the model</span>
 <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span><span class="op">)</span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="tidymodels-dashboard">tidymodels <a href="https://modelstudio.drwhy.ai/tidymodels.html" class="external-link">dashboard</a><a class="anchor" aria-label="anchor" href="#tidymodels-dashboard"></a>
-</h3>
+<div class="section level4">
+<h4 id="tidymodels-dashboard">tidymodels <a href="https://modelstudio.drwhy.ai/tidymodels.html" class="external-link">dashboard</a><a class="anchor" aria-label="anchor" href="#tidymodels-dashboard"></a>
+</h4>
 <p>In this example, we make a studio for the <code>ranger</code> model on the <code>titanic</code> data.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load packages and data</span>
@@ -398,9 +398,9 @@
 <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>, <span class="va">new_observation</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
-<div class="section level2">
-<h2 id="python">Python<a class="anchor" aria-label="anchor" href="#python"></a>
-</h2>
+<div class="section level3">
+<h3 id="python">Python<a class="anchor" aria-label="anchor" href="#python"></a>
+</h3>
 <p>The <code><a href="../reference/modelStudio.html">modelStudio()</a></code> function uses <code>dalex</code> explainers created with <code>dalex.Explainer()</code>.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># package for the Explainer object</span></span>
 <span id="cb9-2"><a href="#cb9-2"></a><span class="ex">pip</span> install dalex -U</span></code></pre></div>
@@ -408,9 +408,9 @@
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># package for pickle load</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"reticulate"</span><span class="op">)</span></code></pre></div>
-<div class="section level3">
-<h3 id="scikit-learn-dashboard">scikit-learn <a href="https://modelstudio.drwhy.ai/scikitlearn.html" class="external-link">dashboard</a><a class="anchor" aria-label="anchor" href="#scikit-learn-dashboard"></a>
-</h3>
+<div class="section level4">
+<h4 id="scikit-learn-dashboard">scikit-learn <a href="https://modelstudio.drwhy.ai/scikitlearn.html" class="external-link">dashboard</a><a class="anchor" aria-label="anchor" href="#scikit-learn-dashboard"></a>
+</h4>
 <p>In this example, we make a studio for the <code>Pipeline SVR</code> model on the <code>fifa</code> data.</p>
 <p>First, use <code>dalex</code> in Python:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># load packages and data</span></span>
@@ -440,16 +440,16 @@
 <p>Then, use <code>modelStudio</code> in R:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load the explainer from the pickle file</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/reticulate" class="external-link">reticulate</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/reticulate/" class="external-link">reticulate</a></span><span class="op">)</span>
 <span class="va">explainer</span> <span class="op">&lt;-</span> <span class="fu">py_load_object</span><span class="op">(</span><span class="st">"explainer_scikitlearn.pickle"</span>, pickle <span class="op">=</span> <span class="st">"pickle"</span><span class="op">)</span>
 
 <span class="co"># make a studio for the model</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://modelstudio.drwhy.ai" class="external-link">modelStudio</a></span><span class="op">)</span>
 <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span>, B <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="lightgbm-dashboard">lightgbm <a href="https://modelstudio.drwhy.ai/lightgbm.html" class="external-link">dashboard</a><a class="anchor" aria-label="anchor" href="#lightgbm-dashboard"></a>
-</h3>
+<div class="section level4">
+<h4 id="lightgbm-dashboard">lightgbm <a href="https://modelstudio.drwhy.ai/lightgbm.html" class="external-link">dashboard</a><a class="anchor" aria-label="anchor" href="#lightgbm-dashboard"></a>
+</h4>
 <p>In this example, we make a studio for the <code>Pipeline LGBMClassifier</code> model on the <code>titanic</code> data.</p>
 <p>First, use <code>dalex</code> in Python:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># load packages and data</span></span>
@@ -509,16 +509,16 @@
 <p>Then, use <code>modelStudio</code> in R:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load the explainer from the pickle file</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/reticulate" class="external-link">reticulate</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/reticulate/" class="external-link">reticulate</a></span><span class="op">)</span>
 <span class="va">explainer</span> <span class="op">&lt;-</span> <span class="fu">py_load_object</span><span class="op">(</span><span class="st">"explainer_lightgbm.pickle"</span>, pickle <span class="op">=</span> <span class="st">"pickle"</span><span class="op">)</span>
 
 <span class="co"># make a studio for the model</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://modelstudio.drwhy.ai" class="external-link">modelStudio</a></span><span class="op">)</span>
 <span class="fu"><a href="../reference/modelStudio.html">modelStudio</a></span><span class="op">(</span><span class="va">explainer</span><span class="op">)</span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="kerastensorflow-dashboard">keras/tensorflow <a href="https://modelstudio.drwhy.ai/keras.html" class="external-link">dashboard</a><a class="anchor" aria-label="anchor" href="#kerastensorflow-dashboard"></a>
-</h3>
+<div class="section level4">
+<h4 id="kerastensorflow-dashboard">keras/tensorflow <a href="https://modelstudio.drwhy.ai/keras.html" class="external-link">dashboard</a><a class="anchor" aria-label="anchor" href="#kerastensorflow-dashboard"></a>
+</h4>
 <p>In this example, we make a studio for the <code>Pipeline KerasClassifier</code> model on the <code>titanic</code> data.</p>
 <p>First, use <code>dalex</code> in Python:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a><span class="co"># load packages and data</span></span>
@@ -589,7 +589,7 @@
 <p>Then, use <code>modelStudio</code> in R:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load the explainer from the pickle file</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/reticulate" class="external-link">reticulate</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/reticulate/" class="external-link">reticulate</a></span><span class="op">)</span>
 
 <span class="co">#! add blank create_architecture function before load !</span>
 <span class="fu">py_run_string</span><span class="op">(</span><span class="st">'
@@ -605,9 +605,9 @@ def create_architecture():
 <hr>
 </div>
 </div>
-<div class="section level2">
-<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
-</h2>
+<div class="section level3">
+<h3 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h3>
 <ul>
 <li>Theoretical introduction to the plots: <a href="https://ema.drwhy.ai/" class="external-link">Explanatory Model Analysis. Explore, Explain, and Examine Predictive Models.</a>
 </li>
