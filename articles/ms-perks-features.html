@@ -61,7 +61,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -103,7 +103,7 @@
       <h1 data-toc-skip>modelStudio - perks and features</h1>
                         <h4 data-toc-skip class="author">Hubert Baniecki</h4>
             
-            <h4 data-toc-skip class="date">2022-02-27</h4>
+            <h4 data-toc-skip class="date">2022-04-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ModelOriented/modelStudio/blob/HEAD/vignettes/ms-perks-features.Rmd" class="external-link"><code>vignettes/ms-perks-features.Rmd</code></a></small>
       <div class="hidden name"><code>ms-perks-features.Rmd</code></div>
@@ -375,7 +375,7 @@
 <p>Use the <code>widget_id</code> argument and <code>r2d3</code> package to render the <code>modelStudio</code> output in Shiny. See <a href="https://rstudio.github.io/r2d3/articles/shiny.html" class="external-link">Using r2d3 with Shiny</a> and consider the following example:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/" class="external-link">shiny</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/r2d3" class="external-link">r2d3</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/r2d3/" class="external-link">r2d3</a></span><span class="op">)</span>
 
 
 <span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu">fluidPage</span><span class="op">(</span>
@@ -403,13 +403,13 @@
   <span class="va">ms</span><span class="op">$</span><span class="va">elementId</span> <span class="op">&lt;-</span> <span class="cn">NULL</span>                      <span class="co">#:# remove elementId to stop the warning</span>
 
   <span class="co">#:# basic render d3 output</span>
-  <span class="va">output</span><span class="op">[[</span><span class="va">WIDGET_ID</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/r2d3/man/d3-shiny.html" class="external-link">renderD3</a></span><span class="op">(</span><span class="op">{</span>
+  <span class="va">output</span><span class="op">[[</span><span class="va">WIDGET_ID</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rstudio.github.io/r2d3//reference/d3-shiny.html" class="external-link">renderD3</a></span><span class="op">(</span><span class="op">{</span>
     <span class="va">ms</span>
   <span class="op">}</span><span class="op">)</span>
   
   <span class="co">#:# use render ui to set proper width and height</span>
   <span class="va">output</span><span class="op">$</span><span class="va">dashboard</span> <span class="op">&lt;-</span> <span class="fu">renderUI</span><span class="op">(</span><span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/r2d3/man/d3-shiny.html" class="external-link">d3Output</a></span><span class="op">(</span><span class="va">WIDGET_ID</span>, width<span class="op">=</span><span class="va">ms</span><span class="op">$</span><span class="va">width</span>, height<span class="op">=</span><span class="va">ms</span><span class="op">$</span><span class="va">height</span><span class="op">)</span>
+    <span class="fu"><a href="https://rstudio.github.io/r2d3//reference/d3-shiny.html" class="external-link">d3Output</a></span><span class="op">(</span><span class="va">WIDGET_ID</span>, width<span class="op">=</span><span class="va">ms</span><span class="op">$</span><span class="va">width</span>, height<span class="op">=</span><span class="va">ms</span><span class="op">$</span><span class="va">height</span><span class="op">)</span>
   <span class="op">}</span><span class="op">)</span>
 <span class="op">}</span>
 
