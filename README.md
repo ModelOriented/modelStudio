@@ -1,4 +1,4 @@
-# Interactive Studio for Explanatory Model Analysis <img src="man/figures/logo.gif" align="right" width="143px"/>
+# Interactive Studio for Explanatory Model Analysis <img style="display: inline-block;" src="man/figures/logo.gif" align="right" width="143px"/>
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/modelStudio)](https://cran.r-project.org/package=modelStudio)
 [![R build status](https://github.com/ModelOriented/modelStudio/workflows/R-CMD-check/badge.svg)](https://github.com/ModelOriented/modelStudio/actions?query=workflow%3AR-CMD-check)
