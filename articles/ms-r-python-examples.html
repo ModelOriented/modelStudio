@@ -103,7 +103,7 @@
       <h1 data-toc-skip>modelStudio - R &amp; Python examples</h1>
                         <h4 data-toc-skip class="author">Hubert Baniecki</h4>
             
-            <h4 data-toc-skip class="date">2022-04-21</h4>
+            <h4 data-toc-skip class="date">2022-05-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ModelOriented/modelStudio/blob/HEAD/vignettes/ms-r-python-examples.Rmd" class="external-link"><code>vignettes/ms-r-python-examples.Rmd</code></a></small>
       <div class="hidden name"><code>ms-r-python-examples.Rmd</code></div>
@@ -118,7 +118,7 @@
 <div class="section level3">
 <h3 id="r">R<a class="anchor" aria-label="anchor" href="#r"></a>
 </h3>
-<p>The <code><a href="../reference/modelStudio.html">modelStudio()</a></code> function uses <code>DALEX</code> explainers created with <code><a href="https://dalex.drwhy.ai/reference/explain.html" class="external-link">DALEX::explain()</a></code> or <code>DALEXtra::explain_*()</code>.</p>
+<p>The <code><a href="../reference/modelStudio.html">modelStudio()</a></code> function uses <code>DALEX</code> explainers created with <code><a href="https://modeloriented.github.io/DALEX/reference/explain.html" class="external-link">DALEX::explain()</a></code> or <code>DALEXtra::explain_*()</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># packages for the explainer objects</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"DALEX"</span><span class="op">)</span>
@@ -133,7 +133,7 @@
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ModelOriented.github.io/DALEXtra/" class="external-link">DALEXtra</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://modelstudio.drwhy.ai" class="external-link">modelStudio</a></span><span class="op">)</span>
 
-<span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">DALEX</span><span class="fu">::</span><span class="va"><a href="https://dalex.drwhy.ai/reference/apartments.html" class="external-link">apartments</a></span>
+<span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">DALEX</span><span class="fu">::</span><span class="va"><a href="https://modeloriented.github.io/DALEX/reference/apartments.html" class="external-link">apartments</a></span>
 
 <span class="co"># split the data</span>
 <span class="va">index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>, <span class="fl">0.7</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span>
@@ -169,7 +169,7 @@
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ModelOriented.github.io/DALEXtra/" class="external-link">DALEXtra</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://modelstudio.drwhy.ai" class="external-link">modelStudio</a></span><span class="op">)</span>
 
-<span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">DALEX</span><span class="fu">::</span><span class="va"><a href="https://dalex.drwhy.ai/reference/titanic.html" class="external-link">titanic_imputed</a></span>
+<span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">DALEX</span><span class="fu">::</span><span class="va"><a href="https://modeloriented.github.io/DALEX/reference/titanic.html" class="external-link">titanic_imputed</a></span>
 
 <span class="co"># split the data</span>
 <span class="va">index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>, <span class="fl">0.7</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span>
@@ -204,10 +204,10 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load packages and data</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dmlc/xgboost" class="external-link">xgboost</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dalex.drwhy.ai" class="external-link">DALEX</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://modeloriented.github.io/DALEX/" class="external-link">DALEX</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://modelstudio.drwhy.ai" class="external-link">modelStudio</a></span><span class="op">)</span>
 
-<span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">DALEX</span><span class="fu">::</span><span class="va"><a href="https://dalex.drwhy.ai/reference/titanic.html" class="external-link">titanic_imputed</a></span>
+<span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">DALEX</span><span class="fu">::</span><span class="va"><a href="https://modeloriented.github.io/DALEX/reference/titanic.html" class="external-link">titanic_imputed</a></span>
 
 <span class="co"># split the data</span>
 <span class="va">index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>, <span class="fl">0.7</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span>
@@ -223,7 +223,7 @@
 <span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xgboost/man/xgb.train.html" class="external-link">xgb.train</a></span><span class="op">(</span><span class="va">params</span>, <span class="va">xgb_matrix</span>, nrounds <span class="op">=</span> <span class="fl">500</span><span class="op">)</span>
 
 <span class="co"># create an explainer for the model</span>
-<span class="va">explainer</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dalex.drwhy.ai/reference/explain.html" class="external-link">explain</a></span><span class="op">(</span><span class="va">model</span>,
+<span class="va">explainer</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://modeloriented.github.io/DALEX/reference/explain.html" class="external-link">explain</a></span><span class="op">(</span><span class="va">model</span>,
                      data <span class="op">=</span> <span class="va">test_matrix</span>,
                      y <span class="op">=</span> <span class="va">test</span><span class="op">$</span><span class="va">survived</span>,
                      type <span class="op">=</span> <span class="st">"classification"</span>,
@@ -243,10 +243,10 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load packages and data</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/topepo/caret/" class="external-link">caret</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dalex.drwhy.ai" class="external-link">DALEX</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://modeloriented.github.io/DALEX/" class="external-link">DALEX</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://modelstudio.drwhy.ai" class="external-link">modelStudio</a></span><span class="op">)</span>
 
-<span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">DALEX</span><span class="fu">::</span><span class="va"><a href="https://dalex.drwhy.ai/reference/titanic.html" class="external-link">titanic_imputed</a></span>
+<span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">DALEX</span><span class="fu">::</span><span class="va"><a href="https://modeloriented.github.io/DALEX/reference/titanic.html" class="external-link">titanic_imputed</a></span>
 
 <span class="co"># split the data</span>
 <span class="va">index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>, <span class="fl">0.7</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span>
@@ -261,7 +261,7 @@
 <span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">train</span><span class="op">(</span><span class="va">survived</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train</span>, method <span class="op">=</span> <span class="st">"gbm"</span>, trControl <span class="op">=</span> <span class="va">cv</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="co"># create an explainer for the model</span>
-<span class="va">explainer</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dalex.drwhy.ai/reference/explain.html" class="external-link">explain</a></span><span class="op">(</span><span class="va">model</span>,
+<span class="va">explainer</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://modeloriented.github.io/DALEX/reference/explain.html" class="external-link">explain</a></span><span class="op">(</span><span class="va">model</span>,
                      data <span class="op">=</span> <span class="va">test</span>,
                      y <span class="op">=</span> <span class="va">test</span><span class="op">$</span><span class="va">survived</span>,
                      label <span class="op">=</span> <span class="st">"caret"</span><span class="op">)</span>
@@ -283,7 +283,7 @@
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ModelOriented.github.io/DALEXtra/" class="external-link">DALEXtra</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://modelstudio.drwhy.ai" class="external-link">modelStudio</a></span><span class="op">)</span>
 
-<span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">DALEX</span><span class="fu">::</span><span class="va"><a href="https://dalex.drwhy.ai/reference/titanic.html" class="external-link">titanic_imputed</a></span>
+<span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">DALEX</span><span class="fu">::</span><span class="va"><a href="https://modeloriented.github.io/DALEX/reference/titanic.html" class="external-link">titanic_imputed</a></span>
 
 <span class="co"># init h2o</span>
 <span class="fu">h2o.init</span><span class="op">(</span><span class="op">)</span>
@@ -325,10 +325,10 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load packages and data</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/parsnip" class="external-link">parsnip</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dalex.drwhy.ai" class="external-link">DALEX</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://modeloriented.github.io/DALEX/" class="external-link">DALEX</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://modelstudio.drwhy.ai" class="external-link">modelStudio</a></span><span class="op">)</span>
 
-<span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">DALEX</span><span class="fu">::</span><span class="va"><a href="https://dalex.drwhy.ai/reference/apartments.html" class="external-link">apartments</a></span>
+<span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">DALEX</span><span class="fu">::</span><span class="va"><a href="https://modeloriented.github.io/DALEX/reference/apartments.html" class="external-link">apartments</a></span>
 
 <span class="co"># split the data</span>
 <span class="va">index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>, <span class="fl">0.7</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span>
@@ -342,7 +342,7 @@
          <span class="fu">fit</span><span class="op">(</span><span class="va">m2.price</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train</span><span class="op">)</span>
 
 <span class="co"># create an explainer for the model</span>
-<span class="va">explainer</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dalex.drwhy.ai/reference/explain.html" class="external-link">explain</a></span><span class="op">(</span><span class="va">model</span>,
+<span class="va">explainer</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://modeloriented.github.io/DALEX/reference/explain.html" class="external-link">explain</a></span><span class="op">(</span><span class="va">model</span>,
                      data <span class="op">=</span> <span class="va">test</span>,
                      y <span class="op">=</span> <span class="va">test</span><span class="op">$</span><span class="va">m2.price</span>,
                      label <span class="op">=</span> <span class="st">"parsnip"</span><span class="op">)</span>
@@ -360,7 +360,7 @@
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ModelOriented.github.io/DALEXtra/" class="external-link">DALEXtra</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://modelstudio.drwhy.ai" class="external-link">modelStudio</a></span><span class="op">)</span>
 
-<span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">DALEX</span><span class="fu">::</span><span class="va"><a href="https://dalex.drwhy.ai/reference/titanic.html" class="external-link">titanic_imputed</a></span>
+<span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">DALEX</span><span class="fu">::</span><span class="va"><a href="https://modeloriented.github.io/DALEX/reference/titanic.html" class="external-link">titanic_imputed</a></span>
 
 <span class="co"># split the data</span>
 <span class="va">index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>, <span class="fl">0.7</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span>
