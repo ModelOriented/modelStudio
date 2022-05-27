@@ -335,15 +335,16 @@ If you use `modelStudio`, please cite our [JOSS article](https://joss.theoj.org/
 
 ## More resources
 
+  - A preprint: [The Grammar of Interactive Explanatory Model Analysis](https://arxiv.org/abs/2005.00497v4)
+  
   - Theoretical introduction to the plots: [Explanatory Model Analysis: Explore, Explain, and Examine Predictive Models](https://ema.drwhy.ai/)
 
   - Vignettes: [perks and features](https://modelstudio.drwhy.ai/articles/ms-perks-features.html), [R & Python examples](https://modelstudio.drwhy.ai/articles/ms-r-python-examples.html), [modelStudio in R Markdown HTML](https://modelstudio.drwhy.ai/articles/ms-rmarkdown.html)   
   
   - Changelog: [NEWS](https://modelstudio.drwhy.ai/news/index.html)
     
-  - Conference poster: [MLinPL2019](https://github.com/ModelOriented/modelStudio/blob/master/misc/MLinPL2019_modelStudio_poster.pdf)
+  - Conference poster: [ML in PL 2019](https://github.com/ModelOriented/modelStudio/blob/master/misc/MLinPL2019_modelStudio_poster.pdf)
   
-  - A preprint of [The Grammar of Interactive Explanatory Model Analysis](https://arxiv.org/abs/2005.00497)
   
 ## Acknowledgments
 
