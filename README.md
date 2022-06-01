@@ -1,7 +1,7 @@
-# Interactive Studio for Explanatory Model Analysis 
+# Interactive Studio for Explanatory Model Analysis
 
 <p align="center">
-<img src="man/figures/logo.gif" width="150px"/>
+<img src="man/figures/logo.gif" width="200"/>
 </p>
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/modelStudio)](https://cran.r-project.org/package=modelStudio)
