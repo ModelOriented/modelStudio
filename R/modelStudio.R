@@ -260,11 +260,8 @@ modelStudio.explainer <- function(explainer,
       loss_function <- DALEX::loss_root_mean_square
     }
   } else {
-    if (package_version(packageVersion("DALEX")) < package_version("2.5.0")) {
-      loss_function <- DALEX::loss_default(explainer$model_info$type)  
-    } else {
-      loss_function <- DALEX::get_loss_default(explainer$model_info$type)
-    }
+    # suppress a warning coming from DALEX v2.5.0
+    loss_function <- suppressWarnings(DALEX::loss_default(explainer$model_info$type))
   }
 
   variable_splits_type <- ifelse('variable_splits_type' %in% kwargs_names,
