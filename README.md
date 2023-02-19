@@ -14,7 +14,7 @@
 
 The `modelStudio` package **automates the explanatory analysis of machine learning predictive models**. It generates advanced interactive model explanations in the form of a **serverless HTML site** with only one line of code. This tool is model-agnostic, therefore compatible with most of the black-box predictive models and frameworks (e.g.&nbsp;`mlr/mlr3`, `xgboost`, `caret`, `h2o`, `parsnip`, `tidymodels`, `scikit-learn`, `lightgbm`, `keras/tensorflow`).
 
-The main `modelStudio()` function computes various (instance and model-level) explanations and produces a&nbsp;**customisable dashboard**, which consists of multiple panels for plots with their short descriptions. It is possible to easily **save** the dashboard and&nbsp;**share** it with others. Tools for [Explanatory Model Analysis](https://ema.drwhy.ai/) unite with tools for Exploratory Data Analysis to give a broad overview of the model behavior.
+The main `modelStudio()` function computes various (instance and model-level) explanations and produces a&nbsp;**customisable dashboard**, which consists of multiple panels for plots with their short descriptions. It is possible to easily **save** the dashboard and&nbsp;**share** it with others. Tools for [Explanatory Model Analysis](https://ema.drwhy.ai) unite with tools for Exploratory Data Analysis to give a broad overview of the model behavior.
 
 <p align="center"><b>
 <a href="https://rai-covid.drwhy.ai">explain COVID-19<a> &emsp;
@@ -316,28 +316,39 @@ or with [`r2d3::save_d3_html()`](https://rstudio.github.io/r2d3/articles/publish
   <img src="man/figures/controls.png">
 </p>
 
-## Citation
+## Citations
 
 If you use `modelStudio`, please cite our [JOSS article](https://joss.theoj.org/papers/10.21105/joss.01798):
 
 ```
-@article{modelStudio,
-  author = {Hubert Baniecki and Przemyslaw Biecek},
-  title = {{modelStudio: Interactive Studio with Explanations for ML Predictive Models}},
-  year = {2019},
+@article{baniecki2019modelstudio,
+  title   = {{modelStudio: Interactive Studio with Explanations for ML Predictive Models}},
+  author  = {Hubert Baniecki and Przemyslaw Biecek},
   journal = {Journal of Open Source Software},
-  volume = {4},
-  number = {43},
-  pages = {1798},
-  url = {https://doi.org/10.21105/joss.01798}
+  year    = {2019},
+  volume  = {4},
+  number  = {43},
+  pages   = {1798},
+  url     = {https://doi.org/10.21105/joss.01798}
+}
+```
+
+For a description of the Interactive EMA process, refer to our [DMKD article](https://doi.org/10.1007/s10618-023-00924-w):
+
+```
+@article{baniecki2023grammar,
+  title   = {The grammar of interactive explanatory model analysis},
+  author  = {Hubert Baniecki and Dariusz Parzych and Przemyslaw Biecek},
+  journal = {Data Mining and Knowledge Discovery},
+  year    = {2023},
+  pages   = {1--37},
+  url     = {https://doi.org/10.1007/s10618-023-00924-w}
 }
 ```
 
 ## More resources
-
-  - A preprint: [The Grammar of Interactive Explanatory Model Analysis](https://arxiv.org/abs/2005.00497v4)
   
-  - Theoretical introduction to the plots: [Explanatory Model Analysis: Explore, Explain, and Examine Predictive Models](https://ema.drwhy.ai/)
+  - Theoretical introduction to the plots: [Explanatory Model Analysis: Explore, Explain, and Examine Predictive Models](https://ema.drwhy.ai)
 
   - Vignettes: [perks and features](https://modelstudio.drwhy.ai/articles/ms-perks-features.html), [R & Python examples](https://modelstudio.drwhy.ai/articles/ms-r-python-examples.html), [modelStudio in R Markdown HTML](https://modelstudio.drwhy.ai/articles/ms-rmarkdown.html)   
   
@@ -348,4 +359,4 @@ If you use `modelStudio`, please cite our [JOSS article](https://joss.theoj.org/
   
 ## Acknowledgments
 
-Work on this package was financially supported by the `NCN Opus grant 2016/21/B/ST6/02176` and `NCBR grant POIR.01.01.01-00-0328/17`.
+Work on this package was financially supported by the National Science Centre (Poland) grant `2016/21/B/ST6/02176` and National Centre for Research and Development grant `POIR.01.01.01-00-0328/17`.

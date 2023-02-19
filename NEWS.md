@@ -1,5 +1,6 @@
-# modelStudio (development)
-* ...
+# modelStudio 3.1.1
+* added new parameter to `modelStudio()`: `open_plots = c("fi")`, which is a vector listing plots to be initially opened (and on which positions) [(#112)](https://github.com/ModelOriented/modelStudio/issues/112)
+* fixed future warning with `DALEX::loss_default()` since `DALEX >=2.5.0`
 
 # modelStudio 3.1.0
 * changed y-axis variable labels in `SV` to the same as in `BD`

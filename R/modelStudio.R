@@ -42,6 +42,7 @@
 #' @param B Number of permutation rounds used for calculation of SV. Default is \code{10}.
 #'  See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#more-calculations-means-more-time}{\bold{vignette}}
 #' @param B_fi Number of permutation rounds used for calculation of FI. Default is \code{B}.
+#' @param open_plots A vector listing plots to be initially opened (and on which positions). Default is \code{c("fi")}.
 #' @param eda Compute EDA plots and Residuals vs Feature plot, which adds the data to the dashboard. Default is \code{TRUE}.
 #' @param show_info Verbose a progress on the console. Default is \code{TRUE}.
 #' @param verbose An alias for \code{show_info}. If provided, it will override the value.
@@ -186,6 +187,7 @@ modelStudio.explainer <- function(explainer,
                                   B = 10,
                                   B_fi = B,
                                   eda = TRUE,
+                                  open_plots = c("fi"),
                                   show_info = TRUE,
                                   parallel = FALSE,
                                   options = ms_options(),
@@ -213,6 +215,14 @@ modelStudio.explainer <- function(explainer,
   if (is.null(max_features_fi)) max_features_fi <- max_features
   if (!is.null(verbose)) show_info <- verbose
   if (is.null(N)) stop("`N` argument must be an integer")
+  if (length(open_plots) > prod(facet_dim)) 
+    stop(paste0("`open_plots` is of length larger than defined by `facet_dim` dimensions.",
+                "Increase `facet_dim` or shorten `open_plots`."))
+  available_plots <- c('bd', 'sv', 'cp', 'fi', 'pd', 'ad', 'rv', 'fd', 'tv', 'at')
+  if (!all(open_plots %in% c(available_plots, toupper(available_plots))))
+    stop(paste0("`open_plots` must be a vector with the following values: 'bd',",
+                " 'sv', 'cp', 'fi', 'pd', 'ad', 'rv', 'fd', 'tv', 'at'."))
+  open_plots <- toupper(open_plots)
   #if (identical(N_fi, numeric(0))) N_fi <- NULL
 
   if (is.null(new_observation)) {
@@ -250,7 +260,11 @@ modelStudio.explainer <- function(explainer,
       loss_function <- DALEX::loss_root_mean_square
     }
   } else {
-    loss_function <- DALEX::loss_default(explainer$model_info$type)
+    if (package_version(packageVersion("DALEX")) < package_version("2.5.0")) {
+      loss_function <- DALEX::loss_default(explainer$model_info$type)  
+    } else {
+      loss_function <- DALEX::get_loss_default(explainer$model_info$type)
+    }
   }
 
   variable_splits_type <- ifelse('variable_splits_type' %in% kwargs_names,
@@ -504,6 +518,7 @@ modelStudio.explainer <- function(explainer,
                     version_text = version_text,
                     measure_text = measure_text,
                     drop_down_data = jsonlite::toJSON(drop_down_data),
+                    open_plots = as.list(open_plots),
                     eda = eda,
                     widget_id = widget_id,
                     is_target_binary = is_binary(y)

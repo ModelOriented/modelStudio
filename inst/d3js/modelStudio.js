@@ -26,6 +26,7 @@ var TIME = options.time,
     versionText = options.version_text,
     measureText = options.measure_text,
     dropDownData = options.drop_down_data,
+    openPlots= options.open_plots,
     EDA = options.eda,
     WIDGET_ID = options.widget_id,
     IS_TARGET_BINARY = options.is_target_binary,
@@ -502,14 +503,15 @@ function initializeStudio() {
                IS_BUTTON_CLICKED = false;
              });
   }
-
-  if (facetData.length >= 1) {
-    svg.selectAll('.enterChoiceButton').filter('#enterChoiceButton0').dispatch('click');
-    svg.select("#chosePlotButton0").select("#FI").dispatch('click');
+  
+  for (let i = 0; i < openPlots.length; i++) {
+    if (facetData.length > i) {
+      svg.selectAll(".enterChoiceButton").filter("#enterChoiceButton"+i).dispatch('click');
+      svg.select("#chosePlotButton"+i).select("#"+openPlots[i]).dispatch('click');
+    }
   }
-
-  if (facetData.length >= 2) {
-    svg.selectAll('.enterChoiceButton').filter('#enterChoiceButton1').dispatch('click');
+  if (facetData.length > openPlots.length) {
+    svg.selectAll(".enterChoiceButton").filter("#enterChoiceButton"+openPlots.length).dispatch('click');
   }
 }
 

@@ -22,6 +22,7 @@ modelStudio(explainer, ...)
   B = 10,
   B_fi = B,
   eda = TRUE,
+  open_plots = c("fi"),
   show_info = TRUE,
   parallel = FALSE,
   options = ms_options(),
@@ -68,6 +69,8 @@ See \href{https://modelstudio.drwhy.ai/articles/ms-perks-features.html#more-calc
 \item{B_fi}{Number of permutation rounds used for calculation of FI. Default is \code{B}.}
 
 \item{eda}{Compute EDA plots and Residuals vs Feature plot, which adds the data to the dashboard. Default is \code{TRUE}.}
+
+\item{open_plots}{A vector listing plots to be initially opened (and on which positions). Default is \code{c("fi")}.}
 
 \item{show_info}{Verbose a progress on the console. Default is \code{TRUE}.}
 
