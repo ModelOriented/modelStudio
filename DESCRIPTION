@@ -1,6 +1,6 @@
 Package: modelStudio
 Title: Interactive Studio for Explanatory Model Analysis
-Version: 3.1.2
+Version: 3.1.2.9000
 Authors@R:
     c(person("Hubert", "Baniecki", role = c("aut", "cre"),
              email = "hbaniecki@gmail.com",
@@ -15,7 +15,7 @@ Description: Automate the explanatory analysis of machine learning predictive
     models and frameworks. The main function computes various (instance and 
     model-level) explanations and produces a customisable dashboard, which 
     consists of multiple panels for plots with their short descriptions. It is 
-    possible to easily save the dashboard and share it with others. modelStudio 
+    possible to easily save the dashboard and share it with others. 'modelStudio' 
     facilitates the process of Interactive Explanatory Model Analysis introduced 
     in Baniecki et al. (2023) <doi:10.1007/s10618-023-00924-w>.
 Depends: R (>= 3.6)
