@@ -333,7 +333,7 @@ If you use `modelStudio`, please cite our [JOSS article](https://joss.theoj.org/
 }
 ```
 
-For a description of the Interactive EMA process, refer to our [DMKD article](https://doi.org/10.1007/s10618-023-00924-w):
+For a description and evaluation of the Interactive EMA process, refer to our [DAMI article](https://doi.org/10.1007/s10618-023-00924-w):
 
 ```
 @article{baniecki2023grammar,
