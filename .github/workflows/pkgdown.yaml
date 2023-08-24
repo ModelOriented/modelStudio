@@ -40,6 +40,7 @@ jobs:
           install.packages("remotes")
           remotes::install_github("ModelOriented/DrWhyTemplate")
           install.packages("textshaping")
+        shell: Rscript {0}
           
       - name: Build site
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
