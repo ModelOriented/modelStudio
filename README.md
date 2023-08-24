@@ -6,7 +6,7 @@
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/modelStudio)](https://cran.r-project.org/package=modelStudio)
 [![R build status](https://github.com/ModelOriented/modelStudio/workflows/R-CMD-check/badge.svg)](https://github.com/ModelOriented/modelStudio/actions?query=workflow%3AR-CMD-check)
-[![Coverage Status](https://codecov.io/gh/ModelOriented/modelStudio/branch/master/graph/badge.svg)](https://codecov.io/github/ModelOriented/modelStudio?branch=master)
+[![Codecov test coverage](https://codecov.io/gh/ModelOriented/modelStudio/branch/master/graph/badge.svg)](https://app.codecov.io/gh/ModelOriented/modelStudio?branch=master)
 [![](https://cranlogs.r-pkg.org/badges/grand-total/modelStudio)](https://cranlogs.r-pkg.org/badges/grand-total/modelStudio)
 [![JOSS-status](https://joss.theoj.org/papers/9eec8c9d1969fbd44b3ea438a74af911/status.svg)](https://joss.theoj.org/papers/9eec8c9d1969fbd44b3ea438a74af911)
 

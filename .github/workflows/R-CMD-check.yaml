@@ -1,3 +1,9 @@
+# Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
+# Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+#
+# NOTE: This workflow is overkill for most R packages and
+# check-standard.yaml is likely a better choice.
+# usethis::use_github_action("check-standard") will install it.
 on:
   push:
     branches: [main, master]
@@ -9,31 +15,34 @@ name: R-CMD-check
 jobs:
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
-    
+
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
 
     strategy:
       fail-fast: false
       matrix:
         config:
-          - {os: windows-latest,   r: 'devel'}
-          - {os: macOS-latest,   r: '4.2'}
-          - {os: macOS-latest,   r: '4.1'}
-          - {os: macOS-latest,   r: '3.6'}
-          - {os: windows-latest, r: '4.2'}
+          - {os: macos-latest,   r: 'release'}
+
+          - {os: windows-latest, r: 'release'}
+          # Use 3.6 to trigger usage of RTools35
+          - {os: windows-latest, r: '3.6'}
+          # use 4.1 to check with rtools40's older compiler
           - {os: windows-latest, r: '4.1'}
-          - {os: windows-latest, r: '3.6'} # xgboost fails
-          - {os: ubuntu-latest, r: '4.2'}
-          - {os: ubuntu-latest, r: '4.1'} # , vdiffr: true,  xref: true, rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
-          - {os: ubuntu-20.04, r: '3.6'} # , vdiffr: true,  xref: true, rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
+
+          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
+          - {os: ubuntu-latest,   r: 'release'}
+          - {os: ubuntu-latest,   r: 'oldrel-1'}
+          - {os: ubuntu-latest,   r: 'oldrel-2'}
+          - {os: ubuntu-latest,   r: 'oldrel-3'}
+          - {os: ubuntu-latest,   r: 'oldrel-4'}
 
     env:
-      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
-      RSPM: ${{ matrix.config.rspm }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      
+      R_KEEP_PKG_SOURCE: yes
+
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: r-lib/actions/setup-pandoc@v2
 
@@ -51,39 +60,3 @@ jobs:
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
-
-      # - name: Cache R packages
-      #   if: runner.os != 'Windows'
-      #   uses: actions/cache@v1
-      #   with:
-      #     path: ${{ env.R_LIBS_USER }}
-      #     key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{ hashFiles('.github/depends.Rds') }}
-      #     restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-
-
-      # - name: Install system dependencies
-      #   if: runner.os == 'Linux'
-      #   env:
-      #     RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
-      #   run: |
-      #     Rscript -e "remotes::install_github('r-hub/sysreqs')"
-      #     sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
-      #     sudo -s eval "$sysreqs"
-      #     sudo apt-get install -y qpdf
-
-      # - name: Install dependencies
-      #   run: |
-      #     remotes::install_deps(dependencies = TRUE)
-      #     remotes::install_cran("rcmdcheck")
-      #   shell: Rscript {0}
-
-      # - name: Check
-      #   run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", "--run-donttest", "--run-dontrun", "--no-multiarch"),
-      #                             build_args = "--compact-vignettes=no", error_on = "warning", check_dir = "check")
-      #   shell: Rscript {0}
-
-      # - name: Upload check results
-      #   if: failure()
-      #   uses: actions/upload-artifact@master
-      #   with:
-      #     name: ${{ runner.os }}-r${{ matrix.config.r }}-results
-      #     path: check
